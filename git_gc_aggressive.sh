@@ -16,7 +16,7 @@ run()
         echo
     elif [ -d "${PWD}/${repo}" ] && [ "${repo}" != "." ] && [ "${repo}" != ".." ]
     then   
-        pushd ${repo} > /dev/null
+        pushd "${repo}" > /dev/null
 	    run			
 	    popd > /dev/null
     fi
