@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -x -e
+set -e
 
 run()
 {
@@ -25,4 +25,4 @@ run()
 
 run
 
-set +x +e
+set +e
