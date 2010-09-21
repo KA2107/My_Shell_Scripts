@@ -15,9 +15,9 @@ run()
         git gc --aggressive
         echo
     elif [ -d "${PWD}/${repo}" ] && [ "${repo}" != "." ] && [ "${repo}" != ".." ]
-    then   
+    then
         pushd "${repo}" > /dev/null
-	    run			
+	    run
 	    popd > /dev/null
     fi
   done

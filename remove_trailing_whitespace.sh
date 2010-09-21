@@ -1,7 +1,7 @@
 #!/bin/bash
-	
+
 strip_whitespace() {
-	
+
 echo
 echo "Strip trailing white spaces from ${PWD}/${fil}"
 echo
@@ -22,21 +22,23 @@ run() {
 fil=""
 ls -1 | while read -r fil
 do
-  if [ `file -b --mime-type ${PWD}/${fil}` == "text/*" ]
+  file_mime=`file -b --mime-type ${PWD}/${fil}`
+
+  if [ "${file_mime}" == "text/plain" ] || [ "${file_mime}" == "text/x-shellscript" ]
   then
       strip_whitespace
   elif [ -d "${PWD}/${fil}" ]
   then
       pushd "${fil}" > /dev/null
-	  run			
+	  run
 	  popd > /dev/null
-  fi       
+  fi
 done
-	
+
 }
 
-set -x -e
+set -e
 
 run
 
-set +x +e
+set +e
