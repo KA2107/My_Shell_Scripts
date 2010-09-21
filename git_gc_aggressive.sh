@@ -14,6 +14,8 @@ run()
         echo
         git gc --aggressive
         echo
+        git reset --hard
+        echo
     elif [ -d "${PWD}/${repo}" ] && [ "${repo}" != "." ] && [ "${repo}" != ".." ]
     then
         pushd "${repo}" > /dev/null
