@@ -9,7 +9,34 @@ run()
     then
         if [ -d "${PWD}/.git/svn" ]
         then
-            true
+            echo
+            echo "GIT SVN - ${PWD}"
+            echo
+            
+            git svn rebase --verbose
+            echo
+            
+            git checkout remotes/git-svn
+            echo
+            
+            git reset --hard
+            echo
+            
+        elif [ -d "${PWD}/.git/bzr" ]
+        then
+            echo
+            echo "GIT BZR- ${PWD}"
+            echo
+            
+            git bzr sync
+            echo
+            
+            git checkout bzr/master
+            echo
+            
+            git reset --hard
+            echo
+            
         else
             if [ -d "${PWD}/.git/refs/remotes" ]
             then
@@ -20,12 +47,11 @@ run()
                 git fetch
                 echo
             
-                if [ "${PWD}" == "/media/Data_2/Source_Codes/Operating_Systems/Linux_Kernel/Linux_Kernel_GIT" ]
-                then
-                    git checkout remotes/origin/master
-                else
-                    git checkout origin/master
-                fi
+                git checkout remotes/origin/master
+                echo
+                
+                git reset --hard
+                echo
             fi            
             echo
         fi
