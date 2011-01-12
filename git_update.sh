@@ -28,10 +28,16 @@ run()
             echo "GIT BZR- ${PWD}"
             echo
             
-            git bzr sync
+            git reset --hard
             echo
             
-            git checkout bzr/master
+            git bzr sync bzr/master
+            echo
+            
+            git checkout master
+            echo
+            
+            git merge bzr/master
             echo
             
             git reset --hard
