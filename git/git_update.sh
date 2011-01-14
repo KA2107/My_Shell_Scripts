@@ -47,7 +47,7 @@ run()
             if [ -d "${PWD}/.git/refs/remotes" ]
             then
                 echo
-                echo "${PWD}"
+                echo "GIT - ${PWD}"
                 echo
             
                 git fetch

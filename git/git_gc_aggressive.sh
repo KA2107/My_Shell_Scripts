@@ -12,9 +12,8 @@ run()
         echo
         echo "${PWD}"
         echo
+        
         git gc --aggressive
-        echo
-        git reset --hard
         echo
     elif [ -d "${PWD}/${repo}" ] && [ "${repo}" != "." ] && [ "${repo}" != ".." ]
     then
