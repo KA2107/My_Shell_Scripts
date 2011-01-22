@@ -13,10 +13,16 @@ run()
             echo "GIT SVN - ${PWD}"
             echo
             
+            git reset --hard
+            echo
+            
             git svn rebase --verbose
             echo
             
-            git checkout remotes/git-svn
+            git checkout master
+            echo
+            
+            git merge remotes/git-svn
             echo
             
             git reset --hard
@@ -49,16 +55,22 @@ run()
                 echo
                 echo "GIT - ${PWD}"
                 echo
-            
+                
+                git reset --hard
+                echo
+                
                 git fetch
                 echo
             
-                git checkout remotes/origin/master
+                git checkout master
+                echo
+                
+                git merge remotes/origin/master
                 echo
                 
                 git reset --hard
                 echo
-            fi            
+            fi
             echo
         fi
             
