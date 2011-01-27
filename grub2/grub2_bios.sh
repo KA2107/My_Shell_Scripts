@@ -26,7 +26,7 @@ export GRUB2_UNIFONT_PATH="/usr/share/fonts/misc/unifont.bdf"
 
 if [ "${GRUB2_BIOS_PREFIX}" == "" ]
 then
-    export GRUB2_BIOS_PREFIX="/grub2/grub2_BIOS"
+	export GRUB2_BIOS_PREFIX="/grub2/grub2_BIOS"
 fi
 
 export GRUB2_BOOT_PART_DIR=${GRUB2_Root_Part_MP}/boot/${GRUB2_BIOS_NAME}
@@ -39,150 +39,150 @@ export GRUB2_EXTRAS_MODULES="lua.mod zfs.mod zfsinfo.mod 915resolution.mod"
 ## GRUB2_BIOS_CORE_IMG_MODULES - Those modules that will be included in the core.img image generated for your system. Note the maximum permitted size of core.img image is 32 KB.
 
 if [ \
-     "$1" == "" -o \
-     "$1" == "-h" -o \
-     "$1" == "-u" -o \
-     "$1" == "--help" -o \
-     "$1" == "--usage" \
-   ]
+	"$1" == "" -o \
+	"$1" == "-h" -o \
+	"$1" == "-u" -o \
+	"$1" == "--help" -o \
+	"$1" == "--usage" \
+	]
 then
-    echo
-    echo Usage : $0 [GRUB2_Install_Device] [GRUB2_Root_Partition_MountPoint] [GRUB2_BIOS_Install_Dir_Name] [GRUB2_BIOS_Backup_Path] [GRUB2_BIOS_Tools_Backup_Path] [GRUB2_BIOS_PREFIX_FOLDER]
-    echo
-    echo Example : $0 /dev/sda / grub2 /media/Data_3/grub2_BIOS_Backup /media/Data_3/grub2_BIOS_Tools_Backup /grub2/grub2_BIOS
-    echo
-    export PROCESS_CONTINUE=FALSE
+	echo
+	echo Usage : $0 [GRUB2_Install_Device] [GRUB2_Root_Partition_MountPoint] [GRUB2_BIOS_Install_Dir_Name] [GRUB2_BIOS_Backup_Path] [GRUB2_BIOS_Tools_Backup_Path] [GRUB2_BIOS_PREFIX_FOLDER]
+	echo
+	echo Example : $0 /dev/sda / grub2 /media/Data_3/grub2_BIOS_Backup /media/Data_3/grub2_BIOS_Tools_Backup /grub2/grub2_BIOS
+	echo
+	export PROCESS_CONTINUE=FALSE
 fi
 
 if [ "${PROCESS_CONTINUE}" == TRUE ]
 then
-     echo
-     echo GRUB2_Install_Device=${GRUB2_Install_Device}
-     echo
-     echo GRUB2_Root_Partition_MountPoint=${GRUB2_Root_Part_MP}
-     echo
-     echo GRUB2_BIOS_Install_Dir_Name=${GRUB2_BOOT_PART_DIR}
-     echo
-     echo GRUB2_BIOS_Backup_Path=${GRUB2_BIOS_Backup}
-     echo
-     echo GRUB2_BIOS_Tools_Backup_Path=${GRUB2_BIOS_TOOLS_Backup}
-     echo
-     echo GRUB2_BIOS_PREFIX_FOLDER=${GRUB2_BIOS_PREFIX}
-     echo
+	echo
+	echo GRUB2_Install_Device=${GRUB2_Install_Device}
+	echo
+	echo GRUB2_Root_Partition_MountPoint=${GRUB2_Root_Part_MP}
+	echo
+	echo GRUB2_BIOS_Install_Dir_Name=${GRUB2_BOOT_PART_DIR}
+	echo
+	echo GRUB2_BIOS_Backup_Path=${GRUB2_BIOS_Backup}
+	echo
+	echo GRUB2_BIOS_Tools_Backup_Path=${GRUB2_BIOS_TOOLS_Backup}
+	echo
+	echo GRUB2_BIOS_PREFIX_FOLDER=${GRUB2_BIOS_PREFIX}
+	echo
 
-     read -p "Do you wish to proceed? (y/n): " ans # Copied from http://www.linuxjournal.com/content/asking-yesno-question-bash-script
+	read -p "Do you wish to proceed? (y/n): " ans # Copied from http://www.linuxjournal.com/content/asking-yesno-question-bash-script
 
-     case ${ans} in
-     y | Y | yes | YES | Yes)
-     echo "Ok. Proceeding with compile and installation of GRUB2 BIOS."
-     echo
+	case ${ans} in
+	y | Y | yes | YES | Yes)
+	echo "Ok. Proceeding with compile and installation of GRUB2 BIOS."
+	echo
 
-     ## Load device-mapper kernel module - needed by grub-probe
-     sudo modprobe dm-mod || true
+	## Load device-mapper kernel module - needed by grub-probe
+	sudo modprobe dm-mod || true
 
-     set -x -e
+	set -x -e
 
-     cd ${WD}
+	cd ${WD}
 
-     ## Convert the line endings of all the source files from DOS to UNIX mode
-     ${WD}/xman_dos2unix.sh * || true
-     echo
+	## Convert the line endings of all the source files from DOS to UNIX mode
+	${WD}/xman_dos2unix.sh * || true
+	echo
 
-     ## Uncomment below to use ${GRUB2_BIOS_MENU_CONFIG}.cfg as the menu config file instead of grub.cfg
-     sed -i "s|grub.cfg|${GRUB2_BIOS_MENU_CONFIG}.cfg|" ${WD}/grub-core/normal/main.c || true
+	## Uncomment below to use ${GRUB2_BIOS_MENU_CONFIG}.cfg as the menu config file instead of grub.cfg
+	sed -i "s|grub.cfg|${GRUB2_BIOS_MENU_CONFIG}.cfg|" ${WD}/grub-core/normal/main.c || true
 
-     ## Archlinux changed default /usr/bin/python to 3.1.2, need to use /usr/bin/python2 instead
-     cp ${WD}/autogen.sh ${WD}/autogen_unmodified.sh
-     sed -i 's|python |python2 |' ${WD}/autogen.sh || true
-     
-     ${WD}/autogen.sh
-     echo
+	## Archlinux changed default /usr/bin/python to 3.1.2, need to use /usr/bin/python2 instead
+	cp ${WD}/autogen.sh ${WD}/autogen_unmodified.sh
+	sed -i 's|python |python2 |' ${WD}/autogen.sh || true
+	
+	${WD}/autogen.sh
+	echo
 
-     ## GRUB2 BIOS Build Directory
-     mkdir GRUB2_BIOS_BUILD_DIR
-     cp --verbose ${WD}/grub.default ${WD}/GRUB2_BIOS_BUILD_DIR/ || true
-     cp --verbose ${WD}/grub.cfg ${WD}/GRUB2_BIOS_BUILD_DIR/ || true
+	## GRUB2 BIOS Build Directory
+	mkdir GRUB2_BIOS_BUILD_DIR
+	cp --verbose ${WD}/grub.default ${WD}/GRUB2_BIOS_BUILD_DIR/ || true
+	cp --verbose ${WD}/grub.cfg ${WD}/GRUB2_BIOS_BUILD_DIR/ || true
 
-     cd GRUB2_BIOS_BUILD_DIR
-     echo
+	cd GRUB2_BIOS_BUILD_DIR
+	echo
 
-     ../configure ${GRUB2_BIOS_Configure_Flags} ${GRUB2_Other_Configure_Flags} --prefix=${GRUB2_BIOS_PREFIX}
-     echo
+	../configure ${GRUB2_BIOS_Configure_Flags} ${GRUB2_Other_Configure_Flags} --prefix=${GRUB2_BIOS_PREFIX}
+	echo
 
-     make
-     echo
+	make
+	echo
 
-     sudo cp --verbose -r ${GRUB2_BIOS_PREFIX} ${GRUB2_BIOS_TOOLS_Backup} || true
-     echo
-     sudo rm --verbose -rf ${GRUB2_BIOS_PREFIX} || true
-     echo
+	sudo cp --verbose -r ${GRUB2_BIOS_PREFIX} ${GRUB2_BIOS_TOOLS_Backup} || true
+	echo
+	sudo rm --verbose -rf ${GRUB2_BIOS_PREFIX} || true
+	echo
 
-     sudo make install
-     echo
+	sudo make install
+	echo
 
-     cd ${WD}/GRUB2_BIOS_BUILD_DIR/grub-core/
-     # sudo cp --verbose ${GRUB2_EXTRAS_MODULES} ${GRUB2_BIOS_PREFIX}/lib/${GRUB2_BIOS_NAME}/i386-pc/ || true
-     echo
+	cd ${WD}/GRUB2_BIOS_BUILD_DIR/grub-core/
+	# sudo cp --verbose ${GRUB2_EXTRAS_MODULES} ${GRUB2_BIOS_PREFIX}/lib/${GRUB2_BIOS_NAME}/i386-pc/ || true
+	echo
 
-     cd ${WD}/GRUB2_BIOS_BUILD_DIR/grub-core/
-     # sudo cp --verbose g2hdr.bin g2ldr.mbr grldr.img ${GRUB2_BIOS_PREFIX}/lib/${GRUB2_BIOS_NAME}/i386-pc/ || true
-     # sudo cp --verbose grubinst ${GRUB2_BIOS_PREFIX}/bin/grubinst || true
-     echo
+	cd ${WD}/GRUB2_BIOS_BUILD_DIR/grub-core/
+	# sudo cp --verbose g2hdr.bin g2ldr.mbr grldr.img ${GRUB2_BIOS_PREFIX}/lib/${GRUB2_BIOS_NAME}/i386-pc/ || true
+	# sudo cp --verbose grubinst ${GRUB2_BIOS_PREFIX}/bin/grubinst || true
+	echo
 
-     sudo mkdir ${GRUB2_BIOS_PREFIX}/etc/default
-     sudo cp --verbose ${WD}/grub.default ${GRUB2_BIOS_PREFIX}/etc/default/grub || true
-     sudo chmod --verbose -x ${GRUB2_BIOS_PREFIX}/etc/default/grub || true
-     echo
+	sudo mkdir ${GRUB2_BIOS_PREFIX}/etc/default
+	sudo cp --verbose ${WD}/grub.default ${GRUB2_BIOS_PREFIX}/etc/default/grub || true
+	sudo chmod --verbose -x ${GRUB2_BIOS_PREFIX}/etc/default/grub || true
+	echo
 
-     sudo cp --verbose /usr/bin/gettext.sh ${GRUB2_BIOS_PREFIX}/bin/ || true
-     sudo chmod --verbose -x ${GRUB2_BIOS_PREFIX}/etc/grub.d/README || true
-     echo
+	sudo cp --verbose /usr/bin/gettext.sh ${GRUB2_BIOS_PREFIX}/bin/ || true
+	sudo chmod --verbose -x ${GRUB2_BIOS_PREFIX}/etc/grub.d/README || true
+	echo
 
-     ## Backup the old GRUB2 folder in the /boot folder.
-     sudo cp --verbose -r ${GRUB2_BOOT_PART_DIR} ${GRUB2_BIOS_Backup} || true
-     echo
-     ## Delete the old GRUB2 folder in the /boot folder.
-     sudo rm --verbose -rf ${GRUB2_BOOT_PART_DIR} || true
-     echo
+	## Backup the old GRUB2 folder in the /boot folder.
+	sudo cp --verbose -r ${GRUB2_BOOT_PART_DIR} ${GRUB2_BIOS_Backup} || true
+	echo
+	## Delete the old GRUB2 folder in the /boot folder.
+	sudo rm --verbose -rf ${GRUB2_BOOT_PART_DIR} || true
+	echo
 
-     sudo ${GRUB2_BIOS_PREFIX}/sbin/${GRUB2_BIOS_NAME}-install --modules="${GRUB2_BIOS_CORE_IMG_MODULES}" --root-directory=${GRUB2_Root_Part_MP} --no-floppy --recheck --debug ${GRUB2_Install_Device} # Setup the GRUB2 folder in the /boot directory, create the core.img image and embed the image in the disk.
-     echo
+	sudo ${GRUB2_BIOS_PREFIX}/sbin/${GRUB2_BIOS_NAME}-install --modules="${GRUB2_BIOS_CORE_IMG_MODULES}" --root-directory=${GRUB2_Root_Part_MP} --no-floppy --recheck --debug ${GRUB2_Install_Device} # Setup the GRUB2 folder in the /boot directory, create the core.img image and embed the image in the disk.
+	echo
 
-     # sudo ${GRUB2_BIOS_PREFIX}/sbin/${GRUB2_BIOS_NAME}-mkconfig --output=${GRUB2_BOOT_PART_DIR}/${GRUB2_BIOS_MENU_CONFIG}.cfg || true
-     echo
+	# sudo ${GRUB2_BIOS_PREFIX}/sbin/${GRUB2_BIOS_NAME}-mkconfig --output=${GRUB2_BOOT_PART_DIR}/${GRUB2_BIOS_MENU_CONFIG}.cfg || true
+	echo
 
-     cd ..
-     sed -i "s|${GRUB2_BIOS_MENU_CONFIG}.cfg|grub.cfg|" ${WD}/grub-core/normal/main.c || true
+	cd ..
+	sed -i "s|${GRUB2_BIOS_MENU_CONFIG}.cfg|grub.cfg|" ${WD}/grub-core/normal/main.c || true
 
-     sudo ${GRUB2_BIOS_PREFIX}/bin/${GRUB2_BIOS_NAME}-mkfont --verbose --output=${GRUB2_BOOT_PART_DIR}/unifont.pf2 ${GRUB2_UNIFONT_PATH} || true
-     echo
-     sudo ${GRUB2_BIOS_PREFIX}/bin/${GRUB2_BIOS_NAME}-mkfont --verbose --ascii-bitmaps --output=${GRUB2_BOOT_PART_DIR}/ascii.pf2 ${GRUB2_UNIFONT_PATH} || true
-     echo
+	sudo ${GRUB2_BIOS_PREFIX}/bin/${GRUB2_BIOS_NAME}-mkfont --verbose --output=${GRUB2_BOOT_PART_DIR}/unifont.pf2 ${GRUB2_UNIFONT_PATH} || true
+	echo
+	sudo ${GRUB2_BIOS_PREFIX}/bin/${GRUB2_BIOS_NAME}-mkfont --verbose --ascii-bitmaps --output=${GRUB2_BOOT_PART_DIR}/ascii.pf2 ${GRUB2_UNIFONT_PATH} || true
+	echo
 
-     sudo cp --verbose ${GRUB2_BIOS_Backup}/${GRUB2_BIOS_MENU_CONFIG}.cfg ${GRUB2_BOOT_PART_DIR}/${GRUB2_BIOS_MENU_CONFIG}_backup.cfg || true
-     # sudo cp --verbose ${GRUB2_BIOS_Backup}/${GRUB2_BIOS_MENU_CONFIG}.cfg ${GRUB2_BOOT_PART_DIR}/${GRUB2_BIOS_MENU_CONFIG}.cfg || true
-     sudo cp --verbose ${WD}/grub.cfg ${GRUB2_BOOT_PART_DIR}/${GRUB2_BIOS_MENU_CONFIG}.cfg || true
-     sudo cp --verbose ${GRUB2_BIOS_Backup}/*.jpg ${GRUB2_BIOS_Backup}/*.png ${GRUB2_BIOS_Backup}/*.tga ${GRUB2_BOOT_PART_DIR}/ || true
-     echo
+	sudo cp --verbose ${GRUB2_BIOS_Backup}/${GRUB2_BIOS_MENU_CONFIG}.cfg ${GRUB2_BOOT_PART_DIR}/${GRUB2_BIOS_MENU_CONFIG}_backup.cfg || true
+	# sudo cp --verbose ${GRUB2_BIOS_Backup}/${GRUB2_BIOS_MENU_CONFIG}.cfg ${GRUB2_BOOT_PART_DIR}/${GRUB2_BIOS_MENU_CONFIG}.cfg || true
+	sudo cp --verbose ${WD}/grub.cfg ${GRUB2_BOOT_PART_DIR}/${GRUB2_BIOS_MENU_CONFIG}.cfg || true
+	sudo cp --verbose ${GRUB2_BIOS_Backup}/*.jpg ${GRUB2_BIOS_Backup}/*.png ${GRUB2_BIOS_Backup}/*.tga ${GRUB2_BOOT_PART_DIR}/ || true
+	echo
 
-     sudo chmod --verbose -x ${GRUB2_BOOT_PART_DIR}/${GRUB2_BIOS_MENU_CONFIG}.cfg || true
-     echo
+	sudo chmod --verbose -x ${GRUB2_BOOT_PART_DIR}/${GRUB2_BIOS_MENU_CONFIG}.cfg || true
+	echo
 
-     echo "GRUB 2 BIOS setup in ${GRUB2_BOOT_PART_DIR} successfully."
-     echo
+	echo "GRUB 2 BIOS setup in ${GRUB2_BOOT_PART_DIR} successfully."
+	echo
 
-     set +x +e
+	set +x +e
 
-     ;; # End of "y" option in the case list
+	;; # End of "y" option in the case list
 
-     n | N | no | NO | No)
-     echo "You said no. Exiting to shell."
-     ;; # End of "n" option in the case list
+	n | N | no | NO | No)
+	echo "You said no. Exiting to shell."
+	;; # End of "n" option in the case list
 
-     *) # Any other input
-     echo "Invalid answer. Exiting to shell."
-     ;;
-     esac # ends the case list
+	*) # Any other input
+	echo "Invalid answer. Exiting to shell."
+	;;
+	esac # ends the case list
 
 fi
 
