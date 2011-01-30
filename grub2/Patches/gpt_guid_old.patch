@@ -1,0 +1,293 @@
+=== modified file 'commands/search.c'
+--- grub-core/commands/search.c	2010-01-20 08:12:47 +0000
++++ grub-core/commands/search.c	2010-02-12 18:10:03 +0000
+@@ -23,6 +23,9 @@
+ #include <grub/err.h>
+ #include <grub/dl.h>
+ #include <grub/device.h>
++#include <grub/disk.h>
++#include <grub/gpt_partition.h>
++#include <grub/partition.h>
+ #include <grub/file.h>
+ #include <grub/env.h>
+ #include <grub/command.h>
+@@ -62,6 +65,58 @@
+ 	  }
+ 	grub_free (buf);
+       }
++#elif defined (DO_SEARCH_PART_UUID)
++      {
++	/* type is SEARCH_PART_UUID. Obtaining device by PARTITION UUID, GPT GUID for now */
++	grub_device_t dev = grub_device_open (name);
++	if (dev)
++	{
++	  const char * dest_partmap  = 0;
++
++	  auto int identify_partmap (grub_disk_t /*disk*/, const grub_partition_t p);
++	  int identify_partmap (grub_disk_t disk __attribute__((unused)), const grub_partition_t p)
++	  {
++	    dest_partmap = p->partmap->name;
++	    return 1;
++	  }
++	
++	  dest_partmap = 0;
++	  grub_partition_iterate (dev->disk, identify_partmap);	
++	  if (grub_strcmp (dest_partmap, "part_gpt") == 0)
++	  {
++	    auto void identify_gpt_partition(grub_gpt_partentry_t partition);
++	  
++	    void identify_gpt_partition(grub_gpt_partentry_t partition)
++	    {
++	      int i = 0;
++	      char guid[37];
++	      char* pguid = (char*)guid;
++	      grub_memset(pguid, 0, 37);
++	    
++	      for (; i < 16; ++i)
++	      {
++		if (i == 4 || i == 6 || i == 8 || i == 10)
++		{
++		  grub_snprintf(pguid, 37 - i, "-");
++		  ++pguid;
++		}
++		grub_snprintf(pguid, 37 - i, "%02x", partition->guid[i]);
++		pguid += 2;	       
++	      }
++	      // For debug
++	      grub_printf("Compare %s and %s\n", guid, key);	    
++	      if (grub_strcmp(guid, key) == 0)
++	      {
++		found = 1;
++	      }
++	      return;
++	    }
++	  
++	    // this is gpt disk.
++	   gpt_partition_map_gpt_iterate(dev->disk, identify_gpt_partition);
++	  }
++	}
++      }
+ #else
+       {
+ 	/* SEARCH_FS_UUID or SEARCH_LABEL */
+@@ -152,6 +207,8 @@
+ GRUB_MOD_INIT(search_file)
+ #elif defined (DO_SEARCH_FS_UUID)
+ GRUB_MOD_INIT(search_fs_uuid)
++#elif defined (DO_SEARCH_PART_UUID)
++GRUB_MOD_INIT(search_part_uuid)
+ #else
+ GRUB_MOD_INIT(search_fs_label)
+ #endif
+@@ -166,6 +223,8 @@
+ GRUB_MOD_FINI(search_file)
+ #elif defined (DO_SEARCH_FS_UUID)
+ GRUB_MOD_FINI(search_fs_uuid)
++#elif defined (DO_SEARCH_PART_UUID)
++GRUB_MOD_FINI(search_part_uuid)
+ #else
+ GRUB_MOD_FINI(search_fs_label)
+ #endif
+
+=== modified file 'commands/search_wrap.c'
+--- commands/search_wrap.c	2009-12-25 22:06:52 +0000
++++ commands/search_wrap.c	2010-02-12 17:06:50 +0000
+@@ -34,6 +34,8 @@
+      0, 0},
+     {"fs-uuid",		'u', 0, N_("Search devices by a filesystem UUID."),
+      0, 0},
++    {"part-uuid",	'g', 0, N_("Search devices by partition UUID."),
++     0, 0},
+     {"set",		's', GRUB_ARG_OPTION_OPTIONAL,
+      N_("Set a variable to the first device found."), "VAR", ARG_TYPE_STRING},
+     {"no-floppy",	'n', 0, N_("Do not probe any floppy drive."), 0, 0},
+@@ -45,6 +47,7 @@
+     SEARCH_FILE,
+     SEARCH_LABEL,
+     SEARCH_FS_UUID,
++    SEARCH_PART_UUID,
+     SEARCH_SET,
+     SEARCH_NO_FLOPPY,
+  };
+@@ -67,6 +70,8 @@
+     grub_search_fs_uuid (args[0], var, state[SEARCH_NO_FLOPPY].set);
+   else if (state[SEARCH_FILE].set)
+     grub_search_fs_file (args[0], var, state[SEARCH_NO_FLOPPY].set);
++  else if (state[SEARCH_PART_UUID].set)
++    grub_search_part_uuid (args[0], var, state[SEARCH_NO_FLOPPY].set);   
+   else
+     return grub_error (GRUB_ERR_INVALID_COMMAND, "unspecified search type");
+ 
+@@ -80,9 +85,9 @@
+   cmd =
+     grub_register_extcmd ("search", grub_cmd_search,
+ 			  GRUB_COMMAND_FLAG_BOTH,
+-			  N_("search [-f|-l|-u|-s|-n] NAME"),
++			  N_("search [-f|-l|-u|-p|-s|-n] NAME"),
+ 			  N_("Search devices by file, filesystem label"
+-			     " or filesystem UUID."
++			     " ,filesystem UUID or partition UUID."
+ 			     " If --set is specified, the first device found is"
+ 			     " set to a variable. If no variable name is"
+ 			     " specified, \"root\" is used."),
+
+=== modified file 'conf/any-emu.rmk'
+--- conf/any-emu.rmk	2010-02-03 00:24:07 +0000
++++ conf/any-emu.rmk	2010-02-12 16:46:14 +0000
+@@ -10,6 +10,7 @@
+ 	commands/handler.c commands/ls.c commands/test.c 		\
+ 	commands/search_wrap.c commands/search_file.c			\
+ 	commands/search_label.c commands/search_uuid.c			\
++	commands/search_part_uuid.c						\
+ 	commands/blocklist.c commands/hexdump.c				\
+ 	lib/hexdump.c commands/halt.c commands/reboot.c			\
+ 	lib/envblk.c commands/loadenv.c					\
+
+=== modified file 'conf/common.rmk'
+--- conf/common.rmk	2010-02-06 14:37:23 +0000
++++ conf/common.rmk	2010-02-12 17:05:18 +0000
+@@ -519,7 +519,7 @@
+ search_mod_CFLAGS = $(COMMON_CFLAGS)
+ search_mod_LDFLAGS = $(COMMON_LDFLAGS)
+ 
+-pkglib_MODULES += search_fs_file.mod search_fs_uuid.mod search_label.mod
++pkglib_MODULES += search_fs_file.mod search_fs_uuid.mod search_label.mod search_part_uuid.mod
+ 
+ # For search.mod.
+ search_fs_file_mod_SOURCES = commands/search_file.c
+@@ -536,6 +536,11 @@
+ search_fs_uuid_mod_CFLAGS = $(COMMON_CFLAGS)
+ search_fs_uuid_mod_LDFLAGS = $(COMMON_LDFLAGS)
+ 
++# For search.mod.
++search_part_uuid_mod_SOURCES = commands/search__part_uuid.c
++search_part_uuid_mod_CFLAGS = $(COMMON_CFLAGS)
++search_part_uuid_mod_LDFLAGS = $(COMMON_LDFLAGS)
++
+ # For test.mod.
+ test_mod_SOURCES = commands/test.c
+ test_mod_CFLAGS = $(COMMON_CFLAGS)
+
+=== modified file 'include/grub/gpt_partition.h'
+--- include/grub/gpt_partition.h	2009-04-19 20:38:46 +0000
++++ include/grub/gpt_partition.h	2010-02-12 17:21:00 +0000
+@@ -20,6 +20,9 @@
+ #define GRUB_GPT_PARTITION_HEADER	1
+ 
+ #include <grub/types.h>
++#include <grub/err.h>
++#include <grub/disk.h>
++#include <grub/partition.h>
+ 
+ struct grub_gpt_part_type
+ {
+@@ -67,5 +70,9 @@
+   grub_uint64_t attrib;
+   char name[72];
+ } __attribute__ ((packed));
++typedef struct grub_gpt_partentry *grub_gpt_partentry_t;
++
++grub_err_t
++gpt_partition_map_gpt_iterate(grub_disk_t disk, void (*hook) (grub_gpt_partentry_t entry));
+ 
+ #endif /* ! GRUB_GPT_PARTITION_HEADER */
+
+=== modified file 'include/grub/search.h'
+--- include/grub/search.h	2009-11-23 20:15:44 +0000
++++ include/grub/search.h	2010-02-12 17:05:39 +0000
+@@ -22,5 +22,6 @@
+ void grub_search_fs_file (const char *key, const char *var, int no_floppy);
+ void grub_search_fs_uuid (const char *key, const char *var, int no_floppy);
+ void grub_search_label (const char *key, const char *var, int no_floppy);
++void grub_search_part_uuid (const char *key, const char *var, int no_floppy);
+ 
+ #endif
+
+=== modified file 'partmap/gpt.c'
+--- partmap/gpt.c	2010-01-20 08:12:47 +0000
++++ partmap/gpt.c	2010-02-12 17:30:09 +0000
+@@ -34,12 +34,15 @@
+ 
+ static struct grub_partition_map grub_gpt_partition_map;
+ 
+-
+-
+-static grub_err_t
+-gpt_partition_map_iterate (grub_disk_t disk,
+-			   int (*hook) (grub_disk_t disk,
+-					const grub_partition_t partition))
++/*
++* Both gpt_partition_map_gpt_iterate and gpt_partition_map_iterate are using this func internally
++* to obtain grub_gpt_partentry_t and grub_partition_t of every partition
++*/
++static
++grub_err_t
++gpt_partition_map_iterate_internal(grub_disk_t disk, 
++			  int (*hook) (grub_disk_t disk, const grub_partition_t partition,
++				       grub_gpt_partentry_t entry))
+ {
+   struct grub_partition part;
+   struct grub_gpt_header gpt;
+@@ -98,7 +101,7 @@
+ 			(unsigned long long) part.start,
+ 			(unsigned long long) part.len);
+ 
+-	  if (hook (disk, &part))
++	  if (hook (disk, &part, &entry))
+ 	    return 1;
+ 	}
+ 
+@@ -110,7 +113,39 @@
+ 	}
+     }
+ 
+-  return 0;
++  return 0;  
++}
++
++grub_err_t
++gpt_partition_map_gpt_iterate(grub_disk_t disk, void (*hook) (grub_gpt_partentry_t entry))
++{
++  auto int hook_func(grub_disk_t hook_disk, const grub_partition_t partition, grub_gpt_partentry_t entry);
++  
++  int hook_func(grub_disk_t hook_disk, const grub_partition_t partition, grub_gpt_partentry_t entry)
++  {
++    if (hook_disk->partition->index == partition->index)
++    {
++      hook(entry);
++    }
++    return 0;
++  }
++  
++  return gpt_partition_map_iterate_internal(disk, hook_func);
++}
++
++static grub_err_t
++gpt_partition_map_iterate (grub_disk_t disk,
++			   int (*hook) (grub_disk_t disk,
++					const grub_partition_t partition))
++{
++  auto int hook_func(grub_disk_t hook_disk, const grub_partition_t partition, grub_gpt_partentry_t entry);
++  int hook_func(grub_disk_t hook_disk, const grub_partition_t partition, grub_gpt_partentry_t entry)
++  {
++    if (entry->guid)
++      return hook(hook_disk, partition);    
++  }
++  
++  return gpt_partition_map_iterate_internal(disk, hook_func);
+ }
+ 
+ 
+
+=== modified file 'po/POTFILES'
+--- po/POTFILES	2010-01-21 08:04:49 +0000
++++ po/POTFILES	2010-02-12 16:48:29 +0000
+@@ -40,6 +40,7 @@
+ commands/search_file.c
+ commands/search_label.c
+ commands/search_uuid.c
++commands/search_part_uuid.c
+ commands/sleep.c
+ commands/test.c
+ commands/true.c
+
