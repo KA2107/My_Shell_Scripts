@@ -45,51 +45,51 @@ explore()
 	ls -1 | while read -r file
 	do
 		# Recursively explore if we found a directory.
-		if [ -d "$file" ] ; then
-			echo "Entering $file"
-			pushd "$file" > /dev/null
+		if [ -d "${file}" ] ; then
+			echo "Entering ${file}"
+			pushd "${file}" > /dev/null
 			explore
-			echo "Leaving $file"
+			echo "Leaving ${file}"
 			popd > /dev/null
 		# Process it if we found a text file.
 		elif [ "`${FILE} \"${file}\" | ${GREP} text`" != "" ] ; then
-			# echo "Processing: $file"
-			$DOS2UNIX "${file}"
+			# echo "Processing: ${file}"
+			${DOS2UNIX} "${file}"
 		fi
 	done
 } # end of explore()
 
 # Start of main program
-if [ -z "$1" ] ; then
+if [ -z "${1}" ] ; then
 	echo "usage: xman_dos2unix <FILE> ..."
 	exit 0
 fi
 
-dir="$1"
+dir="${1}"
 
-if [ ! -e "$dir" ] ; then
-	echo "ERROR: Path $dir does not exist"
+if [ ! -e "${dir}" ] ; then
+	echo "ERROR: Path ${dir} does not exist"
 	exit 0
 fi
 
-OLDIFS=$IFS
+OLDIFS=${IFS}
 IFS=$'\n'
 for file in $@ ; do
 	# FIXME: I should have put these into a subroutine to reduce code duplications in explore().
 	# However, I'm not familiar with subroutines in BASH yet.
-	IFS=$OLDIFS
-	if [ -d "$file" ] ; then
-		echo "Entering $file"
-		pushd "$file" > /dev/null
+	IFS=${OLDIFS}
+	if [ -d "${file}" ] ; then
+		echo "Entering ${file}"
+		pushd "${file}" > /dev/null
 		explore
-		echo "Leaving $file"
+		echo "Leaving ${file}"
 		popd
 	elif [ "`${FILE} \"${file}\" | ${GREP} text`" != "" ] ; then
-		$DOS2UNIX "$file"
+		${DOS2UNIX} "${file}"
 	fi
 	IFS=$'\n'
 done
-IFS=$OLDIFS
+IFS=${OLDIFS}
 
 exit 0
 

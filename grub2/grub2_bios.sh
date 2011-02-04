@@ -13,12 +13,12 @@ export GRUB_CONTRIB=${WD}/grub2_extras_BZR/
 
 export PROCESS_CONTINUE=TRUE
 
-export GRUB2_Install_Device=$1
-export GRUB2_Root_Part_MP=$2
-export GRUB2_BIOS_NAME=$3
-export GRUB2_BIOS_Backup=$4
-export GRUB2_BIOS_TOOLS_Backup=$5
-export GRUB2_BIOS_PREFIX=$6
+export GRUB2_Install_Device=${1}
+export GRUB2_Root_Part_MP=${2}
+export GRUB2_BIOS_NAME=${3}
+export GRUB2_BIOS_Backup=${4}
+export GRUB2_BIOS_TOOLS_Backup=${5}
+export GRUB2_BIOS_PREFIX=${6}
 ## If not mentioned, GRUB2_BIOS_PREFIX env variable will be set to /grub2/grub2_BIOS dir
 
 export GRUB2_BIOS_MENU_CONFIG="${GRUB2_BIOS_NAME}"
@@ -39,17 +39,17 @@ export GRUB2_EXTRAS_MODULES="lua.mod zfs.mod zfsinfo.mod 915resolution.mod"
 ## GRUB2_BIOS_CORE_IMG_MODULES - Those modules that will be included in the core.img image generated for your system. Note the maximum permitted size of core.img image is 32 KB.
 
 if [ \
-	"$1" == "" -o \
-	"$1" == "-h" -o \
-	"$1" == "-u" -o \
-	"$1" == "--help" -o \
-	"$1" == "--usage" \
+	"${1}" == "" -o \
+	"${1}" == "-h" -o \
+	"${1}" == "-u" -o \
+	"${1}" == "--help" -o \
+	"${1}" == "--usage" \
 	]
 then
 	echo
-	echo Usage : $0 [GRUB2_Install_Device] [GRUB2_Root_Partition_MountPoint] [GRUB2_BIOS_Install_Dir_Name] [GRUB2_BIOS_Backup_Path] [GRUB2_BIOS_Tools_Backup_Path] [GRUB2_BIOS_PREFIX_FOLDER]
+	echo Usage : ${0} [GRUB2_Install_Device] [GRUB2_Root_Partition_MountPoint] [GRUB2_BIOS_Install_Dir_Name] [GRUB2_BIOS_Backup_Path] [GRUB2_BIOS_Tools_Backup_Path] [GRUB2_BIOS_PREFIX_FOLDER]
 	echo
-	echo Example : $0 /dev/sda / grub2 /media/Data_3/grub2_BIOS_Backup /media/Data_3/grub2_BIOS_Tools_Backup /grub2/grub2_BIOS
+	echo Example : ${0} /dev/sda / grub2 /media/Data_3/grub2_BIOS_Backup /media/Data_3/grub2_BIOS_Tools_Backup /grub2/grub2_BIOS
 	echo
 	export PROCESS_CONTINUE=FALSE
 fi

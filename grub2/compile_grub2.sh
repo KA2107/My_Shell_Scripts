@@ -6,11 +6,11 @@ export WD_Outer=${PWD}
 export x32_chroot="/opt/arch32"
 
 if [ \
-	"$1" = "" -o \
-	"$1" = "-h" -o \
-	"$1" = "-u" -o \
-	"$1" = "--help" -o \
-	"$1" = "--usage" \
+	"${1}" = "" -o \
+	"${1}" = "-h" -o \
+	"${1}" = "-u" -o \
+	"${1}" = "--help" -o \
+	"${1}" = "--usage" \
 	]
 then
 	echo
@@ -30,43 +30,43 @@ then
 	export PROCESS_CONTINUE_BIOS="FALSE"
 fi
 
-if [ "$1" = "1" ]
+if [ "${1}" = "1" ]
 then
 	export GRUB2_EFI="-efi-main"
 	export GRUB2_BIOS="-bios-main"
-elif [ "$1" = "2" ]
+elif [ "${1}" = "2" ]
 then
 	export GRUB2_EFI="-efi-exp"
 	export GRUB2_BIOS="-bios-main"
-elif [ "$1" = "3" ]
+elif [ "${1}" = "3" ]
 then
 	export GRUB2_EFI="-efi-main"
 	export GRUB2_BIOS="-bios-exp"
-elif [ "$1" = "4" ]
+elif [ "${1}" = "4" ]
 then
 	export GRUB2_EFI="-efi-exp"
 	export GRUB2_BIOS="-bios-exp"
-elif [ "$1" = "5" ]
+elif [ "${1}" = "5" ]
 then
 	export GRUB2_EFI="-efi-main"
 	export GRUB2_BIOS="NULL"
-elif [ "$1" = "6" ]
+elif [ "${1}" = "6" ]
 then
 	export GRUB2_EFI="-efi-exp"
 	export GRUB2_BIOS="NULL"
-elif [ "$1" = "7" ]
+elif [ "${1}" = "7" ]
 then
 	export GRUB2_EFI="NULL"
 	export GRUB2_BIOS="-bios-main"
-elif [ "$1" = "8" ]
+elif [ "${1}" = "8" ]
 then
 	export GRUB2_EFI="NULL"
 	export GRUB2_BIOS="-bios-exp"
-elif [ "$1" = "9" ]
+elif [ "${1}" = "9" ]
 then
 	export GRUB2_EFI="-efi-install"
 	export GRUB2_BIOS="-bios-main"
-elif [ "$1" = "10" ]
+elif [ "${1}" = "10" ]
 then
 	export GRUB2_EFI="-efi-install"
 	export GRUB2_BIOS="NULL"

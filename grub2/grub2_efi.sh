@@ -13,12 +13,12 @@ export GRUB_CONTRIB=${WD}/grub2_extras__GIT_BZR/
 
 export PROCESS_CONTINUE=TRUE
 
-export TARGET_EFI_ARCH=$1
-export EFI_SYSTEM_PART_MP=$2
-export GRUB2_EFI_NAME=$3
-export GRUB2_UEFI_Backup=$4
-export GRUB2_UEFI_TOOLS_Backup=$5
-export GRUB2_EFI_PREFIX=$6
+export TARGET_EFI_ARCH=${1}
+export EFI_SYSTEM_PART_MP=${2}
+export GRUB2_EFI_NAME=${3}
+export GRUB2_UEFI_Backup=${4}
+export GRUB2_UEFI_TOOLS_Backup=${5}
+export GRUB2_EFI_PREFIX=${6}
 ## If not mentioned, GRUB2_EFI_PREFIX env variable will be set to /grub2/grub2_efi_${TARGET_EFI_ARCH} dir
 
 export GRUB2_EFI_APP_PREFIX=efi/${GRUB2_EFI_NAME}
@@ -41,17 +41,17 @@ export GRUB2_EFI_FINAL_MODULES="${GRUB2_PARTMAP_FS_MODULES} ${GRUB2_COMMON_IMP_M
 ## GRUB2_EFI_FINAL_MODULES - Those modules that will be in the final <GRUB2_EFI_NAME>.efi application.
 
 if [ \
-	"$1" == "" -o \
-	"$1" == "-h" -o \
-	"$1" == "-u" -o \
-	"$1" == "--help" -o \
-	"$1" == "--usage" \
+	"${1}" == "" -o \
+	"${1}" == "-h" -o \
+	"${1}" == "-u" -o \
+	"${1}" == "--help" -o \
+	"${1}" == "--usage" \
 	]
 then
 	echo
-	echo Usage : $0 [TARGET_EFI_ARCH] [EFI_SYS_PART_MOUNTPOINT] [GRUB2_EFI_Install_Dir_Name] [GRUB2_UEFI_Backup_Path] [GRUB2_UEFI_Tools_Backup_Path] [GRUB2_EFI_PREFIX_FOLDER]
+	echo Usage : ${0} [TARGET_EFI_ARCH] [EFI_SYS_PART_MOUNTPOINT] [GRUB2_EFI_Install_Dir_Name] [GRUB2_UEFI_Backup_Path] [GRUB2_UEFI_Tools_Backup_Path] [GRUB2_EFI_PREFIX_FOLDER]
 	echo
-	echo Example : $0 x86_64 /boot/efi grub2 /media/Data_3/grub2_UEFI_Backup /media/Data_3/grub2_UEFI_Tools_Backup /grub2/grub2_efi_x86_64
+	echo Example : ${0} x86_64 /boot/efi grub2 /media/Data_3/grub2_UEFI_Backup /media/Data_3/grub2_UEFI_Tools_Backup /grub2/grub2_efi_x86_64
 	echo
 	export PROCESS_CONTINUE=FALSE
 fi
