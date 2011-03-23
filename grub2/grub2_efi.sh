@@ -24,14 +24,14 @@ export GRUB2_EFI_PREFIX=${6}
 export GRUB2_EFI_APP_PREFIX=efi/${GRUB2_EFI_NAME}
 export GRUB2_EFISYS_PART_DIR=${EFI_SYSTEM_PART_MP}/${GRUB2_EFI_APP_PREFIX}
 export GRUB2_EFI_MENU_CONFIG="${GRUB2_EFI_NAME}"
-export GRUB2_UNIFONT_PATH="/usr/share/fonts/misc/unifont.bdf"
+export GRUB2_UNIFONT_PATH="/usr/share/fonts/misc"
 
 export GRUB2_EFI_Configure_Flags="--with-platform=efi --target=${TARGET_EFI_ARCH} --program-transform-name=s,grub,${GRUB2_EFI_NAME},"
 export GRUB2_Other_Configure_Flags="--enable-mm-debug --enable-grub-mkfont --disable-nls"
 
 export GRUB2_EFI_LST_files="command.lst crypto.lst fs.lst handler.lst moddep.lst partmap.lst parttool.lst terminal.lst video.lst"
 
-export GRUB2_PARTMAP_FS_MODULES="ata part_gpt part_msdos fat ntfs ntfscomp ext2 iso9660 udf hfsplus"
+export GRUB2_PARTMAP_FS_MODULES="part_gpt part_msdos fat ntfs ntfscomp ext2 iso9660 udf hfsplus"
 export GRUB2_COMMON_IMP_MODULES="fshelp normal chain linux ls memdisk tar search search_fs_file search_fs_uuid search_label help loopback boot configfile echo png jpeg tga"
 export GRUB2_EFI_APP_MODULES="efi_gop"
 export GRUB2_EXTRAS_MODULES="lua.mod zfs.mod zfsinfo.mod"
@@ -113,7 +113,10 @@ then
 	cd GRUB2_EFI_BUILD_DIR_${TARGET_EFI_ARCH}
 	echo
 	
-	../configure ${GRUB2_EFI_Configure_Flags} ${GRUB2_Other_Configure_Flags} --prefix=${GRUB2_EFI_PREFIX}
+	## fix unifont.bdf location
+	sed -i "s|/usr/share/fonts/unifont|${GRUB2_UNIFONT_PATH}|" ${WD}/configure
+	
+	${WD}/configure ${GRUB2_EFI_Configure_Flags} ${GRUB2_Other_Configure_Flags} --prefix=${GRUB2_EFI_PREFIX}
 	echo
 	
 	make
@@ -167,12 +170,14 @@ then
 	# sudo ${GRUB2_EFI_PREFIX}/sbin/${GRUB2_EFI_NAME}-mkconfig --output=${GRUB2_EFISYS_PART_DIR}/${GRUB2_EFI_MENU_CONFIG}.cfg || true
 	echo
 	
-	sudo ${GRUB2_EFI_PREFIX}/bin/${GRUB2_EFI_NAME}-mkfont --verbose --output=${GRUB2_EFISYS_PART_DIR}/unifont.pf2 ${GRUB2_UNIFONT_PATH} || true
+	# sudo ${GRUB2_EFI_PREFIX}/bin/${GRUB2_EFI_NAME}-mkfont --verbose --output=${GRUB2_EFISYS_PART_DIR}/unicode.pf2 ${GRUB2_UNIFONT_PATH}/unifont.bdf || true
 	echo
-	sudo ${GRUB2_EFI_PREFIX}/bin/${GRUB2_EFI_NAME}-mkfont --verbose --ascii-bitmaps --output=${GRUB2_EFISYS_PART_DIR}/ascii.pf2 ${GRUB2_UNIFONT_PATH} || true
+	# sudo ${GRUB2_EFI_PREFIX}/bin/${GRUB2_EFI_NAME}-mkfont --verbose --ascii-bitmaps --output=${GRUB2_EFISYS_PART_DIR}/ascii.pf2 ${GRUB2_UNIFONT_PATH}/unifont.bdf || true
 	echo
 	
-	cd ..
+	sudo cp ${GRUB2_EFI_PREFIX}/share/${GRUB2_EFI_NAME}/*.pf2 ${GRUB2_EFISYS_PART_DIR}/ || true
+	echo
+	
 	sed -i "s|${GRUB2_EFI_MENU_CONFIG}.cfg|grub.cfg|" ${WD}/grub-core/normal/main.c || true
 	
 	## Copy the old config file as ${GRUB2_EFI_MENU_CONFIG}_backup.cfg

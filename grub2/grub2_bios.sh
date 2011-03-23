@@ -22,11 +22,11 @@ export GRUB2_BIOS_PREFIX=${6}
 ## If not mentioned, GRUB2_BIOS_PREFIX env variable will be set to /grub2/grub2_BIOS dir
 
 export GRUB2_BIOS_MENU_CONFIG="${GRUB2_BIOS_NAME}"
-export GRUB2_UNIFONT_PATH="/usr/share/fonts/misc/unifont.bdf"
+export GRUB2_UNIFONT_PATH="/usr/share/fonts/misc"
 
 if [ "${GRUB2_BIOS_PREFIX}" == "" ]
 then
-	export GRUB2_BIOS_PREFIX="/grub2/grub2_BIOS"
+	export GRUB2_BIOS_PREFIX="/grub2/grub2_bios"
 fi
 
 export GRUB2_BOOT_PART_DIR=${GRUB2_Root_Part_MP}/boot/${GRUB2_BIOS_NAME}
@@ -106,7 +106,10 @@ then
 	cd GRUB2_BIOS_BUILD_DIR
 	echo
 	
-	../configure ${GRUB2_BIOS_Configure_Flags} ${GRUB2_Other_Configure_Flags} --prefix=${GRUB2_BIOS_PREFIX}
+	## fix unifont.bdf location
+	sed -i "s|/usr/share/fonts/unifont|${GRUB2_UNIFONT_PATH}|" ${WD}/configure
+	
+	${WD}/configure ${GRUB2_BIOS_Configure_Flags} ${GRUB2_Other_Configure_Flags} --prefix=${GRUB2_BIOS_PREFIX}
 	echo
 	
 	make
@@ -154,9 +157,12 @@ then
 	cd ..
 	sed -i "s|${GRUB2_BIOS_MENU_CONFIG}.cfg|grub.cfg|" ${WD}/grub-core/normal/main.c || true
 	
-	sudo ${GRUB2_BIOS_PREFIX}/bin/${GRUB2_BIOS_NAME}-mkfont --verbose --output=${GRUB2_BOOT_PART_DIR}/unifont.pf2 ${GRUB2_UNIFONT_PATH} || true
+	# sudo ${GRUB2_BIOS_PREFIX}/bin/${GRUB2_BIOS_NAME}-mkfont --verbose --output=${GRUB2_BOOT_PART_DIR}/unicode.pf2 ${GRUB2_UNIFONT_PATH}/unifont.bdf || true
 	echo
-	sudo ${GRUB2_BIOS_PREFIX}/bin/${GRUB2_BIOS_NAME}-mkfont --verbose --ascii-bitmaps --output=${GRUB2_BOOT_PART_DIR}/ascii.pf2 ${GRUB2_UNIFONT_PATH} || true
+	# sudo ${GRUB2_BIOS_PREFIX}/bin/${GRUB2_BIOS_NAME}-mkfont --verbose --ascii-bitmaps --output=${GRUB2_BOOT_PART_DIR}/ascii.pf2 ${GRUB2_UNIFONT_PATH}/unifont.bdf || true
+	echo
+	
+	sudo cp ${GRUB2_BIOS_PREFIX}/share/${GRUB2_BIOS_NAME}/*.pf2 ${GRUB2_BOOT_PART_DIR}/ || true
 	echo
 	
 	sudo cp --verbose ${GRUB2_BIOS_Backup}/${GRUB2_BIOS_MENU_CONFIG}.cfg ${GRUB2_BOOT_PART_DIR}/${GRUB2_BIOS_MENU_CONFIG}_backup.cfg || true

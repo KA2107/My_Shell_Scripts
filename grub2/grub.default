@@ -1,10 +1,7 @@
-## If you change this file, run 'update-grub' afterwards to update
-## /boot/grub/grub.cfg.
-
 GRUB_DEFAULT=0
 GRUB_TIMEOUT=5
 GRUB_DISTRIBUTOR="Arch Linux"
-GRUB_CMDLINE_LINUX_DEFAULT="nomodeset add_efi_memmap"
+GRUB_CMDLINE_LINUX_DEFAULT="rootfstype=ext4 radeon.modeset=1 add_efi_memmap"
 GRUB_CMDLINE_LINUX=""
 
 ## Uncomment to enable Hidden Menu, and optionally hide the timeout count
@@ -27,7 +24,7 @@ GRUB_GFXPAYLOAD_LINUX=keep
 # GRUB_DISABLE_LINUX_UUID=true
 
 ## Uncomment to disable generation of recovery mode menu entries
-GRUB_DISABLE_LINUX_RECOVERY="true"
+GRUB_DISABLE_LINUX_RECOVERY=true
 
 # Uncomment and set to the desired menu colors.  Used by normal and wallpaper 
 # modes only.  Entries specified as foreground/background.
