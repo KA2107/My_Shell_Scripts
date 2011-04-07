@@ -1,6 +1,11 @@
 #!/bin/sh
 
-# All the bzr repos at https://code.launchpad.net/~skodabenz/ which is a mirror of http://bzr.savannah.gnu.org/r/grub-extras/ - actual grub-extras repo
+## For actual repos
+
+# bzr branch bzr://bzr.savannah.gnu.org/grub-extras/lua lua
+# bzr branch bzr://bzr.savannah.gnu.org/grub-extras/gpxe gpxe
+# bzr branch bzr://bzr.savannah.gnu.org/grub-extras/ntldr-img ntldr-img
+# bzr branch bzr://bzr.savannah.gnu.org/grub-extras/915resolution 915resolution
 
 ## For launchpad mirror
 
@@ -8,13 +13,6 @@
 # bzr branch lp:~skodabenz/grub/grub2-extras-gpxe gpxe
 # bzr branch lp:~skodabenz/grub/grub2-extras-ntldr-img ntldr-img
 # bzr branch lp:~skodabenz/grub/grub2-extras-915resolution 915resolution
-
-## For actual repos
-
-# bzr branch http://bzr.savannah.gnu.org/r/grub-extras/lua lua
-# bzr branch http://bzr.savannah.gnu.org/r/grub-extras/gpxe gpxe
-# bzr branch http://bzr.savannah.gnu.org/r/grub-extras/ntldr-img ntldr-img
-# bzr branch http://bzr.savannah.gnu.org/r/grub-extras/915resolution 915resolution
 
 ## grub-extras zfs is integrated into grub2 bzr main repo and is no longer needed separately.
 
@@ -78,9 +76,9 @@ echo
 
 set -x -e
 
-main_snapshot
+# main_snapshot
 
-exp_snapshot
+# exp_snapshot
 
 grub2_extras_name="lua"
 extras_snapshot
