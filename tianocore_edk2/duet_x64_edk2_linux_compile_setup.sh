@@ -2,9 +2,11 @@
 
 set -x -e
 
-WD=${PWD}
-EDK2_DIR=${WD}/edk2_GIT
-EFISYS=/boot/
+WD="${PWD}"
+EDK2_DIR="${WD}/edk2_GIT"
+EDK2_BUILD_TOOLS_DIR="${WD}/buildtools-BaseTools_GIT"
+BOOTPART="/boot/"
+EFISYS="/boot/efi/"
 
 echo
 
@@ -26,11 +28,18 @@ git reset --hard
 
 echo
 
+cp -r ${EDK2_BUILD_TOOLS_DIR} ${EDK2_DIR}/BaseTools
+sed -i 's|-Werror||g' ${EDK2_DIR}/BaseTools/Source/C/Makefiles/*
+sed -i 's|-Werror||g' ${EDK2_DIR}/BaseTools/Conf/tools_def.template
+sed -i 's|--64||g' ${EDK2_DIR}/BaseTools/Conf/tools_def.template
+
+echo
+
 cd ${EDK2_DIR}/
+git checkout keshav_pr
 # patch -Np1 -i ${WD}/EDK2_DuetPkg_Use_VS2008x86_Toolchain.patch || true
 # patch -Np1 -i ${WD}/EDK2_DuetPkg_Efivars_Use_MdeModulePkg_Universal_Variable_EmuRuntimeDxe.patch
 # patch -Np1 -i ${WD}/EDK2_DuetPkg_Efivars_Use_MdeModulePkg_Universal_Variable_EmuRuntimeDxe_old.patch
-git checkout keshav_pr
 
 echo
 
@@ -39,6 +48,9 @@ echo
 cd ${EDK2_DIR}/DuetPkg
 ${EDK2_DIR}/DuetPkg/build64.sh
 
+echo
+
+rm -rf ${EDK2_DIR}/BaseTools || true
 echo
 
 cd ${EDK2_DIR}/
@@ -53,18 +65,28 @@ unset _PYTHON_
 
 echo
 
-sudo rm ${EFISYS}/memdisk_syslinux || true
-sudo cp /usr/lib/syslinux/memdisk ${EFISYS}/memdisk_syslinux
+sudo rm ${BOOTPART}/memdisk_syslinux || true
+sudo cp /usr/lib/syslinux/memdisk ${BOOTPART}/memdisk_syslinux
 
 echo
 
-sudo rm ${EFISYS}/Tiano_EDK2_DUET_X64.img || true
-sudo cp ${EDK2_DIR}/Build/DuetPkgX64/floppy.img ${EFISYS}/Tiano_EDK2_DUET_X64.img
+sudo rm ${BOOTPART}/Tiano_EDK2_DUET_X64.img || true
+sudo cp ${EDK2_DIR}/Build/DuetPkgX64/floppy.img ${BOOTPART}/Tiano_EDK2_DUET_X64.img
+
+echo
+
+sudo rm ${EFISYS}/shellx64.efi || true
+sudo cp ${EDK2_DIR}/EdkShellBinPkg/FullShell/X64/Shell_Full.efi ${EFISYS}/shellx64.efi
+
+echo
+
+${WD}/post_duet_x64_compile.sh
 
 echo
 
 unset WD
 unset EDK2_DIR
+unset BOOTPART
 unset EFISYS
 
 set +x +e
