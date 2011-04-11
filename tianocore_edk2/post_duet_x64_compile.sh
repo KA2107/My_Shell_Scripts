@@ -7,7 +7,8 @@ EDK2_DIR="${WD}/edk2_GIT"
 EDK2_BUILD_TOOLS_DIR="${WD}/buildtools-BaseTools_GIT"
 EDK2_C_SOURCE_DIR="${EDK2_BUILD_TOOLS_DIR}/Source/C"
 EDK2_DUET_BOOTSECT_BIN_DIR="${EDK2_DIR}/DuetPkg/BootSector/bin/"
-EDK2_BUILD_DIR="${EDK2_DIR}/Build/DuetPkgX64/RELEASE_GCC45/"
+EDK2_BUILD_OUTER_DIR="${EDK2_DIR}/Build/DuetPkgX64/"
+EDK2_BUILD_DIR="${EDK2_BUILD_OUTER_DIR}/RELEASE_GCC45/"
 
 COMPILED_DIR="/media/Data_2/Source_Codes/Firmware/UEFI/UEFI_Compiled_Implementation/Tianocore_DUET/"
 EFI_DUET_GIT_DIR="${COMPILED_DIR}/EFI_DUET_GIT/"
@@ -45,7 +46,8 @@ echo
 
 cd ${EFI_DUET_GIT_DIR}/
 git add *
-git commit -a -m "$(date +%d-%b-%Y)"
+git status
+git commit -a -m "$(date +%d-%b-%Y)" || true
 
 echo
 echo "EFI_DUET_GIT done"
@@ -56,13 +58,14 @@ echo "Tiano_DUET_memdisk_compiled_GIT"
 echo
 
 rm ${MEMDISK_COMPILED_DIR}/Tiano_EDK2_DUET_X64.img || true
-cp ${EDK2_BUILD_DIR}/floppy.img ${MEMDISK_COMPILED_DIR}/Tiano_EDK2_DUET_X64.img
+cp ${EDK2_BUILD_OUTER_DIR}/floppy.img ${MEMDISK_COMPILED_DIR}/Tiano_EDK2_DUET_X64.img
 
 echo
 
 cd ${MEMDISK_COMPILED_DIR}/
 git add *
-git commit -a -m "$(date +%d-%b-%Y)"
+git status
+git commit -a -m "$(date +%d-%b-%Y)" || true
 
 echo
 echo "Tiano_DUET_memdisk_compiled_GIT done"
@@ -92,7 +95,8 @@ echo
 
 cd ${MEMDISK_DIR}/
 git add *
-git commit -a -m "$(date +%d-%b-%Y)"
+git status
+git commit -a -m "$(date +%d-%b-%Y)" || true
 
 echo
 echo "Tiano_DUET_memdisk_GIT done"
