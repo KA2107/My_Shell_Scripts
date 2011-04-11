@@ -7,7 +7,7 @@ EDK2_DIR="${WD}/edk2_GIT"
 EDK2_BUILD_TOOLS_DIR="${WD}/buildtools-BaseTools_GIT"
 EDK2_C_SOURCE_DIR="${EDK2_BUILD_TOOLS_DIR}/Source/C"
 EDK2_DUET_BOOTSECT_BIN_DIR="${EDK2_DIR}/DuetPkg/BootSector/bin/"
-EDK2_BUILD_DIR="${EDK2_DIR}/Build/DuetPkgX64/"
+EDK2_BUILD_DIR="${EDK2_DIR}/Build/DuetPkgX64/RELEASE_GCC45/"
 
 COMPILED_DIR="/media/Data_2/Source_Codes/Firmware/UEFI/UEFI_Compiled_Implementation/Tianocore_DUET/"
 EFI_DUET_GIT_DIR="${COMPILED_DIR}/EFI_DUET_GIT/"
@@ -18,7 +18,7 @@ echo
 echo "EFI_DUET_GIT"
 echo
 
-rm ${EFI_DUET_GIT_DIR}/{bs32,Gpt,Mbr}.com || true
+rm ${EFI_DUET_GIT_DIR}/BootSector/{bs32,Gpt,Mbr}.com || true
 cp ${EDK2_DUET_BOOTSECT_BIN_DIR}/{bs32,Gpt,Mbr}.com ${EFI_DUET_GIT_DIR}/BootSector/
 
 echo
@@ -28,7 +28,7 @@ cp ${EDK2_BUILD_DIR}/FV/Efildr20 ${EFI_DUET_GIT_DIR}/Efildr/EDK2_X64/Efildr20
 
 echo
 
-rm ${EFI_DUET_GIT_DIR}/Shell/EDK2_X64/ || true
+rm ${EFI_DUET_GIT_DIR}/Shell/EDK2_X64/Shell_Full.efi || true
 cp ${EDK2_DIR}/EdkShellBinPkg/FullShell/X64/Shell_Full.efi ${EFI_DUET_GIT_DIR}/Shell/EDK2_X64/Shell_Full.efi
 
 echo

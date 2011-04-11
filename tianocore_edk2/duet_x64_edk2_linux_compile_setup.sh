@@ -80,6 +80,7 @@ sudo cp ${EDK2_DIR}/EdkShellBinPkg/FullShell/X64/Shell_Full.efi ${EFISYS}/shellx
 
 echo
 
+cd ${WD}/
 ${WD}/post_duet_x64_compile.sh
 
 echo
