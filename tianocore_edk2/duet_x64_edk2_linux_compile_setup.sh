@@ -76,7 +76,12 @@ sudo cp ${EDK2_DIR}/Build/DuetPkgX64/floppy.img ${BOOTPART}/Tiano_EDK2_DUET_X64.
 echo
 
 sudo rm ${EFISYS}/shellx64.efi || true
-sudo cp ${EDK2_DIR}/EdkShellBinPkg/FullShell/X64/Shell_Full.efi ${EFISYS}/shellx64.efi
+sudo rm ${EFISYS}/shellx64_old.efi || true
+
+echo
+
+sudo cp ${EDK2_DIR}/ShellBinPkg/UefiShell/X64/Shell.efi ${EFISYS}/shellx64.efi
+sudo cp ${EDK2_DIR}/EdkShellBinPkg/FullShell/X64/Shell_Full.efi ${EFISYS}/shellx64_old.efi
 
 echo
 
