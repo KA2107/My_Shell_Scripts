@@ -19,33 +19,33 @@ echo
 echo "EFI_DUET_GIT"
 echo
 
-rm ${EFI_DUET_GIT_DIR}/BootSector/{bs32,Gpt,Mbr}.com || true
-cp ${EDK2_DUET_BOOTSECT_BIN_DIR}/{bs32,Gpt,Mbr}.com ${EFI_DUET_GIT_DIR}/BootSector/
+rm "${EFI_DUET_GIT_DIR}/BootSector"/{bs32,Gpt,Mbr}.com || true
+cp "${EDK2_DUET_BOOTSECT_BIN_DIR}"/{bs32,Gpt,Mbr}.com "${EFI_DUET_GIT_DIR}/BootSector/"
 
 echo
 
-rm ${EFI_DUET_GIT_DIR}/Efildr/EDK2_X64/Efildr20 || true
-cp ${EDK2_BUILD_DIR}/FV/Efildr20 ${EFI_DUET_GIT_DIR}/Efildr/EDK2_X64/Efildr20
+rm "${EFI_DUET_GIT_DIR}/Efildr/EDK2_X64/Efildr20" || true
+cp "${EDK2_BUILD_DIR}/FV/Efildr20" "${EFI_DUET_GIT_DIR}/Efildr/EDK2_X64/Efildr20"
 
 echo
 
-rm ${EFI_DUET_GIT_DIR}/Shell/EDK2_X64/Shell_Full.efi || true
-cp ${EDK2_DIR}/ShellBinPkg/UefiShell/X64/Shell.efi ${EFI_DUET_GIT_DIR}/Shell/EDK2_X64/Shell_Full.efi
-# cp ${EDK2_DIR}/EdkShellBinPkg/FullShell/X64/Shell_Full.efi ${EFI_DUET_GIT_DIR}/Shell/EDK2_X64/Shell_Full.efi
+rm "${EFI_DUET_GIT_DIR}/Shell/EDK2_X64/Shell_Full.efi" || true
+cp "${EDK2_DIR}/ShellBinPkg/UefiShell/X64/Shell.efi" "${EFI_DUET_GIT_DIR}/Shell/EDK2_X64/Shell_Full.efi"
+# cp "${EDK2_DIR}/EdkShellBinPkg/FullShell/X64/Shell_Full.efi" "${EFI_DUET_GIT_DIR}/Shell/EDK2_X64/Shell_Full.efi"
 
 echo
 
-rm -r ${EFI_DUET_GIT_DIR}/Linux_Source/C || true
-cp -r ${EDK2_C_SOURCE_DIR} ${EFI_DUET_GIT_DIR}/Linux_Source/C
+rm -r "${EFI_DUET_GIT_DIR}/Linux_Source/C" || true
+cp -r "${EDK2_C_SOURCE_DIR}" "${EFI_DUET_GIT_DIR}/Linux_Source/C"
 
 echo
 
-rm ${EFI_DUET_GIT_DIR}/Win_Bin/{BootSectImage,GenBootSector}.exe || true
-cp ${EDK2_DIR}/BaseTools/Bin/Win32/{BootSectImage,GenBootSector}.exe ${EFI_DUET_GIT_DIR}/Win_Bin/
+rm "${EFI_DUET_GIT_DIR}/Win_Bin"/{BootSectImage,GenBootSector}.exe || true
+cp "${EDK2_DIR}/BaseTools/Bin/Win32"/{BootSectImage,GenBootSector}.exe "${EFI_DUET_GIT_DIR}/Win_Bin/"
 
 echo
 
-cd ${EFI_DUET_GIT_DIR}/
+cd "${EFI_DUET_GIT_DIR}/"
 git add *
 git status
 git commit -a -m "$(date +%d-%b-%Y)" || true
@@ -58,12 +58,12 @@ echo
 echo "Tiano_DUET_memdisk_compiled_GIT"
 echo
 
-rm ${MEMDISK_COMPILED_DIR}/Tiano_EDK2_DUET_X64.img || true
-cp ${EDK2_BUILD_OUTER_DIR}/floppy.img ${MEMDISK_COMPILED_DIR}/Tiano_EDK2_DUET_X64.img
+rm "${MEMDISK_COMPILED_DIR}/Tiano_EDK2_DUET_X64.img" || true
+cp "${EDK2_BUILD_OUTER_DIR}/floppy.img" "${MEMDISK_COMPILED_DIR}/Tiano_EDK2_DUET_X64.img"
 
 echo
 
-cd ${MEMDISK_COMPILED_DIR}/
+cd "${MEMDISK_COMPILED_DIR}/"
 git add *
 git status
 git commit -a -m "$(date +%d-%b-%Y)" || true
@@ -76,25 +76,25 @@ echo
 echo "Tiano_DUET_memdisk_GIT"
 echo
 
-rm -r ${MEMDISK_DIR}/Linux_Source/C || true
-cp -r ${EDK2_C_SOURCE_DIR} ${MEMDISK_DIR}/Linux_Source/C
+rm -r "${MEMDISK_DIR}/Linux_Source/C" || true
+cp -r "${EDK2_C_SOURCE_DIR}" "${MEMDISK_DIR}/Linux_Source/C"
 
 echo
 
-rm ${MEMDISK_DIR}/Windows/{BootSectImage,GenBootSector}.exe || true
-cp ${EDK2_DIR}/BaseTools/Bin/Win32/{BootSectImage,GenBootSector}.exe ${MEMDISK_DIR}/Windows/
+rm "${MEMDISK_DIR}/Windows"/{BootSectImage,GenBootSector}.exe || true
+cp "${EDK2_DIR}/BaseTools/Bin/Win32"/{BootSectImage,GenBootSector}.exe "${MEMDISK_DIR}/Windows/"
 
 echo
 
-rm ${MEMDISK_DIR}/bootsect.com.unmod || true
-cp ${EDK2_DUET_BOOTSECT_BIN_DIR}/bootsect.com ${MEMDISK_DIR}/bootsect.com.unmod
+rm "${MEMDISK_DIR}/bootsect.com.unmod" || true
+cp "${EDK2_DUET_BOOTSECT_BIN_DIR}/bootsect.com" "${MEMDISK_DIR}/bootsect.com.unmod"
 
-rm ${MEMDISK_DIR}/Efildr || true
-cp ${EDK2_BUILD_DIR}/FV/Efildr ${MEMDISK_DIR}/Efildr
+rm "${MEMDISK_DIR}/Efildr" || true
+cp "${EDK2_BUILD_DIR}/FV/Efildr" "${MEMDISK_DIR}/Efildr"
 
 echo
 
-cd ${MEMDISK_DIR}/
+cd "${MEMDISK_DIR}/"
 git add *
 git status
 git commit -a -m "$(date +%d-%b-%Y)" || true
