@@ -30,7 +30,8 @@ cp ${EDK2_BUILD_DIR}/FV/Efildr20 ${EFI_DUET_GIT_DIR}/Efildr/EDK2_X64/Efildr20
 echo
 
 rm ${EFI_DUET_GIT_DIR}/Shell/EDK2_X64/Shell_Full.efi || true
-cp ${EDK2_DIR}/EdkShellBinPkg/FullShell/X64/Shell_Full.efi ${EFI_DUET_GIT_DIR}/Shell/EDK2_X64/Shell_Full.efi
+cp ${EDK2_DIR}/ShellBinPkg/UefiShell/X64/Shell.efi ${EFI_DUET_GIT_DIR}/Shell/EDK2_X64/Shell_Full.efi
+# cp ${EDK2_DIR}/EdkShellBinPkg/FullShell/X64/Shell_Full.efi ${EFI_DUET_GIT_DIR}/Shell/EDK2_X64/Shell_Full.efi
 
 echo
 
