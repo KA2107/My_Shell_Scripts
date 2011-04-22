@@ -32,7 +32,7 @@ export GRUB2_Other_Configure_Flags="--enable-mm-debug --enable-grub-mkfont --ena
 # export GRUB2_EFI_LST_files="command.lst crypto.lst fs.lst handler.lst moddep.lst partmap.lst parttool.lst terminal.lst video.lst"
 
 export GRUB2_PARTMAP_FS_MODULES="part_gpt part_msdos part_apple fat ext2 reiserfs iso9660 udf hfsplus hfs btrfs nilfs2 xfs ntfs ntfscomp zfs zfsinfo"
-export GRUB2_COMMON_IMP_MODULES="relocator reboot multiboot multiboot2 fshelp xzio gzio memdisk tar normal gfxterm chain linux ls cat memdisk tar search search_fs_file search_fs_uuid search_label help loopback boot configfile echo lvm usbms usb_keyboard"
+export GRUB2_COMMON_IMP_MODULES="relocator reboot multiboot multiboot2 fshelp xzio gzio memdisk tar normal gfxterm chain linux ls cat search search_fs_file search_fs_uuid search_label help loopback boot configfile echo lvm usbms usb_keyboard"
 export GRUB2_EFI_APP_MODULES="efi_gop efi_uga font png jpeg"
 export GRUB2_EXTRAS_MODULES="lua.mod"
 export GRUB2_EFI_FINAL_MODULES="${GRUB2_PARTMAP_FS_MODULES} ${GRUB2_COMMON_IMP_MODULES} ${GRUB2_EFI_APP_MODULES} ${GRUB2_EXTRAS_MODULES}"
@@ -128,7 +128,7 @@ then
 	echo
 	
 	cd "${WD}/GRUB2_EFI_BUILD_DIR_${TARGET_EFI_ARCH}/grub-core/"
-	# sudo cp --verbose ${GRUB2_EXTRAS_MODULES} "${GRUB2_EFI_PREFIX}"/lib/${GRUB2_EFI_NAME}/${TARGET_EFI_ARCH}-efi/ || true
+	# sudo cp --verbose ${GRUB2_EXTRAS_MODULES} "${GRUB2_EFI_PREFIX}/lib/${GRUB2_EFI_NAME}/${TARGET_EFI_ARCH}-efi/" || true
 	echo
 	
 	## Backup the old GRUB2 folder in the EFI System Partition

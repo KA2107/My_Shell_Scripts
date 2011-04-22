@@ -16,58 +16,58 @@
 
 ## grub-extras zfs is integrated into grub2 bzr main repo and is no longer needed separately.
 
-wd=${PWD}/
-output_dir=${wd}/
+wd="${PWD}/"
+output_dir="${wd}/"
 
-grub2_bzr_dir=${wd}/grub2_BZR/
-grub2_bzr_exp_dir=${wd}/grub2_experimental_BZR/
-grub2_extras_dir=${wd}/grub2_extras_BZR/
+grub2_bzr_dir="${wd}/grub2_BZR/"
+grub2_bzr_exp_dir="${wd}/grub2_experimental_BZR/"
+grub2_extras_dir="${wd}/grub2_extras_BZR/"
 
 main_snapshot() {
 	
-	cd ${grub2_bzr_dir}/
+	cd "${grub2_bzr_dir}/"
 	echo
 	
-	revnum=$(bzr revno ${grub2_bzr_dir})
-	bzr export --root=grub2 --format=tar ${output_dir}/grub2_r${revnum}.tar
+	revnum="$(bzr revno ${grub2_bzr_dir})"
+	bzr export --root=grub2 --format=tar "${output_dir}/grub2_r${revnum}.tar"
 	echo
 	
-	cd ${output_dir}/
+	cd "${output_dir}/"
 	
-	xz -9 ${output_dir}/grub2_r${revnum}.tar
+	xz -9 "${output_dir}/grub2_r${revnum}.tar"
 	echo
 	
 }
 
 exp_snapshot() {
 	
-	cd ${grub2_bzr_exp_dir}/
+	cd "${grub2_bzr_exp_dir}/"
 	echo
 	
-	revnum=$(bzr revno ${grub2_bzr_exp_dir})
-	bzr export --root=grub2_exp --format=tar ${output_dir}/grub2_exp_r${revnum}.tar
+	revnum="$(bzr revno ${grub2_bzr_exp_dir})"
+	bzr export --root=grub2_exp --format=tar "${output_dir}/grub2_exp_r${revnum}.tar"
 	echo
 	
-	cd ${output_dir}/
+	cd "${output_dir}/"
 	
-	xz -9 ${output_dir}/grub2_exp_r${revnum}.tar
+	xz -9 "${output_dir}/grub2_exp_r${revnum}.tar"
 	echo
 	
 }
 
 extras_snapshot() {
 	
-	cd ${grub2_extras_dir}/${grub2_extras_name}/
+	cd "${grub2_extras_dir}/${grub2_extras_name}/"
 	echo
 	
-	revnum=$(bzr revno ${grub2_extras_dir}/${grub2_extras_name})
-	bzr export --root=${grub2_extras_name} --format=tar ${output_dir}/grub2_extras_${grub2_extras_name}_r${revnum}.tar
+	revnum="$(bzr revno ${grub2_extras_dir}/${grub2_extras_name})"
+	bzr export --root="${grub2_extras_name}" --format=tar "${output_dir}/grub2_extras_${grub2_extras_name}_r${revnum}.tar"
 	echo
 	
-	cd ${output_dir}/
+	cd "${output_dir}/"
 	echo
 	
-	xz -9 ${output_dir}/grub2_extras_${grub2_extras_name}_r${revnum}.tar
+	xz -9 "${output_dir}/grub2_extras_${grub2_extras_name}_r${revnum}.tar"
 	echo
 	
 }
