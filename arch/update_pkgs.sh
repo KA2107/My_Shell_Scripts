@@ -5,7 +5,7 @@ set -x
 sudo pacman -Sy
 echo
 
-${PWD}/unofficial_repos_pacman_git.sh
+"${PWD}/unofficial_repos_pacman_git.sh"
 echo
 
 sudo pacman -Su

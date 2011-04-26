@@ -1,3 +1,5 @@
+#!/bin/sh
+
 run()
 {
 	name=""
@@ -5,7 +7,7 @@ run()
 	do
 		if [ ! -d "${PWD}/${name}" ]
 		then
-			[[ $(file ${name} | grep 'POSIX shell script') ]] && sed -i 's/\$\([a-zA-Z0-9_]\+\)/${\1}/g' "${PWD}/${name}"
+			[[ $(file "${name}" | grep 'POSIX shell script') ]] && sed -i 's/\$\([a-zA-Z0-9_]\+\)/${\1}/g' "${PWD}/${name}"
 			
 		elif [ -d "${PWD}/${name}" ] && [ "${name}" != "." ] && [ "${name}" != ".." ]
 		then

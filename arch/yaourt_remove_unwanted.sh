@@ -13,7 +13,7 @@ run()
 			rm -rf "${PWD}/${repo}-1"
 			rm -rf "${PWD}/${repo}_1"
 			rm -rf "${PWD}/pkg"
-			rm ${PWD}/${repo}/${repo}*.tar.*
+			rm "${PWD}/${repo}/${repo}"*.tar.*
 			echo
 		fi
 		
