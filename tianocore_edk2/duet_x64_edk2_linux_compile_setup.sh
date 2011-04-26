@@ -18,9 +18,9 @@ unset _PYTHON_
 
 echo
 
-rm -rf "${EDK2_DIR}/BaseTools" || true
-rm -rf "${EDK2_DIR}/Build/DuetPkgX64" || true
-rm -rf "${EDK2_DIR}/Conf" || true
+rm -r "${EDK2_DIR}/BaseTools" || true
+rm -r "${EDK2_DIR}/Build/DuetPkgX64" || true
+rm -r "${EDK2_DIR}/Conf" || true
 
 echo
 
@@ -29,7 +29,16 @@ git reset --hard
 
 echo
 
+cd "${EDK2_DIR}/"
+git checkout keshav_pr
+
+echo
+
+rm -r "${EDK2_DIR}/BaseTools" || true
 cp -r "${EDK2_BUILD_TOOLS_DIR}" "${EDK2_DIR}/BaseTools"
+
+echo
+
 sed -i 's|-Werror||g' "${EDK2_DIR}/BaseTools/Source/C/Makefiles"/*
 sed -i 's|-Werror||g' "${EDK2_DIR}/BaseTools/Conf/tools_def.template"
 sed -i 's|--64||g' "${EDK2_DIR}/BaseTools/Conf/tools_def.template"
@@ -37,7 +46,7 @@ sed -i 's|--64||g' "${EDK2_DIR}/BaseTools/Conf/tools_def.template"
 echo
 
 cd "${EDK2_DIR}/"
-git checkout keshav_pr
+
 # patch -Np1 -i "${WD}/EDK2_DuetPkg_Use_VS2008x86_Toolchain.patch" || true
 # patch -Np1 -i "${WD}/EDK2_DuetPkg_Efivars_Use_MdeModulePkg_Universal_Variable_EmuRuntimeDxe.patch"
 # patch -Np1 -i "${WD}/EDK2_DuetPkg_Efivars_Use_MdeModulePkg_Universal_Variable_EmuRuntimeDxe_old.patch"
@@ -51,7 +60,7 @@ cd "${EDK2_DIR}/DuetPkg"
 
 echo
 
-rm -rf "${EDK2_DIR}/BaseTools" || true
+rm -r "${EDK2_DIR}/BaseTools" || true
 echo
 
 cd "${EDK2_DIR}/"

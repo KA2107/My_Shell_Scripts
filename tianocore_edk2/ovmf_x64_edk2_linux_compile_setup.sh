@@ -15,9 +15,9 @@ unset _PYTHON_
 
 echo
 
-rm -rf "${EDK2_DIR}/BaseTools" || true
-rm -rf "${EDK2_DIR}/Build/OvmfPkg" || true
-rm -rf "${EDK2_DIR}/Conf" || true
+rm -r "${EDK2_DIR}/BaseTools" || true
+rm -r "${EDK2_DIR}/Build/OvmfX64" || true
+rm -r "${EDK2_DIR}/Conf" || true
 
 echo
 
@@ -26,15 +26,19 @@ git reset --hard
 
 echo
 
-cp -r "${EDK2_BUILD_TOOLS_DIR}" "${EDK2_DIR}/BaseTools"
-sed -i 's|-Werror||g' "${EDK2_DIR}/BaseTools/Source/C/Makefiles"/*
-sed -i 's|-Werror||g' "${EDK2_DIR}/BaseTools/Conf/tools_def.template"
-sed -i 's|--64||g' "${EDK2_DIR}/BaseTools/Conf/tools_def.template"
+cd "${EDK2_DIR}/"
+git checkout keshav_pr
 
 echo
 
-cd "${EDK2_DIR}/"
-git checkout keshav_pr
+rm -r "${EDK2_DIR}/BaseTools" || true
+cp -r "${EDK2_BUILD_TOOLS_DIR}" "${EDK2_DIR}/BaseTools"
+
+echo
+
+sed -i 's|-Werror||g' "${EDK2_DIR}/BaseTools/Source/C/Makefiles"/*
+sed -i 's|-Werror||g' "${EDK2_DIR}/BaseTools/Conf/tools_def.template"
+sed -i 's|--64||g' "${EDK2_DIR}/BaseTools/Conf/tools_def.template"
 
 echo
 

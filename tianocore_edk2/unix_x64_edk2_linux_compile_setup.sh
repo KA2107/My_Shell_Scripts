@@ -15,26 +15,30 @@ unset _PYTHON_
 
 echo
 
-rm -rf ${EDK2_DIR}/BaseTools || true
-rm -rf ${EDK2_DIR}/Build/UnixPkg || true
-rm -rf ${EDK2_DIR}/Conf || true
+rm -r ${EDK2_DIR}/BaseTools || true
+rm -r ${EDK2_DIR}/Build/UnixPkg || true
+rm -r ${EDK2_DIR}/Conf || true
 
 echo
 
 cd ${EDK2_DIR}/
-git reset --hard # cda10fe42c95c187902a7d4e980a133e89e59da5
-
-echo
-
-cp -r ${EDK2_BUILD_TOOLS_DIR} ${EDK2_DIR}/BaseTools
-sed -i 's|-Werror||g' ${EDK2_DIR}/BaseTools/Source/C/Makefiles/*
-sed -i 's|-Werror||g' ${EDK2_DIR}/BaseTools/Conf/tools_def.template
-sed -i 's|--64||g' ${EDK2_DIR}/BaseTools/Conf/tools_def.template
+git reset --hard
 
 echo
 
 cd ${EDK2_DIR}/
 git checkout keshav_pr
+
+echo
+
+rm -r ${EDK2_DIR}/BaseTools || true
+cp -r ${EDK2_BUILD_TOOLS_DIR} ${EDK2_DIR}/BaseTools
+
+echo
+
+sed -i 's|-Werror||g' ${EDK2_DIR}/BaseTools/Source/C/Makefiles/*
+sed -i 's|-Werror||g' ${EDK2_DIR}/BaseTools/Conf/tools_def.template
+sed -i 's|--64||g' ${EDK2_DIR}/BaseTools/Conf/tools_def.template
 
 echo
 
