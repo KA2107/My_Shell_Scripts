@@ -18,7 +18,7 @@ unset _PYTHON_
 echo
 
 rm -r "${EDK2_DIR}/BaseTools" || true
-rm -r "${EDK2_DIRBuild/StdLib" || true
+rm -r "${EDK2_DIR}/Build/StdLib" || true
 rm -r "${EDK2_DIR}/Conf" || true
 
 echo
@@ -45,7 +45,7 @@ sed -i 's|--64||g' "${EDK2_DIR}/BaseTools/Conf/tools_def.template"
 echo
 
 cd "${EDK2_DIR}/"
-source edksetup.sh BaseTools
+source "${EDK2_DIR}/edksetup.sh" BaseTools
 
 echo
 
@@ -54,7 +54,7 @@ make -C "${EDK2_DIR}/BaseTools"
 
 echo
 
-build -p "${EDK2_DIR}/StdLib/StdLib.dsc" -a X64 -b DEBUG -t GCC45 -n 3 $*
+build -p "${EDK2_DIR}/StdLib/StdLib.dsc" -a X64 -b DEBUG -t GCC45
 
 echo
 
