@@ -61,5 +61,6 @@ echo
 
 unset WD
 unset EDK2_DIR
+unset EDK2_BUILD_TOOLS_DIR
 
 set +x +e
