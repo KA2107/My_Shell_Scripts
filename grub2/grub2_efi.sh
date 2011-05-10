@@ -12,6 +12,7 @@ export WD="${PWD}/"
 export GRUB_CONTRIB="${WD}/grub2_extras__GIT_BZR/"
 
 export PROCESS_CONTINUE=TRUE
+export REPLACE_GRUB2_EFI_MENU_CONFIG="0"
 
 export TARGET_EFI_ARCH=${1}
 export EFI_SYSTEM_PART_MP=${2}
@@ -23,8 +24,10 @@ export GRUB2_EFI_PREFIX=${6}
 
 export GRUB2_EFI_APP_PREFIX="efi/${GRUB2_EFI_NAME}"
 export GRUB2_EFISYS_PART_DIR="${EFI_SYSTEM_PART_MP}/${GRUB2_EFI_APP_PREFIX}"
-export GRUB2_EFI_MENU_CONFIG="${GRUB2_EFI_NAME}"
 export GRUB2_UNIFONT_PATH="/usr/share/fonts/misc"
+
+export GRUB2_EFI_MENU_CONFIG="grub"
+[ "${REPLACE_GRUB2_EFI_MENU_CONFIG}" == "1" ] && export GRUB2_EFI_MENU_CONFIG="${GRUB2_EFI_NAME}"
 
 export GRUB2_EFI_Configure_Flags="--with-platform=efi --target=${TARGET_EFI_ARCH} --program-transform-name=s,grub,${GRUB2_EFI_NAME},"
 export GRUB2_Other_Configure_Flags="--enable-mm-debug --enable-grub-mkfont --enable-nls"
@@ -33,7 +36,7 @@ export GRUB2_Other_Configure_Flags="--enable-mm-debug --enable-grub-mkfont --ena
 
 export GRUB2_PARTMAP_FS_MODULES="part_gpt part_msdos part_apple fat ext2 reiserfs iso9660 udf hfsplus hfs btrfs nilfs2 xfs ntfs ntfscomp zfs zfsinfo"
 export GRUB2_COMMON_IMP_MODULES="relocator reboot multiboot multiboot2 fshelp xzio gzio memdisk tar normal gfxterm chain linux ls cat search search_fs_file search_fs_uuid search_label help loopback boot configfile echo lvm usbms usb_keyboard"
-export GRUB2_EFI_APP_MODULES="efi_gop efi_uga font png jpeg"
+export GRUB2_EFI_APP_MODULES="efi_gop efi_uga font png jpeg password pbkdf2 password_pbkdf2"
 export GRUB2_EXTRAS_MODULES="lua.mod"
 export GRUB2_EFI_FINAL_MODULES="${GRUB2_PARTMAP_FS_MODULES} ${GRUB2_COMMON_IMP_MODULES} ${GRUB2_EFI_APP_MODULES} ${GRUB2_EXTRAS_MODULES}"
 # export GRUB2_EFI_FINAL_MODULES="${GRUB2_PARTMAP_FS_MODULES} ${GRUB2_COMMON_IMP_MODULES} ${GRUB2_EFI_APP_MODULES}"
@@ -203,6 +206,7 @@ fi
 unset WD
 unset GRUB_CONTRIB
 unset PROCESS_CONTINUE
+unset REPLACE_GRUB2_EFI_MENU_CONFIG
 unset TARGET_EFI_ARCH
 unset EFI_SYSTEM_PART_MP
 unset GRUB2_EFI_NAME
