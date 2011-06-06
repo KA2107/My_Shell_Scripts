@@ -3,11 +3,19 @@
 set -x -e
 
 WD="${PWD}/"
+
 EDK2_DIR="${WD}/edk2_GIT"
 EDK2_BUILD_TOOLS_DIR="${WD}/buildtools-BaseTools_GIT"
+
+EDK2_BUILD_OUTER_DIR="${EDK2_DIR}/Build/DuetPkgX64/"
+EDK2_BUILD_DIR="${EDK2_BUILD_OUTER_DIR}/RELEASE_GCC45/"
+
 BOOTPART="/boot/"
 EFISYS="/boot/efi/"
 SYSLINUX_DIR="/usr/lib/syslinux/"
+
+DUET_PART_FS_UUID="5FA3-2472"
+DUET_PART_MP="/media/DUET"
 
 echo
 
@@ -75,13 +83,19 @@ unset _PYTHON_
 
 echo
 
+sudo mount -t vfat -o rw,users,exec -U "${DUET_PART_FS_UUID}" "${DUET_PART_MP}"
+cp "${EDK2_BUILD_DIR}/FV/Efildr20" "${DUET_PART_MP}/EFILDR20"
+sudo umount "${DUET_PART_MP}"
+
+echo
+
 sudo rm "${BOOTPART}/memdisk_syslinux" || true
 sudo cp "${SYSLINUX_DIR}/memdisk" "${BOOTPART}/memdisk_syslinux"
 
 echo
 
 sudo rm "${BOOTPART}/Tiano_EDK2_DUET_X64.img" || true
-sudo cp "${EDK2_DIR}/Build/DuetPkgX64/floppy.img" "${BOOTPART}/Tiano_EDK2_DUET_X64.img"
+sudo cp "${EDK2_BUILD_OUTER_DIR}/floppy.img" "${BOOTPART}/Tiano_EDK2_DUET_X64.img"
 
 echo
 
@@ -103,8 +117,12 @@ echo
 unset WD
 unset EDK2_DIR
 unset EDK2_BUILD_TOOLS_DIR
+unset EDK2_BUILD_OUTER_DIR
+unset EDK2_BUILD_DIR
 unset BOOTPART
 unset EFISYS
 unset SYSLINUX_DIR
+unset DUET_PART_FS_UUID
+unset DUET_PART_MP
 
 set +x +e

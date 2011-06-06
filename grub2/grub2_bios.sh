@@ -95,6 +95,13 @@ then
 	cp "${WD}/autogen.sh" "${WD}/autogen_unmodified.sh"
 	sed -i 's|python |python2 |' "${WD}/autogen.sh" || true
 	
+	if [ ! -e "${WD}/po/LINGUAS" ]
+	then
+		cd "${WD}/"
+		# rsync -Lrtvz translationproject.org::tp/latest/grub/ "${WD}/po" || true
+		(cd "${WD}/po" && ls *.po | cut -d. -f1 | xargs) > "${WD}/po/LINGUAS" || true
+	fi
+	
 	"${WD}/autogen.sh"
 	echo
 	

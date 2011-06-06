@@ -2,10 +2,12 @@
 
 set -x -e
 
-WD="${PWD}"
+WD="${PWD}/"
+
 EDK2_DIR="${WD}/edk2_GIT"
 EDK2_BUILD_TOOLS_DIR="${WD}/buildtools-BaseTools_GIT"
 EDK2_C_SOURCE_DIR="${EDK2_BUILD_TOOLS_DIR}/Source/C"
+
 EDK2_DUET_BOOTSECT_BIN_DIR="${EDK2_DIR}/DuetPkg/BootSector/bin/"
 EDK2_BUILD_OUTER_DIR="${EDK2_DIR}/Build/DuetPkgX64/"
 EDK2_BUILD_DIR="${EDK2_BUILD_OUTER_DIR}/RELEASE_GCC45/"
@@ -15,12 +17,37 @@ EFI_DUET_GIT_DIR="${COMPILED_DIR}/EFI_DUET_GIT/"
 MEMDISK_COMPILED_DIR="${COMPILED_DIR}/Tiano_DUET_memdisk_compiled_GIT/"
 MEMDISK_DIR="${COMPILED_DIR}/Tiano_DUET_memdisk_GIT/"
 
+MIGLE_BOOTDUET_DIR="${WD}/migle_BootDuet_GIT"
+
+echo
+echo "Compiling Migle's BootDuet"
+echo
+
+cd "${MIGLE_BOOTDUET_DIR}/"
+make clean
+
+echo
+
+make
+make lba64
+make hardcoded-drive
+
 echo
 echo "EFI_DUET_GIT"
 echo
 
 rm "${EFI_DUET_GIT_DIR}/BootSector"/{bs32,Gpt,Mbr}.com || true
 cp "${EDK2_DUET_BOOTSECT_BIN_DIR}"/{bs32,Gpt,Mbr}.com "${EFI_DUET_GIT_DIR}/BootSector/"
+
+echo
+
+rm "${EFI_DUET_GIT_DIR}/BootSector"/{bd32,bd32_64,bd32hd}.bin || true
+cp "${MIGLE_BOOTDUET_DIR}"/{bd32,bd32_64,bd32hd}.bin "${EFI_DUET_GIT_DIR}/BootSector/"
+
+echo
+
+rm "${EFI_DUET_GIT_DIR}/Migle_BootDuet_INSTALL.txt" || true
+cp "${MIGLE_BOOTDUET_DIR}/INSTALL" "${EFI_DUET_GIT_DIR}/Migle_BootDuet_INSTALL.txt"
 
 echo
 
@@ -49,6 +76,11 @@ cd "${EFI_DUET_GIT_DIR}/"
 git add *
 git status
 git commit -a -m "$(date +%d-%b-%Y)" || true
+
+echo
+
+cd "${MIGLE_BOOTDUET_DIR}/"
+make clean
 
 echo
 echo "EFI_DUET_GIT done"
@@ -113,5 +145,6 @@ unset COMPILED_DIR
 unset EFI_DUET_GIT_DIR
 unset MEMDISK_COMPILED_DIR
 unset MEMDISK_DIR
+unset MIGLE_BOOTDUET_DIR
 
 set +x +e
