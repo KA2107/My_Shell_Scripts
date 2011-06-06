@@ -83,8 +83,10 @@ unset _PYTHON_
 
 echo
 
+sudo umount "${DUET_PART_MP}" || true
 sudo mount -t vfat -o rw,users,exec -U "${DUET_PART_FS_UUID}" "${DUET_PART_MP}"
-cp "${EDK2_BUILD_DIR}/FV/Efildr20" "${DUET_PART_MP}/EFILDR20"
+sudo rm "${DUET_PART_MP}/EFILDR20" || true
+sudo cp "${EDK2_BUILD_DIR}/FV/Efildr20" "${DUET_PART_MP}/EFILDR20"
 sudo umount "${DUET_PART_MP}"
 
 echo
