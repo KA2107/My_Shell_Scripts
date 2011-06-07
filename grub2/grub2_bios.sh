@@ -89,11 +89,11 @@ then
 	echo
 	
 	## Uncomment below to use ${GRUB2_BIOS_MENU_CONFIG}.cfg as the menu config file instead of grub.cfg
-	sed -i "s|grub.cfg|${GRUB2_BIOS_MENU_CONFIG}.cfg|" "${WD}/grub-core/normal/main.c" || true
+	sed -i "s|grub.cfg|${GRUB2_BIOS_MENU_CONFIG}.cfg|g" "${WD}/grub-core/normal/main.c" || true
 	
 	## Archlinux changed default /usr/bin/python to 3.1.2, need to use /usr/bin/python2 instead
 	cp "${WD}/autogen.sh" "${WD}/autogen_unmodified.sh"
-	sed -i 's|python |python2 |' "${WD}/autogen.sh" || true
+	sed -i 's|python |python2 |g' "${WD}/autogen.sh" || true
 	
 	if [ ! -e "${WD}/po/LINGUAS" ]
 	then
@@ -114,7 +114,7 @@ then
 	echo
 	
 	## fix unifont.bdf location
-	sed -i "s|/usr/share/fonts/unifont|${GRUB2_UNIFONT_PATH}|" "${WD}/configure"
+	sed -i "s|/usr/share/fonts/unifont|${GRUB2_UNIFONT_PATH}|g" "${WD}/configure"
 	
 	"${WD}/configure" ${GRUB2_BIOS_Configure_Flags} ${GRUB2_Other_Configure_Flags} --prefix="${GRUB2_BIOS_PREFIX}"
 	echo
@@ -162,7 +162,7 @@ then
 	echo
 	
 	cd ..
-	sed -i "s|${GRUB2_BIOS_MENU_CONFIG}.cfg|grub.cfg|" "${WD}/grub-core/normal/main.c" || true
+	sed -i "s|${GRUB2_BIOS_MENU_CONFIG}.cfg|grub.cfg|g" "${WD}/grub-core/normal/main.c" || true
 	
 	# sudo "${GRUB2_BIOS_PREFIX}/bin/${GRUB2_BIOS_NAME}-mkfont" --verbose --output="${GRUB2_BOOT_PART_DIR}/unicode.pf2" "${GRUB2_UNIFONT_PATH}/unifont.bdf" || true
 	echo

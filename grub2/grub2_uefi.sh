@@ -121,7 +121,7 @@ then
 	echo
 	
 	## fix unifont.bdf location
-	sed -i "s|/usr/share/fonts/unifont|${GRUB2_UNIFONT_PATH}|" "${WD}/configure"
+	sed -i "s|/usr/share/fonts/unifont|${GRUB2_UNIFONT_PATH}|g" "${WD}/configure"
 	
 	"${WD}/configure" ${GRUB2_EFI_Configure_Flags} ${GRUB2_Other_Configure_Flags} --prefix="${GRUB2_EFI_PREFIX}"
 	echo
