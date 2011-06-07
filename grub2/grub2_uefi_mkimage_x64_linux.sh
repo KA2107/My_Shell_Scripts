@@ -1,8 +1,8 @@
 #! /bin/sh
 
 export TARGET_EFI_ARCH="x86_64"
-export GRUB2_EFI_PREFIX="/grub2/grub2_efi_${TARGET_EFI_ARCH}"
-export GRUB2_EFI_NAME="grub2_efi_x64"
+export GRUB2_EFI_PREFIX="/grub2/grub2_uefi_${TARGET_EFI_ARCH}"
+export GRUB2_EFI_NAME="grub2_uefi_x64"
 export GRUB2_EFI_APP_PREFIX="efi/${GRUB2_EFI_NAME}"
 export GRUB2_EFISYS_PART_DIR="/boot/efi/${GRUB2_EFI_APP_PREFIX}"
 

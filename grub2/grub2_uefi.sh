@@ -20,7 +20,7 @@ export GRUB2_EFI_NAME=${3}
 export GRUB2_UEFI_Backup=${4}
 export GRUB2_UEFI_TOOLS_Backup=${5}
 export GRUB2_EFI_PREFIX=${6}
-## If not mentioned, GRUB2_EFI_PREFIX env variable will be set to /grub2/grub2_efi_${TARGET_EFI_ARCH} dir
+## If not mentioned, GRUB2_EFI_PREFIX env variable will be set to /grub2/grub2_uefi_${TARGET_EFI_ARCH} dir
 
 export GRUB2_EFI_APP_PREFIX="efi/${GRUB2_EFI_NAME}"
 export GRUB2_EFISYS_PART_DIR="${EFI_SYSTEM_PART_MP}/${GRUB2_EFI_APP_PREFIX}"
@@ -54,12 +54,12 @@ then
 	echo
 	echo Usage : ${0} [TARGET_EFI_ARCH] [EFI_SYS_PART_MOUNTPOINT] [GRUB2_EFI_Install_Dir_Name] [GRUB2_UEFI_Backup_Path] [GRUB2_UEFI_Tools_Backup_Path] [GRUB2_EFI_PREFIX_FOLDER]
 	echo
-	echo Example : ${0} x86_64 /boot/efi grub2 /media/Data_3/grub2_UEFI_x86_64_Backup /media/Data_3/grub2_UEFI_x86_64_Tools_Backup /grub2/grub2_efi_x86_64
+	echo Example : ${0} x86_64 /boot/efi grub2 /media/Data_3/grub2_UEFI_x86_64_Backup /media/Data_3/grub2_UEFI_x86_64_Tools_Backup /grub2/grub2_uefi_x86_64
 	echo
 	export PROCESS_CONTINUE=FALSE
 fi
 
-[ "${GRUB2_EFI_PREFIX}" == "" ] && GRUB2_EFI_PREFIX="/grub2/grub2_efi_${TARGET_EFI_ARCH}"
+[ "${GRUB2_EFI_PREFIX}" == "" ] && GRUB2_EFI_PREFIX="/grub2/grub2_uefi_${TARGET_EFI_ARCH}"
 
 if [ "${PROCESS_CONTINUE}" == TRUE ]
 then
