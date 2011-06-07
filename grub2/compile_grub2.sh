@@ -32,57 +32,57 @@ fi
 
 if [ "${1}" = "1" ]
 then
-	export GRUB2_EFI="-efi-main"
+	export GRUB2_UEFI="-efi-main"
 	export GRUB2_BIOS="-bios-main"
 elif [ "${1}" = "2" ]
 then
-	export GRUB2_EFI="-efi-exp"
+	export GRUB2_UEFI="-efi-exp"
 	export GRUB2_BIOS="-bios-main"
 elif [ "${1}" = "3" ]
 then
-	export GRUB2_EFI="-efi-main"
+	export GRUB2_UEFI="-efi-main"
 	export GRUB2_BIOS="-bios-exp"
 elif [ "${1}" = "4" ]
 then
-	export GRUB2_EFI="-efi-exp"
+	export GRUB2_UEFI="-efi-exp"
 	export GRUB2_BIOS="-bios-exp"
 elif [ "${1}" = "5" ]
 then
-	export GRUB2_EFI="-efi-main"
+	export GRUB2_UEFI="-efi-main"
 	export GRUB2_BIOS="NULL"
 elif [ "${1}" = "6" ]
 then
-	export GRUB2_EFI="-efi-exp"
+	export GRUB2_UEFI="-efi-exp"
 	export GRUB2_BIOS="NULL"
 elif [ "${1}" = "7" ]
 then
-	export GRUB2_EFI="NULL"
+	export GRUB2_UEFI="NULL"
 	export GRUB2_BIOS="-bios-main"
 elif [ "${1}" = "8" ]
 then
-	export GRUB2_EFI="NULL"
+	export GRUB2_UEFI="NULL"
 	export GRUB2_BIOS="-bios-exp"
 elif [ "${1}" = "9" ]
 then
-	export GRUB2_EFI="-efi-install"
+	export GRUB2_UEFI="-efi-install"
 	export GRUB2_BIOS="-bios-main"
 elif [ "${1}" = "10" ]
 then
-	export GRUB2_EFI="-efi-install"
+	export GRUB2_UEFI="-efi-install"
 	export GRUB2_BIOS="NULL"
 fi
 
-if [ "${GRUB2_EFI}" == "-efi-exp" ]
+if [ "${GRUB2_UEFI}" == "-efi-exp" ]
 then
-	export GRUB2_EFI_Source_DIR_Name="grub2_experimental__GIT_BZR"
+	export GRUB2_UEFI_Source_DIR_Name="grub2_experimental__GIT_BZR"
 	export PROCESS_CONTINUE_UEFI="TRUE"
-elif [ "${GRUB2_EFI}" == "-efi-main" ]
+elif [ "${GRUB2_UEFI}" == "-efi-main" ]
 then
-	export GRUB2_EFI_Source_DIR_Name="grub2__GIT_BZR"
+	export GRUB2_UEFI_Source_DIR_Name="grub2__GIT_BZR"
 	export PROCESS_CONTINUE_UEFI="TRUE"
-elif [ "${GRUB2_EFI}" == "-efi-install" ]
+elif [ "${GRUB2_UEFI}" == "-efi-install" ]
 then
-	export GRUB2_EFI_Source_DIR_Name="grub2__GIT_BZR_branches/grub2-bzr-install"
+	export GRUB2_UEFI_Source_DIR_Name="grub2__GIT_BZR_branches/grub2-bzr-install"
 	export PROCESS_CONTINUE_UEFI="TRUE"
 fi
 
@@ -100,9 +100,9 @@ echo
 
 if [ "${PROCESS_CONTINUE_UEFI}" == "TRUE" ] && [ "${PROCESS_CONTINUE_BIOS}" == "TRUE" ]
 then
-	if [ "${GRUB2_EFI_Source_DIR_Name}" == "${GRUB2_BIOS_Source_DIR_Name}" ]
+	if [ "${GRUB2_UEFI_Source_DIR_Name}" == "${GRUB2_BIOS_Source_DIR_Name}" ]
 	then
-		cd "${WD_Outer}/${GRUB2_EFI_Source_DIR_Name}/"
+		cd "${WD_Outer}/${GRUB2_UEFI_Source_DIR_Name}/"
 		echo
 	fi
 fi
@@ -116,34 +116,34 @@ then
 	
 	## First compile GRUB2 for UEFI x86_64
 	
-	rm -r "${WD_Outer}/${GRUB2_EFI_Source_DIR_Name}/grub2_extras__GIT_BZR" || true
+	rm -r "${WD_Outer}/${GRUB2_UEFI_Source_DIR_Name}/grub2_extras__GIT_BZR" || true
 	
-	cp -r "${WD_Outer}/grub2_extras__GIT_BZR" "${WD_Outer}/${GRUB2_EFI_Source_DIR_Name}/grub2_extras__GIT_BZR" || true
-	rm -r "${WD_Outer}/${GRUB2_EFI_Source_DIR_Name}/grub2_extras__GIT_BZR/zfs" || true
-	rm -r "${WD_Outer}/${GRUB2_EFI_Source_DIR_Name}/grub2_extras__GIT_BZR/915resolution" || true
-	rm -r "${WD_Outer}/${GRUB2_EFI_Source_DIR_Name}/grub2_extras__GIT_BZR/ntldr-img" || true
+	cp -r "${WD_Outer}/grub2_extras__GIT_BZR" "${WD_Outer}/${GRUB2_UEFI_Source_DIR_Name}/grub2_extras__GIT_BZR" || true
+	rm -r "${WD_Outer}/${GRUB2_UEFI_Source_DIR_Name}/grub2_extras__GIT_BZR/zfs" || true
+	rm -r "${WD_Outer}/${GRUB2_UEFI_Source_DIR_Name}/grub2_extras__GIT_BZR/915resolution" || true
+	rm -r "${WD_Outer}/${GRUB2_UEFI_Source_DIR_Name}/grub2_extras__GIT_BZR/ntldr-img" || true
 	
-	if [ "${GRUB2_EFI_Source_DIR_Name}" != "${GRUB2_BIOS_Source_DIR_Name}" ]
+	if [ "${GRUB2_UEFI_Source_DIR_Name}" != "${GRUB2_BIOS_Source_DIR_Name}" ]
 	then
-		cd "${WD_Outer}/${GRUB2_EFI_Source_DIR_Name}/"
+		cd "${WD_Outer}/${GRUB2_UEFI_Source_DIR_Name}/"
 		echo
 	fi
 	
-	cp --verbose "${WD_Outer}/xman_dos2unix.sh" "${WD_Outer}/grub.default" "${WD_Outer}/${GRUB2_EFI_Source_DIR_Name}/" || true
-	cp --verbose "${WD_Outer}/grub2_efi_linux_scripts/grub2_efi.sh" "${WD_Outer}/grub2_efi_linux_scripts/grub2_efi_linux_my.sh" "${WD_Outer}/${GRUB2_EFI_Source_DIR_Name}/"
+	cp --verbose "${WD_Outer}/xman_dos2unix.sh" "${WD_Outer}/grub.default" "${WD_Outer}/${GRUB2_UEFI_Source_DIR_Name}/" || true
+	cp --verbose "${WD_Outer}/grub2_uefi_linux_scripts/grub2_uefi.sh" "${WD_Outer}/grub2_uefi_linux_scripts/grub2_uefi_linux_my.sh" "${WD_Outer}/${GRUB2_UEFI_Source_DIR_Name}/"
 	echo
 	
-	rm "${WD_Outer}/${GRUB2_EFI_Source_DIR_Name}/grub.cfg" || true
-	cp --verbose "${WD_Outer}/grub2_efi_linux_scripts/grub2_efi.cfg" "${WD_Outer}/${GRUB2_EFI_Source_DIR_Name}/grub.cfg" || true
+	rm "${WD_Outer}/${GRUB2_UEFI_Source_DIR_Name}/grub.cfg" || true
+	cp --verbose "${WD_Outer}/grub2_uefi_linux_scripts/grub2_uefi.cfg" "${WD_Outer}/${GRUB2_UEFI_Source_DIR_Name}/grub.cfg" || true
 	echo
 	
-	cd "${WD_Outer}/${GRUB2_EFI_Source_DIR_Name}/"
-	"${PWD}/grub2_efi_linux_my.sh"
+	cd "${WD_Outer}/${GRUB2_UEFI_Source_DIR_Name}/"
+	"${PWD}/grub2_uefi_linux_my.sh"
 	echo
 	cd ..
 	
-	cp -r "${WD_Outer}/${GRUB2_EFI_Source_DIR_Name}/GRUB2_EFI_BUILD_DIR_x86_64" "${WD_Outer}/GRUB2_EFI_BUILD_DIR_x86_64" || true
-	sudo rm -r "${WD_Outer}/${GRUB2_EFI_Source_DIR_Name}/GRUB2_EFI_BUILD_DIR_x86_64" || true
+	cp -r "${WD_Outer}/${GRUB2_UEFI_Source_DIR_Name}/GRUB2_UEFI_BUILD_DIR_x86_64" "${WD_Outer}/GRUB2_UEFI_BUILD_DIR_x86_64" || true
+	sudo rm -r "${WD_Outer}/${GRUB2_UEFI_Source_DIR_Name}/GRUB2_UEFI_BUILD_DIR_x86_64" || true
 	echo
 	
 	set +x +e
@@ -165,7 +165,7 @@ then
 	rm -r "${WD_Outer}/${GRUB2_BIOS_Source_DIR_Name}/grub2_extras__GIT_BZR/zfs" || true
 	rm -r "${WD_Outer}/${GRUB2_BIOS_Source_DIR_Name}/grub2_extras__GIT_BZR/915resolution" || true
 	
-	if [ "${GRUB2_BIOS_Source_DIR_Name}" != "${GRUB2_EFI_Source_DIR_Name}" ]
+	if [ "${GRUB2_BIOS_Source_DIR_Name}" != "${GRUB2_UEFI_Source_DIR_Name}" ]
 	then
 		cd "${WD_Outer}/${GRUB2_BIOS_Source_DIR_Name}/"
 		echo
@@ -203,8 +203,8 @@ fi
 unset PROCESS_CONTINUE_UEFI
 unset PROCESS_CONTINUE_BIOS
 unset WD_Outer
-unset GRUB2_EFI
+unset GRUB2_UEFI
 unset GRUB2_BIOS
-unset GRUB2_EFI_Source_DIR_Name
+unset GRUB2_UEFI_Source_DIR_Name
 unset GRUB2_BIOS_Source_DIR_Name
 unset x32_chroot
