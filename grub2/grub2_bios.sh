@@ -21,7 +21,7 @@ export GRUB2_BIOS_TOOLS_Backup=${5}
 export GRUB2_BIOS_PREFIX=${6}
 ## If not mentioned, GRUB2_BIOS_PREFIX env variable will be set to /grub2/grub2_BIOS dir
 
-export GRUB2_BIOS_MENU_CONFIG="${GRUB2_BIOS_NAME}"
+export GRUB2_BIOS_MENU_CONFIG="grub"
 export GRUB2_UNIFONT_PATH="/usr/share/fonts/misc"
 
 if [ "${GRUB2_BIOS_PREFIX}" == "" ]
