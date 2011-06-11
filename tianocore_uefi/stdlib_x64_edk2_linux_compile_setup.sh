@@ -17,9 +17,9 @@ unset _PYTHON_
 
 echo
 
-rm -r "${EDK2_DIR}/BaseTools" || true
-rm -r "${EDK2_DIR}/Build/StdLib" || true
-rm -r "${EDK2_DIR}/Conf" || true
+rm -rf "${EDK2_DIR}/BaseTools" || true
+rm -rf "${EDK2_DIR}/Build/StdLib" || true
+rm -rf "${EDK2_DIR}/Conf" || true
 
 echo
 
@@ -33,7 +33,7 @@ git checkout keshav_pr
 
 echo
 
-rm -r "${EDK2_DIR}/BaseTools" || true
+rm -rf "${EDK2_DIR}/BaseTools" || true
 cp -r "${EDK2_BUILD_TOOLS_DIR}" "${EDK2_DIR}/BaseTools"
 
 echo
@@ -58,7 +58,7 @@ build -p "${EDK2_DIR}/StdLib/StdLib.dsc" -a X64 -b DEBUG -t GCC45
 
 echo
 
-rm -r "${EDK2_DIR}/BaseTools" || true
+rm -rf "${EDK2_DIR}/BaseTools" || true
 echo
 
 cd "${EDK2_DIR}/"

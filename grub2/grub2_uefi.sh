@@ -131,7 +131,7 @@ then
 	
 	sudo cp --verbose -r "${GRUB2_EFI_PREFIX}" "${GRUB2_UEFI_TOOLS_Backup}" || true
 	echo
-	sudo rm --verbose -r "${GRUB2_EFI_PREFIX}" || true
+	sudo rm --verbose -rf "${GRUB2_EFI_PREFIX}" || true
 	echo
 	
 	sudo make install
@@ -145,7 +145,7 @@ then
 	sudo cp --verbose -r "${GRUB2_EFISYS_PART_DIR}" "${GRUB2_UEFI_Backup}" || true
 	echo
 	## Delete the old GRUB2 folder in the EFI System Partition
-	sudo rm --verbose -r "${GRUB2_EFISYS_PART_DIR}" || true
+	sudo rm --verbose -rf "${GRUB2_EFISYS_PART_DIR}" || true
 	echo
 	
 	sudo sed -i 's|--bootloader_id=|--bootloader-id=|g' "${GRUB2_EFI_PREFIX}/sbin/${GRUB2_EFI_NAME}-install" || true

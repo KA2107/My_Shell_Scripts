@@ -31,7 +31,7 @@ run()
 			elif [ -d "${PWD}/.git/bzr" ]
 			then
 				echo
-				echo "GIT BZR- ${PWD}"
+				echo "GIT BZR - ${PWD}"
 				echo
 				
 				git reset --hard

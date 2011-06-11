@@ -72,7 +72,7 @@ sudo cp nonautilusplease/nautilus-computer.desktop .
 sudo cp nonautilusplease/nautilus-home.desktop .
 sudo cp nonautilusplease/nautilus.desktop .
 echo -e "\nRemoving backup folder\n"
-sudo rm -r nonautilusplease
+sudo rm -rf nonautilusplease
 echo -e "\nRestoring Nautilus launcher\n"
 sudo rm /usr/bin/nautilus && sudo dpkg-divert --rename --remove /usr/bin/nautilus
 echo -e "\nMaking Nautilus manage the desktop again\n"

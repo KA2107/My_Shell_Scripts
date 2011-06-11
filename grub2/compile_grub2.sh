@@ -116,12 +116,12 @@ then
 	
 	## First compile GRUB2 for UEFI x86_64
 	
-	rm -r "${WD_Outer}/${GRUB2_UEFI_Source_DIR_Name}/grub2_extras__GIT_BZR" || true
+	rm -rf "${WD_Outer}/${GRUB2_UEFI_Source_DIR_Name}/grub2_extras__GIT_BZR" || true
 	
 	cp -r "${WD_Outer}/grub2_extras__GIT_BZR" "${WD_Outer}/${GRUB2_UEFI_Source_DIR_Name}/grub2_extras__GIT_BZR" || true
-	rm -r "${WD_Outer}/${GRUB2_UEFI_Source_DIR_Name}/grub2_extras__GIT_BZR/zfs" || true
-	rm -r "${WD_Outer}/${GRUB2_UEFI_Source_DIR_Name}/grub2_extras__GIT_BZR/915resolution" || true
-	rm -r "${WD_Outer}/${GRUB2_UEFI_Source_DIR_Name}/grub2_extras__GIT_BZR/ntldr-img" || true
+	rm -rf "${WD_Outer}/${GRUB2_UEFI_Source_DIR_Name}/grub2_extras__GIT_BZR/zfs" || true
+	rm -rf "${WD_Outer}/${GRUB2_UEFI_Source_DIR_Name}/grub2_extras__GIT_BZR/915resolution" || true
+	rm -rf "${WD_Outer}/${GRUB2_UEFI_Source_DIR_Name}/grub2_extras__GIT_BZR/ntldr-img" || true
 	
 	if [ "${GRUB2_UEFI_Source_DIR_Name}" != "${GRUB2_BIOS_Source_DIR_Name}" ]
 	then
@@ -143,7 +143,7 @@ then
 	cd ..
 	
 	cp -r "${WD_Outer}/${GRUB2_UEFI_Source_DIR_Name}/GRUB2_UEFI_BUILD_DIR_x86_64" "${WD_Outer}/GRUB2_UEFI_BUILD_DIR_x86_64" || true
-	sudo rm -r "${WD_Outer}/${GRUB2_UEFI_Source_DIR_Name}/GRUB2_UEFI_BUILD_DIR_x86_64" || true
+	sudo rm -rf "${WD_Outer}/${GRUB2_UEFI_Source_DIR_Name}/GRUB2_UEFI_BUILD_DIR_x86_64" || true
 	echo
 	
 	set +x +e
@@ -159,11 +159,11 @@ then
 	
 	## Second compile GRUB2 for BIOS
 	
-	rm -r "${WD_Outer}/${GRUB2_BIOS_Source_DIR_Name}/grub2_extras__GIT_BZR" || true
+	rm -rf "${WD_Outer}/${GRUB2_BIOS_Source_DIR_Name}/grub2_extras__GIT_BZR" || true
 	
 	cp -r "${WD_Outer}/grub2_extras__GIT_BZR" "${WD_Outer}/${GRUB2_BIOS_Source_DIR_Name}/grub2_extras__GIT_BZR" || true
-	rm -r "${WD_Outer}/${GRUB2_BIOS_Source_DIR_Name}/grub2_extras__GIT_BZR/zfs" || true
-	rm -r "${WD_Outer}/${GRUB2_BIOS_Source_DIR_Name}/grub2_extras__GIT_BZR/915resolution" || true
+	rm -rf "${WD_Outer}/${GRUB2_BIOS_Source_DIR_Name}/grub2_extras__GIT_BZR/zfs" || true
+	rm -rf "${WD_Outer}/${GRUB2_BIOS_Source_DIR_Name}/grub2_extras__GIT_BZR/915resolution" || true
 	
 	if [ "${GRUB2_BIOS_Source_DIR_Name}" != "${GRUB2_UEFI_Source_DIR_Name}" ]
 	then
@@ -193,7 +193,7 @@ then
 	cd ..
 	
 	cp -r "${WD_Outer}/${GRUB2_BIOS_Source_DIR_Name}/GRUB2_BIOS_BUILD_DIR" "${WD_Outer}/GRUB2_BIOS_BUILD_DIR" || true
-	sudo rm -r "${WD_Outer}/${GRUB2_BIOS_Source_DIR_Name}/GRUB2_BIOS_BUILD_DIR" || true
+	sudo rm -rf "${WD_Outer}/${GRUB2_BIOS_Source_DIR_Name}/GRUB2_BIOS_BUILD_DIR" || true
 	echo
 	
 	set +x +e

@@ -62,7 +62,7 @@ cp "${EDK2_DIR}/ShellBinPkg/UefiShell/X64/Shell.efi" "${EFI_DUET_GIT_DIR}/Shell/
 
 echo
 
-rm -r "${EFI_DUET_GIT_DIR}/Linux_Source/C" || true
+rm -rf "${EFI_DUET_GIT_DIR}/Linux_Source/C" || true
 cp -r "${EDK2_C_SOURCE_DIR}" "${EFI_DUET_GIT_DIR}/Linux_Source/C"
 
 echo
@@ -108,7 +108,7 @@ echo
 echo "Tiano_DUET_memdisk_GIT"
 echo
 
-rm -r "${MEMDISK_DIR}/Linux_Source/C" || true
+rm -rf "${MEMDISK_DIR}/Linux_Source/C" || true
 cp -r "${EDK2_C_SOURCE_DIR}" "${MEMDISK_DIR}/Linux_Source/C"
 
 echo

@@ -26,9 +26,9 @@ unset _PYTHON_
 
 echo
 
-rm -r "${EDK2_DIR}/BaseTools" || true
-rm -r "${EDK2_DIR}/Build/DuetPkgX64" || true
-rm -r "${EDK2_DIR}/Conf" || true
+rm -rf "${EDK2_DIR}/BaseTools" || true
+rm -rf "${EDK2_DIR}/Build/DuetPkgX64" || true
+rm -rf "${EDK2_DIR}/Conf" || true
 
 echo
 
@@ -42,7 +42,7 @@ git checkout keshav_pr
 
 echo
 
-rm -r "${EDK2_DIR}/BaseTools" || true
+rm -rf "${EDK2_DIR}/BaseTools" || true
 cp -r "${EDK2_BUILD_TOOLS_DIR}" "${EDK2_DIR}/BaseTools"
 
 echo
@@ -68,7 +68,7 @@ cd "${EDK2_DIR}/DuetPkg"
 
 echo
 
-rm -r "${EDK2_DIR}/BaseTools" || true
+rm -rf "${EDK2_DIR}/BaseTools" || true
 echo
 
 cd "${EDK2_DIR}/"

@@ -15,9 +15,9 @@ unset _PYTHON_
 
 echo
 
-rm -r "${EDK2_DIR}/BaseTools" || true
-rm -r "${EDK2_DIR}/Build/UnixPkg" || true
-rm -r "${EDK2_DIR}/Conf" || true
+rm -rf "${EDK2_DIR}/BaseTools" || true
+rm -rf "${EDK2_DIR}/Build/UnixPkg" || true
+rm -rf "${EDK2_DIR}/Conf" || true
 
 echo
 
@@ -31,7 +31,7 @@ git checkout keshav_pr
 
 echo
 
-rm -r "${EDK2_DIR}/BaseTools" || true
+rm -rf "${EDK2_DIR}/BaseTools" || true
 cp -r "${EDK2_BUILD_TOOLS_DIR}" "${EDK2_DIR}/BaseTools"
 
 echo
