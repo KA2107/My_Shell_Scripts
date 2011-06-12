@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -x
+set -x -e
 
 sudo pacman -Sy
 echo
@@ -8,13 +8,13 @@ echo
 "${PWD}/unofficial_repos_pacman_git.sh"
 echo
 
-sudo pacman -Su
+sudo pacman -Su --noconfirm
 echo
 
-yaourt -Su
+yaourt -Su --noconfirm
 echo
 
-sudo pacman -Sc
+sudo pacman -Sc --noconfirm
 echo
 
-set +x
+set +x +e
