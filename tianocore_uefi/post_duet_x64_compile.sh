@@ -51,14 +51,14 @@ cp "${MIGLE_BOOTDUET_DIR}/INSTALL" "${EFI_DUET_GIT_DIR}/Migle_BootDuet_INSTALL.t
 
 echo
 
-rm "${EFI_DUET_GIT_DIR}/Efildr/EDK2_X64/Efildr20" || true
-cp "${EDK2_BUILD_DIR}/FV/Efildr20" "${EFI_DUET_GIT_DIR}/Efildr/EDK2_X64/Efildr20"
+rm "${EFI_DUET_GIT_DIR}/Efildr/UDK_X64/Efildr20" || true
+cp "${EDK2_BUILD_DIR}/FV/Efildr20" "${EFI_DUET_GIT_DIR}/Efildr/UDK_X64/Efildr20"
 
 echo
 
-rm "${EFI_DUET_GIT_DIR}/Shell/EDK2_X64/Shell_Full.efi" || true
-cp "${EDK2_DIR}/ShellBinPkg/UefiShell/X64/Shell.efi" "${EFI_DUET_GIT_DIR}/Shell/EDK2_X64/Shell_Full.efi"
-# cp "${EDK2_DIR}/EdkShellBinPkg/FullShell/X64/Shell_Full.efi" "${EFI_DUET_GIT_DIR}/Shell/EDK2_X64/Shell_Full.efi"
+rm "${EFI_DUET_GIT_DIR}/Shell/UDK_X64/Shell_Full.efi" || true
+cp "${EDK2_DIR}/ShellBinPkg/UefiShell/X64/Shell.efi" "${EFI_DUET_GIT_DIR}/Shell/UDK_X64/Shell_Full.efi"
+# cp "${EDK2_DIR}/EdkShellBinPkg/FullShell/X64/Shell_Full.efi" "${EFI_DUET_GIT_DIR}/Shell/UDK_X64/Shell_Full.efi"
 
 echo
 
