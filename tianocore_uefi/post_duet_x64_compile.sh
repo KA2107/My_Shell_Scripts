@@ -50,8 +50,8 @@ SRS5694_DUET_INSTALL() {
 	
 	echo
 	
-	rm -rf "${EFI_DUET_GIT_DIR}/Licenses/Srs5694_duet-install_LICENSE.txt" || true
-	cp "${SRS5694_DUET_INSTALL_DIR}/COPYING" "${EFI_DUET_GIT_DIR}/Licenses/Srs5694_duet-install_LICENSE.txt"
+	rm -rf "${EFI_DUET_GIT_DIR}/Licenses/srs5694_duet-install_LICENSE.txt" || true
+	cp "${SRS5694_DUET_INSTALL_DIR}/COPYING" "${EFI_DUET_GIT_DIR}/Licenses/srs5694_duet-install_LICENSE.txt"
 	
 	echo
 	
@@ -107,9 +107,6 @@ EFI_DUET_GIT() {
 	git diff remotes/origin/master...keshav_pr > "${EFI_DUET_GIT_DIR}/UDK_EDK2_DuetPkg_Changes_to_Makefiles.patch"
 	
 	echo
-	
-	rm -rf "${EFI_DUET_GIT_DIR}/Licenses"/* || true
-	cp "${MIGLE_BOOTDUET_COMPILE_DIR}/COPYING" "${EFI_DUET_GIT_DIR}/Licenses/Migle_BootDuet_LICENSE.txt"
 	
 	cd "${EFI_DUET_GIT_DIR}/"
 	git add *
@@ -186,7 +183,7 @@ EFI_DUET_GIT
 
 echo
 
-POST_DUET_MEMDISK
+# POST_DUET_MEMDISK
 
 echo
 
@@ -202,6 +199,7 @@ unset SOURCE_CODES_DIR
 unset WD
 unset EDK2_DIR
 unset EDK2_BUILD_TOOLS_DIR
+unset EDK_TOOLS_PATH
 unset EDK2_C_SOURCE_DIR
 unset EDK2_DUET_BOOTSECT_BIN_DIR
 unset EDK2_BUILD_DIR

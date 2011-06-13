@@ -7,13 +7,14 @@ WD="${SOURCE_CODES_DIR}/Firmware/UEFI/TianoCore_Sourceforge"
 
 EDK2_DIR="${WD}/edk2_GIT"
 EDK2_BUILD_TOOLS_DIR="${WD}/buildtools-BaseTools_GIT"
+export EDK_TOOLS_PATH="${EDK2_DIR}/BaseTools"
 EDK2_C_SOURCE_DIR="${EDK2_BUILD_TOOLS_DIR}/Source/C"
 
 EDK2_BUILD_CLEAN() {
 	
 	echo
 	
-	rm -rf "${EDK2_DIR}/BaseTools" || true
+	rm -rf "${EDK_TOOLS_PATH}" || true
 	rm -rf "${EDK2_BUILD_OUTER_DIR}" || true
 	rm -rf "${EDK2_DIR}/Conf" || true
 	
@@ -31,7 +32,7 @@ COPY_BUILDTOOLS_BASETOOLS() {
 	
 	echo
 	
-	rm -rf "${EDK2_DIR}/BaseTools" || true
+	rm -rf "${EDK_TOOLS_PATH}" || true
 	cp -r "${EDK2_BUILD_TOOLS_DIR}" "${EDK2_DIR}/BaseTools"
 	
 	echo
@@ -71,6 +72,12 @@ SET_PYTHON3() {
 	sudo rm "${_PYTHON_}"
 	sudo ln -s "$(which python3)" "${_PYTHON_}"
 	unset _PYTHON_
+	
+	echo
+	
+}
+
+APPLY_PATCHES() {
 	
 	echo
 	
