@@ -149,6 +149,7 @@ EFI_DUET_GIT() {
 	echo
 	
 	cd "${EDK2_DIR}/"
+	rm -rf "${EFI_DUET_GIT_DIR}/UDK_EDK2_DuetPkg_Changes_to_Makefiles.patch" || true
 	git diff remotes/origin/master...keshav_pr > "${EFI_DUET_GIT_DIR}/UDK_EDK2_DuetPkg_Changes_to_Makefiles.patch"
 	
 	echo
