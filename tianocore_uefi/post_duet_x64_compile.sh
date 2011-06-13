@@ -18,17 +18,27 @@ EFI_DUET_GIT_DIR="${COMPILED_DIR}/EFI_DUET_GIT/"
 MEMDISK_COMPILED_DIR="${COMPILED_DIR}/Tiano_DUET_memdisk_compiled_GIT/"
 MEMDISK_DIR="${COMPILED_DIR}/Tiano_DUET_memdisk_GIT/"
 
-MIGLE_BOOTDUET_DIR="${WD}/migle_BootDuet_GIT"
+MIGLE_BOOTDUET_COMPILE_DIR="${WD}/migle_BootDuet_GIT"
 SRS5694_DUET_INSTALL_DIR="${WD}/srs5694_duet-install_my_GIT"
 
-MIGLE_BOOTDUET() {
+MIGLE_BOOTDUET_CLEAN() {
+	
+	echo
+	
+	cd "${MIGLE_BOOTDUET_DIR}/"
+	make clean
+	
+	echo
+	
+}
+
+MIGLE_BOOTDUET_COMPILE() {
 	
 	echo
 	echo "Compiling Migle's BootDuet"
 	echo
 	
-	cd "${MIGLE_BOOTDUET_DIR}/"
-	make clean
+	MIGLE_BOOTDUET_CLEAN
 	
 	echo
 	
@@ -39,22 +49,21 @@ MIGLE_BOOTDUET() {
 	echo
 	
 	rm -rf "${EFI_DUET_GIT_DIR}/BootSector"/bd*.bin || true
-	cp "${MIGLE_BOOTDUET_DIR}"/bd*.bin "${EFI_DUET_GIT_DIR}/BootSector/"
+	cp "${MIGLE_BOOTDUET_COMPILE_DIR}"/bd*.bin "${EFI_DUET_GIT_DIR}/BootSector/"
 	
 	echo
 	
-	cd "${MIGLE_BOOTDUET_DIR}/"
-	make clean
+	MIGLE_BOOTDUET_CLEAN
 	
 	echo
 	
 	rm -rf "${EFI_DUET_GIT_DIR}/Migle_BootDuet_INSTALL.txt" || true
-	cp "${MIGLE_BOOTDUET_DIR}/INSTALL" "${EFI_DUET_GIT_DIR}/Migle_BootDuet_INSTALL.txt"
+	cp "${MIGLE_BOOTDUET_COMPILE_DIR}/INSTALL" "${EFI_DUET_GIT_DIR}/Migle_BootDuet_INSTALL.txt"
 	
 	echo
 	
 	rm -rf "${EFI_DUET_GIT_DIR}/Licenses/Migle_BootDuet_LICENSE.txt" || true
-	cp "${MIGLE_BOOTDUET_DIR}/COPYING" "${EFI_DUET_GIT_DIR}/Licenses/Migle_BootDuet_LICENSE.txt"
+	cp "${MIGLE_BOOTDUET_COMPILE_DIR}/COPYING" "${EFI_DUET_GIT_DIR}/Licenses/Migle_BootDuet_LICENSE.txt"
 	
 	echo
 	
@@ -81,6 +90,16 @@ SRS5694_DUET_INSTALL() {
 	
 }
 
+POST_DUET_MEMDISK() {
+	
+	echo
+	
+	"${WD}/creata_duet_x64_memdisk.sh"
+	
+	echo
+	
+}
+
 EFI_DUET_GIT() {
 	
 	echo
@@ -98,7 +117,7 @@ EFI_DUET_GIT() {
 	
 	echo
 	
-	MIGLE_BOOTDUET
+	MIGLE_BOOTDUET_COMPILE
 	
 	echo
 	
@@ -127,7 +146,7 @@ EFI_DUET_GIT() {
 	echo
 	
 	rm -rf "${EFI_DUET_GIT_DIR}/Licenses"/* || true
-	cp "${MIGLE_BOOTDUET_DIR}/COPYING" "${EFI_DUET_GIT_DIR}/Licenses/Migle_BootDuet_LICENSE.txt"
+	cp "${MIGLE_BOOTDUET_COMPILE_DIR}/COPYING" "${EFI_DUET_GIT_DIR}/Licenses/Migle_BootDuet_LICENSE.txt"
 	cp 
 	
 	cd "${EFI_DUET_GIT_DIR}/"
@@ -148,7 +167,8 @@ MEMDISK_COMPILED_GIT() {
 	echo
 	
 	rm -rf "${MEMDISK_COMPILED_DIR}/Tiano_EDK2_DUET_X64.img" || true
-	cp "${EDK2_BUILD_OUTER_DIR}/floppy.img" "${MEMDISK_COMPILED_DIR}/Tiano_EDK2_DUET_X64.img"
+	# cp "${EDK2_BUILD_OUTER_DIR}/floppy.img" "${MEMDISK_COMPILED_DIR}/Tiano_EDK2_DUET_X64.img"
+	cp "${WD}/duet_x64_memdisk.bin" "${MEMDISK_COMPILED_DIR}/Tiano_EDK2_DUET_X64.img"
 	
 	echo
 	
@@ -204,6 +224,10 @@ EFI_DUET_GIT
 
 echo
 
+POST_DUET_MEMDISK
+
+echo
+
 MEMDISK_COMPILED_GIT
 
 echo
@@ -223,7 +247,7 @@ unset COMPILED_DIR
 unset EFI_DUET_GIT_DIR
 unset MEMDISK_COMPILED_DIR
 unset MEMDISK_DIR
-unset MIGLE_BOOTDUET_DIR
+unset MIGLE_BOOTDUET_COMPILE_DIR
 unset SRS5694_DUET_INSTALL_DIR
 
 set +x +e

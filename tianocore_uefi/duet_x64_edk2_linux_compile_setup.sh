@@ -91,16 +91,6 @@ sudo umount "${DUET_PART_MP}"
 
 echo
 
-sudo rm "${BOOTPART}/memdisk_syslinux" || true
-sudo cp "${SYSLINUX_DIR}/memdisk" "${BOOTPART}/memdisk_syslinux"
-
-echo
-
-sudo rm "${BOOTPART}/Tiano_EDK2_DUET_X64.img" || true
-sudo cp "${EDK2_BUILD_OUTER_DIR}/floppy.img" "${BOOTPART}/Tiano_EDK2_DUET_X64.img"
-
-echo
-
 sudo rm "${EFISYS}/shellx64.efi" || true
 sudo rm "${EFISYS}/shellx64_old.efi" || true
 

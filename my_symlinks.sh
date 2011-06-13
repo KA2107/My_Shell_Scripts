@@ -49,6 +49,9 @@ echo
 rm "${TIANO_SOURCE_DIR}/duet_x64_edk2_linux_compile_setup.sh" || true
 ln -s "${TIANO_SCRIPTS_DIR}/duet_x64_edk2_linux_compile_setup.sh" "${TIANO_SOURCE_DIR}/duet_x64_edk2_linux_compile_setup.sh"
 
+rm "${TIANO_SOURCE_DIR}/create_duet_x64_memdisk.sh" || true
+ln -s "${TIANO_SCRIPTS_DIR}/create_duet_x64_memdisk.sh" "${TIANO_SOURCE_DIR}/create_duet_x64_memdisk.sh"
+
 rm "${TIANO_SOURCE_DIR}/post_duet_x64_compile.sh" || true
 ln -s "${TIANO_SCRIPTS_DIR}/post_duet_x64_compile.sh" "${TIANO_SOURCE_DIR}/post_duet_x64_compile.sh"
 
