@@ -5,48 +5,7 @@ set -x -e
 SOURCE_CODES_DIR="/media/Data_2/Source_Codes"
 WD="${SOURCE_CODES_DIR}/Firmware/UEFI/TianoCore_Sourceforge"
 
-EDK2_DIR="${WD}/edk2_GIT"
-
-COMPILED_DIR="${SOURCE_CODES_DIR}/Firmware/UEFI/UEFI_Compiled_Implementation/Tianocore_DUET/"
-EFI_DUET_GIT_DIR="${COMPILED_DIR}/EFI_DUET_GIT/"
-MEMDISK_COMPILED_DIR="${COMPILED_DIR}/Tiano_DUET_memdisk_compiled_GIT/"
-MEMDISK_DIR="${COMPILED_DIR}/Tiano_DUET_memdisk_GIT/"
-
-MIGLE_BOOTDUET_DIR="${WD}/migle_BootDuet_GIT"
-SRS5694_DUET_INSTALL_DIR="${WD}/srs5694_duet-install_my_GIT"
-
-BOOTPART="/boot/"
-EFISYS="/boot/efi/"
-SYSLINUX_DIR="/usr/lib/syslinux/"
-
-MIGLE_BOOTDUET_CLEAN() {
-	
-	echo
-	
-	cd "${MIGLE_BOOTDUET_DIR}/"
-	make clean
-	
-	echo
-	
-}
-
-MIGLE_BOOTDUET_COMPILE() {
-	
-	echo
-	echo "Compiling Migle's BootDuet"
-	echo
-	
-	MIGLE_BOOTDUET_CLEAN
-	
-	echo
-	
-	make
-	make lba64
-	make hardcoded-drive
-	
-	echo
-	
-}
+source "${WD}/tianocore_duet_common.sh"
 
 CREATE_MEMDISK() {
 	
@@ -82,7 +41,7 @@ COMPILE_MEMDISK() {
 	
 	echo
 	
-	sudo "${SRS5694_DUET_INSTALL_DIR}/duet-install" -b "${MIGLE_BOOTDUET_DIR}" -s "${SYSLINUX_DIR}" -u "${EFI_DUET_GIT_DIR}" "${LOOP_DEVICE}"
+	sudo "${SRS5694_DUET_INSTALL_DIR}/duet-install" -b "${MIGLE_BOOTDUET_COMPILE_DIR}" -s "${SYSLINUX_DIR}" -u "${EFI_DUET_GIT_DIR}" "${LOOP_DEVICE}"
 	
 	echo
 	
@@ -109,11 +68,17 @@ echo
 unset SOURCE_CODES_DIR
 unset WD
 unset EDK2_DIR
+unset EDK2_BUILD_TOOLS_DIR
+unset EDK2_C_SOURCE_DIR
+unset EDK2_DUET_BOOTSECT_BIN_DIR
+unset EDK2_BUILD_DIR
+unset DUET_EMUVARIABLE_BUILD_DIR
+unset DUET_FSVARIABLE_BUILD_DIR
 unset COMPILED_DIR
 unset EFI_DUET_GIT_DIR
 unset MEMDISK_COMPILED_DIR
 unset MEMDISK_DIR
-unset MIGLE_BOOTDUET_DIR
+unset MIGLE_BOOTDUET_COMPILE_DIR
 unset SRS5694_DUET_INSTALL_DIR
 unset BOOTPART
 unset EFISYS

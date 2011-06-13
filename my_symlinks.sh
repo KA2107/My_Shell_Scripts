@@ -17,55 +17,101 @@ export GRUB2_UEFI_DIR="${GRUB2_SOURCE_DIR}/grub2_uefi_linux_scripts"
 
 echo
 
-## grub2
+BASIC_COMMANDS() {
+	
+	echo
+	
+	rm "${LINK_DIR}/${LINK_FILE}" || true
+	ln -s "${SOURCE_DIR}/${LINK_FILE}" "${GRUB2_SOURCE_DIR}/${LINK_FILE}"
+	
+	echo
+	
+}
 
-rm "${GRUB2_SOURCE_DIR}/compile_grub2.sh" || true
-ln -s "${GRUB2_SCRIPTS_DIR}/compile_grub2.sh" "${GRUB2_SOURCE_DIR}/compile_grub2.sh"
+GRUB2() {
+	
+	echo
+	
+	SOURCE_DIR="${GRUB2_SCRIPTS_DIR}/"
+	LINK_DIR="${GRUB2_SOURCE_DIR}/"
+	
+	LINK_FILE="compile_grub2.sh"
+	BASIC_COMMANDS
+	
+	LINK_FILE="grub.default"
+	BASIC_COMMANDS
+	
+	echo
+	
+	rm "${GRUB2_SOURCE_DIR}/xman_dos2unix.sh" || true
+	ln -s "${SCRIPTS_DIR}/xmanutility/xman_dos2unix.sh" "${GRUB2_SOURCE_DIR}/xman_dos2unix.sh"
+	
+	echo
+	
+	rm "${GRUB2_BIOS_DIR}/grub2_bios.sh" || true
+	ln -s "${GRUB2_SCRIPTS_DIR}/grub2_bios.sh" "${GRUB2_BIOS_DIR}/grub2_bios.sh"
+	
+	rm "${GRUB2_UEFI_DIR}/grub2_uefi.sh" || true
+	ln -s "${GRUB2_SCRIPTS_DIR}/grub2_uefi.sh" "${GRUB2_UEFI_DIR}/grub2_uefi.sh"
+	
+	rm "${GRUB2_UEFI_DIR}/grub2_uefi_mkimage_x64_linux.sh" || true
+	ln -s "${GRUB2_SCRIPTS_DIR}/grub2_uefi_mkimage_x64_linux.sh" "${GRUB2_UEFI_DIR}/grub2_uefi_mkimage_x64_linux.sh"
+	
+	rm "${GRUB2_DIR}/Source_BZR/grub2_bzr_export.sh" || true
+	ln -s "${GRUB2_SCRIPTS_DIR}/grub2_bzr_export.sh" "${GRUB2_DIR}/Source_BZR/grub2_bzr_export.sh"
+	
+	echo
+	
+}
 
-rm "${GRUB2_SOURCE_DIR}/grub.default" || true
-ln -s "${GRUB2_SCRIPTS_DIR}/grub.default" "${GRUB2_SOURCE_DIR}/grub.default"
-
-rm "${GRUB2_SOURCE_DIR}/xman_dos2unix.sh" || true
-ln -s "${SCRIPTS_DIR}/xmanutility/xman_dos2unix.sh" "${GRUB2_SOURCE_DIR}/xman_dos2unix.sh"
+TIANOCORE() {
+	
+	echo
+	
+	SOURCE_DIR="${TIANO_SCRIPTS_DIR}/"
+	LINK_DIR="${TIANO_SOURCE_DIR}/"
+	
+	LINK_FILE="tianocore_common.sh"
+	BASIC_COMMANDS
+	
+	LINK_FILE="tianocore_duet_common.sh"
+	BASIC_COMMANDS
+	
+	LINK_FILE="duet_x64_edk2_linux_compile_setup.sh"
+	BASIC_COMMANDS
+	
+	LINK_FILE="post_duet_x64_compile.sh"
+	BASIC_COMMANDS
+	
+	LINK_FILE="create_duet_x64_memdisk_old"
+	BASIC_COMMANDS
+	
+	LINK_FILE="create_duet_x64_memdisk_new.sh"
+	BASIC_COMMANDS
+	
+	LINK_FILE="ovmf_x64_edk2_linux_compile_setup.sh"
+	BASIC_COMMANDS
+	
+	LINK_FILE="stdlib_x64_edk2_linux_compile_setup.sh"
+	BASIC_COMMANDS
+	
+	LINK_FILE="unix_x64_edk2_linux_compile_setup.sh"
+	BASIC_COMMANDS
+	
+	LINK_FILE="vbox_x64_edk2_linux_compile_setup.sh"
+	BASIC_COMMANDS
+	
+	echo
+	
+}
 
 echo
 
-rm "${GRUB2_BIOS_DIR}/grub2_bios.sh" || true
-ln -s "${GRUB2_SCRIPTS_DIR}/grub2_bios.sh" "${GRUB2_BIOS_DIR}/grub2_bios.sh"
-
-rm "${GRUB2_UEFI_DIR}/grub2_uefi.sh" || true
-ln -s "${GRUB2_SCRIPTS_DIR}/grub2_uefi.sh" "${GRUB2_UEFI_DIR}/grub2_uefi.sh"
-
-rm "${GRUB2_UEFI_DIR}/grub2_uefi_mkimage_x64_linux.sh" || true
-ln -s "${GRUB2_SCRIPTS_DIR}/grub2_uefi_mkimage_x64_linux.sh" "${GRUB2_UEFI_DIR}/grub2_uefi_mkimage_x64_linux.sh"
-
-rm "${GRUB2_DIR}/Source_BZR/grub2_bzr_export.sh" || true
-ln -s "${GRUB2_SCRIPTS_DIR}/grub2_bzr_export.sh" "${GRUB2_DIR}/Source_BZR/grub2_bzr_export.sh"
+TIANOCORE
 
 echo
 
-## tianocore
-
-rm "${TIANO_SOURCE_DIR}/duet_x64_edk2_linux_compile_setup.sh" || true
-ln -s "${TIANO_SCRIPTS_DIR}/duet_x64_edk2_linux_compile_setup.sh" "${TIANO_SOURCE_DIR}/duet_x64_edk2_linux_compile_setup.sh"
-
-rm "${TIANO_SOURCE_DIR}/create_duet_x64_memdisk.sh" || true
-ln -s "${TIANO_SCRIPTS_DIR}/create_duet_x64_memdisk.sh" "${TIANO_SOURCE_DIR}/create_duet_x64_memdisk.sh"
-
-rm "${TIANO_SOURCE_DIR}/post_duet_x64_compile.sh" || true
-ln -s "${TIANO_SCRIPTS_DIR}/post_duet_x64_compile.sh" "${TIANO_SOURCE_DIR}/post_duet_x64_compile.sh"
-
-rm "${TIANO_SOURCE_DIR}/ovmf_x64_edk2_linux_compile_setup.sh" || true
-ln -s "${TIANO_SCRIPTS_DIR}/ovmf_x64_edk2_linux_compile_setup.sh" "${TIANO_SOURCE_DIR}/ovmf_x64_edk2_linux_compile_setup.sh"
-
-rm "${TIANO_SOURCE_DIR}/unix_x64_edk2_linux_compile_setup.sh" || true
-ln -s "${TIANO_SCRIPTS_DIR}/unix_x64_edk2_linux_compile_setup.sh" "${TIANO_SOURCE_DIR}/unix_x64_edk2_linux_compile_setup.sh"
-
-rm "${TIANO_SOURCE_DIR}/stdlib_x64_edk2_linux_compile_setup.sh" || true
-ln -s "${TIANO_SCRIPTS_DIR}/stdlib_x64_edk2_linux_compile_setup.sh" "${TIANO_SOURCE_DIR}/stdlib_x64_edk2_linux_compile_setup.sh"
-
-rm "${TIANO_SOURCE_DIR}/vbox_x64_edk2_linux_compile_setup.sh" || true
-ln -s "${TIANO_SCRIPTS_DIR}/vbox_x64_edk2_linux_compile_setup.sh" "${TIANO_SOURCE_DIR}/vbox_x64_edk2_linux_compile_setup.sh"
+GRUB2
 
 echo
 

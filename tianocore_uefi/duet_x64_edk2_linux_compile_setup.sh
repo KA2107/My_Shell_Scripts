@@ -2,64 +2,13 @@
 
 set -x -e
 
-WD="${PWD}/"
+SOURCE_CODES_DIR="/media/Data_2/Source_Codes"
+WD="${SOURCE_CODES_DIR}/Firmware/UEFI/TianoCore_Sourceforge"
 
-EDK2_DIR="${WD}/edk2_GIT"
-EDK2_BUILD_TOOLS_DIR="${WD}/buildtools-BaseTools_GIT"
-
-EDK2_BUILD_OUTER_DIR="${EDK2_DIR}/Build/DuetPkgX64/"
-EDK2_BUILD_DIR="${EDK2_BUILD_OUTER_DIR}/RELEASE_GCC45/"
-
-DUET_EMUVARIABLE_BUILD_DIR="${WD}/DUET_EMUVARIABLE_BUILD"
-DUET_FSVARIABLE_BUILD_DIR="${WD}/DUET_FSVARIABLE_BUILD"
-
-BOOTPART="/boot/"
-EFISYS="/boot/efi/"
-SYSLINUX_DIR="/usr/lib/syslinux/"
+source "${WD}/tianocore_duet_common.sh"
 
 DUET_PART_FS_UUID="5FA3-2472"
 DUET_PART_MP="/media/DUET"
-
-EDK2_BUILD_CLEAN() {
-	
-	echo
-	
-	rm -rf "${EDK2_DIR}/BaseTools" || true
-	rm -rf "${EDK2_DIR}/Build/DuetPkgX64" || true
-	rm -rf "${EDK2_DIR}/Conf" || true
-	
-	echo
-	
-	cd "${EDK2_DIR}/"
-	git reset --hard
-	git checkout keshav_pr
-	
-	echo
-	
-}
-
-COPY_BUILDTOOLS_BASETOOLS() {
-	
-	echo
-	
-	rm -rf "${EDK2_DIR}/BaseTools" || true
-	cp -r "${EDK2_BUILD_TOOLS_DIR}" "${EDK2_DIR}/BaseTools"
-	
-	echo
-	
-}
-
-CORRECT_WERROR() {
-	
-	echo
-	
-	sed -i 's|-Werror||g' "${EDK2_DIR}/BaseTools/Source/C/Makefiles"/*
-	sed -i 's|-Werror||g' "${EDK2_DIR}/BaseTools/Conf/tools_def.template"
-	sed -i 's|--64||g' "${EDK2_DIR}/BaseTools/Conf/tools_def.template"
-	
-	echo
-	
-}
 
 COPY_EFILDR_DUET_PART() {
 	
@@ -89,49 +38,6 @@ COPY_UEFI_SHELL_EFISYS_PART() {
 	
 	echo
 	
-}
-
-SET_PYTHON2() {
-	
-	echo
-	
-	_PYTHON_="$(which python)"
-	sudo rm "${_PYTHON_}"
-	sudo ln -s "$(which python2)" "${_PYTHON_}"
-	unset _PYTHON_
-	
-	echo
-	
-}
-
-SET_PYTHON3() {
-	
-	echo
-	
-	_PYTHON_="$(which python)"
-	sudo rm "${_PYTHON_}"
-	sudo ln -s "$(which python3)" "${_PYTHON_}"
-	unset _PYTHON_
-	
-	echo
-	
-}
-
-APPLY_PATCHES() {
-	
-	echo
-	
-	cd "${EDK2_DIR}/"
-	
-	# patch -Np1 -i "${WD}/EDK2_DuetPkg_Use_VS2008x86_Toolchain.patch" || true
-	# patch -Np1 -i "${WD}/EDK2_DuetPkg_Efivars_Use_MdeModulePkg_Universal_Variable_EmuRuntimeDxe.patch"
-	# patch -Np1 -i "${WD}/EDK2_DuetPkg_Efivars_Use_MdeModulePkg_Universal_Variable_EmuRuntimeDxe_old.patch"
-	
-	echo
-	
-	# sed -i 's|#define EFI_PAGE_BASE_OFFSET_IN_LDR 0x70000|#define EFI_PAGE_BASE_OFFSET_IN_LDR 0x72000|g' "${EDK2_DIR}/BaseTools/Source/C/GenPage/GenPage.c"
-	
-	echo
 }
 
 COMPILE_DUET_EMUVARIABLE_BRANCH() {
@@ -253,13 +159,21 @@ cd "${WD}/"
 
 echo
 
+unset SOURCE_CODES_DIR
 unset WD
 unset EDK2_DIR
 unset EDK2_BUILD_TOOLS_DIR
-unset EDK2_BUILD_OUTER_DIR
+unset EDK2_C_SOURCE_DIR
+unset EDK2_DUET_BOOTSECT_BIN_DIR
 unset EDK2_BUILD_DIR
 unset DUET_EMUVARIABLE_BUILD_DIR
 unset DUET_FSVARIABLE_BUILD_DIR
+unset COMPILED_DIR
+unset EFI_DUET_GIT_DIR
+unset MEMDISK_COMPILED_DIR
+unset MEMDISK_DIR
+unset MIGLE_BOOTDUET_COMPILE_DIR
+unset SRS5694_DUET_INSTALL_DIR
 unset BOOTPART
 unset EFISYS
 unset SYSLINUX_DIR
