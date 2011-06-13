@@ -176,7 +176,7 @@ MEMDISK_COMPILED_GIT() {
 	echo
 	
 	rm -rf "${MEMDISK_COMPILED_DIR}/Tiano_EDK2_DUET_X64.img" || true
-	# cp "${EDK2_BUILD_OUTER_DIR}/floppy.img" "${MEMDISK_COMPILED_DIR}/Tiano_EDK2_DUET_X64.img"
+	# cp "${DUET_EMUVARIABLE_BUILD_DIR}/floppy.img" "${MEMDISK_COMPILED_DIR}/Tiano_EDK2_DUET_X64.img"
 	cp "${WD}/duet_x64_memdisk.bin" "${MEMDISK_COMPILED_DIR}/Tiano_EDK2_DUET_X64.img"
 	
 	echo

@@ -169,6 +169,7 @@ COMPILE_DUET_EMUVARIABLE_BRANCH() {
 	echo
 	
 	cp -r "${EDK2_BUILD_DIR}" "${DUET_EMUVARIABLE_BUILD_DIR}"
+	cp "${EDK2_BUILD_OUTER_DIR}/floppy.img" "${DUET_EMUVARIABLE_BUILD_DIR}/floppy.img"
 	
 	echo
 	
@@ -215,7 +216,8 @@ COMPILE_DUET_FSVARIABLE_BRANCH() {
 	
 	echo
 	
-	cp -r "${EDK2_BUILD_DIR}" "${WD}/DUET_FSVARIABLE_BUILD"
+	cp -r "${EDK2_BUILD_DIR}" "${DUET_FSVARIABLE_BUILD_DIR}"
+	cp "${EDK2_BUILD_OUTER_DIR}/floppy.img" "${DUET_FSVARIABLE_BUILD_DIR}/floppy.img"
 	
 	echo
 	
