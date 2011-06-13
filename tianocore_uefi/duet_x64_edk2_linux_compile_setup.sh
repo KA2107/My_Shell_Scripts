@@ -14,7 +14,13 @@ COPY_EFILDR_DUET_PART() {
 	
 	echo
 	
-	sudo umount "${DUET_PART_MP}" || true
+	if [-d "${DUET_PART_MP}" ]
+	then
+		sudo umount "${DUET_PART_MP}" || true
+	else
+		sudo mkdir -p "${DUET_PART_MP}"
+	fi
+	
 	sudo mount -t vfat -o rw,users,exec -U "${DUET_PART_FS_UUID}" "${DUET_PART_MP}"
 	sudo rm "${DUET_PART_MP}/EFILDR20" || true
 	sudo cp "${EDK2_BUILD_DIR}/FV/Efildr20" "${DUET_PART_MP}/EFILDR20"
