@@ -22,7 +22,7 @@ BASIC_COMMANDS() {
 	echo
 	
 	rm "${LINK_DIR}/${LINK_FILE}" || true
-	ln -s "${SOURCE_DIR}/${LINK_FILE}" "${GRUB2_SOURCE_DIR}/${LINK_FILE}"
+	ln -s "${SOURCE_DIR}/${LINK_FILE}" "${LINK_DIR}/${LINK_FILE}"
 	
 	echo
 	
@@ -62,6 +62,12 @@ GRUB2() {
 	
 	echo
 	
+	unset SOURCE_DIR
+	unset LINK_DIR
+	unset LINK_FILE
+	
+	echo
+	
 }
 
 TIANOCORE() {
@@ -83,7 +89,7 @@ TIANOCORE() {
 	LINK_FILE="post_duet_x64_compile.sh"
 	BASIC_COMMANDS
 	
-	LINK_FILE="create_duet_x64_memdisk_old"
+	LINK_FILE="create_duet_x64_memdisk_old.sh"
 	BASIC_COMMANDS
 	
 	LINK_FILE="create_duet_x64_memdisk_new.sh"
@@ -100,6 +106,12 @@ TIANOCORE() {
 	
 	LINK_FILE="vbox_x64_edk2_linux_compile_setup.sh"
 	BASIC_COMMANDS
+	
+	echo
+	
+	unset SOURCE_DIR
+	unset LINK_DIR
+	unset LINK_FILE
 	
 	echo
 	
