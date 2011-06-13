@@ -28,7 +28,7 @@ MIGLE_BOOTDUET_CLEAN() {
 	
 	echo
 	
-	cd "${MIGLE_BOOTDUET_DIR}/"
+	cd "${MIGLE_BOOTDUET_COMPILE_DIR}/"
 	make clean
 	
 	echo
@@ -97,7 +97,7 @@ POST_DUET_MEMDISK() {
 	
 	echo
 	
-	"${WD}/creata_duet_x64_memdisk.sh"
+	"${WD}/create_duet_x64_memdisk.sh"
 	
 	echo
 	
@@ -143,8 +143,8 @@ EFI_DUET_GIT() {
 	
 	echo
 	
-	rm -rf "${EFI_DUET_GIT_DIR}/Win_Bin"/{BootSectImage,GenBootSector}.exe || true
-	cp "${EDK2_DIR}/BaseTools/Bin/Win32"/{BootSectImage,GenBootSector}.exe "${EFI_DUET_GIT_DIR}/Win_Bin/"
+	rm -rf "${EFI_DUET_GIT_DIR}/Windows_Binaries"/{BootSectImage,GenBootSector}.exe || true
+	cp "${EDK2_DIR}/BaseTools/Bin/Win32"/{BootSectImage,GenBootSector}.exe "${EFI_DUET_GIT_DIR}/Windows_Binaries/"
 	
 	echo
 	
@@ -156,7 +156,6 @@ EFI_DUET_GIT() {
 	
 	rm -rf "${EFI_DUET_GIT_DIR}/Licenses"/* || true
 	cp "${MIGLE_BOOTDUET_COMPILE_DIR}/COPYING" "${EFI_DUET_GIT_DIR}/Licenses/Migle_BootDuet_LICENSE.txt"
-	cp 
 	
 	cd "${EFI_DUET_GIT_DIR}/"
 	git add *

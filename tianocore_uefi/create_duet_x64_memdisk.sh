@@ -5,7 +5,7 @@ set -x -e
 SOURCE_CODES_DIR="/media/Data_2/Source_Codes"
 WD="${SOURCE_CODES_DIR}/Firmware/UEFI/TianoCore_Sourceforge"
 
-EDK2_DIR="${WD}/edk2_GIT""
+EDK2_DIR="${WD}/edk2_GIT"
 
 COMPILED_DIR="${SOURCE_CODES_DIR}/Firmware/UEFI/UEFI_Compiled_Implementation/Tianocore_DUET/"
 EFI_DUET_GIT_DIR="${COMPILED_DIR}/EFI_DUET_GIT/"
