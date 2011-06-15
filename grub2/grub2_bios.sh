@@ -6,37 +6,7 @@
 
 ## The "GRUB2_BIOS_NAME" parameter refers to the GRUB2 folder name in the your /boot Partition or /boot directory. The final GRUB2 BIOS files including core.img will be installed in /boot/<GRUB2_BIOS_NAME>/ folder, where <GRUB2_BIOS_NAME> refers to the "GRUB2_BIOS_NAME" parameter you passed to this script.
 
-export WD="${PWD}/"
-
-## The location of grub-extras source folder if you have.
-export GRUB_CONTRIB="${WD}/grub2_extras__GIT_BZR/"
-
 export PROCESS_CONTINUE="TRUE"
-export REPLACE_GRUB2_BIOS_MENU_CONFIG="0"
-
-export GRUB2_Install_Device=${1}
-export GRUB2_Root_Part_MP=${2}
-export GRUB2_BIOS_NAME=${3}
-export GRUB2_BIOS_Backup=${4}
-export GRUB2_BIOS_TOOLS_Backup=${5}
-export GRUB2_BIOS_PREFIX=${6}
-## If not mentioned, GRUB2_BIOS_PREFIX env variable will be set to /grub2/grub2_BIOS dir
-
-export GRUB2_BIOS_MENU_CONFIG="grub"
-[ "${REPLACE_GRUB2_BIOS_MENU_CONFIG}" == "1" ] && GRUB2_BIOS_MENU_CONFIG="${GRUB2_BIOS_NAME}"
-
-export GRUB2_UNIFONT_PATH="/usr/share/fonts/misc"
-
-[ "${GRUB2_BIOS_PREFIX}" == "" ] && export GRUB2_BIOS_PREFIX="/grub2/grub2_bios"
-
-export GRUB2_BOOT_PART_DIR="${GRUB2_Root_Part_MP}/boot/${GRUB2_BIOS_NAME}"
-export GRUB2_BIOS_Configure_Flags="--with-platform=pc --program-transform-name=s,grub,${GRUB2_BIOS_NAME},"
-export GRUB2_Other_Configure_Flags="--enable-mm-debug --enable-grub-mkfont --disable-nls"
-
-export GRUB2_BIOS_CORE_IMG_MODULES="part_gpt part_msdos fat ext2 ntfs ntfscomp"
-export GRUB2_EXTRAS_MODULES="lua.mod 915resolution.mod"
-
-## GRUB2_BIOS_CORE_IMG_MODULES - Those modules that will be included in the core.img image generated for your system. Note the maximum permitted size of core.img image is 32 KB.
 
 if [ \
 	"${1}" == "" -o \
@@ -51,10 +21,40 @@ then
 	echo
 	echo Example : ${0} /dev/sda / grub2 /media/Data_3/grub2_BIOS_Backup /media/Data_3/grub2_BIOS_Tools_Backup /grub2/grub2_BIOS
 	echo
-	export PROCESS_CONTINUE=FALSE
+	export PROCESS_CONTINUE="FALSE"
 fi
 
-if [ "${PROCESS_CONTINUE}" == TRUE ]
+export WD="${PWD}/"
+
+## The location of grub-extras source folder if you have.
+export GRUB_CONTRIB="${WD}/grub2_extras__GIT_BZR/"
+
+export REPLACE_GRUB2_BIOS_MENU_CONFIG="0"
+
+export GRUB2_Install_Device=${1}
+export GRUB2_Root_Part_MP=${2}
+export GRUB2_BIOS_NAME=${3}
+export GRUB2_BIOS_Backup=${4}
+export GRUB2_BIOS_TOOLS_Backup=${5}
+export GRUB2_BIOS_PREFIX=${6}
+## If not mentioned, GRUB2_BIOS_PREFIX env variable will be set to /grub2/grub2_BIOS dir
+
+export GRUB2_BIOS_MENU_CONFIG="grub"
+[ "${REPLACE_GRUB2_BIOS_MENU_CONFIG}" == "1" ] && GRUB2_BIOS_MENU_CONFIG="${GRUB2_BIOS_NAME}"
+
+[ "${GRUB2_BIOS_PREFIX}" == "" ] && export GRUB2_BIOS_PREFIX="/grub2/grub2_bios"
+
+export GRUB2_BOOT_PART_DIR="${GRUB2_Root_Part_MP}/boot/${GRUB2_BIOS_NAME}"
+export GRUB2_BIOS_Configure_Flags="--with-platform=pc --program-transform-name=s,grub,${GRUB2_BIOS_NAME},"
+export GRUB2_Other_BIOS_Configure_Flags="--enable-mm-debug --enable-grub-mkfont --disable-nls"
+export GRUB2_UNIFONT_PATH="/usr/share/fonts/misc"
+
+export GRUB2_BIOS_CORE_IMG_MODULES="part_gpt part_msdos fat ext2 ntfs ntfscomp"
+export GRUB2_EXTRAS_MODULES="lua.mod 915resolution.mod"
+
+## GRUB2_BIOS_CORE_IMG_MODULES - Those modules that will be included in the core.img image generated for your system. Note the maximum permitted size of core.img image is 32 KB.
+
+if [ "${PROCESS_CONTINUE}" == "TRUE" ]
 then
 	echo
 	echo GRUB2_Install_Device="${GRUB2_Install_Device}"
@@ -116,7 +116,7 @@ then
 	## fix unifont.bdf location
 	sed -i "s|/usr/share/fonts/unifont|${GRUB2_UNIFONT_PATH}|g" "${WD}/configure"
 	
-	"${WD}/configure" ${GRUB2_BIOS_Configure_Flags} ${GRUB2_Other_Configure_Flags} --prefix="${GRUB2_BIOS_PREFIX}"
+	"${WD}/configure" ${GRUB2_BIOS_Configure_Flags} ${GRUB2_Other_BIOS_Configure_Flags} --prefix="${GRUB2_BIOS_PREFIX}"
 	echo
 	
 	make
@@ -211,7 +211,7 @@ unset GRUB2_BIOS_PREFIX
 unset GRUB2_BIOS_MENU_CONFIG
 unset GRUB2_BOOT_PART_DIR
 unset GRUB2_BIOS_Configure_Flags
-unset GRUB2_Other_Configure_Flags
+unset GRUB2_Other_BIOS_Configure_Flags
 unset GRUB2_BIOS_CORE_IMG_MODULES
 unset GRUB2_EXTRAS_MODULES
 unset GRUB2_UNIFONT_PATH

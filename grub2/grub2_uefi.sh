@@ -6,42 +6,7 @@
 
 ## The "GRUB2_UEFI_PREFIX" parameter is not compulsory.
 
-export WD="${PWD}/"
-
-## The location of grub-extras source folder if you have.
-export GRUB_CONTRIB="${WD}/grub2_extras__GIT_BZR/"
-
 export PROCESS_CONTINUE="TRUE"
-export REPLACE_GRUB2_UEFI_MENU_CONFIG="0"
-
-export TARGET_UEFI_ARCH=${1}
-export UEFI_SYSTEM_PART_MP=${2}
-export GRUB2_UEFI_NAME=${3}
-export GRUB2_UEFI_Backup=${4}
-export GRUB2_UEFI_TOOLS_Backup=${5}
-export GRUB2_UEFI_PREFIX=${6}
-## If not mentioned, GRUB2_UEFI_PREFIX env variable will be set to /grub2/grub2_uefi_${TARGET_UEFI_ARCH} dir
-
-export GRUB2_UEFI_APP_PREFIX="efi/${GRUB2_UEFI_NAME}"
-export GRUB2_UEFI_SYSTEM_PART_DIR="${UEFI_SYSTEM_PART_MP}/${GRUB2_UEFI_APP_PREFIX}"
-export GRUB2_UNIFONT_PATH="/usr/share/fonts/misc"
-
-export GRUB2_UEFI_MENU_CONFIG="grub"
-[ "${REPLACE_GRUB2_UEFI_MENU_CONFIG}" == "1" ] && export GRUB2_UEFI_MENU_CONFIG="${GRUB2_UEFI_NAME}"
-
-export GRUB2_UEFI_Configure_Flags="--with-platform=efi --target=${TARGET_UEFI_ARCH} --program-transform-name=s,grub,${GRUB2_UEFI_NAME},"
-export GRUB2_Other_Configure_Flags="--enable-mm-debug --enable-grub-mkfont --enable-nls"
-
-# export GRUB2_UEFI_LST_files="command.lst crypto.lst fs.lst handler.lst moddep.lst partmap.lst parttool.lst terminal.lst video.lst"
-
-export GRUB2_PARTMAP_FS_MODULES="part_gpt part_msdos part_apple fat ext2 reiserfs iso9660 udf hfsplus hfs btrfs nilfs2 xfs ntfs ntfscomp zfs zfsinfo"
-export GRUB2_COMMON_IMP_MODULES="relocator reboot multiboot multiboot2 fshelp xzio gzio memdisk tar normal gfxterm chain linux ls cat search search_fs_file search_fs_uuid search_label help loopback boot configfile echo lvm usbms usb_keyboard"
-export GRUB2_UEFI_APP_MODULES="efi_gop efi_uga font png jpeg password pbkdf2 password_pbkdf2"
-export GRUB2_EXTRAS_MODULES="lua.mod"
-export GRUB2_UEFI_FINAL_MODULES="${GRUB2_PARTMAP_FS_MODULES} ${GRUB2_COMMON_IMP_MODULES} ${GRUB2_UEFI_APP_MODULES} ${GRUB2_EXTRAS_MODULES}"
-# export GRUB2_UEFI_FINAL_MODULES="${GRUB2_PARTMAP_FS_MODULES} ${GRUB2_COMMON_IMP_MODULES} ${GRUB2_UEFI_APP_MODULES}"
-
-## GRUB2_UEFI_FINAL_MODULES - Those modules that will be in the final <GRUB2_UEFI_NAME>.efi application.
 
 if [ \
 	"${1}" == "" -o \
@@ -52,16 +17,52 @@ if [ \
 	]
 then
 	echo
-	echo Usage : ${0} [TARGET_UEFI_ARCH] [EFI_SYS_PART_MOUNTPOINT] [GRUB2_UEFI_Install_Dir_Name] [GRUB2_UEFI_Backup_Path] [GRUB2_UEFI_Tools_Backup_Path] [GRUB2_UEFI_PREFIX_FOLDER]
+	echo Usage : ${0} [TARGET_UEFI_ARCH] [UEFI_SYSTEM_PART_MOUNTPOINT] [GRUB2_UEFI_Install_Dir_Name] [GRUB2_UEFI_Backup_Path] [GRUB2_UEFI_Tools_Backup_Path] [GRUB2_UEFI_PREFIX_FOLDER]
 	echo
 	echo Example : ${0} x86_64 /boot/efi grub2 /media/Data_3/grub2_UEFI_x86_64_Backup /media/Data_3/grub2_UEFI_x86_64_Tools_Backup /grub2/grub2_uefi_x86_64
 	echo
-	export PROCESS_CONTINUE=FALSE
+	export PROCESS_CONTINUE="FALSE"
 fi
+
+export WD="${PWD}/"
+
+## The location of grub-extras source folder if you have.
+export GRUB_CONTRIB="${WD}/grub2_extras__GIT_BZR/"
+
+export REPLACE_GRUB2_UEFI_MENU_CONFIG="0"
+
+export TARGET_UEFI_ARCH=${1}
+export UEFI_SYSTEM_PART_MP=${2}
+export GRUB2_UEFI_NAME=${3}
+export GRUB2_UEFI_Backup=${4}
+export GRUB2_UEFI_TOOLS_Backup=${5}
+export GRUB2_UEFI_PREFIX=${6}
+## If not mentioned, GRUB2_UEFI_PREFIX env variable will be set to /grub2/grub2_uefi_${TARGET_UEFI_ARCH} dir
+
+export GRUB2_UEFI_MENU_CONFIG="grub"
+[ "${REPLACE_GRUB2_UEFI_MENU_CONFIG}" == "1" ] && export GRUB2_UEFI_MENU_CONFIG="${GRUB2_UEFI_NAME}"
 
 [ "${GRUB2_UEFI_PREFIX}" == "" ] && GRUB2_UEFI_PREFIX="/grub2/grub2_uefi_${TARGET_UEFI_ARCH}"
 
-if [ "${PROCESS_CONTINUE}" == TRUE ]
+export GRUB2_UEFI_APP_PREFIX="efi/${GRUB2_UEFI_NAME}"
+export GRUB2_UEFI_SYSTEM_PART_DIR="${UEFI_SYSTEM_PART_MP}/${GRUB2_UEFI_APP_PREFIX}"
+export GRUB2_UNIFONT_PATH="/usr/share/fonts/misc"
+
+export GRUB2_UEFI_Configure_Flags="--with-platform=efi --target=${TARGET_UEFI_ARCH} --program-transform-name=s,grub,${GRUB2_UEFI_NAME},"
+export GRUB2_Other_UEFI_Configure_Flags="--enable-mm-debug --enable-grub-mkfont --enable-nls"
+
+export GRUB2_UEFI_LST_files="command.lst crypto.lst fs.lst handler.lst moddep.lst partmap.lst parttool.lst terminal.lst video.lst"
+
+export GRUB2_PARTMAP_FS_MODULES="part_gpt part_msdos part_apple fat ext2 reiserfs iso9660 udf hfsplus hfs btrfs nilfs2 xfs ntfs ntfscomp zfs zfsinfo"
+export GRUB2_COMMON_IMP_MODULES="relocator reboot multiboot multiboot2 fshelp xzio gzio memdisk tar normal gfxterm chain linux ls cat search search_fs_file search_fs_uuid search_label help loopback boot configfile echo lvm usbms usb_keyboard"
+export GRUB2_UEFI_APP_MODULES="efi_gop efi_uga font png jpeg password pbkdf2 password_pbkdf2"
+export GRUB2_EXTRAS_MODULES="lua.mod"
+export GRUB2_UEFI_FINAL_MODULES="${GRUB2_PARTMAP_FS_MODULES} ${GRUB2_COMMON_IMP_MODULES} ${GRUB2_UEFI_APP_MODULES} ${GRUB2_EXTRAS_MODULES}"
+# export GRUB2_UEFI_FINAL_MODULES="${GRUB2_PARTMAP_FS_MODULES} ${GRUB2_COMMON_IMP_MODULES} ${GRUB2_UEFI_APP_MODULES}"
+
+## GRUB2_UEFI_FINAL_MODULES - Those modules that will be in the final <GRUB2_UEFI_NAME>.efi application.
+
+if [ "${PROCESS_CONTINUE}" == "TRUE" ]
 then
 	echo
 	echo TARGET_UEFI_ARCH="${TARGET_UEFI_ARCH}"
@@ -123,7 +124,7 @@ then
 	## fix unifont.bdf location
 	sed -i "s|/usr/share/fonts/unifont|${GRUB2_UNIFONT_PATH}|g" "${WD}/configure"
 	
-	"${WD}/configure" ${GRUB2_UEFI_Configure_Flags} ${GRUB2_Other_Configure_Flags} --prefix="${GRUB2_UEFI_PREFIX}"
+	"${WD}/configure" ${GRUB2_UEFI_Configure_Flags} ${GRUB2_Other_UEFI_Configure_Flags} --prefix="${GRUB2_UEFI_PREFIX}"
 	echo
 	
 	make
@@ -224,8 +225,8 @@ unset GRUB2_UEFI_APP_PREFIX
 unset GRUB2_UEFI_SYSTEM_PART_DIR
 unset GRUB2_UEFI_MENU_CONFIG
 unset GRUB2_UEFI_Configure_Flags
-unset GRUB2_Other_Configure_Flags
-# unset GRUB2_UEFI_LST_files
+unset GRUB2_Other_UEFI_Configure_Flags
+unset GRUB2_UEFI_LST_files
 unset GRUB2_PARTMAP_FS_MODULES
 unset GRUB2_COMMON_IMP_MODULES
 unset GRUB2_UEFI_APP_MODULES
