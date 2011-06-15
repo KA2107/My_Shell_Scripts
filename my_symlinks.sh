@@ -107,6 +107,18 @@ TIANOCORE() {
 	LINK_FILE="vbox_x64_edk2_linux_compile_setup.sh"
 	BASIC_COMMANDS
 	
+	LINK_FILE="compile_edk2_duet_x64.cmd"
+	BASIC_COMMANDS
+	
+	LINK_FILE="compile_edk2_ovmf_x64.cmd"
+	BASIC_COMMANDS
+	
+	LINK_FILE="compile_edk_duet_uefi64.cmd"
+	BASIC_COMMANDS
+	
+	LINK_FILE="compile_edk2_nt32pkg.cmd"
+	BASIC_COMMANDS
+	
 	echo
 	
 	unset SOURCE_DIR

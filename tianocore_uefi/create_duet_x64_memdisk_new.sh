@@ -11,11 +11,6 @@ CREATE_MEMDISK() {
 	
 	echo
 	
-	sudo rm -rf "${BOOTPART}/memdisk_syslinux" || true
-	sudo cp "${SYSLINUX_DIR}/memdisk" "${BOOTPART}/memdisk_syslinux"
-	
-	echo
-	
 	rm -rf "${WD}/duet_x64_memdisk.bin" || true
 	dd if=/dev/zero of="${WD}/duet_x64_memdisk.bin" bs=512 count=2880
 	mkfs.vfat -F12 -S 512 -n "EFI_DUET" "${WD}/duet_x64_memdisk.bin"
@@ -57,11 +52,19 @@ COMPILE_MEMDISK() {
 
 echo
 
+COPY_MEMDISK_SYSLINUX
+
+echo
+
 CREATE_MEMDISK
 
 echo
 
 COMPILE_MEMDISK
+
+echo
+
+COPY_EFILDR_MEMDISK
 
 echo
 

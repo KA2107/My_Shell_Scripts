@@ -7,45 +7,6 @@ WD="${SOURCE_CODES_DIR}/Firmware/UEFI/TianoCore_Sourceforge"
 
 source "${WD}/tianocore_duet_common.sh"
 
-DUET_PART_FS_UUID="5FA3-2472"
-DUET_PART_MP="/media/DUET"
-
-COPY_EFILDR_DUET_PART() {
-	
-	echo
-	
-	if [-d "${DUET_PART_MP}" ]
-	then
-		sudo umount "${DUET_PART_MP}" || true
-	else
-		sudo mkdir -p "${DUET_PART_MP}"
-	fi
-	
-	sudo mount -t vfat -o rw,users,exec -U "${DUET_PART_FS_UUID}" "${DUET_PART_MP}"
-	sudo rm "${DUET_PART_MP}/EFILDR20" || true
-	sudo cp "${DUET_EMUVARIABLE_BUILD_DIR}/FV/Efildr20" "${DUET_PART_MP}/EFILDR20"
-	sudo umount "${DUET_PART_MP}"
-	
-	echo
-	
-}
-
-COPY_UEFI_SHELL_EFISYS_PART() {
-	
-	echo
-	
-	sudo rm "${EFISYS}/shellx64.efi" || true
-	sudo rm "${EFISYS}/shellx64_old.efi" || true
-	
-	echo
-	
-	sudo cp "${EDK2_DIR}/ShellBinPkg/UefiShell/X64/Shell.efi" "${EFISYS}/shellx64.efi"
-	sudo cp "${EDK2_DIR}/EdkShellBinPkg/FullShell/X64/Shell_Full.efi" "${EFISYS}/shellx64_old.efi"
-	
-	echo
-	
-}
-
 COMPILE_DUET_EMUVARIABLE_BRANCH() {
 	
 	echo
@@ -157,6 +118,10 @@ COPY_EFILDR_DUET_PART
 echo
 
 COPY_UEFI_SHELL_EFISYS_PART
+
+echo
+
+COPY_EFILDR_MEMDISK
 
 echo
 
