@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/bin/bash
 
 export TARGET_EFI_ARCH="x86_64"
 export GRUB2_EFI_PREFIX="/grub2/grub2_uefi_${TARGET_EFI_ARCH}"

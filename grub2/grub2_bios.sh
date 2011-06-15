@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/bin/bash
 
 ## This is a script to compile and install GRUB2 for BIOS systems. Just copy this script to the GRUB2 Source Root dir and run this script by passing the correct parameters. This script will be updated as and when the commands change in GRUB2 bzr repo and not just stick to any release version.
 
