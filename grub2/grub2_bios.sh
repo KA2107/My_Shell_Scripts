@@ -9,9 +9,10 @@
 export WD="${PWD}/"
 
 ## The location of grub-extras source folder if you have.
-export GRUB_CONTRIB="${WD}/grub2_extras_BZR/"
+export GRUB_CONTRIB="${WD}/grub2_extras__GIT_BZR/"
 
 export PROCESS_CONTINUE="TRUE"
+export REPLACE_GRUB2_BIOS_MENU_CONFIG="0"
 
 export GRUB2_Install_Device=${1}
 export GRUB2_Root_Part_MP=${2}
@@ -22,12 +23,11 @@ export GRUB2_BIOS_PREFIX=${6}
 ## If not mentioned, GRUB2_BIOS_PREFIX env variable will be set to /grub2/grub2_BIOS dir
 
 export GRUB2_BIOS_MENU_CONFIG="grub"
+[ "${REPLACE_GRUB2_BIOS_MENU_CONFIG}" == "1" ] && GRUB2_BIOS_MENU_CONFIG="${GRUB2_BIOS_NAME}"
+
 export GRUB2_UNIFONT_PATH="/usr/share/fonts/misc"
 
-if [ "${GRUB2_BIOS_PREFIX}" == "" ]
-then
-	export GRUB2_BIOS_PREFIX="/grub2/grub2_bios"
-fi
+[ "${GRUB2_BIOS_PREFIX}" == "" ] && export GRUB2_BIOS_PREFIX="/grub2/grub2_bios"
 
 export GRUB2_BOOT_PART_DIR="${GRUB2_Root_Part_MP}/boot/${GRUB2_BIOS_NAME}"
 export GRUB2_BIOS_Configure_Flags="--with-platform=pc --program-transform-name=s,grub,${GRUB2_BIOS_NAME},"
