@@ -2,7 +2,7 @@
 
 ## This is a script to compile and install GRUB2 for UEFI systems. Just copy this script to the GRUB2 Source Root dir and run this script by passing the correct parameters. This script will be updated as and when the commands change in GRUB2 bzr repo and not just stick to any release version.
 
-## The "GRUB2_UEFI_NAME" parameter refers to the GRUB2 folder name in the EFI System Partition. The final GRUB2 UEFI files will be installed in <EFI SYSTEM PARTITION>/efi/<GRUB2_UEFI_NAME>/ folder. The final GRUB2 EFI Application will be <EFI SYSTEM PARTITION>/efi/<GRUB2_UEFI_NAME>/<GRUB2_UEFI_NAME>.efi where <GRUB2_UEFI_NAME> refers to the "GRUB2_UEFI_NAME" parameter you passed to this script.
+## The "GRUB2_UEFI_NAME" parameter refers to the GRUB2 folder name in the UEFI System Partition. The final GRUB2 UEFI files will be installed in <EFI SYSTEM PARTITION>/efi/<GRUB2_UEFI_NAME>/ folder. The final GRUB2 UEFI Application will be <EFI SYSTEM PARTITION>/efi/<GRUB2_UEFI_NAME>/<GRUB2_UEFI_NAME>.efi where <GRUB2_UEFI_NAME> refers to the "GRUB2_UEFI_NAME" parameter you passed to this script.
 
 ## The "GRUB2_UEFI_PREFIX" parameter is not compulsory.
 
@@ -141,23 +141,23 @@ then
 	# sudo cp --verbose ${GRUB2_EXTRAS_MODULES} "${GRUB2_UEFI_PREFIX}/lib/${GRUB2_UEFI_NAME}/${TARGET_UEFI_ARCH}-efi/" || true
 	echo
 	
-	## Backup the old GRUB2 folder in the EFI System Partition
+	## Backup the old GRUB2 folder in the UEFI System Partition
 	sudo cp --verbose -r "${GRUB2_UEFI_SYSTEM_PART_DIR}" "${GRUB2_UEFI_Backup}" || true
 	echo
-	## Delete the old GRUB2 folder in the EFI System Partition
+	## Delete the old GRUB2 folder in the UEFI System Partition
 	sudo rm --verbose -rf "${GRUB2_UEFI_SYSTEM_PART_DIR}" || true
 	echo
 	
 	sudo sed -i 's|--bootloader_id=|--bootloader-id=|g' "${GRUB2_UEFI_PREFIX}/sbin/${GRUB2_UEFI_NAME}-install" || true
 	
-	## Setup the GRUB2 folder in the EFI System Partition and create the grub.efi application
+	## Setup the GRUB2 folder in the UEFI System Partition and create the grub.efi application
 	sudo "${GRUB2_UEFI_PREFIX}/sbin/${GRUB2_UEFI_NAME}-install" --boot-directory="${UEFI_SYSTEM_PART_MP}/efi" --bootloader-id="${GRUB2_UEFI_NAME}" --no-floppy --recheck --debug
 	echo
 	
 	sudo rm "${GRUB2_UEFI_SYSTEM_PART_DIR}/core.efi" || true
 	echo
 	
-	## Create the grub2 efi application
+	## Create the grub2 uefi application
 	sudo "${GRUB2_UEFI_PREFIX}/bin/${GRUB2_UEFI_NAME}-mkimage" --verbose --directory="${GRUB2_UEFI_PREFIX}/lib/${GRUB2_UEFI_NAME}/${TARGET_UEFI_ARCH}-efi" --prefix="" --output="${GRUB2_UEFI_SYSTEM_PART_DIR}/${GRUB2_UEFI_NAME}.efi" --format="${TARGET_UEFI_ARCH}-efi" ${GRUB2_UEFI_FINAL_MODULES}
 	echo
 	
