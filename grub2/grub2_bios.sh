@@ -1,10 +1,15 @@
 #!/bin/bash
 
-## This is a script to compile and install GRUB2 for BIOS systems. Just copy this script to the GRUB2 Source Root dir and run this script by passing the correct parameters. This script will be updated as and when the commands change in GRUB2 bzr repo and not just stick to any release version.
+## This is a script to compile and install GRUB2 for BIOS systems. Just copy this script to the (GRUB2 Source Root dir) and run this script by passing the correct parameters. This script will be updated as and when the commands change in GRUB2 bzr repo and not just stick to any release version.
+
+## For example if you did 'bzr branch bzr://bzr.savannah.gnu.org/grub/trunk/grub /home/user/grub'
+## Then copy this script to /home/user/grub and cd into /home/user/grub and the run this script.
 
 ## For MBR partitioned disks, make sure the 63-sector gap exists after the 1st 512-byte MBR region. For GPT partitioned disks, create a "BIOS Boot Partition" of about 1 MB size before running this script.
 
 ## The "GRUB2_BIOS_NAME" parameter refers to the GRUB2 folder name in the your /boot Partition or /boot directory. The final GRUB2 BIOS files including core.img will be installed in /boot/<GRUB2_BIOS_NAME>/ folder, where <GRUB2_BIOS_NAME> refers to the "GRUB2_BIOS_NAME" parameter you passed to this script.
+
+## For xman_dos2unix.sh download https://github.com/skodabenz/My_Shell_Scripts/blob/master/xmanutility/xman_dos2unix.sh
 
 export PROCESS_CONTINUE="TRUE"
 

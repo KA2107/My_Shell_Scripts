@@ -2,9 +2,14 @@
 
 ## This is a script to compile and install GRUB2 for UEFI systems. Just copy this script to the GRUB2 Source Root dir and run this script by passing the correct parameters. This script will be updated as and when the commands change in GRUB2 bzr repo and not just stick to any release version.
 
+## For example if you did 'bzr branch bzr://bzr.savannah.gnu.org/grub/trunk/grub /home/user/grub'
+## Then copy this script to /home/user/grub and cd into /home/user/grub and the run this script.
+
 ## The "GRUB2_UEFI_NAME" parameter refers to the GRUB2 folder name in the UEFI System Partition. The final GRUB2 UEFI files will be installed in <EFI SYSTEM PARTITION>/efi/<GRUB2_UEFI_NAME>/ folder. The final GRUB2 UEFI Application will be <EFI SYSTEM PARTITION>/efi/<GRUB2_UEFI_NAME>/<GRUB2_UEFI_NAME>.efi where <GRUB2_UEFI_NAME> refers to the "GRUB2_UEFI_NAME" parameter you passed to this script.
 
 ## The "GRUB2_UEFI_PREFIX" parameter is not compulsory.
+
+## For xman_dos2unix.sh download https://github.com/skodabenz/My_Shell_Scripts/blob/master/xmanutility/xman_dos2unix.sh
 
 export PROCESS_CONTINUE="TRUE"
 
