@@ -5,6 +5,10 @@
 ## For example if you did 'bzr branch bzr://bzr.savannah.gnu.org/grub/trunk/grub /home/user/grub'
 ## Then copy this script to /home/user/grub and cd into /home/user/grub and the run this script.
 
+## This script assumes all the build dependencies to be installed and it does not try to install those for you.
+
+## This script has configure options specific to my requirements and my system. Please read this script fully and modify it to suite your requirements. 
+
 ## The "GRUB2_UEFI_NAME" parameter refers to the GRUB2 folder name in the UEFI System Partition. The final GRUB2 UEFI files will be installed in <EFI SYSTEM PARTITION>/efi/<GRUB2_UEFI_NAME>/ folder. The final GRUB2 UEFI Application will be <EFI SYSTEM PARTITION>/efi/<GRUB2_UEFI_NAME>/<GRUB2_UEFI_NAME>.efi where <GRUB2_UEFI_NAME> refers to the "GRUB2_UEFI_NAME" parameter you passed to this script.
 
 ## The "GRUB2_UEFI_PREFIX" parameter is not compulsory.
@@ -33,6 +37,8 @@ then
 	echo
 	echo "This script uses the 'sudo' tool at certain places so make sure you have that installed."
 	echo
+	echo "Please read this script fully and modify it to suite your requirements before actually running it"
+	echo
 	export PROCESS_CONTINUE="FALSE"
 fi
 
@@ -43,12 +49,12 @@ export GRUB_CONTRIB="${WD}/grub2_extras__GIT_BZR/"
 
 export REPLACE_GRUB2_UEFI_MENU_CONFIG="0"
 
-export TARGET_UEFI_ARCH=${1}
-export UEFI_SYSTEM_PART_MP=${2}
-export GRUB2_UEFI_NAME=${3}
-export GRUB2_UEFI_Backup=${4}
-export GRUB2_UEFI_TOOLS_Backup=${5}
-export GRUB2_UEFI_PREFIX=${6}
+export TARGET_UEFI_ARCH="${1}"
+export UEFI_SYSTEM_PART_MP="${2}"
+export GRUB2_UEFI_NAME="${3}"
+export GRUB2_UEFI_Backup="${4}"
+export GRUB2_UEFI_TOOLS_Backup="${5}"
+export GRUB2_UEFI_PREFIX="${6}"
 ## If not mentioned, GRUB2_UEFI_PREFIX env variable will be set to /grub2/grub2_uefi_${TARGET_UEFI_ARCH} dir
 
 export GRUB2_UEFI_MENU_CONFIG="grub"
@@ -111,6 +117,9 @@ then
 	## Uncomment below to use ${GRUB2_UEFI_MENU_CONFIG}.cfg as the menu config file instead of grub.cfg
 	sed -i "s|grub.cfg|${GRUB2_UEFI_MENU_CONFIG}.cfg|g" "${WD}/grub-core/normal/main.c" || true
 	
+	## Check whether python2 exists, otherwise create /usr/bin/python2 symlink to python executable 
+	[ "$(which python2)" == "" ] && sudo ln -s $(which python) /usr/bin/python2
+	
 	## Archlinux changed default /usr/bin/python to 3.1.2, need to use /usr/bin/python2 instead
 	cp "${WD}/autogen.sh" "${WD}/autogen_unmodified.sh"
 	sed -i 's|python |python2 |g' "${WD}/autogen.sh" || true
@@ -118,7 +127,7 @@ then
 	if [ ! -e "${WD}/po/LINGUAS" ]
 	then
 		cd "${WD}/"
-		# rsync -Lrtvz translationproject.org::tp/latest/grub/ "${WD}/po" || true
+		rsync -Lrtvz translationproject.org::tp/latest/grub/ "${WD}/po" || true
 		(cd "${WD}/po" && ls *.po | cut -d. -f1 | xargs) > "${WD}/po/LINGUAS" || true
 	fi
 	

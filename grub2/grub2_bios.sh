@@ -5,9 +5,13 @@
 ## For example if you did 'bzr branch bzr://bzr.savannah.gnu.org/grub/trunk/grub /home/user/grub'
 ## Then copy this script to /home/user/grub and cd into /home/user/grub and the run this script.
 
+## This script assumes all the build dependencies to be installed and it does not try to install those for you.
+
+## This script has configure options specific to my requirements and my system. Please read this script fully and modify it to suite your requirements. 
+
 ## For MBR partitioned disks, make sure the 63-sector gap exists after the 1st 512-byte MBR region. For GPT partitioned disks, create a "BIOS Boot Partition" of about 1 MB size before running this script.
 
-## The "GRUB2_BIOS_NAME" parameter refers to the GRUB2 folder name in the your /boot Partition or /boot directory. The final GRUB2 BIOS files including core.img will be installed in /boot/<GRUB2_BIOS_NAME>/ folder, where <GRUB2_BIOS_NAME> refers to the "GRUB2_BIOS_NAME" parameter you passed to this script.
+## The "GRUB2_BIOS_NAME" parameter refers to the GRUB2 folder name in the your /boot partition or /boot directory. The final GRUB2 BIOS files including core.img will be installed in /boot/<GRUB2_BIOS_NAME>/ folder, where <GRUB2_BIOS_NAME> refers to the "GRUB2_BIOS_NAME" parameter you passed to this script.
 
 ## For xman_dos2unix.sh download https://github.com/skodabenz/My_Shell_Scripts/blob/master/xmanutility/xman_dos2unix.sh
 
@@ -33,6 +37,8 @@ then
 	echo
 	echo "This script uses the 'sudo' tool at certain places so make sure you have that installed."
 	echo
+	echo "Please read this script fully and modify it to suite your requirements before actually running it"
+	echo
 	export PROCESS_CONTINUE="FALSE"
 fi
 
@@ -43,12 +49,12 @@ export GRUB_CONTRIB="${WD}/grub2_extras__GIT_BZR/"
 
 export REPLACE_GRUB2_BIOS_MENU_CONFIG="0"
 
-export GRUB2_Install_Device=${1}
-export GRUB2_Root_Part_MP=${2}
-export GRUB2_BIOS_NAME=${3}
-export GRUB2_BIOS_Backup=${4}
-export GRUB2_BIOS_TOOLS_Backup=${5}
-export GRUB2_BIOS_PREFIX=${6}
+export GRUB2_Install_Device="${1}"
+export GRUB2_Root_Part_MP="${2}"
+export GRUB2_BIOS_NAME="${3}"
+export GRUB2_BIOS_Backup="${4}"
+export GRUB2_BIOS_TOOLS_Backup="${5}"
+export GRUB2_BIOS_PREFIX="${6}"
 ## If not mentioned, GRUB2_BIOS_PREFIX env variable will be set to /grub2/grub2_BIOS dir
 
 export GRUB2_BIOS_MENU_CONFIG="grub"
@@ -103,6 +109,9 @@ then
 	## Uncomment below to use ${GRUB2_BIOS_MENU_CONFIG}.cfg as the menu config file instead of grub.cfg
 	sed -i "s|grub.cfg|${GRUB2_BIOS_MENU_CONFIG}.cfg|g" "${WD}/grub-core/normal/main.c" || true
 	
+	## Check whether python2 exists, otherwise create /usr/bin/python2 symlink to python executable 
+	[ "$(which python2)" == "" ] && sudo ln -s $(which python) /usr/bin/python2
+	
 	## Archlinux changed default /usr/bin/python to 3.1.2, need to use /usr/bin/python2 instead
 	cp "${WD}/autogen.sh" "${WD}/autogen_unmodified.sh"
 	sed -i 's|python |python2 |g' "${WD}/autogen.sh" || true
@@ -110,7 +119,7 @@ then
 	if [ ! -e "${WD}/po/LINGUAS" ]
 	then
 		cd "${WD}/"
-		# rsync -Lrtvz translationproject.org::tp/latest/grub/ "${WD}/po" || true
+		rsync -Lrtvz translationproject.org::tp/latest/grub/ "${WD}/po" || true
 		(cd "${WD}/po" && ls *.po | cut -d. -f1 | xargs) > "${WD}/po/LINGUAS" || true
 	fi
 	
@@ -147,9 +156,6 @@ then
 	echo
 	
 	cd "${WD}/GRUB2_BIOS_BUILD_DIR/grub-core/"
-	# sudo cp --verbose g2hdr.bin g2ldr.mbr grldr.img "${GRUB2_BIOS_PREFIX}/lib/${GRUB2_BIOS_NAME}/i386-pc/" || true
-	# sudo cp --verbose grubinst "${GRUB2_BIOS_PREFIX}/bin/grubinst" || true
-	echo
 	
 	sudo mkdir -p "${GRUB2_BIOS_PREFIX}/etc/default"
 	sudo cp --verbose "${WD}/grub.default" "${GRUB2_BIOS_PREFIX}/etc/default/grub" || true
