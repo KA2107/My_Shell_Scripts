@@ -11,6 +11,8 @@
 
 ## For xman_dos2unix.sh download https://github.com/skodabenz/My_Shell_Scripts/blob/master/xmanutility/xman_dos2unix.sh
 
+## This script uses the 'sudo' tool at certain places so make sure you have that installed.
+
 export PROCESS_CONTINUE="TRUE"
 
 if [ \
@@ -28,6 +30,9 @@ then
 	echo
 	echo "For example if you did 'bzr branch bzr://bzr.savannah.gnu.org/grub/trunk/grub /home/user/grub'"
 	echo "Then copy this script to /home/user/grub and cd into /home/user/grub and then run this script from /home/user/grub."
+	echo
+	echo "This script uses the 'sudo' tool at certain places so make sure you have that installed."
+	echo
 	export PROCESS_CONTINUE="FALSE"
 fi
 
