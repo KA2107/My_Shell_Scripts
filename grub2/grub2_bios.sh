@@ -26,6 +26,8 @@ then
 	echo
 	echo Example : ${0} /dev/sda / grub2 /media/Data_3/grub2_BIOS_Backup /media/Data_3/grub2_BIOS_Tools_Backup /grub2/grub2_BIOS
 	echo
+	echo "For example if you did 'bzr branch bzr://bzr.savannah.gnu.org/grub/trunk/grub /home/user/grub'"
+	echo "Then copy this script to /home/user/grub and cd into /home/user/grub and then run this script from /home/user/grub."
 	export PROCESS_CONTINUE="FALSE"
 fi
 
