@@ -199,11 +199,10 @@ then
 		EFISYS_PART_DEVICE="$("${GRUB2_UEFI_PREFIX}/sbin/${GRUB2_UEFI_NAME}-probe" --target=device "${GRUB2_UEFI_SYSTEM_PART_DIR}/")"
 		EFISYS_PART_NUM="$(blkid -p -i -o value -s PART_ENTRY_NUMBER "${EFISYS_PART_DEVICE}")"
 		EFISYS_PARENT_DEVICE="$(echo "${EFISYS_PART_DEVICE}" | sed "s/${EFISYS_PART_NUM}//g")"
-		EFISYS_GRUB2_APP_PATH_UNIX_STYLE="/EFI/${GRUB2_UEFI_NAME}/${GRUB2_UEFI_NAME}.efi"
-		EFISYS_GRUB2_APP_PATH_UNIX_STYLE="$(echo "${EFISYS_GRUB2_APP_PATH_UNIX_STYLE}" | sed 's/\//\\/g')"
+		EFISYS_GRUB2_APP_PATH="//EFI//${GRUB2_UEFI_NAME}//${GRUB2_UEFI_NAME}.efi"
 		echo
 		
-		"${which efibootmgr)" --create --gpt --disk "${EFISYS_PARENT_DEVICE}" --part "${EFISYS_PART_NUM}" --write-signature --label "${GRUB2_UEFI_NAME}" --loader "${EFISYS_GRUB2_APP_PATH}" || true
+		"$(which efibootmgr)" --create --gpt --disk "${EFISYS_PARENT_DEVICE}" --part "${EFISYS_PART_NUM}" --write-signature --label "${GRUB2_UEFI_NAME}" --loader "${EFISYS_GRUB2_APP_PATH}" || true
 		echo
 	fi
 	
