@@ -2,6 +2,8 @@
 
 ## This is a script to compile and install GRUB2 for UEFI systems. Just copy this script to the GRUB2 Source Root dir and run this script by passing the correct parameters. This script will be updated as and when the commands change in GRUB2 bzr repo and not just stick to any release version.
 
+## This script uses efibootmgr to setup GRUB2 UEFI as the default boot option in UEFI NVRAM.
+
 ## For example if you did 'bzr branch bzr://bzr.savannah.gnu.org/grub/trunk/grub /home/user/grub'
 ## Then copy this script to /home/user/grub and cd into /home/user/grub and the run this script.
 
@@ -48,6 +50,7 @@ export WD="${PWD}/"
 export GRUB_CONTRIB="${WD}/grub2_extras__GIT_BZR/"
 
 export REPLACE_GRUB2_UEFI_MENU_CONFIG="0"
+export EXECUTE_EFIBOOTMGR="0"
 
 export TARGET_UEFI_ARCH="${1}"
 export UEFI_SYSTEM_PART_MP="${2}"
@@ -188,6 +191,21 @@ then
 	sudo cp --verbose "${GRUB2_UEFI_PREFIX}/lib/${GRUB2_UEFI_NAME}/${TARGET_UEFI_ARCH}-efi"/*.img "${GRUB2_UEFI_SYSTEM_PART_DIR}/" || true
 	echo
 	
+	if [ "${EXECUTE_EFIBOOTMGR}" == "1" ]
+	then
+		echo
+		sudo modprobe -q efivars || true
+		
+		EFISYS_PART_DEVICE="$("${GRUB2_UEFI_PREFIX}/sbin/${GRUB2_UEFI_NAME}-probe" --target=device "${GRUB2_UEFI_SYSTEM_PART_DIR}/")"
+		EFISYS_PART_NUM="$(blkid -p -i -o value -s PART_ENTRY_NUMBER "${EFISYS_PART_DEVICE}")"
+		EFISYS__PARENT_DEVICE="$(echo "${EFISYS_PART_DEVICE}" | sed "s|${EFISYS_PART_NUM}||g")"
+		
+		echo
+		
+		"${which efibootmgr)" --create --gpt --disk "${EFISYS__PARENT_DEVICE}" --part "${EFISYS_PART_NUM}" --write-signature --label "${GRUB2_UEFI_NAME}" --loader "\\EFI\\${GRUB2_UEFI_NAME}\\${GRUB2_UEFI_NAME}.efi" || true
+		echo
+	fi
+		
 	sudo mkdir -p "${GRUB2_UEFI_PREFIX}/etc/default"
 	[ -e "${WD}/grub.default" ] && sudo cp --verbose "${WD}/grub.default" "${GRUB2_UEFI_PREFIX}/etc/default/grub" || true
 	sudo chmod --verbose -x "${GRUB2_UEFI_PREFIX}/etc/default/grub" || true
@@ -236,6 +254,7 @@ unset WD
 unset GRUB_CONTRIB
 unset PROCESS_CONTINUE
 unset REPLACE_GRUB2_UEFI_MENU_CONFIG
+unset EXECUTE_EFIBOOTMGR
 unset TARGET_UEFI_ARCH
 unset UEFI_SYSTEM_PART_MP
 unset GRUB2_UEFI_NAME
