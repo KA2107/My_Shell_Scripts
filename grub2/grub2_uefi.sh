@@ -9,7 +9,7 @@
 
 ## This script assumes all the build dependencies to be installed and it does not try to install those for you.
 
-## This script has configure options specific to my requirements and my system. Please read this script fully and modify it to suite your requirements. 
+## This script has configure options specific to my requirements and my system. Please read this script fully and modify it to suite your requirements.
 
 ## The "GRUB2_UEFI_NAME" parameter refers to the GRUB2 folder name in the UEFI System Partition. The final GRUB2 UEFI files will be installed in <EFI SYSTEM PARTITION>/efi/<GRUB2_UEFI_NAME>/ folder. The final GRUB2 UEFI Application will be <EFI SYSTEM PARTITION>/efi/<GRUB2_UEFI_NAME>/<GRUB2_UEFI_NAME>.efi where <GRUB2_UEFI_NAME> refers to the "GRUB2_UEFI_NAME" parameter you passed to this script.
 
@@ -120,7 +120,7 @@ then
 	## Uncomment below to use ${GRUB2_UEFI_MENU_CONFIG}.cfg as the menu config file instead of grub.cfg
 	sed -i "s|grub.cfg|${GRUB2_UEFI_MENU_CONFIG}.cfg|g" "${WD}/grub-core/normal/main.c" || true
 	
-	## Check whether python2 exists, otherwise create /usr/bin/python2 symlink to python executable 
+	## Check whether python2 exists, otherwise create /usr/bin/python2 symlink to python executable
 	[ "$(which python2)" == "" ] && sudo ln -s "$(which python)" "/usr/bin/python2"
 	
 	## Archlinux changed default /usr/bin/python to 3.1.2, need to use /usr/bin/python2 instead
@@ -199,14 +199,16 @@ then
 		EFISYS_PART_DEVICE="$("${GRUB2_UEFI_PREFIX}/sbin/${GRUB2_UEFI_NAME}-probe" --target=device "${GRUB2_UEFI_SYSTEM_PART_DIR}/")"
 		EFISYS_PART_NUM="$(blkid -p -i -o value -s PART_ENTRY_NUMBER "${EFISYS_PART_DEVICE}")"
 		EFISYS_PARENT_DEVICE="$(echo "${EFISYS_PART_DEVICE}" | sed "s/${EFISYS_PART_NUM}//g")"
-		
+		EFISYS_GRUB2_APP_PATH_UNIX_STYLE="/EFI/${GRUB2_UEFI_NAME}/${GRUB2_UEFI_NAME}.efi"
+		EFISYS_GRUB2_APP_PATH_UNIX_STYLE="$(echo "${EFISYS_GRUB2_APP_PATH_UNIX_STYLE}" | sed 's/\//\\/g')"
 		echo
 		
-		"${which efibootmgr)" --create --gpt --disk "${EFISYS_PARENT_DEVICE}" --part "${EFISYS_PART_NUM}" --write-signature --label "${GRUB2_UEFI_NAME}" --loader "\\EFI\\${GRUB2_UEFI_NAME}\\${GRUB2_UEFI_NAME}.efi" || true
+		"${which efibootmgr)" --create --gpt --disk "${EFISYS_PARENT_DEVICE}" --part "${EFISYS_PART_NUM}" --write-signature --label "${GRUB2_UEFI_NAME}" --loader "${EFISYS_GRUB2_APP_PATH}" || true
 		echo
 	fi
 	
-	sudo mkdir -p "${GRUB2_UEFI_PREFIX}/etc/default"
+	sudo
+	mkdir -p "${GRUB2_UEFI_PREFIX}/etc/default"
 	[ -e "${WD}/grub.default" ] && sudo cp --verbose "${WD}/grub.default" "${GRUB2_UEFI_PREFIX}/etc/default/grub" || true
 	sudo chmod --verbose -x "${GRUB2_UEFI_PREFIX}/etc/default/grub" || true
 	echo
