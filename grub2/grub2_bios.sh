@@ -158,11 +158,11 @@ then
 	cd "${WD}/GRUB2_BIOS_BUILD_DIR/grub-core/"
 	
 	sudo mkdir -p "${GRUB2_BIOS_PREFIX}/etc/default"
-	sudo cp --verbose "${WD}/grub.default" "${GRUB2_BIOS_PREFIX}/etc/default/grub" || true
+	[ -e "${WD}/grub.default" ] && sudo cp --verbose "${WD}/grub.default" "${GRUB2_BIOS_PREFIX}/etc/default/grub" || true
 	sudo chmod --verbose -x "${GRUB2_BIOS_PREFIX}/etc/default/grub" || true
 	echo
 	
-	sudo cp --verbose /usr/bin/gettext.sh "${GRUB2_BIOS_PREFIX}/bin/" || true
+	sudo cp --verbose "$(which gettext.sh)" "${GRUB2_BIOS_PREFIX}/bin/" || true
 	sudo chmod --verbose -x "${GRUB2_BIOS_PREFIX}/etc/grub.d/README" || true
 	echo
 	

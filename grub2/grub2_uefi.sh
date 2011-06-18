@@ -189,11 +189,11 @@ then
 	echo
 	
 	sudo mkdir -p "${GRUB2_UEFI_PREFIX}/etc/default"
-	sudo cp "${WD}/grub.default" "${GRUB2_UEFI_PREFIX}/etc/default/grub" || true
+	[ -e "${WD}/grub.default" ] && sudo cp --verbose "${WD}/grub.default" "${GRUB2_UEFI_PREFIX}/etc/default/grub" || true
 	sudo chmod --verbose -x "${GRUB2_UEFI_PREFIX}/etc/default/grub" || true
 	echo
 	
-	sudo cp --verbose /usr/bin/gettext.sh "${GRUB2_UEFI_PREFIX}/bin/" || true
+	sudo cp --verbose "$(which gettext.sh)" "${GRUB2_UEFI_PREFIX}/bin/" || true
 	sudo chmod --verbose -x "${GRUB2_UEFI_PREFIX}/etc/grub.d/README" || true
 	echo
 	# sudo "${GRUB2_UEFI_PREFIX}/sbin/${GRUB2_UEFI_NAME}-mkconfig" --output="${GRUB2_UEFI_SYSTEM_PART_DIR}/${GRUB2_UEFI_MENU_CONFIG}.cfg" || true
