@@ -125,9 +125,9 @@ MEMDISK_COMPILED_GIT() {
 	echo "Tiano_DUET_memdisk_compiled_GIT"
 	echo
 	
-	rm -rf "${DUET_MEMDISK_COMPILED_DIR}/Tianocore_UEFI_UDK2_DUET_X64.img" || true
-	cp "${DUET_EMUVARIABLE_BUILD_DIR}/floppy.img" "${DUET_MEMDISK_COMPILED_DIR}/Tianocore_UEFI_UDK2_DUET_X64.img"
-	# cp "${WD}/duet_x64_memdisk.bin" "${DUET_MEMDISK_COMPILED_DIR}/Tianocore_UEFI_UDK2_DUET_X64.img"
+	rm -rf "${DUET_MEMDISK_COMPILED_DIR}/Tianocore_UEFI_UDK_DUET_X64.img" || true
+	cp "${DUET_EMUVARIABLE_BUILD_DIR}/floppy.img" "${DUET_MEMDISK_COMPILED_DIR}/Tianocore_UEFI_UDK_DUET_X64.img"
+	# cp "${WD}/duet_x64_memdisk.bin" "${DUET_MEMDISK_COMPILED_DIR}/Tianocore_UEFI_UDK_DUET_X64.img"
 	
 	echo
 	
