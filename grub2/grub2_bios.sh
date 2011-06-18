@@ -110,7 +110,7 @@ then
 	sed -i "s|grub.cfg|${GRUB2_BIOS_MENU_CONFIG}.cfg|g" "${WD}/grub-core/normal/main.c" || true
 	
 	## Check whether python2 exists, otherwise create /usr/bin/python2 symlink to python executable 
-	[ "$(which python2)" == "" ] && sudo ln -s $(which python) /usr/bin/python2
+	[ "$(which python2)" == "" ] && sudo ln -s "$(which python)" "/usr/bin/python2"
 	
 	## Archlinux changed default /usr/bin/python to 3.1.2, need to use /usr/bin/python2 instead
 	cp "${WD}/autogen.sh" "${WD}/autogen_unmodified.sh"
