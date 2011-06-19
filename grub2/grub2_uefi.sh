@@ -88,7 +88,7 @@ then
 	echo
 	echo TARGET_UEFI_ARCH="${TARGET_UEFI_ARCH}"
 	echo
-	echo EFI_SYS_PART_MOUNTPOINT="${UEFI_SYSTEM_PART_MP}"
+	echo UEFI_SYS_PART_MOUNTPOINT="${UEFI_SYSTEM_PART_MP}"
 	echo
 	echo GRUB2_UEFI_Final_Installation_Directory="${GRUB2_UEFI_SYSTEM_PART_DIR}"
 	echo
