@@ -139,8 +139,8 @@ then
 	
 	## GRUB2 UEFI Build Directory
 	mkdir "GRUB2_UEFI_BUILD_DIR_${TARGET_UEFI_ARCH}"
-	cp --verbose "${WD}/grub.default" "${WD}/GRUB2_UEFI_BUILD_DIR_${TARGET_UEFI_ARCH}/" || true
-	cp --verbose "${WD}/grub.cfg" "${WD}/GRUB2_UEFI_BUILD_DIR_${TARGET_UEFI_ARCH}/" || true
+	[ -e "${WD}/grub.default" ] && cp --verbose "${WD}/grub.default" "${WD}/GRUB2_UEFI_BUILD_DIR_${TARGET_UEFI_ARCH}/" || true
+	[ -e "${WD}/grub.cfg" ] && cp --verbose "${WD}/grub.cfg" "${WD}/GRUB2_UEFI_BUILD_DIR_${TARGET_UEFI_ARCH}/" || true
 	
 	cd "GRUB2_UEFI_BUILD_DIR_${TARGET_UEFI_ARCH}"
 	echo
@@ -236,7 +236,7 @@ then
 	## Copy the old config file as ${GRUB2_UEFI_MENU_CONFIG}_backup.cfg
 	sudo cp --verbose "${GRUB2_UEFI_Backup}/${GRUB2_UEFI_MENU_CONFIG}.cfg" "${GRUB2_UEFI_SYSTEM_PART_DIR}/${GRUB2_UEFI_MENU_CONFIG}_backup.cfg" || true
 	# sudo cp --verbose "${GRUB2_UEFI_Backup}/${GRUB2_UEFI_MENU_CONFIG}.cfg" "${GRUB2_UEFI_SYSTEM_PART_DIR}/${GRUB2_UEFI_MENU_CONFIG}.cfg" || true
-	sudo cp --verbose "${WD}/grub.cfg" "${GRUB2_UEFI_SYSTEM_PART_DIR}/${GRUB2_UEFI_MENU_CONFIG}.cfg" || true
+	[ -e "${WD}/grub.cfg" ] && sudo cp --verbose "${WD}/grub.cfg" "${GRUB2_UEFI_SYSTEM_PART_DIR}/${GRUB2_UEFI_MENU_CONFIG}.cfg" || true
 	sudo cp --verbose "${GRUB2_UEFI_Backup}"/*.jpg "${GRUB2_UEFI_Backup}"/*.png "${GRUB2_UEFI_Backup}"/*.tga "${GRUB2_UEFI_SYSTEM_PART_DIR}/" || true
 	echo
 	
