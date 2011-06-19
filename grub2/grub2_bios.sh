@@ -143,10 +143,21 @@ then
 	make
 	echo
 	
-	sudo cp --verbose -r "${GRUB2_BIOS_PREFIX}" "${GRUB2_BIOS_TOOLS_Backup}" || true
-	echo
-	sudo rm --verbose -rf "${GRUB2_BIOS_PREFIX}" || true
-	echo
+	if [ \
+		"${GRUB2_BIOS_PREFIX}" != '/' -o \
+		"${GRUB2_BIOS_PREFIX}" != '/usr' -o \
+		"${GRUB2_BIOS_PREFIX}" != '/usr/local' -o \
+		"${GRUB2_BIOS_PREFIX}" != '/tmp' -o \
+		"${GRUB2_BIOS_PREFIX}" != '/var' -o \
+		"${GRUB2_BIOS_PREFIX}" != '/etc' -o \
+		"${GRUB2_BIOS_PREFIX}" != '/opt' \
+		]
+	then
+		sudo cp -r --verbose "${GRUB2_BIOS_PREFIX}" "${GRUB2_BIOS_TOOLS_Backup}" || true
+		echo
+		sudo rm -rf --verbose "${GRUB2_BIOS_PREFIX}" || true
+		echo
+	fi
 	
 	sudo make install
 	echo
@@ -167,10 +178,10 @@ then
 	echo
 	
 	## Backup the old GRUB2 folder in the /boot folder.
-	sudo cp --verbose -r "${GRUB2_BOOT_PART_DIR}" "${GRUB2_BIOS_Backup}" || true
+	sudo cp -r --verbose "${GRUB2_BOOT_PART_DIR}" "${GRUB2_BIOS_Backup}" || true
 	echo
 	## Delete the old GRUB2 folder in the /boot folder.
-	sudo rm --verbose -rf "${GRUB2_BOOT_PART_DIR}" || true
+	sudo rm -rf --verbose "${GRUB2_BOOT_PART_DIR}" || true
 	echo
 	
 	sudo "${GRUB2_BIOS_PREFIX}/sbin/${GRUB2_BIOS_NAME}-install" --modules="${GRUB2_BIOS_CORE_IMG_MODULES}" --root-directory="${GRUB2_Root_Part_MP}" --no-floppy --recheck --debug "${GRUB2_Install_Device}" # Setup the GRUB2 folder in the /boot directory, create the core.img image and embed the image in the disk.

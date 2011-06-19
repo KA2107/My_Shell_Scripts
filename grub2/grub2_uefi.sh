@@ -154,10 +154,21 @@ then
 	make
 	echo
 	
-	sudo cp --verbose -r "${GRUB2_UEFI_PREFIX}" "${GRUB2_UEFI_TOOLS_Backup}" || true
-	echo
-	sudo rm --verbose -rf "${GRUB2_UEFI_PREFIX}" || true
-	echo
+	if [ \
+		"${GRUB2_UEFI_PREFIX}" != '/' -o \
+		"${GRUB2_UEFI_PREFIX}" != '/usr' -o \
+		"${GRUB2_UEFI_PREFIX}" != '/usr/local' -o \
+		"${GRUB2_UEFI_PREFIX}" != '/tmp' -o \
+		"${GRUB2_UEFI_PREFIX}" != '/var' -o \
+		"${GRUB2_UEFI_PREFIX}" != '/etc' -o \
+		"${GRUB2_UEFI_PREFIX}" != '/opt' \
+		]
+	then
+		sudo cp -r --verbose "${GRUB2_UEFI_PREFIX}" "${GRUB2_UEFI_TOOLS_Backup}" || true
+		echo
+		sudo rm -rf --verbose "${GRUB2_UEFI_PREFIX}" || true
+		echo
+	fi
 	
 	sudo make install
 	echo
@@ -167,10 +178,10 @@ then
 	echo
 	
 	## Backup the old GRUB2 folder in the UEFI System Partition
-	sudo cp --verbose -r "${GRUB2_UEFI_SYSTEM_PART_DIR}" "${GRUB2_UEFI_Backup}" || true
+	sudo cp -r --verbose "${GRUB2_UEFI_SYSTEM_PART_DIR}" "${GRUB2_UEFI_Backup}" || true
 	echo
 	## Delete the old GRUB2 folder in the UEFI System Partition
-	sudo rm --verbose -rf "${GRUB2_UEFI_SYSTEM_PART_DIR}" || true
+	sudo rm -rf --verbose "${GRUB2_UEFI_SYSTEM_PART_DIR}" || true
 	echo
 	
 	sudo sed -i 's|--bootloader_id=|--bootloader-id=|g' "${GRUB2_UEFI_PREFIX}/sbin/${GRUB2_UEFI_NAME}-install" || true
@@ -179,7 +190,7 @@ then
 	sudo "${GRUB2_UEFI_PREFIX}/sbin/${GRUB2_UEFI_NAME}-install" --boot-directory="${UEFI_SYSTEM_PART_MP}/efi" --bootloader-id="${GRUB2_UEFI_NAME}" --no-floppy --recheck --debug
 	echo
 	
-	sudo rm "${GRUB2_UEFI_SYSTEM_PART_DIR}/core.efi" || true
+	# sudo rm -rf --verbose "${GRUB2_UEFI_SYSTEM_PART_DIR}/core.efi" || true
 	echo
 	
 	## Create the grub2 uefi application
