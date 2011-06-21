@@ -17,7 +17,7 @@ export GRUB2_UEFI_DIR="${GRUB2_SOURCE_DIR}/grub2_uefi_linux_scripts"
 
 echo
 
-BASIC_COMMANDS() {
+CREATE_SYMLINK() {
 	
 	echo
 	
@@ -36,10 +36,10 @@ GRUB2() {
 	LINK_DIR="${GRUB2_SOURCE_DIR}/"
 	
 	LINK_FILE="compile_grub2.sh"
-	BASIC_COMMANDS
+	CREATE_SYMLINK
 	
 	LINK_FILE="grub.default"
-	BASIC_COMMANDS
+	CREATE_SYMLINK
 	
 	echo
 	
@@ -78,46 +78,46 @@ TIANOCORE() {
 	LINK_DIR="${TIANO_SOURCE_DIR}/"
 	
 	LINK_FILE="tianocore_common.sh"
-	BASIC_COMMANDS
+	CREATE_SYMLINK
 	
 	LINK_FILE="tianocore_duet_common.sh"
-	BASIC_COMMANDS
+	CREATE_SYMLINK
 	
 	LINK_FILE="duet_x64_edk2_linux_compile_setup.sh"
-	BASIC_COMMANDS
+	CREATE_SYMLINK
 	
 	LINK_FILE="post_duet_x64_compile.sh"
-	BASIC_COMMANDS
+	CREATE_SYMLINK
 	
 	LINK_FILE="create_duet_x64_memdisk_old.sh"
-	BASIC_COMMANDS
+	CREATE_SYMLINK
 	
 	LINK_FILE="create_duet_x64_memdisk_new.sh"
-	BASIC_COMMANDS
+	CREATE_SYMLINK
 	
 	LINK_FILE="ovmf_x64_edk2_linux_compile_setup.sh"
-	BASIC_COMMANDS
+	CREATE_SYMLINK
 	
 	LINK_FILE="stdlib_x64_edk2_linux_compile_setup.sh"
-	BASIC_COMMANDS
+	CREATE_SYMLINK
 	
 	LINK_FILE="unix_x64_edk2_linux_compile_setup.sh"
-	BASIC_COMMANDS
+	CREATE_SYMLINK
 	
 	LINK_FILE="vbox_x64_edk2_linux_compile_setup.sh"
-	BASIC_COMMANDS
+	CREATE_SYMLINK
 	
 	LINK_FILE="compile_edk2_duet_x64.cmd"
-	BASIC_COMMANDS
+	CREATE_SYMLINK
 	
 	LINK_FILE="compile_edk2_ovmf_x64.cmd"
-	BASIC_COMMANDS
+	CREATE_SYMLINK
 	
 	LINK_FILE="compile_edk_duet_uefi64.cmd"
-	BASIC_COMMANDS
+	CREATE_SYMLINK
 	
 	LINK_FILE="compile_edk2_nt32pkg.cmd"
-	BASIC_COMMANDS
+	CREATE_SYMLINK
 	
 	echo
 	
@@ -128,6 +128,20 @@ TIANOCORE() {
 	echo
 	
 }
+
+echo
+
+SOURCE_DIR="${SCRIPTS_DIR}/git/"
+LINK_DIR="${SOURCE_CODES_DIR}/"
+LINK_FILE="git_update.sh"
+CREATE_SYMLINK
+
+echo
+
+SOURCE_DIR="${SCRIPTS_DIR}/bzr/"
+LINK_DIR="${SOURCE_CODES_DIR}/"
+LINK_FILE="bzr_update.sh"
+CREATE_SYMLINK
 
 echo
 
