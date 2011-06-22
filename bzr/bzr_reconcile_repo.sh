@@ -18,7 +18,7 @@ run()
 				bzr reconcile
 				echo
 			fi
-		elif [ -d "${PWD}/${repo}" ] && [ "${repo}" != "." ] && [ "${repo}" != ".." ]
+		elif [ -d "${PWD}/${repo}" ] && [ "${repo}" != "." ] && [ "${repo}" != ".." ] && [ "$(file "${PWD}/${repo}" | grep 'symbolic link to')" ]
 		then
 			pushd "${repo}" > /dev/null
 			run
