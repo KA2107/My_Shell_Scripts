@@ -56,7 +56,7 @@ SRS5694_DUET_INSTALL() {
 	echo
 	
 	sed -i 's|https://github.com/skodabenz/EFI_DUET|https://gitorious.org/tianocore_uefi_duet_builds/tianocore_uefi_duet_installer|g' "${UEFI_DUET_INSTALLER_DIR}/duet-install.8" || true
-	sed -i 's|BootDuet source code and UEFI DUET binaries can be obtained from GitHub|BootDuet source code can be can be obtained from GitHub and UEFI DUET binaries can be obtained from Gitorious|g' "${UEFI_DUET_INSTALLER_DIR}/duet-install.8" || true
+	sed -i 's|BootDuet source code and UEFI DUET binaries can be obtained from GitHub|BootDuet source code can be obtained from GitHub and UEFI DUET binaries can be obtained from Gitorious|g' "${UEFI_DUET_INSTALLER_DIR}/duet-install.8" || true
 	
 	echo
 	
