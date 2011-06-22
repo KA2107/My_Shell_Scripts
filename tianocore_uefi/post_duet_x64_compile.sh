@@ -29,6 +29,11 @@ MIGLE_BOOTDUET_COPY() {
 	
 	echo
 	
+	sed -i 's|https://github.com/skodabenz/UEFI_DUET|https://gitorious.org/tianocore_uefi_duet_builds/tianocore_uefi_duet_installer|g' "${UEFI_DUET_INSTALLER_DIR}/Migle_BootDuet_INSTALL.txt" || true
+	sed -i 's|https://github.com/skodabenz/EFI_DUET|https://gitorious.org/tianocore_uefi_duet_builds/tianocore_uefi_duet_installer|g' "${UEFI_DUET_INSTALLER_DIR}/Migle_BootDuet_INSTALL.txt" || true
+	
+	echo
+	
 	rm -rf "${UEFI_DUET_INSTALLER_DIR}/Licenses/Migle_BootDuet_LICENSE.txt" || true
 	cp "${MIGLE_BOOTDUET_COMPILE_DIR}/COPYING" "${UEFI_DUET_INSTALLER_DIR}/Licenses/Migle_BootDuet_LICENSE.txt"
 	
@@ -50,6 +55,11 @@ SRS5694_DUET_INSTALL() {
 	
 	echo
 	
+	sed -i 's|https://github.com/skodabenz/EFI_DUET|https://gitorious.org/tianocore_uefi_duet_builds/tianocore_uefi_duet_installer|g' "${UEFI_DUET_INSTALLER_DIR}/duet-install.8" || true
+	sed -i 's|BootDuet source code and UEFI DUET binaries can be obtained from GitHub|BootDuet source code can be can be obtained from GitHub and UEFI DUET binaries can be obtained from Gitorious|g' "${UEFI_DUET_INSTALLER_DIR}/duet-install.8" || true
+	
+	echo
+	
 	rm -rf "${UEFI_DUET_INSTALLER_DIR}/Licenses/srs5694_duet-install_LICENSE.txt" || true
 	cp "${SRS5694_DUET_INSTALL_DIR}/COPYING" "${UEFI_DUET_INSTALLER_DIR}/Licenses/srs5694_duet-install_LICENSE.txt"
 	
@@ -57,10 +67,10 @@ SRS5694_DUET_INSTALL() {
 	
 }
 
-UEFI_DUET_GIT() {
+UEFI_DUET_INSTALLER_GIT() {
 	
 	echo
-	echo "UEFI_DUET_GIT"
+	echo "Tianocore_UEFI_DUET_Installer_GIT"
 	echo
 	
 	rm -rf "${UEFI_DUET_INSTALLER_DIR}/Efildr/UDK_X64/Efildr20" || true
@@ -114,15 +124,15 @@ UEFI_DUET_GIT() {
 	git commit -a -m "$(date +%d-%b-%Y)" || true
 	
 	echo
-	echo "UEFI_DUET_GIT done"
+	echo "Tianocore_UEFI_DUET_Installer_GIT done"
 	echo
 	
 }
 
-MEMDISK_COMPILED_GIT() {
+DUET_MEMDISK_COMPILED_GIT() {
 	
 	echo
-	echo "Tiano_DUET_memdisk_compiled_GIT"
+	echo "Tianocore_UEFI_DUET_memdisk_compiled_GIT"
 	echo
 	
 	rm -rf "${DUET_MEMDISK_COMPILED_DIR}/Tianocore_UEFI_UDK_DUET_X64.img" || true
@@ -137,15 +147,15 @@ MEMDISK_COMPILED_GIT() {
 	git commit -a -m "$(date +%d-%b-%Y)" || true
 	
 	echo
-	echo "Tiano_DUET_memdisk_compiled_GIT done"
+	echo "Tianocore_UEFI_DUET_memdisk_compiled_GIT done"
 	echo
 	
 }
 
-MEMDISK_TOOLS_GIT() {
+DUET_MEMDISK_TOOLS_GIT() {
 	
 	echo
-	echo "Tiano_DUET_memdisk_GIT"
+	echo "Tianocore_UEFI_DUET_memdisk_tools_GIT"
 	echo
 	
 	rm -rf "${MEMDISK_DIR}/Linux_Source/C" || true
@@ -172,14 +182,14 @@ MEMDISK_TOOLS_GIT() {
 	git commit -a -m "$(date +%d-%b-%Y)" || true
 	
 	echo
-	echo "Tiano_DUET_memdisk_GIT done"
+	echo "Tianocore_UEFI_DUET_memdisk_tools_GIT"
 	echo
 	
 }
 
 echo
 
-UEFI_DUET_GIT
+UEFI_DUET_INSTALLER_GIT
 
 echo
 
@@ -187,11 +197,11 @@ echo
 
 echo
 
-MEMDISK_COMPILED_GIT
+DUET_MEMDISK_COMPILED_GIT
 
 echo
 
-MEMDISK_TOOLS_GIT
+DUET_MEMDISK_TOOLS_GIT
 
 echo
 
