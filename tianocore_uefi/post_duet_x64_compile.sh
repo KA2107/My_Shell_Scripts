@@ -158,25 +158,25 @@ DUET_MEMDISK_TOOLS_GIT() {
 	echo "Tianocore_UEFI_DUET_memdisk_tools_GIT"
 	echo
 	
-	rm -rf "${MEMDISK_DIR}/Linux_Source/C" || true
-	cp -r "${EDK2_C_SOURCE_DIR}" "${MEMDISK_DIR}/Linux_Source/C"
+	rm -rf "${DUET_MEMDISK_TOOLS_DIR}/Linux_Source/C" || true
+	cp -r "${EDK2_C_SOURCE_DIR}" "${DUET_MEMDISK_TOOLS_DIR}/Linux_Source/C"
 	
 	echo
 	
-	rm -rf "${MEMDISK_DIR}/Windows"/{BootSectImage,GenBootSector}.exe || true
-	cp "${EDK2_DIR}/BaseTools/Bin/Win32"/{BootSectImage,GenBootSector}.exe "${MEMDISK_DIR}/Windows/"
+	rm -rf "${DUET_MEMDISK_TOOLS_DIR}/Windows"/{BootSectImage,GenBootSector}.exe || true
+	cp "${EDK2_DIR}/BaseTools/Bin/Win32"/{BootSectImage,GenBootSector}.exe "${DUET_MEMDISK_TOOLS_DIR}/Windows/"
 	
 	echo
 	
-	rm -rf "${MEMDISK_DIR}/bootsect.com.unmod" || true
-	cp "${EDK2_DUET_BOOTSECT_BIN_DIR}/bootsect.com" "${MEMDISK_DIR}/bootsect.com.unmod"
+	rm -rf "${DUET_MEMDISK_TOOLS_DIR}/bootsect.com.unmod" || true
+	cp "${EDK2_DUET_BOOTSECT_BIN_DIR}/bootsect.com" "${DUET_MEMDISK_TOOLS_DIR}/bootsect.com.unmod"
 	
-	rm -rf "${MEMDISK_DIR}/Efildr" || true
-	cp "${DUET_EMUVARIABLE_BUILD_DIR}/FV/Efildr" "${MEMDISK_DIR}/Efildr"
+	rm -rf "${DUET_MEMDISK_TOOLS_DIR}/Efildr" || true
+	cp "${DUET_EMUVARIABLE_BUILD_DIR}/FV/Efildr" "${DUET_MEMDISK_TOOLS_DIR}/Efildr"
 	
 	echo
 	
-	cd "${MEMDISK_DIR}/"
+	cd "${DUET_MEMDISK_TOOLS_DIR}/"
 	git add *
 	git status
 	git commit -a -m "$(date +%d-%b-%Y)" || true
@@ -218,7 +218,7 @@ unset DUET_FSVARIABLE_BUILD_DIR
 unset DUET_COMPILED_DIR
 unset UEFI_DUET_INSTALLER_DIR
 unset DUET_MEMDISK_COMPILED_DIR
-unset MEMDISK_DIR
+unset DUET_MEMDISK_TOOLS_DIR
 unset MIGLE_BOOTDUET_COMPILE_DIR
 unset SRS5694_DUET_INSTALL_DIR
 unset BOOTPART
