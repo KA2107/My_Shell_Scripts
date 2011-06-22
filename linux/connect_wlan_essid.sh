@@ -4,9 +4,9 @@ echo
 
 set -x -e
 
-ESSID=${1}
-ENCRYPTION_TYPE=${2}
-PASSPHRASE=${3}
+ESSID="${1}"
+ENCRYPTION_TYPE="${2}"
+PASSPHRASE="${3}"
 
 echo
 
