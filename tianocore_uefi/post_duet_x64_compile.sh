@@ -57,10 +57,10 @@ SRS5694_DUET_INSTALL() {
 	
 }
 
-EFI_DUET_GIT() {
+UEFI_DUET_GIT() {
 	
 	echo
-	echo "EFI_DUET_GIT"
+	echo "UEFI_DUET_GIT"
 	echo
 	
 	rm -rf "${UEFI_DUET_INSTALLER_DIR}/Efildr/UDK_X64/Efildr20" || true
@@ -114,7 +114,7 @@ EFI_DUET_GIT() {
 	git commit -a -m "$(date +%d-%b-%Y)" || true
 	
 	echo
-	echo "EFI_DUET_GIT done"
+	echo "UEFI_DUET_GIT done"
 	echo
 	
 }
@@ -142,7 +142,7 @@ MEMDISK_COMPILED_GIT() {
 	
 }
 
-MEMDISK_GIT() {
+MEMDISK_TOOLS_GIT() {
 	
 	echo
 	echo "Tiano_DUET_memdisk_GIT"
@@ -179,7 +179,7 @@ MEMDISK_GIT() {
 
 echo
 
-EFI_DUET_GIT
+UEFI_DUET_GIT
 
 echo
 
@@ -191,7 +191,7 @@ MEMDISK_COMPILED_GIT
 
 echo
 
-MEMDISK_GIT
+MEMDISK_TOOLS_GIT
 
 echo
 
