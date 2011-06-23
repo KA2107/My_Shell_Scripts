@@ -16,6 +16,7 @@ EDK2_BUILD_CLEAN() {
 	
 	rm -rf "${EDK_TOOLS_PATH}" || true
 	rm -rf "${EDK2_BUILD_OUTER_DIR}" || true
+	rm -rf "${EDK2_DIR}/Build" || true
 	rm -rf "${EDK2_DIR}/Conf" || true
 	
 	echo
