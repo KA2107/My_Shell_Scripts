@@ -15,7 +15,7 @@ run()
 			
 			git gc --aggressive
 			echo
-		elif [ -d "${PWD}/${repo}" ] && [ "${repo}" != "." ] && [ "${repo}" != ".." ] && [ "$(file "${PWD}/${repo}" | grep 'symbolic link to')" ]
+		elif [ -d "${PWD}/${repo}" ] && [ "${repo}" != "." ] && [ "${repo}" != ".." ] && [ ! "$(file "${PWD}/${repo}" | grep 'symbolic link to')" ]
 		then
 			pushd "${repo}" > /dev/null
 			run
