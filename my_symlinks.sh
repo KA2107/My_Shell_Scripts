@@ -112,10 +112,10 @@ TIANOCORE() {
 	LINK_FILE="stdlib_x64_edk2_linux_compile_setup.sh"
 	CREATE_SYMLINK
 	
-	LINK_FILE="unix_x64_edk2_linux_compile_setup.sh"
+	LINK_FILE="unixpkg_x64_edk2_linux_compile_setup.sh"
 	CREATE_SYMLINK
 	
-	LINK_FILE="vbox_x64_edk2_linux_compile_setup.sh"
+	LINK_FILE="iso9660_vbox_x64_edk2_linux_compile_setup.sh"
 	CREATE_SYMLINK
 	
 	LINK_FILE="compile_edk2_duet_x64.cmd"
