@@ -107,7 +107,7 @@ then
 	echo
 	
 	## Load device-mapper kernel module - needed by grub-probe
-	sudo modprobe dm-mod || true
+	sudo modprobe -q dm-mod || true
 	
 	set -x -e
 	

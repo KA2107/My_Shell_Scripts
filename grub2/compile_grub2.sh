@@ -24,8 +24,6 @@ then
 	echo  "7 for BIOS-MAIN alone"
 	echo  "8 for BIOS-EXP alone"
 	echo
-	echo  "9 for BIOS-MAIN and EFI-install"
-	echo  "10 for EFI-install alone"
 	export PROCESS_CONTINUE_UEFI="FALSE"
 	export PROCESS_CONTINUE_BIOS="FALSE"
 fi
@@ -62,14 +60,6 @@ elif [ "${1}" = "8" ]
 then
 	export GRUB2_UEFI="NULL"
 	export GRUB2_BIOS="-bios-exp"
-elif [ "${1}" = "9" ]
-then
-	export GRUB2_UEFI="-efi-install"
-	export GRUB2_BIOS="-bios-main"
-elif [ "${1}" = "10" ]
-then
-	export GRUB2_UEFI="-efi-install"
-	export GRUB2_BIOS="NULL"
 fi
 
 if [ "${GRUB2_UEFI}" == "-efi-exp" ]
@@ -79,10 +69,6 @@ then
 elif [ "${GRUB2_UEFI}" == "-efi-main" ]
 then
 	export GRUB2_UEFI_Source_DIR_Name="grub2__GIT_BZR"
-	export PROCESS_CONTINUE_UEFI="TRUE"
-elif [ "${GRUB2_UEFI}" == "-efi-install" ]
-then
-	export GRUB2_UEFI_Source_DIR_Name="grub2__GIT_BZR_branches/grub2-bzr-install"
 	export PROCESS_CONTINUE_UEFI="TRUE"
 fi
 
@@ -133,7 +119,7 @@ then
 	cp --verbose "${WD_Outer}/grub2_uefi_linux_scripts/grub2_uefi.sh" "${WD_Outer}/grub2_uefi_linux_scripts/grub2_uefi_linux_my.sh" "${WD_Outer}/${GRUB2_UEFI_Source_DIR_Name}/"
 	echo
 	
-	rm "${WD_Outer}/${GRUB2_UEFI_Source_DIR_Name}/grub.cfg" || true
+	rm -rf "${WD_Outer}/${GRUB2_UEFI_Source_DIR_Name}/grub.cfg" || true
 	cp --verbose "${WD_Outer}/grub2_uefi_linux_scripts/grub2_uefi.cfg" "${WD_Outer}/${GRUB2_UEFI_Source_DIR_Name}/grub.cfg" || true
 	echo
 	
@@ -175,7 +161,7 @@ then
 	cp --verbose "${WD_Outer}/grub2_bios_linux_scripts/grub2_bios.sh" "${WD_Outer}/grub2_bios_linux_scripts/grub2_bios_linux_my.sh" "${WD_Outer}/${GRUB2_BIOS_Source_DIR_Name}/"
 	echo
 	
-	rm "${WD_Outer}/${GRUB2_BIOS_Source_DIR_Name}/grub.cfg" || true
+	rm -rf "${WD_Outer}/${GRUB2_BIOS_Source_DIR_Name}/grub.cfg" || true
 	cp --verbose "${WD_Outer}/grub2_bios_linux_scripts/grub2_bios.cfg" "${WD_Outer}/${GRUB2_BIOS_Source_DIR_Name}/grub.cfg" || true
 	echo
 	
