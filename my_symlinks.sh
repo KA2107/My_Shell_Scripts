@@ -28,6 +28,17 @@ CREATE_SYMLINK() {
 	
 }
 
+COPY_FILE() {
+	
+	echo
+	
+	rm "${LINK_DIR}/${LINK_FILE}" || true
+	cp "${SOURCE_DIR}/${LINK_FILE}" "${LINK_DIR}/${LINK_FILE}"
+	
+	echo
+	
+}
+
 GRUB2() {
 	
 	echo
@@ -108,16 +119,16 @@ TIANOCORE() {
 	CREATE_SYMLINK
 	
 	LINK_FILE="compile_edk2_duet_x64.cmd"
-	CREATE_SYMLINK
+	COPY_FILE
 	
 	LINK_FILE="compile_edk2_ovmf_x64.cmd"
-	CREATE_SYMLINK
+	COPY_FILE
 	
 	LINK_FILE="compile_edk_duet_uefi64.cmd"
-	CREATE_SYMLINK
+	COPY_FILE
 	
 	LINK_FILE="compile_edk2_nt32pkg.cmd"
-	CREATE_SYMLINK
+	COPY_FILE
 	
 	echo
 	

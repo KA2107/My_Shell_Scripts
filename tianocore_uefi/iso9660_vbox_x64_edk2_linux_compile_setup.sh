@@ -5,14 +5,14 @@ set -x -e
 SOURCE_CODES_DIR="/media/Data_2/Source_Codes"
 WD="${SOURCE_CODES_DIR}/Firmware/UEFI/TianoCore_Sourceforge"
 
-source "${WD}/tianocore_common.sh"
+source "${WD}/tianocore_duet_common.sh"
 
 EDK2_BUILD_OUTER_DIR="${EDK2_DIR}/Build/StdLib/"
 EDK2_BUILD_DIR="${EDK2_BUILD_OUTER_DIR}/DEBUG_GCC45/"
 
-STDLIB_BUILD_DIR="${WD}/STDLIB_BUILD"
+ISO9660_BUILD_DIR="${WD}/ISO9660_BUILD"
 
-COMPILE_STDLIB() {
+COMPILE_ISO9660() {
 	
 	echo
 	
@@ -45,11 +45,16 @@ COMPILE_STDLIB() {
 	
 	echo
 	
-	build -p "${EDK2_DIR}/StdLib/StdLib.dsc" -a X64 -b DEBUG -t GCC45
+	sed -i 's|TARGET_ARCH           = IA32|TARGET_ARCH           = X64|g' "${EDK2_DIR}/Conf/target.txt"
+	sed -i 's|ACTIVE_PLATFORM       = Nt32Pkg/Nt32Pkg.dsc|ACTIVE_PLATFORM       = DuetPkg/DuetPkgX64.dsc|g' "${EDK2_DIR}/Conf/target.txt"
 	
 	echo
 	
-	cp -r "${EDK2_BUILD_DIR}" "${STDLIB_BUILD_DIR}"
+	build -p "${EDK2_DIR}/DuetPkg/DuetPkgX64.dsc" -m "${EDK2_DIR}/VBoxPkg/VBoxFsDxe/VBoxIso9660.inf" -a X64 -b RELEASE -t GCC45
+	
+	echo
+	
+	cp -r "${EDK2_BUILD_DIR}" "${ISO9660_BUILD_DIR}"
 	
 	echo
 	
@@ -65,7 +70,7 @@ COMPILE_STDLIB() {
 
 echo
 
-COMPILE_STDLIB
+COMPILE_ISO9660
 
 echo
 
@@ -75,6 +80,6 @@ unset EDK2_DIR
 unset EDK2_BUILD_TOOLS_DIR
 unset EDK2_C_SOURCE_DIR
 unset EDK_TOOLS_PATH
-unset STDLIB_BUILD_DIR
+unset ISO9660_BUILD_DIR
 
 set +x +e

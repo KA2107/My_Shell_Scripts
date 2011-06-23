@@ -7,12 +7,12 @@ WD="${SOURCE_CODES_DIR}/Firmware/UEFI/TianoCore_Sourceforge"
 
 source "${WD}/tianocore_common.sh"
 
-EDK2_BUILD_OUTER_DIR="${EDK2_DIR}/Build/StdLib/"
-EDK2_BUILD_DIR="${EDK2_BUILD_OUTER_DIR}/DEBUG_GCC45/"
+EDK2_BUILD_OUTER_DIR="${EDK2_DIR}/Build/UnixX64/"
+EDK2_BUILD_DIR="${EDK2_BUILD_OUTER_DIR}/DEBUG_ELFGCC/"
 
-STDLIB_BUILD_DIR="${WD}/STDLIB_BUILD"
+UNIXPKG_BUILD_DIR="${WD}/UNIXPKG_BUILD"
 
-COMPILE_STDLIB() {
+COMPILE_UNIXPKG() {
 	
 	echo
 	
@@ -41,15 +41,12 @@ COMPILE_STDLIB() {
 	
 	echo
 	
-	COMPILE_BASETOOLS_MANUAL
+	cd "${EDK2_DIR}/UnixPkg/"
+	"${EDK2_DIR}/UnixPkg/build64.sh"
 	
 	echo
 	
-	build -p "${EDK2_DIR}/StdLib/StdLib.dsc" -a X64 -b DEBUG -t GCC45
-	
-	echo
-	
-	cp -r "${EDK2_BUILD_DIR}" "${STDLIB_BUILD_DIR}"
+	cp -r "${EDK2_BUILD_DIR}" "${UNIXPKG_BUILD_DIR}"
 	
 	echo
 	
@@ -65,7 +62,7 @@ COMPILE_STDLIB() {
 
 echo
 
-COMPILE_STDLIB
+COMPILE_UNIXPKG
 
 echo
 
@@ -75,6 +72,6 @@ unset EDK2_DIR
 unset EDK2_BUILD_TOOLS_DIR
 unset EDK2_C_SOURCE_DIR
 unset EDK_TOOLS_PATH
-unset STDLIB_BUILD_DIR
+unset UNIXPKG_BUILD_DIR
 
 set +x +e

@@ -39,6 +39,22 @@ COPY_BUILDTOOLS_BASETOOLS() {
 	
 }
 
+COMPILE_BASETOOLS_MANUAL() {
+	
+	echo
+	
+	cd "${EDK2_DIR}/"
+	source "${EDK2_DIR}/edksetup.sh" BaseTools
+	
+	echo
+	
+	cd "${EDK2_DIR}/"
+	make -C "${EDK2_DIR}/BaseTools"
+	
+	echo
+	
+}
+
 CORRECT_WERROR() {
 	
 	echo
