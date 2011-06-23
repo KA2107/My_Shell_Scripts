@@ -73,13 +73,19 @@ UEFI_DUET_INSTALLER_GIT() {
 	echo "Tianocore_UEFI_DUET_Installer_GIT"
 	echo
 	
-	rm -rf "${UEFI_DUET_INSTALLER_DIR}/Efildr/UDK_X64/Efildr20" || true
-	cp "${DUET_EMUVARIABLE_BUILD_DIR}/FV/Efildr20" "${UEFI_DUET_INSTALLER_DIR}/Efildr/UDK_X64/Efildr20"
+	if [ -e "${DUET_EMUVARIABLE_BUILD_DIR}/FV/Efildr20" ]
+	then
+		rm -rf "${UEFI_DUET_INSTALLER_DIR}/Efildr/UDK_X64/Efildr20" || true
+		cp "${DUET_EMUVARIABLE_BUILD_DIR}/FV/Efildr20" "${UEFI_DUET_INSTALLER_DIR}/Efildr/UDK_X64/Efildr20"
+	fi
 	
 	echo
 	
-	rm -rf "${UEFI_DUET_INSTALLER_DIR}/Efildr/UDK_X64/Efildr20_FSVariable" || true
-	cp "${DUET_FSVARIABLE_BUILD_DIR}/FV/Efildr20" "${UEFI_DUET_INSTALLER_DIR}/Efildr/UDK_X64/Efildr20_FSVariable"
+	if [ -e "${DUET_FSVARIABLE_BUILD_DIR}/FV/Efildr20" ]
+	then
+		rm -rf "${UEFI_DUET_INSTALLER_DIR}/Efildr/UDK_X64/Efildr20_FSVariable" || true
+		cp "${DUET_FSVARIABLE_BUILD_DIR}/FV/Efildr20" "${UEFI_DUET_INSTALLER_DIR}/Efildr/UDK_X64/Efildr20_FSVariable"
+	fi
 	
 	echo
 	
@@ -135,9 +141,12 @@ DUET_MEMDISK_COMPILED_GIT() {
 	echo "Tianocore_UEFI_DUET_memdisk_compiled_GIT"
 	echo
 	
-	rm -rf "${DUET_MEMDISK_COMPILED_DIR}/Tianocore_UEFI_UDK_DUET_X64.img" || true
-	cp "${DUET_EMUVARIABLE_BUILD_DIR}/floppy.img" "${DUET_MEMDISK_COMPILED_DIR}/Tianocore_UEFI_UDK_DUET_X64.img"
-	# cp "${WD}/duet_x64_memdisk.bin" "${DUET_MEMDISK_COMPILED_DIR}/Tianocore_UEFI_UDK_DUET_X64.img"
+	if [ -e "${DUET_EMUVARIABLE_BUILD_DIR}/floppy.img" ]
+	then
+		rm -rf "${DUET_MEMDISK_COMPILED_DIR}/Tianocore_UEFI_UDK_DUET_X64.img" || true
+		cp "${DUET_EMUVARIABLE_BUILD_DIR}/floppy.img" "${DUET_MEMDISK_COMPILED_DIR}/Tianocore_UEFI_UDK_DUET_X64.img"
+		# [ -e "${WD}/duet_x64_memdisk.bin" ] && cp "${WD}/duet_x64_memdisk.bin" "${DUET_MEMDISK_COMPILED_DIR}/Tianocore_UEFI_UDK_DUET_X64.img"
+	fi
 	
 	echo
 	
@@ -171,8 +180,11 @@ DUET_MEMDISK_TOOLS_GIT() {
 	rm -rf "${DUET_MEMDISK_TOOLS_DIR}/bootsect.com.unmod" || true
 	cp "${EDK2_DUET_BOOTSECT_BIN_DIR}/bootsect.com" "${DUET_MEMDISK_TOOLS_DIR}/bootsect.com.unmod"
 	
-	rm -rf "${DUET_MEMDISK_TOOLS_DIR}/Efildr" || true
-	cp "${DUET_EMUVARIABLE_BUILD_DIR}/FV/Efildr" "${DUET_MEMDISK_TOOLS_DIR}/Efildr"
+	if [ -e "${DUET_EMUVARIABLE_BUILD_DIR}/FV/Efildr" ]
+	then
+		rm -rf "${DUET_MEMDISK_TOOLS_DIR}/Efildr" || true
+		cp "${DUET_EMUVARIABLE_BUILD_DIR}/FV/Efildr" "${DUET_MEMDISK_TOOLS_DIR}/Efildr"
+	fi
 	
 	echo
 	
