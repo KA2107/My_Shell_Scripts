@@ -147,8 +147,15 @@ then
 		"${GRUB2_BIOS_PREFIX}" != '/' -o \
 		"${GRUB2_BIOS_PREFIX}" != '/usr' -o \
 		"${GRUB2_BIOS_PREFIX}" != '/usr/local' -o \
+		"${GRUB2_BIOS_PREFIX}" != '/media' -o \
+		"${GRUB2_BIOS_PREFIX}" != '/mnt' -o \
+		"${GRUB2_BIOS_PREFIX}" != '/home' -o \
+		"${GRUB2_BIOS_PREFIX}" != '/lib' -o \
+		"${GRUB2_BIOS_PREFIX}" != '/lib64' -o \
+		"${GRUB2_BIOS_PREFIX}" != '/lib32' -o \
 		"${GRUB2_BIOS_PREFIX}" != '/tmp' -o \
 		"${GRUB2_BIOS_PREFIX}" != '/var' -o \
+		"${GRUB2_BIOS_PREFIX}" != '/run' -o \
 		"${GRUB2_BIOS_PREFIX}" != '/etc' -o \
 		"${GRUB2_BIOS_PREFIX}" != '/opt' \
 		]

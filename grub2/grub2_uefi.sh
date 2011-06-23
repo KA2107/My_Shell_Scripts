@@ -158,8 +158,15 @@ then
 		"${GRUB2_UEFI_PREFIX}" != '/' -o \
 		"${GRUB2_UEFI_PREFIX}" != '/usr' -o \
 		"${GRUB2_UEFI_PREFIX}" != '/usr/local' -o \
+		"${GRUB2_UEFI_PREFIX}" != '/media' -o \
+		"${GRUB2_UEFI_PREFIX}" != '/mnt' -o \
+		"${GRUB2_UEFI_PREFIX}" != '/home' -o \
+		"${GRUB2_UEFI_PREFIX}" != '/lib' -o \
+		"${GRUB2_UEFI_PREFIX}" != '/lib64' -o \
+		"${GRUB2_UEFI_PREFIX}" != '/lib32' -o \
 		"${GRUB2_UEFI_PREFIX}" != '/tmp' -o \
 		"${GRUB2_UEFI_PREFIX}" != '/var' -o \
+		"${GRUB2_UEFI_PREFIX}" != '/run' -o \
 		"${GRUB2_UEFI_PREFIX}" != '/etc' -o \
 		"${GRUB2_UEFI_PREFIX}" != '/opt' \
 		]
