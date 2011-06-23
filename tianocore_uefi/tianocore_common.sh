@@ -4,10 +4,13 @@ set -x -e
 
 SOURCE_CODES_DIR="/media/Data_2/Source_Codes"
 WD="${SOURCE_CODES_DIR}/Firmware/UEFI/TianoCore_Sourceforge"
+BACKUP_BUILDS_DIR="${WD}/BACKUP_BUILDS"
 
 EDK2_DIR="${WD}/edk2_GIT"
 EDK2_BUILD_TOOLS_DIR="${WD}/buildtools-BaseTools_GIT"
+
 export EDK_TOOLS_PATH="${EDK2_DIR}/BaseTools"
+
 EDK2_C_SOURCE_DIR="${EDK2_BUILD_TOOLS_DIR}/Source/C"
 
 EDK2_BUILD_CLEAN() {
