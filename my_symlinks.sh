@@ -2,7 +2,7 @@
 
 set -x -e
 
-export SOURCE_CODES_DIR="/media/Source_Codes"
+export SOURCE_CODES_DIR="/media/Source_Codes/Source_Codes"
 export SCRIPTS_DIR="${SOURCE_CODES_DIR}/My_Shell_Scripts"
 
 export GRUB2_SCRIPTS_DIR="${SCRIPTS_DIR}/grub2"

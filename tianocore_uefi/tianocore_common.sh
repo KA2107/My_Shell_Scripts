@@ -2,7 +2,7 @@
 
 set -x -e
 
-SOURCE_CODES_DIR="/media/Data_2/Source_Codes"
+SOURCE_CODES_DIR="/media/Source_Codes/Source_Codes"
 WD="${SOURCE_CODES_DIR}/Firmware/UEFI/TianoCore_Sourceforge"
 BACKUP_BUILDS_DIR="${WD}/BACKUP_BUILDS"
 
