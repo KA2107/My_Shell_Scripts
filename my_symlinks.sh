@@ -45,31 +45,57 @@ GRUB2() {
 	
 	SOURCE_DIR="${GRUB2_SCRIPTS_DIR}/"
 	LINK_DIR="${GRUB2_SOURCE_DIR}/"
-	
 	LINK_FILE="compile_grub2.sh"
 	CREATE_SYMLINK
 	
+	echo
+	
+	SOURCE_DIR="${GRUB2_SCRIPTS_DIR}/"
+	LINK_DIR="${GRUB2_SOURCE_DIR}/"
 	LINK_FILE="grub.default"
+	COPY_FILE
+	
+	echo
+	
+	SOURCE_DIR="${GRUB2_SCRIPTS_DIR}/"
+	LINK_DIR="${GRUB2_UEFI_DIR}/"
+	LINK_FILE="grub2_uefi.sh"
 	CREATE_SYMLINK
 	
 	echo
 	
-	rm "${GRUB2_SOURCE_DIR}/xman_dos2unix.sh" || true
-	ln -s "${SCRIPTS_DIR}/xmanutility/xman_dos2unix.sh" "${GRUB2_SOURCE_DIR}/xman_dos2unix.sh"
+	SOURCE_DIR="${GRUB2_SCRIPTS_DIR}/"
+	LINK_DIR="${GRUB2_UEFI_DIR}/"
+	LINK_FILE="grub2_uefi_mkimage_x64_linux.sh"
+	CREATE_SYMLINK
 	
 	echo
 	
-	rm "${GRUB2_BIOS_DIR}/grub2_bios.sh" || true
-	ln -s "${GRUB2_SCRIPTS_DIR}/grub2_bios.sh" "${GRUB2_BIOS_DIR}/grub2_bios.sh"
+	SOURCE_DIR="${GRUB2_SCRIPTS_DIR}/"
+	LINK_DIR="${GRUB2_BIOS_DIR}/"
+	LINK_FILE="grub2_bios.sh"
+	CREATE_SYMLINK
 	
-	rm "${GRUB2_UEFI_DIR}/grub2_uefi.sh" || true
-	ln -s "${GRUB2_SCRIPTS_DIR}/grub2_uefi.sh" "${GRUB2_UEFI_DIR}/grub2_uefi.sh"
+	echo
 	
-	rm "${GRUB2_UEFI_DIR}/grub2_uefi_mkimage_x64_linux.sh" || true
-	ln -s "${GRUB2_SCRIPTS_DIR}/grub2_uefi_mkimage_x64_linux.sh" "${GRUB2_UEFI_DIR}/grub2_uefi_mkimage_x64_linux.sh"
+	SOURCE_DIR="${GRUB2_SCRIPTS_DIR}/"
+	LINK_DIR="${GRUB2_DIR}/Source_BZR/"
+	LINK_FILE="grub2_bzr_export.sh"
+	CREATE_SYMLINK
 	
-	rm "${GRUB2_DIR}/Source_BZR/grub2_bzr_export.sh" || true
-	ln -s "${GRUB2_SCRIPTS_DIR}/grub2_bzr_export.sh" "${GRUB2_DIR}/Source_BZR/grub2_bzr_export.sh"
+	echo
+	
+	SOURCE_DIR="${SCRIPTS_DIR}/xmanutility/"
+	LINK_DIR="${GRUB2_SOURCE_DIR}/"
+	LINK_FILE="xman_dos2unix.sh"
+	CREATE_SYMLINK
+	
+	echo
+	
+	SOURCE_DIR="${SCRIPTS_DIR}/bzr/"
+	LINK_DIR="${GRUB2_DIR}/Source_BZR/"
+	LINK_FILE="bzr_update.sh"
+	CREATE_SYMLINK
 	
 	echo
 	
@@ -106,6 +132,11 @@ TIANOCORE() {
 	LINK_FILE="create_duet_x64_memdisk_new.sh"
 	CREATE_SYMLINK
 	
+	echo
+	
+	SOURCE_DIR="${TIANO_SCRIPTS_DIR}/"
+	LINK_DIR="${TIANO_SOURCE_DIR}/"
+	
 	LINK_FILE="ovmf_x64_edk2_linux_compile_setup.sh"
 	CREATE_SYMLINK
 	
@@ -117,6 +148,11 @@ TIANOCORE() {
 	
 	LINK_FILE="iso9660_vbox_x64_edk2_linux_compile_setup.sh"
 	CREATE_SYMLINK
+	
+	echo
+	
+	SOURCE_DIR="${TIANO_SCRIPTS_DIR}/"
+	LINK_DIR="${TIANO_SOURCE_DIR}/"
 	
 	LINK_FILE="compile_edk2_duet_x64.cmd"
 	COPY_FILE
