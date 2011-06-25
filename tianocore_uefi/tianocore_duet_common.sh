@@ -19,8 +19,8 @@ UEFI_DUET_INSTALLER_DIR="${DUET_BUILDS_DIR}/Tianocore_UEFI_DUET_Installer_GIT/"
 DUET_MEMDISK_COMPILED_DIR="${DUET_BUILDS_DIR}/Tianocore_UEFI_DUET_memdisk_compiled_GIT/"
 DUET_MEMDISK_TOOLS_DIR="${DUET_BUILDS_DIR}/Tianocore_UEFI_DUET_memdisk_tools_GIT/"
 
-MIGLE_BOOTDUET_COMPILE_DIR="${WD}/migle_BootDuet_GIT"
-SRS5694_DUET_INSTALL_DIR="${WD}/srs5694_duet-install_my_GIT"
+MIGLE_BOOTDUET_COMPILE_DIR="${SOURCE_CODES_DIR}/Firmware/UEFI/Tianocore_UEFI_DUET_3rd_Party_Projects/migle_BootDuet_GIT"
+SRS5694_DUET_INSTALL_DIR="${SOURCE_CODES_DIR}/Firmware/UEFI/Tianocore_UEFI_DUET_3rd_Party_Projects/srs5694_duet-install_my_GIT"
 
 BOOTPART="/boot/"
 EFISYS="/boot/efi/"
