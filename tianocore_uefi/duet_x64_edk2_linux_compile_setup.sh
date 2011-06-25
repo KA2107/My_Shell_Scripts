@@ -36,6 +36,10 @@ COMPILE_DUET_EMUVARIABLE_BRANCH() {
 	
 	echo
 	
+	APPLY_CHANGES
+	
+	echo
+	
 	cd "${EDK2_DIR}/DuetPkg"
 	"${EDK2_DIR}/DuetPkg/build64.sh"
 	
@@ -82,6 +86,10 @@ COMPILE_DUET_FSVARIABLE_BRANCH() {
 	echo
 	
 	APPLY_PATCHES
+	
+	echo
+	
+	APPLY_CHANGES
 	
 	echo
 	
