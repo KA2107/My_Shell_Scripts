@@ -37,7 +37,7 @@ COPY_BUILDTOOLS_BASETOOLS() {
 	echo
 	
 	rm -rf "${EDK_TOOLS_PATH}" || true
-	cp -r "${EDK2_BUILD_TOOLS_DIR}" "${EDK2_DIR}/BaseTools"
+	cp -r "${EDK2_BUILD_TOOLS_DIR}" "${EDK_TOOLS_PATH}"
 	
 	echo
 	
