@@ -214,16 +214,16 @@ then
 		echo
 		sudo modprobe -q efivars || echo "efivars kernel module not found, needed for efibootmgr."
 		
-		EFISYS_PART_DEVICE="$("${GRUB2_UEFI_PREFIX}/sbin/${GRUB2_UEFI_NAME}-probe" --target=device "${GRUB2_UEFI_SYSTEM_PART_DIR}/")"
-		EFISYS_PART_NUM="$(blkid -p -o value -s PART_ENTRY_NUMBER "${EFISYS_PART_DEVICE}")"
+		EFISYS_PART_DEVICE="$(sudo "${GRUB2_UEFI_PREFIX}/sbin/${GRUB2_UEFI_NAME}-probe" --target=device "${GRUB2_UEFI_SYSTEM_PART_DIR}/")"
+		EFISYS_PART_NUM="$(sudo blkid -p -o value -s PART_ENTRY_NUMBER "${EFISYS_PART_DEVICE}")"
 		EFISYS_PARENT_DEVICE="$(echo "${EFISYS_PART_DEVICE}" | sed "s/${EFISYS_PART_NUM}//g")"
 		echo
 		
-		efibootmgr --create --gpt --disk "${EFISYS_PARENT_DEVICE}" --part "${EFISYS_PART_NUM}" --write-signature --label "${GRUB2_UEFI_NAME}" --loader "//EFI//${GRUB2_UEFI_NAME}//${GRUB2_UEFI_NAME}.efi" || echo "efibootmgr failed to create GRUB2 UEFI boot NVRAM entry, create it manually."
+		sudo efibootmgr --create --gpt --disk "${EFISYS_PARENT_DEVICE}" --part "${EFISYS_PART_NUM}" --write-signature --label "${GRUB2_UEFI_NAME}" --loader "//EFI//${GRUB2_UEFI_NAME}//${GRUB2_UEFI_NAME}.efi" || echo "efibootmgr failed to create GRUB2 UEFI boot NVRAM entry, create it manually."
 		echo
 	fi
 	
-	mkdir -p "${GRUB2_UEFI_PREFIX}/etc/default"
+	sudo mkdir -p "${GRUB2_UEFI_PREFIX}/etc/default"
 	[ -e "${WD}/grub.default" ] && sudo cp --verbose "${WD}/grub.default" "${GRUB2_UEFI_PREFIX}/etc/default/grub" || true
 	sudo chmod --verbose -x "${GRUB2_UEFI_PREFIX}/etc/default/grub" || true
 	echo
