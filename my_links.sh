@@ -23,7 +23,7 @@ CREATE_SYMLINK() {
 	
 	if [ ! -d "${LINK_DIR}/${LINK_FILE}" ]
 	then
-		rm -rf "${LINK_DIR}/${LINK_FILE}" || true
+		rm -f "${LINK_DIR}/${LINK_FILE}" || true
 		ln -s "${SOURCE_DIR}/${SOURCE_FILE}" "${LINK_DIR}/${LINK_FILE}"
 	fi
 	
@@ -37,7 +37,7 @@ SUDO_CREATE_SYMLINK() {
 	
 	if [ ! -d "${LINK_DIR}/${LINK_FILE}" ]
 	then
-		sudo rm -rf "${LINK_DIR}/${LINK_FILE}" || true
+		sudo rm -f "${LINK_DIR}/${LINK_FILE}" || true
 		sudo ln -s "${SOURCE_DIR}/${SOURCE_FILE}" "${LINK_DIR}/${LINK_FILE}"
 	fi
 	
@@ -51,7 +51,7 @@ COPY_FILE() {
 	
 	if [ ! -d "${LINK_DIR}/${LINK_FILE}" ]
 	then
-		rm -rf "${LINK_DIR}/${LINK_FILE}" || true
+		rm -f "${LINK_DIR}/${LINK_FILE}" || true
 		cp "${SOURCE_DIR}/${SOURCE_FILE}" "${LINK_DIR}/${LINK_FILE}"
 	fi
 	
@@ -65,7 +65,7 @@ SUDO_COPY_FILE() {
 	
 	if [ ! -d "${LINK_DIR}/${LINK_FILE}" ]
 	then
-		sudo rm -rf "${LINK_DIR}/${LINK_FILE}" || true
+		sudo rm -f "${LINK_DIR}/${LINK_FILE}" || true
 		sudo cp "${SOURCE_DIR}/${SOURCE_FILE}" "${LINK_DIR}/${LINK_FILE}"
 	fi
 	

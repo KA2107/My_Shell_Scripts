@@ -83,7 +83,7 @@ COPY_EFILDR_MEMDISK() {
 	
 	echo
 	
-	sudo rm "${BOOTPART}/Tianocore_UDK_DUET_X64.img" || true
+	sudo rm -f "${BOOTPART}/Tianocore_UDK_DUET_X64.img" || true
 	sudo cp "${DUET_EMUVARIABLE_BUILD_DIR}/floppy.img" "${BOOTPART}/Tianocore_UDK_DUET_X64.img"
 	
 	echo
@@ -102,7 +102,7 @@ COPY_EFILDR_DUET_PART() {
 	fi
 	
 	sudo mount -t vfat -o rw,users,exec -U "${DUET_PART_FS_UUID}" "${DUET_PART_MP}"
-	sudo rm "${DUET_PART_MP}/EFILDR20" || true
+	sudo rm -f "${DUET_PART_MP}/EFILDR20" || true
 	sudo cp "${DUET_EMUVARIABLE_BUILD_DIR}/FV/Efildr20" "${DUET_PART_MP}/EFILDR20"
 	sudo umount "${DUET_PART_MP}"
 	
@@ -114,8 +114,8 @@ COPY_UEFI_SHELL_EFISYS_PART() {
 	
 	echo
 	
-	sudo rm "${EFISYS}/shellx64.efi" || true
-	sudo rm "${EFISYS}/shellx64_old.efi" || true
+	sudo rm -f "${EFISYS}/shellx64.efi" || true
+	sudo rm -f "${EFISYS}/shellx64_old.efi" || true
 	
 	echo
 	

@@ -76,7 +76,7 @@ SET_PYTHON2() {
 	echo
 	
 	_PYTHON_="$(which python)"
-	sudo rm "${_PYTHON_}"
+	sudo rm -f "${_PYTHON_}"
 	sudo ln -s "$(which python2)" "${_PYTHON_}"
 	unset _PYTHON_
 	
@@ -89,7 +89,7 @@ SET_PYTHON3() {
 	echo
 	
 	_PYTHON_="$(which python)"
-	sudo rm "${_PYTHON_}"
+	sudo rm -f "${_PYTHON_}"
 	sudo ln -s "$(which python3)" "${_PYTHON_}"
 	unset _PYTHON_
 	
@@ -107,7 +107,7 @@ APPLY_CHANGES() {
 	
 	echo
 	
-	sed -i 's|#define EFI_PAGE_BASE_OFFSET_IN_LDR 0x70000|#define EFI_PAGE_BASE_OFFSET_IN_LDR 0x80000|g' "${EDK_TOOLS_PATH}/Source/C/GenPage/GenPage.c" || true
+	# sed -i 's|#define EFI_PAGE_BASE_OFFSET_IN_LDR 0x70000|#define EFI_PAGE_BASE_OFFSET_IN_LDR 0x80000|g' "${EDK_TOOLS_PATH}/Source/C/GenPage/GenPage.c" || true
 	
 	echo
 	
