@@ -110,7 +110,8 @@ UEFI_DUET_INSTALLER_GIT() {
 	echo
 	
 	rm -rf "${UEFI_DUET_INSTALLER_DIR}/Linux_Source/C" || true
-	install -Dd -m644 "${EDK2_C_SOURCE_DIR}" "${UEFI_DUET_INSTALLER_DIR}/Linux_Source/C"
+	cp -r "${EDK2_C_SOURCE_DIR}" "${UEFI_DUET_INSTALLER_DIR}/Linux_Source/C"
+	chmod -R -x "${UEFI_DUET_INSTALLER_DIR}/Linux_Source/C" || true
 	
 	echo
 	
@@ -170,7 +171,8 @@ DUET_MEMDISK_TOOLS_GIT() {
 	echo
 	
 	rm -rf "${DUET_MEMDISK_TOOLS_DIR}/Linux_Source/C" || true
-	install -Dd -m644 "${EDK2_C_SOURCE_DIR}" "${DUET_MEMDISK_TOOLS_DIR}/Linux_Source/C"
+	cp -r "${EDK2_C_SOURCE_DIR}" "${DUET_MEMDISK_TOOLS_DIR}/Linux_Source/C"
+	chmod -R -x "${DUET_MEMDISK_TOOLS_DIR}/Linux_Source/C" || true
 	
 	echo
 	
