@@ -14,6 +14,7 @@ CREATE_MEMDISK() {
 	rm -f "${WD}/duet_x64_memdisk.bin" || true
 	dd if=/dev/zero of="${WD}/duet_x64_memdisk.bin" bs=512 count=2880
 	mkfs.vfat -F12 -S 512 -n "EFI_DUET" "${WD}/duet_x64_memdisk.bin"
+	chmod -x "${WD}/duet_x64_memdisk.bin" || true
 	
 	echo
 	

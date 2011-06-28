@@ -47,6 +47,7 @@ CREATE_FLOPPY_MEMDISK_EMUVARIABLE() {
 	echo
 	
 	"${WORKSPACE}/DuetPkg/CreateBootDisk.sh" file "${DUET_EMUVARIABLE_BUILD_DIR}/floppy.img" /dev/null FAT12 X64 GCC45 RELEASE
+	chmod -x "${DUET_EMUVARIABLE_BUILD_DIR}/floppy.img" || true
 	
 	EDK2_BUILD_CLEAN
 	
@@ -97,6 +98,7 @@ CREATE_FLOPPY_MEMDISK_FSVARIABLE() {
 	echo
 	
 	"${WORKSPACE}/DuetPkg/CreateBootDisk.sh" file "${DUET_FSVARIABLE_BUILD_DIR}/floppy.img" /dev/null FAT12 X64 GCC45 RELEASE
+	chmod -x "${DUET_FSVARIABLE_BUILD_DIR}/floppy.img" || true
 	
 	echo
 	

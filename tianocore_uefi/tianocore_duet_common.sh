@@ -73,7 +73,7 @@ COPY_MEMDISK_SYSLINUX() {
 	echo
 	
 	sudo rm -f "${BOOTPART}/memdisk_syslinux" || true
-	sudo cp "${SYSLINUX_DIR}/memdisk" "${BOOTPART}/memdisk_syslinux"
+	sudo install -D -m644 "${SYSLINUX_DIR}/memdisk" "${BOOTPART}/memdisk_syslinux"
 	
 	echo
 	
@@ -84,7 +84,7 @@ COPY_EFILDR_MEMDISK() {
 	echo
 	
 	sudo rm -f "${BOOTPART}/Tianocore_UDK_DUET_X64.img" || true
-	sudo cp "${DUET_EMUVARIABLE_BUILD_DIR}/floppy.img" "${BOOTPART}/Tianocore_UDK_DUET_X64.img"
+	sudo install -D -m644 "${DUET_EMUVARIABLE_BUILD_DIR}/floppy.img" "${BOOTPART}/Tianocore_UDK_DUET_X64.img"
 	
 	echo
 	
@@ -103,7 +103,7 @@ COPY_EFILDR_DUET_PART() {
 	
 	sudo mount -t vfat -o rw,users,exec -U "${DUET_PART_FS_UUID}" "${DUET_PART_MP}"
 	sudo rm -f "${DUET_PART_MP}/EFILDR20" || true
-	sudo cp "${DUET_EMUVARIABLE_BUILD_DIR}/FV/Efildr20" "${DUET_PART_MP}/EFILDR20"
+	sudo install -D -m644 "${DUET_EMUVARIABLE_BUILD_DIR}/FV/Efildr20" "${DUET_PART_MP}/EFILDR20"
 	sudo umount "${DUET_PART_MP}"
 	
 	echo
@@ -119,8 +119,8 @@ COPY_UEFI_SHELL_EFISYS_PART() {
 	
 	echo
 	
-	sudo cp "${EDK2_DIR}/ShellBinPkg/UefiShell/X64/Shell.efi" "${EFISYS}/shellx64.efi"
-	sudo cp "${EDK2_DIR}/EdkShellBinPkg/FullShell/X64/Shell_Full.efi" "${EFISYS}/shellx64_old.efi"
+	sudo install -D -m644 "${EDK2_DIR}/ShellBinPkg/UefiShell/X64/Shell.efi" "${EFISYS}/shellx64.efi"
+	sudo install -D -m644 "${EDK2_DIR}/EdkShellBinPkg/FullShell/X64/Shell_Full.efi" "${EFISYS}/shellx64_old.efi"
 	
 	echo
 	

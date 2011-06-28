@@ -114,6 +114,7 @@ then
 	cd "${WD}/"
 	
 	## Convert the line endings of all the source files from DOS to UNIX mode
+	chmod +x "${WD}/xman_dos2unix.sh" || true
 	"${WD}/xman_dos2unix.sh" * || true
 	echo
 	
@@ -124,14 +125,16 @@ then
 	[ "$(which python2)" == "" ] && sudo ln -s "$(which python)" "/usr/bin/python2"
 	
 	## Archlinux changed default /usr/bin/python to 3.1.2, need to use /usr/bin/python2 instead
-	cp "${WD}/autogen.sh" "${WD}/autogen_unmodified.sh"
+	install -D -m755 "${WD}/autogen.sh" "${WD}/autogen_unmodified.sh"
 	sed -i 's|python |python2 |g' "${WD}/autogen.sh" || true
+	chmod +x "${WD}/autogen.sh" || true
 	
 	if [ ! -e "${WD}/po/LINGUAS" ]
 	then
 		cd "${WD}/"
 		rsync -Lrtvz translationproject.org::tp/latest/grub/ "${WD}/po" || true
 		(cd "${WD}/po" && ls *.po | cut -d. -f1 | xargs) > "${WD}/po/LINGUAS" || true
+		chmod -x "${WD}/po/LINGUAS" || true
 	fi
 	
 	"${WD}/autogen.sh"
