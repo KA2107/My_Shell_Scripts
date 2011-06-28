@@ -108,6 +108,7 @@ APPLY_CHANGES() {
 	echo
 	
 	# sed -i 's|#define EFI_PAGE_BASE_OFFSET_IN_LDR 0x70000|#define EFI_PAGE_BASE_OFFSET_IN_LDR 0x80000|g' "${EDK_TOOLS_PATH}/Source/C/GenPage/GenPage.c" || true
+	sed -i 's|export LIB_ARCH_SFX=64|export LIB_ARCH_SFX=""|g' "${EDK2_DIR}/EmulatorPkg/Unix/build64.sh"
 	
 	echo
 	
