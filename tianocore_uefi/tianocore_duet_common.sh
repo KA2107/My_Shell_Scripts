@@ -94,7 +94,7 @@ COPY_EFILDR_DUET_PART() {
 	
 	echo
 	
-	if [-d "${DUET_PART_MP}" ]
+	if [ -d "${DUET_PART_MP}" ]
 	then
 		sudo umount "${DUET_PART_MP}" || true
 	else
