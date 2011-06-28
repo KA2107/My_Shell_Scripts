@@ -119,7 +119,7 @@ then
 	cp --verbose "${WD_Outer}/grub2_uefi_linux_scripts/grub2_uefi.sh" "${WD_Outer}/grub2_uefi_linux_scripts/grub2_uefi_linux_my.sh" "${WD_Outer}/${GRUB2_UEFI_Source_DIR_Name}/"
 	echo
 	
-	rm -rf "${WD_Outer}/${GRUB2_UEFI_Source_DIR_Name}/grub.cfg" || true
+	rm -f "${WD_Outer}/${GRUB2_UEFI_Source_DIR_Name}/grub.cfg" || true
 	cp --verbose "${WD_Outer}/grub2_uefi_linux_scripts/grub2_uefi.cfg" "${WD_Outer}/${GRUB2_UEFI_Source_DIR_Name}/grub.cfg" || true
 	echo
 	
@@ -161,7 +161,7 @@ then
 	cp --verbose "${WD_Outer}/grub2_bios_linux_scripts/grub2_bios.sh" "${WD_Outer}/grub2_bios_linux_scripts/grub2_bios_linux_my.sh" "${WD_Outer}/${GRUB2_BIOS_Source_DIR_Name}/"
 	echo
 	
-	rm -rf "${WD_Outer}/${GRUB2_BIOS_Source_DIR_Name}/grub.cfg" || true
+	rm -f "${WD_Outer}/${GRUB2_BIOS_Source_DIR_Name}/grub.cfg" || true
 	cp --verbose "${WD_Outer}/grub2_bios_linux_scripts/grub2_bios.cfg" "${WD_Outer}/${GRUB2_BIOS_Source_DIR_Name}/grub.cfg" || true
 	echo
 	

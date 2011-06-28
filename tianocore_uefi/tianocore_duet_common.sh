@@ -72,7 +72,7 @@ COPY_MEMDISK_SYSLINUX() {
 	
 	echo
 	
-	sudo rm -rf "${BOOTPART}/memdisk_syslinux" || true
+	sudo rm -f "${BOOTPART}/memdisk_syslinux" || true
 	sudo cp "${SYSLINUX_DIR}/memdisk" "${BOOTPART}/memdisk_syslinux"
 	
 	echo

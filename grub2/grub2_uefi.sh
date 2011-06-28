@@ -197,7 +197,7 @@ then
 	sudo "${GRUB2_UEFI_PREFIX}/sbin/${GRUB2_UEFI_NAME}-install" --boot-directory="${UEFI_SYSTEM_PART_MP}/efi" --bootloader-id="${GRUB2_UEFI_NAME}" --no-floppy --recheck --debug
 	echo
 	
-	# sudo rm -rf --verbose "${GRUB2_UEFI_SYSTEM_PART_DIR}/core.efi" || true
+	# sudo rm -f --verbose "${GRUB2_UEFI_SYSTEM_PART_DIR}/core.efi" || true
 	echo
 	
 	## Create the grub2 uefi application
