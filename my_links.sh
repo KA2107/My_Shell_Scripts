@@ -194,6 +194,10 @@ TIANOCORE() {
 	LINK_FILE="${SOURCE_FILE}"
 	CREATE_SYMLINK
 	
+	SOURCE_FILE="emuunix64pkg_x64_edk2_linux_compile_setup.sh"
+	LINK_FILE="${SOURCE_FILE}"
+	CREATE_SYMLINK
+	
 	SOURCE_FILE="unixpkg_x64_edk2_linux_compile_setup.sh"
 	LINK_FILE="${SOURCE_FILE}"
 	CREATE_SYMLINK

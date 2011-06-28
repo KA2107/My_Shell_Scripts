@@ -41,6 +41,10 @@ COMPILE_UNIXPKG() {
 	
 	echo
 	
+	APPLY_CHANGES
+	
+	echo
+	
 	cd "${EDK2_DIR}/UnixPkg/"
 	"${EDK2_DIR}/UnixPkg/build64.sh"
 	

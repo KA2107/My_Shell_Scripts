@@ -41,6 +41,10 @@ COMPILE_ISO9660() {
 	
 	echo
 	
+	APPLY_CHANGES
+	
+	echo
+	
 	COMPILE_BASETOOLS_MANUAL
 	
 	echo

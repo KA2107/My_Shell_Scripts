@@ -41,6 +41,10 @@ COMPILE_OVMF() {
 	
 	echo
 	
+	APPLY_CHANGES
+	
+	echo
+	
 	cd "${EDK2_DIR}/OvmfPkg"
 	"${EDK2_DIR}/OvmfPkg/build.sh" -a X64 -b DEBUG -t GCC45
 	

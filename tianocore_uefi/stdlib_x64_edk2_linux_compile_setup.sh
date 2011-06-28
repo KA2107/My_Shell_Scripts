@@ -41,6 +41,10 @@ COMPILE_STDLIB() {
 	
 	echo
 	
+	APPLY_CHANGES
+	
+	echo
+	
 	COMPILE_BASETOOLS_MANUAL
 	
 	echo
