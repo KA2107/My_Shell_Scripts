@@ -68,6 +68,11 @@ export GRUB2_UEFI_MENU_CONFIG="grub"
 export GRUB2_UEFI_BIN_DIR="${GRUB2_UEFI_PREFIX}/bin"
 export GRUB2_UEFI_SBIN_DIR="${GRUB2_UEFI_PREFIX}/sbin"
 export GRUB2_UEFI_SYSCONF_DIR="${GRUB2_UEFI_PREFIX}/etc"
+export GRUB2_UEFI_LIB_DIR="${GRUB2_UEFI_PREFIX}/lib"
+export GRUB2_UEFI_DATAROOT_DIR="${GRUB2_UEFI_PREFIX}/share"
+export GRUB2_UEFI_INFO_DIR="${GRUB2_UEFI_DATAROOT_DIR}/info"
+export GRUB2_UEFI_LOCALE_DIR="${GRUB2_UEFI_DATAROOT_DIR}/locale"
+export GRUB2_UEFI_MAN_DIR="${GRUB2_UEFI_DATAROOT_DIR}/man"
 
 export GRUB2_UEFI_APP_PREFIX="efi/${GRUB2_UEFI_NAME}"
 export GRUB2_UEFI_SYSTEM_PART_DIR="${UEFI_SYSTEM_PART_MP}/${GRUB2_UEFI_APP_PREFIX}"
@@ -75,7 +80,9 @@ export GRUB2_UNIFONT_PATH="/usr/share/fonts/misc"
 
 export GRUB2_UEFI_Configure_Flags="--with-platform=efi --target=${TARGET_UEFI_ARCH} --program-transform-name=s,grub,${GRUB2_UEFI_NAME},"
 export GRUB2_Other_UEFI_Configure_Flags="--enable-mm-debug --enable-grub-mkfont --enable-nls"
-export GRUB2_UEFI_Configure_PATHS="--prefix=\"${GRUB2_UEFI_PREFIX}\" --bindir=\"${GRUB2_UEFI_BIN_DIR}\" --sbindir=\"${GRUB2_UEFI_SBIN_DIR}\" --sysconfdir=\"${GRUB2_UEFI_SYSCONF_DIR}\""
+
+export GRUB2_UEFI_Configure_PATHS_1="--prefix=\"${GRUB2_UEFI_PREFIX}\" --bindir=\"${GRUB2_UEFI_BIN_DIR}\" --sbindir=\"${GRUB2_UEFI_SBIN_DIR}\" --sysconfdir=\"${GRUB2_UEFI_SYSCONF_DIR}\" --libdir=\"${GRUB2_UEFI_LIB_DIR}\""
+export GRUB2_UEFI_Configure_PATHS_2="--datarootdir=\"${GRUB2_UEFI_DATAROOT_DIR}\" --infodir=\"${GRUB2_UEFI_INFO_DIR}\" --localedir=\"${GRUB2_UEFI_LOCALE_DIR}\" --mandir=\"${GRUB2_UEFI_MAN_DIR}\""
 
 export GRUB2_UEFI_LST_files="command.lst crypto.lst fs.lst handler.lst moddep.lst partmap.lst parttool.lst terminal.lst video.lst"
 
@@ -156,7 +163,7 @@ then
 	## fix unifont.bdf location
 	sed -i "s|/usr/share/fonts/unifont|${GRUB2_UNIFONT_PATH}|g" "${WD}/configure"
 	
-	"${WD}/configure" ${GRUB2_UEFI_Configure_Flags} ${GRUB2_Other_UEFI_Configure_Flags} ${GRUB2_UEFI_Configure_PATHS}
+	"${WD}/configure" ${GRUB2_UEFI_Configure_Flags} ${GRUB2_Other_UEFI_Configure_Flags} ${GRUB2_UEFI_Configure_PATHS_1} ${GRUB2_UEFI_Configure_PATHS_2}
 	echo
 	
 	make
@@ -189,7 +196,7 @@ then
 	echo
 	
 	cd "${WD}/GRUB2_UEFI_BUILD_DIR_${TARGET_UEFI_ARCH}/grub-core/"
-	# sudo cp --verbose ${GRUB2_EXTRAS_MODULES} "${GRUB2_UEFI_PREFIX}/lib/${GRUB2_UEFI_NAME}/${TARGET_UEFI_ARCH}-efi/" || true
+	# sudo cp --verbose ${GRUB2_EXTRAS_MODULES} "${GRUB2_UEFI_LIB_DIR}/${GRUB2_UEFI_NAME}/${TARGET_UEFI_ARCH}-efi/" || true
 	echo
 	
 	## Backup the old GRUB2 folder in the UEFI System Partition
@@ -209,12 +216,12 @@ then
 	echo
 	
 	## Create the grub2 uefi application
-	sudo "${GRUB2_UEFI_BIN_DIR}/${GRUB2_UEFI_NAME}-mkimage" --verbose --directory="${GRUB2_UEFI_PREFIX}/lib/${GRUB2_UEFI_NAME}/${TARGET_UEFI_ARCH}-efi" --prefix="" --output="${GRUB2_UEFI_SYSTEM_PART_DIR}/${GRUB2_UEFI_NAME}.efi" --format="${TARGET_UEFI_ARCH}-efi" ${GRUB2_UEFI_FINAL_MODULES}
+	sudo "${GRUB2_UEFI_BIN_DIR}/${GRUB2_UEFI_NAME}-mkimage" --verbose --directory="${GRUB2_UEFI_LIB_DIR}/${GRUB2_UEFI_NAME}/${TARGET_UEFI_ARCH}-efi" --prefix="" --output="${GRUB2_UEFI_SYSTEM_PART_DIR}/${GRUB2_UEFI_NAME}.efi" --format="${TARGET_UEFI_ARCH}-efi" ${GRUB2_UEFI_FINAL_MODULES}
 	echo
 	
 	cd "${WD}/GRUB2_UEFI_BUILD_DIR_${TARGET_UEFI_ARCH}/grub-core/"
 	# sudo cp --verbose ${GRUB2_EXTRAS_MODULES} "${GRUB2_UEFI_SYSTEM_PART_DIR}/" || true
-	sudo cp --verbose "${GRUB2_UEFI_PREFIX}/lib/${GRUB2_UEFI_NAME}/${TARGET_UEFI_ARCH}-efi"/*.img "${GRUB2_UEFI_SYSTEM_PART_DIR}/" || true
+	sudo cp --verbose "${GRUB2_UEFI_LIB_DIR}/${GRUB2_UEFI_NAME}/${TARGET_UEFI_ARCH}-efi"/*.img "${GRUB2_UEFI_SYSTEM_PART_DIR}/" || true
 	echo
 	
 	if [ "${EXECUTE_EFIBOOTMGR}" == "1" ]
@@ -242,7 +249,7 @@ then
 	# sudo "${GRUB2_UEFI_SBIN_DIR}/${GRUB2_UEFI_NAME}-mkconfig" --output="${GRUB2_UEFI_SYSTEM_PART_DIR}/${GRUB2_UEFI_MENU_CONFIG}.cfg" || true
 	echo
 	
-	sudo cp "${GRUB2_UEFI_PREFIX}/share/${GRUB2_UEFI_NAME}"/*.pf2 "${GRUB2_UEFI_SYSTEM_PART_DIR}/" || true
+	sudo cp "${GRUB2_UEFI_DATAROOT_DIR}/${GRUB2_UEFI_NAME}"/*.pf2 "${GRUB2_UEFI_SYSTEM_PART_DIR}/" || true
 	echo
 	
 	sed -i "s|${GRUB2_UEFI_MENU_CONFIG}.cfg|grub.cfg|g" "${WD}/grub-core/normal/main.c" || true
@@ -289,6 +296,11 @@ unset GRUB2_UEFI_PREFIX
 unset GRUB2_UEFI_BIN_DIR
 unset GRUB2_UEFI_SBIN_DIR
 unset GRUB2_UEFI_SYSCONF_DIR
+unset GRUB2_UEFI_LIB_DIR
+unset GRUB2_UEFI_DATAROOT_DIR
+unset GRUB2_UEFI_INFO_DIR
+unset GRUB2_UEFI_LOCALE_DIR
+unset GRUB2_UEFI_MAN_DIR
 unset GRUB2_UEFI_APP_PREFIX
 unset GRUB2_UEFI_SYSTEM_PART_DIR
 unset GRUB2_UEFI_MENU_CONFIG

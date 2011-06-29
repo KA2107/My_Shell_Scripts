@@ -65,11 +65,18 @@ export GRUB2_BIOS_MENU_CONFIG="grub"
 export GRUB2_BIOS_BIN_DIR="${GRUB2_BIOS_PREFIX}/bin"
 export GRUB2_BIOS_SBIN_DIR="${GRUB2_BIOS_PREFIX}/sbin"
 export GRUB2_BIOS_SYSCONF_DIR="${GRUB2_BIOS_PREFIX}/etc"
+export GRUB2_BIOS_LIB_DIR="${GRUB2_BIOS_PREFIX}/lib"
+export GRUB2_BIOS_DATAROOT_DIR="${GRUB2_BIOS_PREFIX}/share"
+export GRUB2_BIOS_INFO_DIR="${GRUB2_BIOS_DATAROOT_DIR}/info"
+export GRUB2_BIOS_LOCALE_DIR="${GRUB2_BIOS_DATAROOT_DIR}/locale"
+export GRUB2_BIOS_MAN_DIR="${GRUB2_BIOS_DATAROOT_DIR}/man"
 
 export GRUB2_BOOT_PART_DIR="${GRUB2_Root_Part_MP}/boot/${GRUB2_BIOS_NAME}"
 export GRUB2_BIOS_Configure_Flags="--with-platform=pc --program-transform-name=s,grub,${GRUB2_BIOS_NAME},"
 export GRUB2_Other_BIOS_Configure_Flags="--enable-mm-debug --enable-grub-mkfont --disable-nls"
-export GRUB2_BIOS_Configure_PATHS="--prefix=\"${GRUB2_BIOS_PREFIX}\" --bindir=\"${GRUB2_BIOS_BIN_DIR}\" --sbindir=\"${GRUB2_BIOS_SBIN_DIR}\" --sysconfdir=\"${GRUB2_BIOS_SYSCONF_DIR}\""
+
+export GRUB2_BIOS_Configure_PATHS_1="--prefix=\"${GRUB2_BIOS_PREFIX}\" --bindir=\"${GRUB2_BIOS_BIN_DIR}\" --sbindir=\"${GRUB2_BIOS_SBIN_DIR}\" --sysconfdir=\"${GRUB2_BIOS_SYSCONF_DIR}\" --libdir=\"${GRUB2_BIOS_LIB_DIR}\""
+export GRUB2_BIOS_Configure_PATHS_2="--datarootdir=\"${GRUB2_BIOS_DATAROOT_DIR}\" --infodir=\"${GRUB2_BIOS_INFO_DIR}\" --localedir=\"${GRUB2_BIOS_LOCALE_DIR}\" --mandir=\"${GRUB2_BIOS_MAN_DIR}\""
 
 export GRUB2_UNIFONT_PATH="/usr/share/fonts/misc"
 
@@ -143,7 +150,7 @@ then
 	## fix unifont.bdf location
 	sed -i "s|/usr/share/fonts/unifont|${GRUB2_UNIFONT_PATH}|g" "${WD}/configure"
 	
-	"${WD}/configure" ${GRUB2_BIOS_Configure_Flags} ${GRUB2_Other_BIOS_Configure_Flags} ${GRUB2_BIOS_Configure_PATHS}
+	"${WD}/configure" ${GRUB2_BIOS_Configure_Flags} ${GRUB2_Other_BIOS_Configure_Flags} ${GRUB2_BIOS_Configure_PATHS_1} ${GRUB2_BIOS_Configure_PATHS_2}
 	echo
 	
 	make
@@ -176,7 +183,7 @@ then
 	echo
 	
 	cd "${WD}/GRUB2_BIOS_BUILD_DIR/grub-core/"
-	# sudo cp --verbose ${GRUB2_EXTRAS_MODULES} "${GRUB2_BIOS_PREFIX}/lib/${GRUB2_BIOS_NAME}/i386-pc/" || true
+	# sudo cp --verbose ${GRUB2_EXTRAS_MODULES} "${GRUB2_BIOS_LIB_DIR}/${GRUB2_BIOS_NAME}/i386-pc/" || true
 	echo
 	
 	cd "${WD}/GRUB2_BIOS_BUILD_DIR/grub-core/"
@@ -211,7 +218,7 @@ then
 	# sudo "${GRUB2_BIOS_BIN_DIR}/${GRUB2_BIOS_NAME}-mkfont" --verbose --ascii-bitmaps --output="${GRUB2_BOOT_PART_DIR}/ascii.pf2" "${GRUB2_UNIFONT_PATH}/unifont.bdf" || true
 	echo
 	
-	sudo cp "${GRUB2_BIOS_PREFIX}/share/${GRUB2_BIOS_NAME}"/*.pf2 "${GRUB2_BOOT_PART_DIR}/" || true
+	sudo cp "${GRUB2_BIOS_DATAROOT_DIR}/${GRUB2_BIOS_NAME}"/*.pf2 "${GRUB2_BOOT_PART_DIR}/" || true
 	echo
 	
 	sudo cp --verbose "${GRUB2_BIOS_Backup}/${GRUB2_BIOS_MENU_CONFIG}.cfg" "${GRUB2_BOOT_PART_DIR}/${GRUB2_BIOS_MENU_CONFIG}_backup.cfg" || true
@@ -253,6 +260,11 @@ unset GRUB2_BIOS_PREFIX
 unset GRUB2_BIOS_BIN_DIR
 unset GRUB2_BIOS_SBIN_DIR
 unset GRUB2_BIOS_SYSCONF_DIR
+unset GRUB2_BIOS_LIB_DIR
+unset GRUB2_BIOS_DATAROOT_DIR
+unset GRUB2_BIOS_INFO_DIR
+unset GRUB2_BIOS_LOCALE_DIR
+unset GRUB2_BIOS_MAN_DIR
 unset GRUB2_BIOS_MENU_CONFIG
 unset GRUB2_BOOT_PART_DIR
 unset GRUB2_BIOS_Configure_Flags

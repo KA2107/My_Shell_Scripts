@@ -61,16 +61,16 @@ run()
 					git reset --hard
 					echo
 					
-					for check in ${MILD_FETCH[@]}
-					do
-						if [ "$(basename "${PWD}")" = "${check}" ]
-						then
-							git fetch --depth=1
-						else
+					# for check in ${MILD_FETCH[@]}
+					# do
+						# if [ "$(basename "${PWD}")" = "${check}" ]
+						# then
+							# git fetch --depth=1
+						# else
 							git fetch
-						fi
+						# fi
 					echo
-					done
+					# done
 					
 					git checkout master
 					echo
