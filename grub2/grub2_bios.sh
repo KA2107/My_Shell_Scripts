@@ -13,7 +13,7 @@
 
 ## The "GRUB2_BIOS_NAME" parameter refers to the GRUB2 folder name in the your /boot partition or /boot directory. The final GRUB2 BIOS files including core.img will be installed in /boot/<GRUB2_BIOS_NAME>/ folder, where <GRUB2_BIOS_NAME> refers to the "GRUB2_BIOS_NAME" parameter you passed to this script.
 
-## For xman_dos2unix.sh download https://github.com/skodabenz/My_Shell_Scripts/blob/master/xmanutility/xman_dos2unix.sh
+## For xman_dos2unix.sh download https://raw.github.com/skodabenz/My_Shell_Scripts/master/xmanutility/xman_dos2unix.sh
 
 ## This script uses the 'sudo' tool at certain places so make sure you have that installed.
 
@@ -116,6 +116,8 @@ then
 	cd "${WD}/"
 	
 	## Convert the line endings of all the source files from DOS to UNIX mode
+	[ ! -e "${WD}/xman_dos2unix.sh" ] && wget --no-check-certificate --output-file="${WD}/xman_dos2unix.sh" "https://raw.github.com/skodabenz/My_Shell_Scripts/master/xmanutility/xman_dos2unix.sh"
+	chmod +x "${WD}/xman_dos2unix.sh" || true
 	"${WD}/xman_dos2unix.sh" * || true
 	echo
 	

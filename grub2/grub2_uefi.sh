@@ -15,7 +15,7 @@
 
 ## The "GRUB2_UEFI_PREFIX" parameter is not compulsory.
 
-## For xman_dos2unix.sh download https://github.com/skodabenz/My_Shell_Scripts/blob/master/xmanutility/xman_dos2unix.sh
+## For xman_dos2unix.sh download https://raw.github.com/skodabenz/My_Shell_Scripts/master/xmanutility/xman_dos2unix.sh
 
 ## This script uses the 'sudo' tool at certain places so make sure you have that installed.
 
@@ -126,6 +126,7 @@ then
 	cd "${WD}/"
 	
 	## Convert the line endings of all the source files from DOS to UNIX mode
+	[ ! -e "${WD}/xman_dos2unix.sh" ] && wget --no-check-certificate --output-file="${WD}/xman_dos2unix.sh" "https://raw.github.com/skodabenz/My_Shell_Scripts/master/xmanutility/xman_dos2unix.sh"
 	chmod +x "${WD}/xman_dos2unix.sh" || true
 	"${WD}/xman_dos2unix.sh" * || true
 	echo
