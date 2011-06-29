@@ -65,13 +65,17 @@ export GRUB2_UEFI_MENU_CONFIG="grub"
 
 [ "${GRUB2_UEFI_PREFIX}" == "" ] && GRUB2_UEFI_PREFIX="/grub2/grub2_uefi_${TARGET_UEFI_ARCH}"
 
+export GRUB2_UEFI_BIN_DIR="${GRUB2_UEFI_PREFIX}/bin"
+export GRUB2_UEFI_SBIN_DIR="${GRUB2_UEFI_PREFIX}/sbin"
+export GRUB2_UEFI_SYSCONF_DIR="${GRUB2_UEFI_PREFIX}/etc"
+
 export GRUB2_UEFI_APP_PREFIX="efi/${GRUB2_UEFI_NAME}"
 export GRUB2_UEFI_SYSTEM_PART_DIR="${UEFI_SYSTEM_PART_MP}/${GRUB2_UEFI_APP_PREFIX}"
 export GRUB2_UNIFONT_PATH="/usr/share/fonts/misc"
 
 export GRUB2_UEFI_Configure_Flags="--with-platform=efi --target=${TARGET_UEFI_ARCH} --program-transform-name=s,grub,${GRUB2_UEFI_NAME},"
 export GRUB2_Other_UEFI_Configure_Flags="--enable-mm-debug --enable-grub-mkfont --enable-nls"
-export GRUB2_UEFI_Configure_PATHS="--prefix=\"${GRUB2_UEFI_PREFIX}\" --bindir=\"${GRUB2_UEFI_PREFIX}/bin\" --sbindir=\"${GRUB2_UEFI_PREFIX}/sbin\" --sysconfdir=\"${GRUB2_UEFI_PREFIX}/etc\""
+export GRUB2_UEFI_Configure_PATHS="--prefix=\"${GRUB2_UEFI_PREFIX}\" --bindir=\"${GRUB2_UEFI_BIN_DIR}\" --sbindir=\"${GRUB2_UEFI_SBIN_DIR}\" --sysconfdir=\"${GRUB2_UEFI_SYSCONF_DIR}\""
 
 export GRUB2_UEFI_LST_files="command.lst crypto.lst fs.lst handler.lst moddep.lst partmap.lst parttool.lst terminal.lst video.lst"
 
@@ -79,8 +83,8 @@ export GRUB2_PARTMAP_FS_MODULES="part_gpt part_msdos part_apple fat ext2 reiserf
 export GRUB2_COMMON_IMP_MODULES="relocator reboot multiboot multiboot2 fshelp xzio gzio memdisk tar normal gfxterm chain linux ls cat search search_fs_file search_fs_uuid search_label help loopback boot configfile echo lvm usbms usb_keyboard"
 export GRUB2_UEFI_APP_MODULES="efi_gop efi_uga font png jpeg password pbkdf2 password_pbkdf2"
 export GRUB2_EXTRAS_MODULES="lua.mod"
-export GRUB2_UEFI_FINAL_MODULES="${GRUB2_PARTMAP_FS_MODULES} ${GRUB2_COMMON_IMP_MODULES} ${GRUB2_UEFI_APP_MODULES} ${GRUB2_EXTRAS_MODULES}"
-# export GRUB2_UEFI_FINAL_MODULES="${GRUB2_PARTMAP_FS_MODULES} ${GRUB2_COMMON_IMP_MODULES} ${GRUB2_UEFI_APP_MODULES}"
+# export GRUB2_UEFI_FINAL_MODULES="${GRUB2_PARTMAP_FS_MODULES} ${GRUB2_COMMON_IMP_MODULES} ${GRUB2_UEFI_APP_MODULES} ${GRUB2_EXTRAS_MODULES}"
+export GRUB2_UEFI_FINAL_MODULES="${GRUB2_PARTMAP_FS_MODULES} ${GRUB2_COMMON_IMP_MODULES} ${GRUB2_UEFI_APP_MODULES}"
 
 ## GRUB2_UEFI_FINAL_MODULES - Those modules that will be in the final <GRUB2_UEFI_NAME>.efi application.
 
@@ -195,17 +199,17 @@ then
 	sudo rm -rf --verbose "${GRUB2_UEFI_SYSTEM_PART_DIR}" || true
 	echo
 	
-	sudo sed -i 's|--bootloader_id=|--bootloader-id=|g' "${GRUB2_UEFI_PREFIX}/sbin/${GRUB2_UEFI_NAME}-install" || true
+	sudo sed -i 's|--bootloader_id=|--bootloader-id=|g' "${GRUB2_UEFI_SBIN_DIR}/${GRUB2_UEFI_NAME}-install" || true
 	
 	## Setup the GRUB2 folder in the UEFI System Partition and create the grub.efi application
-	sudo "${GRUB2_UEFI_PREFIX}/sbin/${GRUB2_UEFI_NAME}-install" --boot-directory="${UEFI_SYSTEM_PART_MP}/efi" --bootloader-id="${GRUB2_UEFI_NAME}" --no-floppy --recheck --debug
+	sudo "${GRUB2_UEFI_SBIN_DIR}/${GRUB2_UEFI_NAME}-install" --boot-directory="${UEFI_SYSTEM_PART_MP}/efi" --bootloader-id="${GRUB2_UEFI_NAME}" --no-floppy --recheck --debug
 	echo
 	
 	# sudo rm -f --verbose "${GRUB2_UEFI_SYSTEM_PART_DIR}/core.efi" || true
 	echo
 	
 	## Create the grub2 uefi application
-	sudo "${GRUB2_UEFI_PREFIX}/bin/${GRUB2_UEFI_NAME}-mkimage" --verbose --directory="${GRUB2_UEFI_PREFIX}/lib/${GRUB2_UEFI_NAME}/${TARGET_UEFI_ARCH}-efi" --prefix="" --output="${GRUB2_UEFI_SYSTEM_PART_DIR}/${GRUB2_UEFI_NAME}.efi" --format="${TARGET_UEFI_ARCH}-efi" ${GRUB2_UEFI_FINAL_MODULES}
+	sudo "${GRUB2_UEFI_BIN_DIR}/${GRUB2_UEFI_NAME}-mkimage" --verbose --directory="${GRUB2_UEFI_PREFIX}/lib/${GRUB2_UEFI_NAME}/${TARGET_UEFI_ARCH}-efi" --prefix="" --output="${GRUB2_UEFI_SYSTEM_PART_DIR}/${GRUB2_UEFI_NAME}.efi" --format="${TARGET_UEFI_ARCH}-efi" ${GRUB2_UEFI_FINAL_MODULES}
 	echo
 	
 	cd "${WD}/GRUB2_UEFI_BUILD_DIR_${TARGET_UEFI_ARCH}/grub-core/"
@@ -218,7 +222,7 @@ then
 		echo
 		sudo modprobe -q efivars || echo "efivars kernel module not found, needed for efibootmgr."
 		
-		EFISYS_PART_DEVICE="$(sudo "${GRUB2_UEFI_PREFIX}/sbin/${GRUB2_UEFI_NAME}-probe" --target=device "${GRUB2_UEFI_SYSTEM_PART_DIR}/")"
+		EFISYS_PART_DEVICE="$(sudo "${GRUB2_UEFI_SBIN_DIR}/${GRUB2_UEFI_NAME}-probe" --target=device "${GRUB2_UEFI_SYSTEM_PART_DIR}/")"
 		EFISYS_PART_NUM="$(sudo blkid -p -o value -s PART_ENTRY_NUMBER "${EFISYS_PART_DEVICE}")"
 		EFISYS_PARENT_DEVICE="$(echo "${EFISYS_PART_DEVICE}" | sed "s/${EFISYS_PART_NUM}//g")"
 		echo
@@ -227,15 +231,15 @@ then
 		echo
 	fi
 	
-	sudo mkdir -p "${GRUB2_UEFI_PREFIX}/etc/default"
-	[ -e "${WD}/grub.default" ] && sudo cp --verbose "${WD}/grub.default" "${GRUB2_UEFI_PREFIX}/etc/default/grub" || true
-	sudo chmod --verbose -x "${GRUB2_UEFI_PREFIX}/etc/default/grub" || true
+	sudo mkdir -p "${GRUB2_UEFI_SYSCONF_DIR}/default"
+	[ -e "${WD}/grub.default" ] && sudo cp --verbose "${WD}/grub.default" "${GRUB2_UEFI_SYSCONF_DIR}/default/grub" || true
+	sudo chmod --verbose -x "${GRUB2_UEFI_SYSCONF_DIR}/default/grub" || true
 	echo
 	
-	sudo cp --verbose "$(which gettext.sh)" "${GRUB2_UEFI_PREFIX}/bin/" || true
-	sudo chmod --verbose -x "${GRUB2_UEFI_PREFIX}/etc/grub.d/README" || true
+	sudo cp --verbose "$(which gettext.sh)" "${GRUB2_UEFI_BIN_DIR}/" || true
+	sudo chmod --verbose -x "${GRUB2_UEFI_SYSCONF_DIR}/grub.d/README" || true
 	echo
-	# sudo "${GRUB2_UEFI_PREFIX}/sbin/${GRUB2_UEFI_NAME}-mkconfig" --output="${GRUB2_UEFI_SYSTEM_PART_DIR}/${GRUB2_UEFI_MENU_CONFIG}.cfg" || true
+	# sudo "${GRUB2_UEFI_SBIN_DIR}/${GRUB2_UEFI_NAME}-mkconfig" --output="${GRUB2_UEFI_SYSTEM_PART_DIR}/${GRUB2_UEFI_MENU_CONFIG}.cfg" || true
 	echo
 	
 	sudo cp "${GRUB2_UEFI_PREFIX}/share/${GRUB2_UEFI_NAME}"/*.pf2 "${GRUB2_UEFI_SYSTEM_PART_DIR}/" || true
@@ -282,6 +286,9 @@ unset GRUB2_UEFI_NAME
 unset GRUB2_UEFI_Backup
 unset GRUB2_UEFI_TOOLS_Backup
 unset GRUB2_UEFI_PREFIX
+unset GRUB2_UEFI_BIN_DIR
+unset GRUB2_UEFI_SBIN_DIR
+unset GRUB2_UEFI_SYSCONF_DIR
 unset GRUB2_UEFI_APP_PREFIX
 unset GRUB2_UEFI_SYSTEM_PART_DIR
 unset GRUB2_UEFI_MENU_CONFIG

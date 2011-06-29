@@ -62,10 +62,14 @@ export GRUB2_BIOS_MENU_CONFIG="grub"
 
 [ "${GRUB2_BIOS_PREFIX}" == "" ] && export GRUB2_BIOS_PREFIX="/grub2/grub2_bios"
 
+export GRUB2_BIOS_BIN_DIR="${GRUB2_BIOS_PREFIX}/bin"
+export GRUB2_BIOS_SBIN_DIR="${GRUB2_BIOS_PREFIX}/sbin"
+export GRUB2_BIOS_SYSCONF_DIR="${GRUB2_BIOS_PREFIX}/etc"
+
 export GRUB2_BOOT_PART_DIR="${GRUB2_Root_Part_MP}/boot/${GRUB2_BIOS_NAME}"
 export GRUB2_BIOS_Configure_Flags="--with-platform=pc --program-transform-name=s,grub,${GRUB2_BIOS_NAME},"
 export GRUB2_Other_BIOS_Configure_Flags="--enable-mm-debug --enable-grub-mkfont --disable-nls"
-export GRUB2_BIOS_Configure_PATHS="--prefix=\"${GRUB2_BIOS_PREFIX}\" --bindir=\"${GRUB2_BIOS_PREFIX}/bin\" --sbindir=\"${GRUB2_BIOS_PREFIX}/sbin\" --sysconfdir=\"${GRUB2_BIOS_PREFIX}/etc\""
+export GRUB2_BIOS_Configure_PATHS="--prefix=\"${GRUB2_BIOS_PREFIX}\" --bindir=\"${GRUB2_BIOS_BIN_DIR}\" --sbindir=\"${GRUB2_BIOS_SBIN_DIR}\" --sysconfdir=\"${GRUB2_BIOS_SYSCONF_DIR}\""
 
 export GRUB2_UNIFONT_PATH="/usr/share/fonts/misc"
 
@@ -177,13 +181,13 @@ then
 	
 	cd "${WD}/GRUB2_BIOS_BUILD_DIR/grub-core/"
 	
-	sudo mkdir -p "${GRUB2_BIOS_PREFIX}/etc/default"
-	[ -e "${WD}/grub.default" ] && sudo cp --verbose "${WD}/grub.default" "${GRUB2_BIOS_PREFIX}/etc/default/grub" || true
-	sudo chmod --verbose -x "${GRUB2_BIOS_PREFIX}/etc/default/grub" || true
+	sudo mkdir -p "${GRUB2_BIOS_SYSCONF_DIR}/default"
+	[ -e "${WD}/grub.default" ] && sudo cp --verbose "${WD}/grub.default" "${GRUB2_BIOS_SYSCONF_DIR}/default/grub" || true
+	sudo chmod --verbose -x "${GRUB2_BIOS_SYSCONF_DIR}/default/grub" || true
 	echo
 	
-	sudo cp --verbose "$(which gettext.sh)" "${GRUB2_BIOS_PREFIX}/bin/" || true
-	sudo chmod --verbose -x "${GRUB2_BIOS_PREFIX}/etc/grub.d/README" || true
+	sudo cp --verbose "$(which gettext.sh)" "${GRUB2_BIOS_BIN_DIR}/" || true
+	sudo chmod --verbose -x "${GRUB2_BIOS_SYSCONF_DIR}/grub.d/README" || true
 	echo
 	
 	## Backup the old GRUB2 folder in the /boot folder.
@@ -193,18 +197,18 @@ then
 	sudo rm -rf --verbose "${GRUB2_BOOT_PART_DIR}" || true
 	echo
 	
-	sudo "${GRUB2_BIOS_PREFIX}/sbin/${GRUB2_BIOS_NAME}-install" --modules="${GRUB2_BIOS_CORE_IMG_MODULES}" --root-directory="${GRUB2_Root_Part_MP}" --no-floppy --recheck --debug "${GRUB2_Install_Device}" # Setup the GRUB2 folder in the /boot directory, create the core.img image and embed the image in the disk.
+	sudo "${GRUB2_BIOS_SBIN_DIR}/${GRUB2_BIOS_NAME}-install" --modules="${GRUB2_BIOS_CORE_IMG_MODULES}" --root-directory="${GRUB2_Root_Part_MP}" --no-floppy --recheck --debug "${GRUB2_Install_Device}" # Setup the GRUB2 folder in the /boot directory, create the core.img image and embed the image in the disk.
 	echo
 	
-	# sudo ${GRUB2_BIOS_PREFIX}/sbin/${GRUB2_BIOS_NAME}-mkconfig --output=${GRUB2_BOOT_PART_DIR}/${GRUB2_BIOS_MENU_CONFIG}.cfg || true
+	# sudo ${GRUB2_BIOS_SBIN_DIR}/${GRUB2_BIOS_NAME}-mkconfig --output=${GRUB2_BOOT_PART_DIR}/${GRUB2_BIOS_MENU_CONFIG}.cfg || true
 	echo
 	
 	cd ..
 	sed -i "s|${GRUB2_BIOS_MENU_CONFIG}.cfg|grub.cfg|g" "${WD}/grub-core/normal/main.c" || true
 	
-	# sudo "${GRUB2_BIOS_PREFIX}/bin/${GRUB2_BIOS_NAME}-mkfont" --verbose --output="${GRUB2_BOOT_PART_DIR}/unicode.pf2" "${GRUB2_UNIFONT_PATH}/unifont.bdf" || true
+	# sudo "${GRUB2_BIOS_BIN_DIR}/${GRUB2_BIOS_NAME}-mkfont" --verbose --output="${GRUB2_BOOT_PART_DIR}/unicode.pf2" "${GRUB2_UNIFONT_PATH}/unifont.bdf" || true
 	echo
-	# sudo "${GRUB2_BIOS_PREFIX}/bin/${GRUB2_BIOS_NAME}-mkfont" --verbose --ascii-bitmaps --output="${GRUB2_BOOT_PART_DIR}/ascii.pf2" "${GRUB2_UNIFONT_PATH}/unifont.bdf" || true
+	# sudo "${GRUB2_BIOS_BIN_DIR}/${GRUB2_BIOS_NAME}-mkfont" --verbose --ascii-bitmaps --output="${GRUB2_BOOT_PART_DIR}/ascii.pf2" "${GRUB2_UNIFONT_PATH}/unifont.bdf" || true
 	echo
 	
 	sudo cp "${GRUB2_BIOS_PREFIX}/share/${GRUB2_BIOS_NAME}"/*.pf2 "${GRUB2_BOOT_PART_DIR}/" || true
@@ -246,6 +250,9 @@ unset GRUB2_BIOS_NAME
 unset GRUB2_BIOS_Backup
 unset GRUB2_BIOS_TOOLS_Backup
 unset GRUB2_BIOS_PREFIX
+unset GRUB2_BIOS_BIN_DIR
+unset GRUB2_BIOS_SBIN_DIR
+unset GRUB2_BIOS_SYSCONF_DIR
 unset GRUB2_BIOS_MENU_CONFIG
 unset GRUB2_BOOT_PART_DIR
 unset GRUB2_BIOS_Configure_Flags
