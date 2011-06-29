@@ -81,8 +81,8 @@ export GRUB2_UNIFONT_PATH="/usr/share/fonts/misc"
 export GRUB2_UEFI_Configure_Flags="--with-platform=efi --target=${TARGET_UEFI_ARCH} --program-transform-name=s,grub,${GRUB2_UEFI_NAME},"
 export GRUB2_Other_UEFI_Configure_Flags="--enable-mm-debug --enable-grub-mkfont --enable-nls"
 
-export GRUB2_UEFI_Configure_PATHS_1="--prefix=\"${GRUB2_UEFI_PREFIX}\" --bindir=\"${GRUB2_UEFI_BIN_DIR}\" --sbindir=\"${GRUB2_UEFI_SBIN_DIR}\" --sysconfdir=\"${GRUB2_UEFI_SYSCONF_DIR}\" --libdir=\"${GRUB2_UEFI_LIB_DIR}\""
-export GRUB2_UEFI_Configure_PATHS_2="--datarootdir=\"${GRUB2_UEFI_DATAROOT_DIR}\" --infodir=\"${GRUB2_UEFI_INFO_DIR}\" --localedir=\"${GRUB2_UEFI_LOCALE_DIR}\" --mandir=\"${GRUB2_UEFI_MAN_DIR}\""
+export GRUB2_UEFI_Configure_PATHS_1="--prefix="${GRUB2_UEFI_PREFIX}" --bindir="${GRUB2_UEFI_BIN_DIR}" --sbindir="${GRUB2_UEFI_SBIN_DIR}" --sysconfdir="${GRUB2_UEFI_SYSCONF_DIR}" --libdir="${GRUB2_UEFI_LIB_DIR}""
+export GRUB2_UEFI_Configure_PATHS_2="--datarootdir="${GRUB2_UEFI_DATAROOT_DIR}" --infodir="${GRUB2_UEFI_INFO_DIR}" --localedir="${GRUB2_UEFI_LOCALE_DIR}" --mandir="${GRUB2_UEFI_MAN_DIR}""
 
 export GRUB2_UEFI_LST_files="command.lst crypto.lst fs.lst handler.lst moddep.lst partmap.lst parttool.lst terminal.lst video.lst"
 

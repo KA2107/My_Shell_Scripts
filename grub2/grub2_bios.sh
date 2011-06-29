@@ -75,8 +75,8 @@ export GRUB2_BOOT_PART_DIR="${GRUB2_Root_Part_MP}/boot/${GRUB2_BIOS_NAME}"
 export GRUB2_BIOS_Configure_Flags="--with-platform=pc --program-transform-name=s,grub,${GRUB2_BIOS_NAME},"
 export GRUB2_Other_BIOS_Configure_Flags="--enable-mm-debug --enable-grub-mkfont --disable-nls"
 
-export GRUB2_BIOS_Configure_PATHS_1="--prefix=\"${GRUB2_BIOS_PREFIX}\" --bindir=\"${GRUB2_BIOS_BIN_DIR}\" --sbindir=\"${GRUB2_BIOS_SBIN_DIR}\" --sysconfdir=\"${GRUB2_BIOS_SYSCONF_DIR}\" --libdir=\"${GRUB2_BIOS_LIB_DIR}\""
-export GRUB2_BIOS_Configure_PATHS_2="--datarootdir=\"${GRUB2_BIOS_DATAROOT_DIR}\" --infodir=\"${GRUB2_BIOS_INFO_DIR}\" --localedir=\"${GRUB2_BIOS_LOCALE_DIR}\" --mandir=\"${GRUB2_BIOS_MAN_DIR}\""
+export GRUB2_BIOS_Configure_PATHS_1="--prefix="${GRUB2_BIOS_PREFIX}" --bindir="${GRUB2_BIOS_BIN_DIR}" --sbindir="${GRUB2_BIOS_SBIN_DIR}" --sysconfdir="${GRUB2_BIOS_SYSCONF_DIR}" --libdir="${GRUB2_BIOS_LIB_DIR}""
+export GRUB2_BIOS_Configure_PATHS_2="--datarootdir="${GRUB2_BIOS_DATAROOT_DIR}" --infodir="${GRUB2_BIOS_INFO_DIR}" --localedir="${GRUB2_BIOS_LOCALE_DIR}" --mandir="${GRUB2_BIOS_MAN_DIR}""
 
 export GRUB2_UNIFONT_PATH="/usr/share/fonts/misc"
 
