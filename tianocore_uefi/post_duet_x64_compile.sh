@@ -109,9 +109,10 @@ UEFI_DUET_INSTALLER_GIT() {
 	
 	echo
 	
-	rm -rf "${UEFI_DUET_INSTALLER_DIR}/Linux_Source/C" || true
+	rm -rf "${UEFI_DUET_INSTALLER_DIR}/Linux_Source" || true
+	mkdir -p "${UEFI_DUET_INSTALLER_DIR}/Linux_Source"
 	cp -r "${EDK2_C_SOURCE_DIR}" "${UEFI_DUET_INSTALLER_DIR}/Linux_Source/C"
-	chmod -R -x "${UEFI_DUET_INSTALLER_DIR}/Linux_Source/C" || true
+	# chmod -R -x "${UEFI_DUET_INSTALLER_DIR}/Linux_Source/C" || true
 	
 	echo
 	
@@ -170,9 +171,10 @@ DUET_MEMDISK_TOOLS_GIT() {
 	echo "Tianocore_UEFI_DUET_memdisk_tools_GIT"
 	echo
 	
-	rm -rf "${DUET_MEMDISK_TOOLS_DIR}/Linux_Source/C" || true
+	rm -rf "${DUET_MEMDISK_TOOLS_DIR}/Linux_Source" || true
+	mkdir -p "${DUET_MEMDISK_TOOLS_DIR}/Linux_Source"
 	cp -r "${EDK2_C_SOURCE_DIR}" "${DUET_MEMDISK_TOOLS_DIR}/Linux_Source/C"
-	chmod -R -x "${DUET_MEMDISK_TOOLS_DIR}/Linux_Source/C" || true
+	# chmod -R -x "${DUET_MEMDISK_TOOLS_DIR}/Linux_Source/C" || true
 	
 	echo
 	
