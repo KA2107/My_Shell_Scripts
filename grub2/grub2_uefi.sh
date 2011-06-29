@@ -306,7 +306,8 @@ unset GRUB2_UEFI_SYSTEM_PART_DIR
 unset GRUB2_UEFI_MENU_CONFIG
 unset GRUB2_UEFI_Configure_Flags
 unset GRUB2_Other_UEFI_Configure_Flags
-unset GRUB2_UEFI_Configure_PATHS
+unset GRUB2_UEFI_Configure_PATHS_1
+unset GRUB2_UEFI_Configure_PATHS_2
 unset GRUB2_UEFI_LST_files
 unset GRUB2_PARTMAP_FS_MODULES
 unset GRUB2_COMMON_IMP_MODULES

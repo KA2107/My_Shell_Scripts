@@ -269,7 +269,8 @@ unset GRUB2_BIOS_MENU_CONFIG
 unset GRUB2_BOOT_PART_DIR
 unset GRUB2_BIOS_Configure_Flags
 unset GRUB2_Other_BIOS_Configure_Flags
-unset GRUB2_BIOS_Configure_PATHS
+unset GRUB2_BIOS_Configure_PATHS_1
+unset GRUB2_BIOS_Configure_PATHS_2
 unset GRUB2_BIOS_CORE_IMG_MODULES
 unset GRUB2_EXTRAS_MODULES
 unset GRUB2_UNIFONT_PATH
