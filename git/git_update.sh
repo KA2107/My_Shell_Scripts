@@ -1,5 +1,7 @@
 #!/bin/bash
 
+MILD_FETCH=('Linux_Kernel_Mainline_GIT')
+
 run()
 {
 	repo=""
@@ -59,8 +61,16 @@ run()
 					git reset --hard
 					echo
 					
-					git fetch
+					for check in ${MILD_FETCH[@]}
+					do
+						if [ "$(basename "${PWD}")" = "${check}" ]
+						then
+							git fetch --depth=1
+						else
+							git fetch
+						fi
 					echo
+					done
 					
 					git checkout master
 					echo
