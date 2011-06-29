@@ -65,6 +65,8 @@ export GRUB2_BIOS_MENU_CONFIG="grub"
 export GRUB2_BOOT_PART_DIR="${GRUB2_Root_Part_MP}/boot/${GRUB2_BIOS_NAME}"
 export GRUB2_BIOS_Configure_Flags="--with-platform=pc --program-transform-name=s,grub,${GRUB2_BIOS_NAME},"
 export GRUB2_Other_BIOS_Configure_Flags="--enable-mm-debug --enable-grub-mkfont --disable-nls"
+export GRUB2_BIOS_Configure_PATHS="--prefix=\"${GRUB2_BIOS_PREFIX}\" --bindir=\"${GRUB2_BIOS_PREFIX}/bin\" --sbindir=\"${GRUB2_BIOS_PREFIX}/sbin\" --sysconfdir=\"${GRUB2_BIOS_PREFIX}/etc\""
+
 export GRUB2_UNIFONT_PATH="/usr/share/fonts/misc"
 
 export GRUB2_BIOS_CORE_IMG_MODULES="part_gpt part_msdos fat ext2 ntfs ntfscomp"
@@ -137,7 +139,7 @@ then
 	## fix unifont.bdf location
 	sed -i "s|/usr/share/fonts/unifont|${GRUB2_UNIFONT_PATH}|g" "${WD}/configure"
 	
-	"${WD}/configure" ${GRUB2_BIOS_Configure_Flags} ${GRUB2_Other_BIOS_Configure_Flags} --prefix="${GRUB2_BIOS_PREFIX}"
+	"${WD}/configure" ${GRUB2_BIOS_Configure_Flags} ${GRUB2_Other_BIOS_Configure_Flags} ${GRUB2_BIOS_Configure_PATHS}
 	echo
 	
 	make
@@ -248,6 +250,7 @@ unset GRUB2_BIOS_MENU_CONFIG
 unset GRUB2_BOOT_PART_DIR
 unset GRUB2_BIOS_Configure_Flags
 unset GRUB2_Other_BIOS_Configure_Flags
+unset GRUB2_BIOS_Configure_PATHS
 unset GRUB2_BIOS_CORE_IMG_MODULES
 unset GRUB2_EXTRAS_MODULES
 unset GRUB2_UNIFONT_PATH

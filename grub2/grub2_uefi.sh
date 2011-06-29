@@ -71,6 +71,7 @@ export GRUB2_UNIFONT_PATH="/usr/share/fonts/misc"
 
 export GRUB2_UEFI_Configure_Flags="--with-platform=efi --target=${TARGET_UEFI_ARCH} --program-transform-name=s,grub,${GRUB2_UEFI_NAME},"
 export GRUB2_Other_UEFI_Configure_Flags="--enable-mm-debug --enable-grub-mkfont --enable-nls"
+export GRUB2_UEFI_Configure_PATHS="--prefix=\"${GRUB2_UEFI_PREFIX}\" --bindir=\"${GRUB2_UEFI_PREFIX}/bin\" --sbindir=\"${GRUB2_UEFI_PREFIX}/sbin\" --sysconfdir=\"${GRUB2_UEFI_PREFIX}/etc\""
 
 export GRUB2_UEFI_LST_files="command.lst crypto.lst fs.lst handler.lst moddep.lst partmap.lst parttool.lst terminal.lst video.lst"
 
@@ -151,7 +152,7 @@ then
 	## fix unifont.bdf location
 	sed -i "s|/usr/share/fonts/unifont|${GRUB2_UNIFONT_PATH}|g" "${WD}/configure"
 	
-	"${WD}/configure" ${GRUB2_UEFI_Configure_Flags} ${GRUB2_Other_UEFI_Configure_Flags} --prefix="${GRUB2_UEFI_PREFIX}"
+	"${WD}/configure" ${GRUB2_UEFI_Configure_Flags} ${GRUB2_Other_UEFI_Configure_Flags} ${GRUB2_UEFI_Configure_PATHS}
 	echo
 	
 	make
@@ -286,6 +287,7 @@ unset GRUB2_UEFI_SYSTEM_PART_DIR
 unset GRUB2_UEFI_MENU_CONFIG
 unset GRUB2_UEFI_Configure_Flags
 unset GRUB2_Other_UEFI_Configure_Flags
+unset GRUB2_UEFI_Configure_PATHS
 unset GRUB2_UEFI_LST_files
 unset GRUB2_PARTMAP_FS_MODULES
 unset GRUB2_COMMON_IMP_MODULES
