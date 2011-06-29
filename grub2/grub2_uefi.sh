@@ -50,7 +50,7 @@ export WD="${PWD}/"
 export GRUB_CONTRIB="${WD}/grub2_extras__GIT_BZR/"
 
 export REPLACE_GRUB2_UEFI_MENU_CONFIG="0"
-export EXECUTE_EFIBOOTMGR="0"
+export EXECUTE_EFIBOOTMGR="1"
 
 export TARGET_UEFI_ARCH="${1}"
 export UEFI_SYSTEM_PART_MP="${2}"
@@ -222,7 +222,7 @@ then
 		EFISYS_PARENT_DEVICE="$(echo "${EFISYS_PART_DEVICE}" | sed "s/${EFISYS_PART_NUM}//g")"
 		echo
 		
-		sudo efibootmgr --create --gpt --disk "${EFISYS_PARENT_DEVICE}" --part "${EFISYS_PART_NUM}" --write-signature --label "${GRUB2_UEFI_NAME}" --loader "//EFI//${GRUB2_UEFI_NAME}//${GRUB2_UEFI_NAME}.efi" || echo "efibootmgr failed to create GRUB2 UEFI boot NVRAM entry, create it manually."
+		sudo efibootmgr --create --gpt --disk "${EFISYS_PARENT_DEVICE}" --part "${EFISYS_PART_NUM}" --write-signature --label "${GRUB2_UEFI_NAME}" --loader "\\EFI\\${GRUB2_UEFI_NAME}\\${GRUB2_UEFI_NAME}.efi" || echo "efibootmgr failed to create GRUB2 UEFI boot NVRAM entry, create it manually."
 		echo
 	fi
 	
