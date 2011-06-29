@@ -158,7 +158,7 @@ then
 	echo
 	
 	## GRUB2 UEFI Build Directory
-	mkdir "GRUB2_UEFI_BUILD_DIR_${TARGET_UEFI_ARCH}"
+	install -d "${PWD}/GRUB2_UEFI_BUILD_DIR_${TARGET_UEFI_ARCH}"
 	[ -e "${WD}/grub.default" ] && cp --verbose "${WD}/grub.default" "${WD}/GRUB2_UEFI_BUILD_DIR_${TARGET_UEFI_ARCH}/" || true
 	[ -e "${WD}/grub.cfg" ] && cp --verbose "${WD}/grub.cfg" "${WD}/GRUB2_UEFI_BUILD_DIR_${TARGET_UEFI_ARCH}/" || true
 	
@@ -243,7 +243,7 @@ then
 		echo
 	fi
 	
-	sudo mkdir -p "${GRUB2_UEFI_SYSCONF_DIR}/default"
+	sudo install -d "${GRUB2_UEFI_SYSCONF_DIR}/default"
 	[ -e "${WD}/grub.default" ] && sudo cp --verbose "${WD}/grub.default" "${GRUB2_UEFI_SYSCONF_DIR}/default/grub" || true
 	sudo chmod --verbose -x "${GRUB2_UEFI_SYSCONF_DIR}/default/grub" || true
 	echo

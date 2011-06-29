@@ -147,7 +147,7 @@ then
 	echo
 	
 	## GRUB2 BIOS Build Directory
-	mkdir -p GRUB2_BIOS_BUILD_DIR
+	install -d "${PWD}/GRUB2_BIOS_BUILD_DIR"
 	cp --verbose "${WD}/grub.default" "${WD}/GRUB2_BIOS_BUILD_DIR/" || true
 	cp --verbose "${WD}/grub.cfg" "${WD}/GRUB2_BIOS_BUILD_DIR/" || true
 	
@@ -195,7 +195,7 @@ then
 	
 	cd "${WD}/GRUB2_BIOS_BUILD_DIR/grub-core/"
 	
-	sudo mkdir -p "${GRUB2_BIOS_SYSCONF_DIR}/default"
+	sudo install -d "${GRUB2_BIOS_SYSCONF_DIR}/default"
 	[ -e "${WD}/grub.default" ] && sudo cp --verbose "${WD}/grub.default" "${GRUB2_BIOS_SYSCONF_DIR}/default/grub" || true
 	sudo chmod --verbose -x "${GRUB2_BIOS_SYSCONF_DIR}/default/grub" || true
 	echo
