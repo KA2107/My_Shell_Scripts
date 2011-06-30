@@ -28,7 +28,7 @@ if [ \
 	]
 then
 	echo
-	echo Usage : ${0} [GRUB2_Install_Device] [GRUB2_Root_Partition_MountPoint] [GRUB2_BIOS_Install_Dir_Name] [GRUB2_BIOS_Backup_Path] [GRUB2_BIOS_Tools_Backup_Path] [GRUB2_BIOS_PREFIX_FOLDER]
+	echo Usage : ${0} [GRUB2_Install_Device] [GRUB2_Root_Partition_MountPoint] [GRUB2_BIOS_Install_Dir_Name] [GRUB2_BIOS_Backup_Path] [GRUB2_BIOS_Tools_Backup_Path] [GRUB2_BIOS_PREFIX_DIR_Path]
 	echo
 	echo Example : ${0} /dev/sda / grub2 /media/Data_3/grub2_BIOS_Backup /media/Data_3/grub2_BIOS_Tools_Backup /grub2/grub2_BIOS
 	echo
@@ -54,19 +54,19 @@ export GRUB2_Root_Part_MP="${2}"
 export GRUB2_BIOS_NAME="${3}"
 export GRUB2_BIOS_Backup="${4}"
 export GRUB2_BIOS_TOOLS_Backup="${5}"
-export GRUB2_BIOS_PREFIX="${6}"
-## If not mentioned, GRUB2_BIOS_PREFIX env variable will be set to /grub2/grub2_BIOS dir
+export GRUB2_BIOS_PREFIX_DIR="${6}"
+## If not mentioned, GRUB2_BIOS_PREFIX_DIR env variable will be set to /grub2/grub2_BIOS dir
 
 export GRUB2_BIOS_MENU_CONFIG="grub"
 [ "${REPLACE_GRUB2_BIOS_MENU_CONFIG}" == "1" ] && GRUB2_BIOS_MENU_CONFIG="${GRUB2_BIOS_NAME}"
 
-[ "${GRUB2_BIOS_PREFIX}" == "" ] && export GRUB2_BIOS_PREFIX="/grub2/grub2_bios"
+[ "${GRUB2_BIOS_PREFIX_DIR}" == "" ] && export GRUB2_BIOS_PREFIX_DIR="/grub2/grub2_bios"
 
-export GRUB2_BIOS_BIN_DIR="${GRUB2_BIOS_PREFIX}/bin"
-export GRUB2_BIOS_SBIN_DIR="${GRUB2_BIOS_PREFIX}/sbin"
-export GRUB2_BIOS_SYSCONF_DIR="${GRUB2_BIOS_PREFIX}/etc"
-export GRUB2_BIOS_LIB_DIR="${GRUB2_BIOS_PREFIX}/lib"
-export GRUB2_BIOS_DATAROOT_DIR="${GRUB2_BIOS_PREFIX}/share"
+export GRUB2_BIOS_BIN_DIR="${GRUB2_BIOS_PREFIX_DIR}/bin"
+export GRUB2_BIOS_SBIN_DIR="${GRUB2_BIOS_PREFIX_DIR}/sbin"
+export GRUB2_BIOS_SYSCONF_DIR="${GRUB2_BIOS_PREFIX_DIR}/etc"
+export GRUB2_BIOS_LIB_DIR="${GRUB2_BIOS_PREFIX_DIR}/lib"
+export GRUB2_BIOS_DATAROOT_DIR="${GRUB2_BIOS_PREFIX_DIR}/share"
 export GRUB2_BIOS_INFO_DIR="${GRUB2_BIOS_DATAROOT_DIR}/info"
 export GRUB2_BIOS_LOCALE_DIR="${GRUB2_BIOS_DATAROOT_DIR}/locale"
 export GRUB2_BIOS_MAN_DIR="${GRUB2_BIOS_DATAROOT_DIR}/man"
@@ -75,7 +75,7 @@ export GRUB2_BOOT_PART_DIR="${GRUB2_Root_Part_MP}/boot/${GRUB2_BIOS_NAME}"
 export GRUB2_BIOS_Configure_Flags="--with-platform=pc --program-transform-name=s,grub,${GRUB2_BIOS_NAME},"
 export GRUB2_Other_BIOS_Configure_Flags="--enable-mm-debug --enable-grub-mkfont --disable-nls"
 
-export GRUB2_BIOS_Configure_PATHS_1="--prefix="${GRUB2_BIOS_PREFIX}" --bindir="${GRUB2_BIOS_BIN_DIR}" --sbindir="${GRUB2_BIOS_SBIN_DIR}" --sysconfdir="${GRUB2_BIOS_SYSCONF_DIR}" --libdir="${GRUB2_BIOS_LIB_DIR}""
+export GRUB2_BIOS_Configure_PATHS_1="--prefix="${GRUB2_BIOS_PREFIX_DIR}" --bindir="${GRUB2_BIOS_BIN_DIR}" --sbindir="${GRUB2_BIOS_SBIN_DIR}" --sysconfdir="${GRUB2_BIOS_SYSCONF_DIR}" --libdir="${GRUB2_BIOS_LIB_DIR}""
 export GRUB2_BIOS_Configure_PATHS_2="--datarootdir="${GRUB2_BIOS_DATAROOT_DIR}" --infodir="${GRUB2_BIOS_INFO_DIR}" --localedir="${GRUB2_BIOS_LOCALE_DIR}" --mandir="${GRUB2_BIOS_MAN_DIR}""
 
 export GRUB2_UNIFONT_PATH="/usr/share/fonts/misc"
@@ -98,7 +98,7 @@ then
 	echo
 	echo GRUB2_BIOS_Tools_Backup_Path="${GRUB2_BIOS_TOOLS_Backup}"
 	echo
-	echo GRUB2_BIOS_PREFIX_FOLDER="${GRUB2_BIOS_PREFIX}"
+	echo GRUB2_BIOS_PREFIX_DIR_FOLDER="${GRUB2_BIOS_PREFIX_DIR}"
 	echo
 	
 	read -p "Do you wish to proceed? (y/n): " ans # Copied from http://www.linuxjournal.com/content/asking-yesno-question-bash-script
@@ -164,25 +164,25 @@ then
 	echo
 	
 	if [ \
-		"${GRUB2_BIOS_PREFIX}" != '/' -o \
-		"${GRUB2_BIOS_PREFIX}" != '/usr' -o \
-		"${GRUB2_BIOS_PREFIX}" != '/usr/local' -o \
-		"${GRUB2_BIOS_PREFIX}" != '/media' -o \
-		"${GRUB2_BIOS_PREFIX}" != '/mnt' -o \
-		"${GRUB2_BIOS_PREFIX}" != '/home' -o \
-		"${GRUB2_BIOS_PREFIX}" != '/lib' -o \
-		"${GRUB2_BIOS_PREFIX}" != '/lib64' -o \
-		"${GRUB2_BIOS_PREFIX}" != '/lib32' -o \
-		"${GRUB2_BIOS_PREFIX}" != '/tmp' -o \
-		"${GRUB2_BIOS_PREFIX}" != '/var' -o \
-		"${GRUB2_BIOS_PREFIX}" != '/run' -o \
-		"${GRUB2_BIOS_PREFIX}" != '/etc' -o \
-		"${GRUB2_BIOS_PREFIX}" != '/opt' \
+		"${GRUB2_BIOS_PREFIX_DIR}" != '/' -o \
+		"${GRUB2_BIOS_PREFIX_DIR}" != '/usr' -o \
+		"${GRUB2_BIOS_PREFIX_DIR}" != '/usr/local' -o \
+		"${GRUB2_BIOS_PREFIX_DIR}" != '/media' -o \
+		"${GRUB2_BIOS_PREFIX_DIR}" != '/mnt' -o \
+		"${GRUB2_BIOS_PREFIX_DIR}" != '/home' -o \
+		"${GRUB2_BIOS_PREFIX_DIR}" != '/lib' -o \
+		"${GRUB2_BIOS_PREFIX_DIR}" != '/lib64' -o \
+		"${GRUB2_BIOS_PREFIX_DIR}" != '/lib32' -o \
+		"${GRUB2_BIOS_PREFIX_DIR}" != '/tmp' -o \
+		"${GRUB2_BIOS_PREFIX_DIR}" != '/var' -o \
+		"${GRUB2_BIOS_PREFIX_DIR}" != '/run' -o \
+		"${GRUB2_BIOS_PREFIX_DIR}" != '/etc' -o \
+		"${GRUB2_BIOS_PREFIX_DIR}" != '/opt' \
 		]
 	then
-		sudo cp -r --verbose "${GRUB2_BIOS_PREFIX}" "${GRUB2_BIOS_TOOLS_Backup}" || true
+		sudo cp -r --verbose "${GRUB2_BIOS_PREFIX_DIR}" "${GRUB2_BIOS_TOOLS_Backup}" || true
 		echo
-		sudo rm -rf --verbose "${GRUB2_BIOS_PREFIX}" || true
+		sudo rm -rf --verbose "${GRUB2_BIOS_PREFIX_DIR}" || true
 		echo
 	fi
 	
@@ -263,7 +263,7 @@ unset GRUB2_Root_Part_MP
 unset GRUB2_BIOS_NAME
 unset GRUB2_BIOS_Backup
 unset GRUB2_BIOS_TOOLS_Backup
-unset GRUB2_BIOS_PREFIX
+unset GRUB2_BIOS_PREFIX_DIR
 unset GRUB2_BIOS_BIN_DIR
 unset GRUB2_BIOS_SBIN_DIR
 unset GRUB2_BIOS_SYSCONF_DIR

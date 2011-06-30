@@ -13,7 +13,7 @@
 
 ## The "GRUB2_UEFI_NAME" parameter refers to the GRUB2 folder name in the UEFI System Partition. The final GRUB2 UEFI files will be installed in <EFI SYSTEM PARTITION>/efi/<GRUB2_UEFI_NAME>/ folder. The final GRUB2 UEFI Application will be <EFI SYSTEM PARTITION>/efi/<GRUB2_UEFI_NAME>/<GRUB2_UEFI_NAME>.efi where <GRUB2_UEFI_NAME> refers to the "GRUB2_UEFI_NAME" parameter you passed to this script.
 
-## The "GRUB2_UEFI_PREFIX" parameter is not compulsory.
+## The "GRUB2_UEFI_PREFIX_DIR" parameter is not compulsory.
 
 ## For xman_dos2unix.sh download https://raw.github.com/skodabenz/My_Shell_Scripts/master/xmanutility/xman_dos2unix.sh
 
@@ -30,7 +30,7 @@ if [ \
 	]
 then
 	echo
-	echo Usage : ${0} [TARGET_UEFI_ARCH] [UEFI_SYSTEM_PART_MOUNTPOINT] [GRUB2_UEFI_Install_Dir_Name] [GRUB2_UEFI_Backup_Path] [GRUB2_UEFI_Tools_Backup_Path] [GRUB2_UEFI_PREFIX_FOLDER]
+	echo Usage : ${0} [TARGET_UEFI_ARCH] [UEFI_SYSTEM_PART_MOUNTPOINT] [GRUB2_UEFI_Install_Dir_Name] [GRUB2_UEFI_Backup_Path] [GRUB2_UEFI_Tools_Backup_Path] [GRUB2_UEFI_PREFIX_DIR_Path]
 	echo
 	echo Example : ${0} x86_64 /boot/efi grub2 /media/Data_3/grub2_UEFI_x86_64_Backup /media/Data_3/grub2_UEFI_x86_64_Tools_Backup /grub2/grub2_uefi_x86_64
 	echo
@@ -57,19 +57,19 @@ export UEFI_SYSTEM_PART_MP="${2}"
 export GRUB2_UEFI_NAME="${3}"
 export GRUB2_UEFI_Backup="${4}"
 export GRUB2_UEFI_TOOLS_Backup="${5}"
-export GRUB2_UEFI_PREFIX="${6}"
-## If not mentioned, GRUB2_UEFI_PREFIX env variable will be set to /grub2/grub2_uefi_${TARGET_UEFI_ARCH} dir
+export GRUB2_UEFI_PREFIX_DIR="${6}"
+## If not mentioned, GRUB2_UEFI_PREFIX_DIR env variable will be set to /grub2/grub2_uefi_${TARGET_UEFI_ARCH} dir
 
 export GRUB2_UEFI_MENU_CONFIG="grub"
 [ "${REPLACE_GRUB2_UEFI_MENU_CONFIG}" == "1" ] && export GRUB2_UEFI_MENU_CONFIG="${GRUB2_UEFI_NAME}"
 
-[ "${GRUB2_UEFI_PREFIX}" == "" ] && GRUB2_UEFI_PREFIX="/grub2/grub2_uefi_${TARGET_UEFI_ARCH}"
+[ "${GRUB2_UEFI_PREFIX_DIR}" == "" ] && GRUB2_UEFI_PREFIX_DIR="/grub2/grub2_uefi_${TARGET_UEFI_ARCH}"
 
-export GRUB2_UEFI_BIN_DIR="${GRUB2_UEFI_PREFIX}/bin"
-export GRUB2_UEFI_SBIN_DIR="${GRUB2_UEFI_PREFIX}/sbin"
-export GRUB2_UEFI_SYSCONF_DIR="${GRUB2_UEFI_PREFIX}/etc"
-export GRUB2_UEFI_LIB_DIR="${GRUB2_UEFI_PREFIX}/lib"
-export GRUB2_UEFI_DATAROOT_DIR="${GRUB2_UEFI_PREFIX}/share"
+export GRUB2_UEFI_BIN_DIR="${GRUB2_UEFI_PREFIX_DIR}/bin"
+export GRUB2_UEFI_SBIN_DIR="${GRUB2_UEFI_PREFIX_DIR}/sbin"
+export GRUB2_UEFI_SYSCONF_DIR="${GRUB2_UEFI_PREFIX_DIR}/etc"
+export GRUB2_UEFI_LIB_DIR="${GRUB2_UEFI_PREFIX_DIR}/lib"
+export GRUB2_UEFI_DATAROOT_DIR="${GRUB2_UEFI_PREFIX_DIR}/share"
 export GRUB2_UEFI_INFO_DIR="${GRUB2_UEFI_DATAROOT_DIR}/info"
 export GRUB2_UEFI_LOCALE_DIR="${GRUB2_UEFI_DATAROOT_DIR}/locale"
 export GRUB2_UEFI_MAN_DIR="${GRUB2_UEFI_DATAROOT_DIR}/man"
@@ -81,7 +81,7 @@ export GRUB2_UNIFONT_PATH="/usr/share/fonts/misc"
 export GRUB2_UEFI_Configure_Flags="--with-platform=efi --target=${TARGET_UEFI_ARCH} --program-transform-name=s,grub,${GRUB2_UEFI_NAME},"
 export GRUB2_Other_UEFI_Configure_Flags="--enable-mm-debug --enable-grub-mkfont --enable-nls"
 
-export GRUB2_UEFI_Configure_PATHS_1="--prefix="${GRUB2_UEFI_PREFIX}" --bindir="${GRUB2_UEFI_BIN_DIR}" --sbindir="${GRUB2_UEFI_SBIN_DIR}" --sysconfdir="${GRUB2_UEFI_SYSCONF_DIR}" --libdir="${GRUB2_UEFI_LIB_DIR}""
+export GRUB2_UEFI_Configure_PATHS_1="--prefix="${GRUB2_UEFI_PREFIX_DIR}" --bindir="${GRUB2_UEFI_BIN_DIR}" --sbindir="${GRUB2_UEFI_SBIN_DIR}" --sysconfdir="${GRUB2_UEFI_SYSCONF_DIR}" --libdir="${GRUB2_UEFI_LIB_DIR}""
 export GRUB2_UEFI_Configure_PATHS_2="--datarootdir="${GRUB2_UEFI_DATAROOT_DIR}" --infodir="${GRUB2_UEFI_INFO_DIR}" --localedir="${GRUB2_UEFI_LOCALE_DIR}" --mandir="${GRUB2_UEFI_MAN_DIR}""
 
 export GRUB2_UEFI_LST_files="command.lst crypto.lst fs.lst handler.lst moddep.lst partmap.lst parttool.lst terminal.lst video.lst"
@@ -108,7 +108,7 @@ then
 	echo
 	echo GRUB2_UEFI_Tools_Backup_Path="${GRUB2_UEFI_TOOLS_Backup}"
 	echo
-	echo GRUB2_UEFI_PREFIX_FOLDER="${GRUB2_UEFI_PREFIX}" ## Not compulsory
+	echo GRUB2_UEFI_PREFIX_DIR_FOLDER="${GRUB2_UEFI_PREFIX_DIR}" ## Not compulsory
 	echo
 	
 	read -p "Do you wish to proceed? (y/n): " ans ## Copied from http://www.linuxjournal.com/content/asking-yesno-question-bash-script
@@ -175,25 +175,25 @@ then
 	echo
 	
 	if [ \
-		"${GRUB2_UEFI_PREFIX}" != '/' -o \
-		"${GRUB2_UEFI_PREFIX}" != '/usr' -o \
-		"${GRUB2_UEFI_PREFIX}" != '/usr/local' -o \
-		"${GRUB2_UEFI_PREFIX}" != '/media' -o \
-		"${GRUB2_UEFI_PREFIX}" != '/mnt' -o \
-		"${GRUB2_UEFI_PREFIX}" != '/home' -o \
-		"${GRUB2_UEFI_PREFIX}" != '/lib' -o \
-		"${GRUB2_UEFI_PREFIX}" != '/lib64' -o \
-		"${GRUB2_UEFI_PREFIX}" != '/lib32' -o \
-		"${GRUB2_UEFI_PREFIX}" != '/tmp' -o \
-		"${GRUB2_UEFI_PREFIX}" != '/var' -o \
-		"${GRUB2_UEFI_PREFIX}" != '/run' -o \
-		"${GRUB2_UEFI_PREFIX}" != '/etc' -o \
-		"${GRUB2_UEFI_PREFIX}" != '/opt' \
+		"${GRUB2_UEFI_PREFIX_DIR}" != '/' -o \
+		"${GRUB2_UEFI_PREFIX_DIR}" != '/usr' -o \
+		"${GRUB2_UEFI_PREFIX_DIR}" != '/usr/local' -o \
+		"${GRUB2_UEFI_PREFIX_DIR}" != '/media' -o \
+		"${GRUB2_UEFI_PREFIX_DIR}" != '/mnt' -o \
+		"${GRUB2_UEFI_PREFIX_DIR}" != '/home' -o \
+		"${GRUB2_UEFI_PREFIX_DIR}" != '/lib' -o \
+		"${GRUB2_UEFI_PREFIX_DIR}" != '/lib64' -o \
+		"${GRUB2_UEFI_PREFIX_DIR}" != '/lib32' -o \
+		"${GRUB2_UEFI_PREFIX_DIR}" != '/tmp' -o \
+		"${GRUB2_UEFI_PREFIX_DIR}" != '/var' -o \
+		"${GRUB2_UEFI_PREFIX_DIR}" != '/run' -o \
+		"${GRUB2_UEFI_PREFIX_DIR}" != '/etc' -o \
+		"${GRUB2_UEFI_PREFIX_DIR}" != '/opt' \
 		]
 	then
-		sudo cp -r --verbose "${GRUB2_UEFI_PREFIX}" "${GRUB2_UEFI_TOOLS_Backup}" || true
+		sudo cp -r --verbose "${GRUB2_UEFI_PREFIX_DIR}" "${GRUB2_UEFI_TOOLS_Backup}" || true
 		echo
-		sudo rm -rf --verbose "${GRUB2_UEFI_PREFIX}" || true
+		sudo rm -rf --verbose "${GRUB2_UEFI_PREFIX_DIR}" || true
 		echo
 	fi
 	
@@ -297,7 +297,7 @@ unset UEFI_SYSTEM_PART_MP
 unset GRUB2_UEFI_NAME
 unset GRUB2_UEFI_Backup
 unset GRUB2_UEFI_TOOLS_Backup
-unset GRUB2_UEFI_PREFIX
+unset GRUB2_UEFI_PREFIX_DIR
 unset GRUB2_UEFI_BIN_DIR
 unset GRUB2_UEFI_SBIN_DIR
 unset GRUB2_UEFI_SYSCONF_DIR
