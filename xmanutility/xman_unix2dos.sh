@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # This file xman_unix2dos is part of xman utility.
 #
 # Copyright (c) 2007 Chung Shin Yee <cshinyee@gmail.com>
@@ -21,8 +23,6 @@
 #
 # The GNU General Public License is contained in the file COPYING.
 #
-
-#!/bin/bash
 
 # Date  : 22 April 2007
 
