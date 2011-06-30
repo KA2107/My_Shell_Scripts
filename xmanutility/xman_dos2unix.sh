@@ -33,9 +33,11 @@
 # Given: Files or folders.
 # Output: All text files including those in subfolders (recursively) will have all CRLF being removed.
 
+## This script uses http://waterlan.home.xs4all.nl/dos2unix.html dos2unix implementation.
+
 FILE="file"
 GREP="grep -i"
-DOS2UNIX="dos2unix --d2u --skipbin" # Added --d2u and --skipbin parameters for correct DOS to UNIX line-endings conversion.
+DOS2UNIX="unix2dos -ascii --keepdate --safe --skip-symlink --oldfile"
 
 #########################################################################################
 

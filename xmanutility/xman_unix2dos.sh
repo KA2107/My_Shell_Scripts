@@ -33,9 +33,11 @@
 # Given: Files or folders.
 # Output: All text files including those in subfolders (recursively) will have CRLF at end of lines.
 
+## This script uses http://waterlan.home.xs4all.nl/dos2unix.html unix2dos implementation.
+
 FILE="file"
 GREP="grep -i"
-UNIX2DOS="dos2unix --u2d --skipbin"
+UNIX2DOS="unix2dos -ascii --keepdate --safe --skip-symlink --oldfile"
 
 #########################################################################################
 
