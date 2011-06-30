@@ -37,7 +37,7 @@
 
 FILE="file"
 GREP="grep -i"
-DOS2UNIX="unix2dos -ascii --keepdate --safe --skip-symlink --oldfile"
+DOS2UNIX="dos2unix -ascii --keepdate --safe --skip-symlink --oldfile"
 
 #########################################################################################
 
