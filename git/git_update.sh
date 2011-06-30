@@ -66,8 +66,10 @@ run()
 						if [ "$(basename "${PWD}")" = "${check}" ]
 						then
 							# git fetch --depth=1
+							echo
 						else
 							git fetch
+							echo
 						fi
 					echo
 					done
