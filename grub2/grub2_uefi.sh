@@ -232,14 +232,36 @@ then
 	if [ "${EXECUTE_EFIBOOTMGR}" == "1" ]
 	then
 		echo
-		sudo modprobe -q efivars || echo "efivars kernel module not found, needed for efibootmgr."
 		
 		EFISYS_PART_DEVICE="$(sudo "${GRUB2_UEFI_SBIN_DIR}/${GRUB2_UEFI_NAME}-probe" --target=device "${GRUB2_UEFI_SYSTEM_PART_DIR}/")"
 		EFISYS_PART_NUM="$(sudo blkid -p -o value -s PART_ENTRY_NUMBER "${EFISYS_PART_DEVICE}")"
 		EFISYS_PARENT_DEVICE="$(echo "${EFISYS_PART_DEVICE}" | sed "s/${EFISYS_PART_NUM}//g")"
-		echo
 		
-		sudo efibootmgr --create --gpt --disk "${EFISYS_PARENT_DEVICE}" --part "${EFISYS_PART_NUM}" --write-signature --label "${GRUB2_UEFI_NAME}" --loader "\\EFI\\${GRUB2_UEFI_NAME}\\${GRUB2_UEFI_NAME}.efi" || echo "efibootmgr failed to create GRUB2 UEFI boot NVRAM entry, create it manually."
+		## Run efibootmgr script in sh compatibility mode, does not work in bash mode for some unknown reason.
+		cat << EOF > "${WD}/execute_efibootmgr.sh"
+#!/bin/sh
+
+set -x
+
+sudo modprobe -q efivars || echo "efivars kernel module not found, needed for efibootmgr."
+
+echo
+
+sudo efibootmgr --create --gpt --disk "${EFISYS_PARENT_DEVICE}" --part "${EFISYS_PART_NUM}" --write-signature --label "${GRUB2_UEFI_NAME}" --loader "\\\\EFI\\\\${GRUB2_UEFI_NAME}\\\\${GRUB2_UEFI_NAME}.efi" || echo "efibootmgr failed to create GRUB2 UEFI boot NVRAM entry, create it manually."
+
+set +x
+
+echo
+EOF
+		
+		chmod +x "${WD}/execute_efibootmgr.sh" || true
+		
+		"${WD}/execute_efibootmgr.sh"
+		
+		set -x -e
+		
+		# rm -f --verbose "${WD}/execute_efibootmgr.sh"
+		
 		echo
 	fi
 	
