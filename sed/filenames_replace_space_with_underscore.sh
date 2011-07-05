@@ -31,10 +31,14 @@ RUN()
 			
 			echo
 			
-		elif [ -d "${PWD}/${old_filename}" ] && [ "${old_filename}" != "." ] && [ "${old_filename}" != ".." ] && [ ! "$(file "${PWD}/${old_filename}" | grep 'symbolic link to')" ]
+		fi
+		
+		echo
+		
+		if [ -d "${PWD}/${old_filename}" ] && [ "${old_filename}" != "." ] && [ "${old_filename}" != ".." ] && [ ! "$(file "${PWD}/${old_filename}" | grep 'symbolic link to')" ]
 		then
 			pushd "${old_filename}" > /dev/null
-			run
+			RUN
 			popd > /dev/null
 		fi
 		
