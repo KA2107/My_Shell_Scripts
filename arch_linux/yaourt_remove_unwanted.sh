@@ -1,6 +1,6 @@
 #!/bin/bash
 
-run()
+RUN()
 {
 	source_repo=""
 	ls --all -1 | while read -r source_repo
@@ -29,6 +29,6 @@ run()
 
 set -x -e
 
-run
+RUN
 
 set +x +e

@@ -2,7 +2,7 @@
 
 set -e
 
-run()
+RUN()
 {
 	repo=""
 	ls --all -1 | while read -r repo
@@ -18,12 +18,12 @@ run()
 		elif [ -d "${PWD}/${repo}" ] && [ "${repo}" != "." ] && [ "${repo}" != ".." ] && [ ! "$(file "${PWD}/${repo}" | grep 'symbolic link to')" ]
 		then
 			pushd "${repo}" > /dev/null
-			run
+			RUN
 			popd > /dev/null
 		fi
 	done
 }
 
-run
+RUN
 
 set +e

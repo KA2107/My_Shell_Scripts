@@ -2,7 +2,7 @@
 
 pkgname="${1}"
 
-run()
+RUN()
 {
 	_file_=""
 	sudo pacman -Ql "${pkgname}" | while read -r _file_
@@ -23,6 +23,6 @@ run()
 
 set -x -e
 
-run
+RUN
 
 set +x +e

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-run()
+RUN()
 {
 	name=""
 	ls --all -1 | while read -r name
@@ -18,4 +18,4 @@ run()
 	done
 }
 
-run
+RUN
