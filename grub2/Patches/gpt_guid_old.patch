@@ -89,9 +89,9 @@
  GRUB_MOD_FINI(search_fs_label)
  #endif
 
-=== modified file 'commands/search_wrap.c'
---- commands/search_wrap.c	2009-12-25 22:06:52 +0000
-+++ commands/search_wrap.c	2010-02-12 17:06:50 +0000
+=== modified file 'grub-core/commands/search_wrap.c'
+--- grub-core/commands/search_wrap.c	2009-12-25 22:06:52 +0000
++++ grub-core/commands/search_wrap.c	2010-02-12 17:06:50 +0000
 @@ -34,6 +34,8 @@
       0, 0},
      {"fs-uuid",		'u', 0, N_("Search devices by a filesystem UUID."),
@@ -130,18 +130,6 @@
  			     " If --set is specified, the first device found is"
  			     " set to a variable. If no variable name is"
  			     " specified, \"root\" is used."),
-
-=== modified file 'conf/any-emu.rmk'
---- conf/any-emu.rmk	2010-02-03 00:24:07 +0000
-+++ conf/any-emu.rmk	2010-02-12 16:46:14 +0000
-@@ -10,6 +10,7 @@
- 	commands/handler.c commands/ls.c commands/test.c 		\
- 	commands/search_wrap.c commands/search_file.c			\
- 	commands/search_label.c commands/search_uuid.c			\
-+	commands/search_part_uuid.c						\
- 	commands/blocklist.c commands/hexdump.c				\
- 	lib/hexdump.c commands/halt.c commands/reboot.c			\
- 	lib/envblk.c commands/loadenv.c					\
 
 === modified file 'conf/common.rmk'
 --- conf/common.rmk	2010-02-06 14:37:23 +0000
@@ -203,9 +191,9 @@
  
  #endif
 
-=== modified file 'partmap/gpt.c'
---- partmap/gpt.c	2010-01-20 08:12:47 +0000
-+++ partmap/gpt.c	2010-02-12 17:30:09 +0000
+=== modified file 'grub-core/partmap/gpt.c'
+--- grub-core/partmap/gpt.c	2010-01-20 08:12:47 +0000
++++ grub-core/partmap/gpt.c	2010-02-12 17:30:09 +0000
 @@ -34,12 +34,15 @@
  
  static struct grub_partition_map grub_gpt_partition_map;
@@ -279,9 +267,9 @@
  
  
 
-=== modified file 'po/POTFILES'
---- po/POTFILES	2010-01-21 08:04:49 +0000
-+++ po/POTFILES	2010-02-12 16:48:29 +0000
+=== modified file 'po/POTFILES.in'
+--- po/POTFILES.in	2010-01-21 08:04:49 +0000
++++ po/POTFILES.in	2010-02-12 16:48:29 +0000
 @@ -40,6 +40,7 @@
  commands/search_file.c
  commands/search_label.c
