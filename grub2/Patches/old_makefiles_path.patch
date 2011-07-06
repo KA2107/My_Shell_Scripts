@@ -1,3 +1,28 @@
+=== modified file 'conf/common.rmk'
+--- conf/common.rmk	2010-02-06 14:37:23 +0000
++++ conf/common.rmk	2010-02-12 17:05:18 +0000
+@@ -519,7 +519,7 @@
+ search_mod_CFLAGS = $(COMMON_CFLAGS)
+ search_mod_LDFLAGS = $(COMMON_LDFLAGS)
+ 
+-pkglib_MODULES += search_fs_file.mod search_fs_uuid.mod search_label.mod
++pkglib_MODULES += search_fs_file.mod search_fs_uuid.mod search_label.mod search_part_uuid.mod
+ 
+ # For search.mod.
+ search_fs_file_mod_SOURCES = commands/search_file.c
+@@ -536,6 +536,11 @@
+ search_fs_uuid_mod_CFLAGS = $(COMMON_CFLAGS)
+ search_fs_uuid_mod_LDFLAGS = $(COMMON_LDFLAGS)
+ 
++# For search.mod.
++search_part_uuid_mod_SOURCES = commands/search__part_uuid.c
++search_part_uuid_mod_CFLAGS = $(COMMON_CFLAGS)
++search_part_uuid_mod_LDFLAGS = $(COMMON_LDFLAGS)
++
+ # For test.mod.
+ test_mod_SOURCES = commands/test.c
+ test_mod_CFLAGS = $(COMMON_CFLAGS)
+
 === modified file 'conf/any-emu.rmk'
 --- conf/any-emu.rmk	2010-02-03 00:24:07 +0000
 +++ conf/any-emu.rmk	2010-02-12 16:46:14 +0000
