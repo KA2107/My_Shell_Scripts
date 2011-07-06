@@ -68,11 +68,14 @@ RUN()
 							# git fetch --depth=1
 							echo
 						else
-							git fetch
+							# git fetch
 							echo
 						fi
 					echo
 					done
+					
+					git fetch
+					echo
 					
 					git checkout master
 					echo
