@@ -46,6 +46,21 @@ echo
 RUN
 
 echo
+echo
+
+RUN
+
+echo
+echo
+
+RUN
+
+echo
+echo
+
+RUN
+
+echo
 
 set +x +e
 
