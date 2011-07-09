@@ -20,6 +20,7 @@ RUN()
 			echo
 			
 			new_filename="$(echo "${old_filename}" | sed 's# #_#g')"
+			new_filename="$(echo "${new_filename}" | sed 's#\-#_#g')"
 			
 			echo
 			
