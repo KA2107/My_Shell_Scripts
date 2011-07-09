@@ -20,7 +20,7 @@ RUN()
 		if [ -d "${PWD}/${source_repo}" ] && [ "${source_repo}" != "." ] && [ "${source_repo}" != ".." ]
 		then
 			pushd "${source_repo}" > /dev/null
-			run
+			RUN
 			popd > /dev/null
 		fi
 		

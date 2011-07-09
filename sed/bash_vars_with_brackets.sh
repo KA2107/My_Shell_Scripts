@@ -12,7 +12,7 @@ RUN()
 		elif [ -d "${PWD}/${name}" ] && [ "${name}" != "." ] && [ "${name}" != ".." ]
 		then
 			pushd "${name}" > /dev/null
-			run
+			RUN
 			popd > /dev/null
 		fi
 	done
