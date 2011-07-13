@@ -17,16 +17,12 @@
 
 ## This script uses the 'sudo' tool at certain places so make sure you have that installed.
 
+SCRIPTNAME="$(basename "${0}")" 
+
 export PROCESS_CONTINUE="TRUE"
 
-if [ \
-	"${1}" == "" -o \
-	"${1}" == "-h" -o \
-	"${1}" == "-u" -o \
-	"${1}" == "--help" -o \
-	"${1}" == "--usage" \
-	]
-then
+_USAGE() {
+	
 	echo
 	echo Usage : ${0} [GRUB2_Install_Device] [GRUB2_Root_Partition_MountPoint] [GRUB2_BIOS_Install_Dir_Name] [GRUB2_BIOS_Backup_Path] [GRUB2_BIOS_Tools_Backup_Path] [GRUB2_BIOS_PREFIX_DIR_Path]
 	echo
@@ -40,53 +36,70 @@ then
 	echo "Please read this script fully and modify it to suite your requirements before actually running it"
 	echo
 	export PROCESS_CONTINUE="FALSE"
+	
+}
+
+if [ \
+	"${1}" == "" -o \
+	"${1}" == "-h" -o \
+	"${1}" == "-u" -o \
+	"${1}" == "--help" -o \
+	"${1}" == "--usage" \
+	]
+then
+	_USAGE
+	exit 0
 fi
 
-export WD="${PWD}/"
+_SET_ENV_VARS() {
+	
+	export WD="${PWD}/"
+	
+	## The location of grub-extras source folder if you have.
+	export GRUB_CONTRIB="${WD}/grub2_extras__GIT_BZR/"
+	
+	export REPLACE_GRUB2_BIOS_MENU_CONFIG="0"
+	
+	export GRUB2_Install_Device="${1}"
+	export GRUB2_Root_Part_MP="${2}"
+	export GRUB2_BIOS_NAME="${3}"
+	export GRUB2_BIOS_Backup="${4}"
+	export GRUB2_BIOS_TOOLS_Backup="${5}"
+	export GRUB2_BIOS_PREFIX_DIR="${6}"
+	## If not mentioned, GRUB2_BIOS_PREFIX_DIR env variable will be set to /grub2/grub2_BIOS dir
+	
+	export GRUB2_BIOS_MENU_CONFIG="grub"
+	[ "${REPLACE_GRUB2_BIOS_MENU_CONFIG}" == "1" ] && GRUB2_BIOS_MENU_CONFIG="${GRUB2_BIOS_NAME}"
+	
+	[ "${GRUB2_BIOS_PREFIX_DIR}" == "" ] && export GRUB2_BIOS_PREFIX_DIR="/grub2/grub2_bios"
+	
+	export GRUB2_BIOS_BIN_DIR="${GRUB2_BIOS_PREFIX_DIR}/bin"
+	export GRUB2_BIOS_SBIN_DIR="${GRUB2_BIOS_PREFIX_DIR}/sbin"
+	export GRUB2_BIOS_SYSCONF_DIR="${GRUB2_BIOS_PREFIX_DIR}/etc"
+	export GRUB2_BIOS_LIB_DIR="${GRUB2_BIOS_PREFIX_DIR}/lib"
+	export GRUB2_BIOS_DATAROOT_DIR="${GRUB2_BIOS_PREFIX_DIR}/share"
+	export GRUB2_BIOS_INFO_DIR="${GRUB2_BIOS_DATAROOT_DIR}/info"
+	export GRUB2_BIOS_LOCALE_DIR="${GRUB2_BIOS_DATAROOT_DIR}/locale"
+	export GRUB2_BIOS_MAN_DIR="${GRUB2_BIOS_DATAROOT_DIR}/man"
+	
+	export GRUB2_BOOT_PART_DIR="${GRUB2_Root_Part_MP}/boot/${GRUB2_BIOS_NAME}"
+	export GRUB2_BIOS_Configure_Flags="--with-platform=pc --program-transform-name=s,grub,${GRUB2_BIOS_NAME},"
+	export GRUB2_Other_BIOS_Configure_Flags="--enable-mm-debug --enable-grub-mkfont --disable-nls"
+	
+	export GRUB2_BIOS_Configure_PATHS_1="--prefix="${GRUB2_BIOS_PREFIX_DIR}" --bindir="${GRUB2_BIOS_BIN_DIR}" --sbindir="${GRUB2_BIOS_SBIN_DIR}" --sysconfdir="${GRUB2_BIOS_SYSCONF_DIR}" --libdir="${GRUB2_BIOS_LIB_DIR}""
+	export GRUB2_BIOS_Configure_PATHS_2="--datarootdir="${GRUB2_BIOS_DATAROOT_DIR}" --infodir="${GRUB2_BIOS_INFO_DIR}" --localedir="${GRUB2_BIOS_LOCALE_DIR}" --mandir="${GRUB2_BIOS_MAN_DIR}""
+	
+	export GRUB2_UNIFONT_PATH="/usr/share/fonts/misc"
+	
+	export GRUB2_BIOS_CORE_IMG_MODULES="part_gpt part_msdos fat ext2 ntfs ntfscomp"
+	export GRUB2_EXTRAS_MODULES="lua.mod 915resolution.mod"
+	
+	## GRUB2_BIOS_CORE_IMG_MODULES - Those modules that will be included in the core.img image generated for your system. Note the maximum permitted size of core.img image is 32 KB.
+	
+}
 
-## The location of grub-extras source folder if you have.
-export GRUB_CONTRIB="${WD}/grub2_extras__GIT_BZR/"
-
-export REPLACE_GRUB2_BIOS_MENU_CONFIG="0"
-
-export GRUB2_Install_Device="${1}"
-export GRUB2_Root_Part_MP="${2}"
-export GRUB2_BIOS_NAME="${3}"
-export GRUB2_BIOS_Backup="${4}"
-export GRUB2_BIOS_TOOLS_Backup="${5}"
-export GRUB2_BIOS_PREFIX_DIR="${6}"
-## If not mentioned, GRUB2_BIOS_PREFIX_DIR env variable will be set to /grub2/grub2_BIOS dir
-
-export GRUB2_BIOS_MENU_CONFIG="grub"
-[ "${REPLACE_GRUB2_BIOS_MENU_CONFIG}" == "1" ] && GRUB2_BIOS_MENU_CONFIG="${GRUB2_BIOS_NAME}"
-
-[ "${GRUB2_BIOS_PREFIX_DIR}" == "" ] && export GRUB2_BIOS_PREFIX_DIR="/grub2/grub2_bios"
-
-export GRUB2_BIOS_BIN_DIR="${GRUB2_BIOS_PREFIX_DIR}/bin"
-export GRUB2_BIOS_SBIN_DIR="${GRUB2_BIOS_PREFIX_DIR}/sbin"
-export GRUB2_BIOS_SYSCONF_DIR="${GRUB2_BIOS_PREFIX_DIR}/etc"
-export GRUB2_BIOS_LIB_DIR="${GRUB2_BIOS_PREFIX_DIR}/lib"
-export GRUB2_BIOS_DATAROOT_DIR="${GRUB2_BIOS_PREFIX_DIR}/share"
-export GRUB2_BIOS_INFO_DIR="${GRUB2_BIOS_DATAROOT_DIR}/info"
-export GRUB2_BIOS_LOCALE_DIR="${GRUB2_BIOS_DATAROOT_DIR}/locale"
-export GRUB2_BIOS_MAN_DIR="${GRUB2_BIOS_DATAROOT_DIR}/man"
-
-export GRUB2_BOOT_PART_DIR="${GRUB2_Root_Part_MP}/boot/${GRUB2_BIOS_NAME}"
-export GRUB2_BIOS_Configure_Flags="--with-platform=pc --program-transform-name=s,grub,${GRUB2_BIOS_NAME},"
-export GRUB2_Other_BIOS_Configure_Flags="--enable-mm-debug --enable-grub-mkfont --disable-nls"
-
-export GRUB2_BIOS_Configure_PATHS_1="--prefix="${GRUB2_BIOS_PREFIX_DIR}" --bindir="${GRUB2_BIOS_BIN_DIR}" --sbindir="${GRUB2_BIOS_SBIN_DIR}" --sysconfdir="${GRUB2_BIOS_SYSCONF_DIR}" --libdir="${GRUB2_BIOS_LIB_DIR}""
-export GRUB2_BIOS_Configure_PATHS_2="--datarootdir="${GRUB2_BIOS_DATAROOT_DIR}" --infodir="${GRUB2_BIOS_INFO_DIR}" --localedir="${GRUB2_BIOS_LOCALE_DIR}" --mandir="${GRUB2_BIOS_MAN_DIR}""
-
-export GRUB2_UNIFONT_PATH="/usr/share/fonts/misc"
-
-export GRUB2_BIOS_CORE_IMG_MODULES="part_gpt part_msdos fat ext2 ntfs ntfscomp"
-export GRUB2_EXTRAS_MODULES="lua.mod 915resolution.mod"
-
-## GRUB2_BIOS_CORE_IMG_MODULES - Those modules that will be included in the core.img image generated for your system. Note the maximum permitted size of core.img image is 32 KB.
-
-if [ "${PROCESS_CONTINUE}" == "TRUE" ]
-then
+_ECHO_CONFIG() {
+	
 	echo
 	echo GRUB2_Install_Device="${GRUB2_Install_Device}"
 	echo
@@ -100,6 +113,15 @@ then
 	echo
 	echo GRUB2_BIOS_PREFIX_DIR_FOLDER="${GRUB2_BIOS_PREFIX_DIR}"
 	echo
+	
+}
+
+if [ "${PROCESS_CONTINUE}" == "TRUE" ]
+then
+	
+	_SET_ENV_VARS
+	
+	_ECHO_CONFIG
 	
 	read -p "Do you wish to proceed? (y/n): " ans # Copied from http://www.linuxjournal.com/content/asking-yesno-question-bash-script
 	
