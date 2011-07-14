@@ -2,6 +2,8 @@
 
 set -x -e
 
+WD="${PWD}/"
+
 export SOURCE_CODES_DIR="/media/Source_Codes/Source_Codes"
 export SCRIPTS_DIR="${SOURCE_CODES_DIR}/My_Shell_Scripts"
 
@@ -347,6 +349,12 @@ COPY_UEFI_BOOTLOADER_FILES
 
 echo
 
+ls --color=none -1 "/var/lib/pacman/local" | sed 's#\/##g' > "/media/Source_Codes/Source_Codes/Pacman_Installed_Packages_List.txt"
+ls --color=none -1 "/var/cache/pacman/pkg/" > "/media/Source_Codes/Source_Codes/Pacman_Packages_Cache_List.txt"
+
+echo
+
+unset WD
 unset SOURCE_CODES_DIR
 unset SCRIPTS_DIR
 unset GRUB2_SCRIPTS_DIR

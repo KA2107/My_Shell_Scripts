@@ -13,11 +13,20 @@ export EDK_TOOLS_PATH="${EDK2_DIR}/BaseTools"
 
 EDK2_C_SOURCE_DIR="${EDK2_BUILD_TOOLS_DIR}/Source/C"
 
+EDK2_TOOLS_PATH_CLEAN() {
+	
+	rm -rf "${EDK_TOOLS_PATH}" || true
+	
+}
+
 EDK2_BUILD_CLEAN() {
 	
 	echo
 	
-	rm -rf "${EDK_TOOLS_PATH}" || true
+	EDK2_TOOLS_PATH_CLEAN
+	
+	echo
+	
 	rm -rf "${EDK2_BUILD_OUTER_DIR}" || true
 	rm -rf "${EDK2_DIR}/Build" || true
 	rm -rf "${EDK2_DIR}/Conf" || true
@@ -36,7 +45,10 @@ COPY_BUILDTOOLS_BASETOOLS() {
 	
 	echo
 	
-	rm -rf "${EDK_TOOLS_PATH}" || true
+	EDK2_TOOLS_PATH_CLEAN
+	
+	echo
+	
 	cp -r "${EDK2_BUILD_TOOLS_DIR}" "${EDK_TOOLS_PATH}"
 	
 	echo
