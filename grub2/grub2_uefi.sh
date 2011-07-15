@@ -53,7 +53,7 @@ then
 	exit 0
 fi
 
-_SET_ENV_VARS() {
+_GRUB2_UEFI_SET_ENV_VARS() {
 	
 	export WD="${PWD}/"
 	
@@ -87,6 +87,10 @@ _SET_ENV_VARS() {
 	
 	export GRUB2_UEFI_APP_PREFIX="efi/${GRUB2_UEFI_NAME}"
 	export GRUB2_UEFI_SYSTEM_PART_DIR="${UEFI_SYSTEM_PART_MP}/${GRUB2_UEFI_APP_PREFIX}"
+	
+	[ "${TARGET_UEFI_ARCH}" == 'x86_64' ] && OTHER_UEFI_ARCH_NAME="x64"
+	[ "${TARGET_UEFI_ARCH}" == 'i386' ] && OTHER_UEFI_ARCH_NAME="ia32"
+	
 	export GRUB2_UNIFONT_PATH="/usr/share/fonts/misc"
 	
 	export GRUB2_UEFI_Configure_Flags="--with-platform=efi --target=${TARGET_UEFI_ARCH} --program-transform-name=s,grub,${GRUB2_UEFI_NAME},"
@@ -109,7 +113,7 @@ _SET_ENV_VARS() {
 	
 }
 
-_ECHO_CONFIG() {
+_GRUB2_UEFI_ECHO_CONFIG() {
 	
 	echo
 	echo TARGET_UEFI_ARCH="${TARGET_UEFI_ARCH}"
@@ -295,17 +299,17 @@ _GRUB2_UEFI_EFIBOOTMGR() {
 		EFISYS_PART_NUM="$(sudo blkid -p -o value -s PART_ENTRY_NUMBER "${EFISYS_PART_DEVICE}")"
 		EFISYS_PARENT_DEVICE="$(echo "${EFISYS_PART_DEVICE}" | sed "s/${EFISYS_PART_NUM}//g")"
 		
-		## Run efibootmgr script in sh compatibility mode, does not work in bash mode for some unknown reason.
+		## Run efibootmgr script in sh compatibility mode, does not work in bash mode in ubuntu for some unknown reason (maybe some dash/bash difference?)
 		cat << EOF > "${WD}/execute_efibootmgr.sh"
 #!/bin/sh
 
 set -x
 
-sudo modprobe -q efivars || echo "efivars kernel module not found, needed for efibootmgr."
+modprobe -q efivars || echo "efivars kernel module not found, needed for efibootmgr."
 
 echo
 
-sudo efibootmgr --create --gpt --disk "${EFISYS_PARENT_DEVICE}" --part "${EFISYS_PART_NUM}" --write-signature --label "${GRUB2_UEFI_NAME}" --loader "\\\\EFI\\\\${GRUB2_UEFI_NAME}\\\\${GRUB2_UEFI_NAME}.efi" || echo "efibootmgr failed to create GRUB2 UEFI boot NVRAM entry, create it manually."
+efibootmgr --create --gpt --disk "${EFISYS_PARENT_DEVICE}" --part "${EFISYS_PART_NUM}" --write-signature --label "${GRUB2_UEFI_NAME}" --loader "\\\\EFI\\\\${GRUB2_UEFI_NAME}\\\\${GRUB2_UEFI_NAME}.efi" || echo "efibootmgr failed to create GRUB2 UEFI boot NVRAM entry, create it manually."
 
 set +x
 
@@ -314,7 +318,7 @@ EOF
 		
 		chmod +x "${WD}/execute_efibootmgr.sh" || true
 		
-		"${WD}/execute_efibootmgr.sh"
+		sudo "${WD}/execute_efibootmgr.sh"
 		
 		set -x -e
 		
@@ -325,7 +329,31 @@ EOF
 	
 }
 
-_UNSET_ENV_VARS() {
+_GRUB2_UEFI_SETUP_BOOTX64_EFI_APP() {
+	
+	[ ! -d "${UEFI_SYSTEM_PART_MP}/efi/boot" ] && sudo mkdir -p "${UEFI_SYSTEM_PART_MP}/efi/boot/" || true
+	
+	sudo rm -f --verbose "${UEFI_SYSTEM_PART_MP}/efi/boot/boot${OTHER_UEFI_ARCH_NAME}.efi" || true
+	
+	if [ -e "${GRUB2_UEFI_SYSTEM_PART_DIR}/${GRUB2_UEFI_NAME}.efi" ]
+	then
+		sudo cp --verbose "${GRUB2_UEFI_SYSTEM_PART_DIR}/${GRUB2_UEFI_NAME}.efi" "${UEFI_SYSTEM_PART_MP}/efi/boot/boot${OTHER_UEFI_ARCH_NAME}.efi"
+	else
+		sudo cp --verbose "${GRUB2_UEFI_SYSTEM_PART_DIR}/grub.efi" "${UEFI_SYSTEM_PART_MP}/efi/boot/boot${OTHER_UEFI_ARCH_NAME}.efi"
+	fi
+	
+	sudo rm -f --verbose "${UEFI_SYSTEM_PART_MP}/efi/boot/${GRUB2_UEFI_MENU_CONFIG}.cfg" || true
+	
+	sudo cat << EOF > "${UEFI_SYSTEM_PART_MP}/efi/boot/${GRUB2_UEFI_MENU_CONFIG}.cfg"
+search --file --no-floppy --set=grub2_uefi_root "/${GRUB2_UEFI_APP_PREFIX}/grub.efi"
+set prefix=(\${grub2_uefi_root})/${GRUB2_UEFI_APP_PREFIX}
+configfile \${prefix}/${GRUB2_UEFI_MENU_CONFIG}.cfg
+
+EOF
+	
+}
+
+_GRUB2_UEFI_UNSET_ENV_VARS() {
 	
 	unset WD
 	unset GRUB_CONTRIB
@@ -348,6 +376,7 @@ _UNSET_ENV_VARS() {
 	unset GRUB2_UEFI_MAN_DIR
 	unset GRUB2_UEFI_APP_PREFIX
 	unset GRUB2_UEFI_SYSTEM_PART_DIR
+	unset OTHER_UEFI_ARCH_NAME
 	unset GRUB2_UEFI_MENU_CONFIG
 	unset GRUB2_UEFI_Configure_Flags
 	unset GRUB2_Other_UEFI_Configure_Flags
@@ -366,9 +395,9 @@ _UNSET_ENV_VARS() {
 if [ "${PROCESS_CONTINUE}" == "TRUE" ]
 then
 	
-	_SET_ENV_VARS
+	_GRUB2_UEFI_SET_ENV_VARS
 	
-	_ECHO_CONFIG
+	_GRUB2_UEFI_ECHO_CONFIG
 	
 	read -p "Do you wish to proceed? (y/n): " ans ## Copied from http://www.linuxjournal.com/content/asking-yesno-question-bash-script
 	
@@ -405,12 +434,14 @@ then
 	
 	echo
 	
+	_GRUB2_UEFI_SETUP_BOOTX64_EFI_APP
+	
+	echo
+	
 	set +x +e
 	
 	echo "GRUB 2 UEFI ${TARGET_UEFI_ARCH} Setup in ${GRUB2_UEFI_SYSTEM_PART_DIR} successfully."
 	echo
-	
-	s
 	
 	;; # End of "y" option in the case list
 	
@@ -425,4 +456,4 @@ then
 	
 fi
 
-_UNSET_ENV_VARS
+_GRUB2_UEFI_UNSET_ENV_VARS
