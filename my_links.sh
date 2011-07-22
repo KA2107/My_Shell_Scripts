@@ -293,9 +293,9 @@ COPY_UEFI_BOOTLOADER_FILES() {
 	LINK_FILE="grub.cfg"
 	[ -e "${LINK_DIR}/${LINK_FILE}" ] && SUDO_COPY_FILE
 	
-	SOURCE_FILE="grub-legacy.conf"
+	SOURCE_FILE="grub-legacy_uefi.conf"
 	LINK_DIR="${UEFI_SYS_PART_DIR}/grub-legacy/"
-	LINK_FILE="${SOURCE_FILE}"
+	LINK_FILE="grub-legacy.conf"
 	[ -e "${LINK_DIR}/${LINK_FILE}" ] && SUDO_COPY_FILE
 	
 	SOURCE_FILE="elilo.conf"
@@ -349,7 +349,7 @@ COPY_UEFI_BOOTLOADER_FILES
 
 echo
 
-ls --color=none -1 "/var/lib/pacman/local" | sed 's#\/##g' > "/media/Source_Codes/Source_Codes/Pacman_Installed_Packages_List.txt"
+ls --color=none -1 "/var/lib/pacman/local/" | sed 's#\/##g' > "/media/Source_Codes/Source_Codes/Pacman_Installed_Packages_List.txt"
 ls --color=none -1 "/var/cache/pacman/pkg/" > "/media/Source_Codes/Source_Codes/Pacman_Packages_Cache_List.txt"
 
 echo
