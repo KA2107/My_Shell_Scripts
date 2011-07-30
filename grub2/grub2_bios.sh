@@ -24,9 +24,9 @@ export PROCESS_CONTINUE="TRUE"
 _USAGE() {
 	
 	echo
-	echo Usage : ${0} [GRUB2_Install_Device] [GRUB2_Boot_Partition_MountPoint] [GRUB2_BIOS_Install_Dir_Name] [GRUB2_BIOS_Backup_Path] [GRUB2_BIOS_Tools_Backup_Path] [GRUB2_BIOS_PREFIX_DIR_Path]
+	echo Usage : ${SCRIPTNAME} [GRUB2_Install_Device] [GRUB2_Boot_Partition_MountPoint] [GRUB2_BIOS_Install_Dir_Name] [GRUB2_BIOS_Backup_Path] [GRUB2_BIOS_Tools_Backup_Path] [GRUB2_BIOS_PREFIX_DIR_Path]
 	echo
-	echo Example : ${0} /dev/sda /boot grub2 /media/Data_3/grub2_BIOS_Backup /media/Data_3/grub2_BIOS_Tools_Backup /grub2/grub2_BIOS
+	echo Example : ${SCRIPTNAME} /dev/sda /boot grub2 /media/Data_3/grub2_BIOS_Backup /media/Data_3/grub2_BIOS_Tools_Backup /grub2/grub2_BIOS
 	echo
 	echo "For example if you did 'bzr branch bzr://bzr.savannah.gnu.org/grub/trunk/grub /home/user/grub'"
 	echo "Then copy this script to /home/user/grub and cd into /home/user/grub and then run this script from /home/user/grub."
@@ -51,7 +51,7 @@ then
 	exit 0
 fi
 
-_SET_ENV_VARS() {
+__GRUB2_BIOS_SET_ENV_VARS() {
 	
 	export WD="${PWD}/"
 	
@@ -98,7 +98,7 @@ _SET_ENV_VARS() {
 	
 }
 
-_ECHO_CONFIG() {
+_GRUB2_BIOS_ECHO_CONFIG() {
 	
 	echo
 	echo GRUB2_Install_Device="${GRUB2_Install_Device}"
@@ -116,19 +116,7 @@ _ECHO_CONFIG() {
 	
 }
 
-if [ "${PROCESS_CONTINUE}" == "TRUE" ]
-then
-	
-	_SET_ENV_VARS
-	
-	_ECHO_CONFIG
-	
-	read -p "Do you wish to proceed? (y/n): " ans # Copied from http://www.linuxjournal.com/content/asking-yesno-question-bash-script
-	
-	case "${ans}" in
-	y | Y | yes | YES | Yes)
-	echo "Ok. Proceeding with compile and installation of GRUB2 BIOS."
-	echo
+_GRUB2_BIOS_PRECOMPILE_STEPS() {
 	
 	## Load device-mapper kernel module - needed by grub-probe
 	sudo modprobe -q dm-mod || true
@@ -143,9 +131,6 @@ then
 	"${WD}/xman_dos2unix.sh" * || true
 	echo
 	
-	## Uncomment below to use ${GRUB2_BIOS_MENU_CONFIG}.cfg as the menu config file instead of grub.cfg
-	sed -i "s|grub.cfg|${GRUB2_BIOS_MENU_CONFIG}.cfg|g" "${WD}/grub-core/normal/main.c" || true
-	
 	## Check whether python2 exists, otherwise create /usr/bin/python2 symlink to python executable 
 	# [ "$(which python2)" ] || sudo ln -s "$(which python)" "/usr/bin/python2"
 	
@@ -153,7 +138,7 @@ then
 	if [ "$(which python2)" ]
 	then
 		install -D -m755 "${WD}/autogen.sh" "${WD}/autogen_unmodified.sh"
-		sed -i 's|python |python2 |g' "${WD}/autogen.sh" || true
+		sed 's|python |python2 |g' -i "${WD}/autogen.sh" || true
 	fi
 	
 	chmod +x "${WD}/autogen.sh" || true
@@ -173,17 +158,30 @@ then
 	cp --verbose "${WD}/grub.default" "${WD}/GRUB2_BIOS_BUILD_DIR/" || true
 	cp --verbose "${WD}/grub.cfg" "${WD}/GRUB2_BIOS_BUILD_DIR/" || true
 	
+}
+
+_GRUB2_BIOS_COMPILE_STEPS() {
+	
+	## Uncomment below to use ${GRUB2_BIOS_MENU_CONFIG}.cfg as the menu config file instead of grub.cfg
+	sed "s|grub.cfg|${GRUB2_BIOS_MENU_CONFIG}.cfg|g" -i "${WD}/grub-core/normal/main.c" || true
+	
 	cd GRUB2_BIOS_BUILD_DIR
 	echo
 	
 	## fix unifont.bdf location
-	sed -i "s|/usr/share/fonts/unifont|${GRUB2_UNIFONT_PATH}|g" "${WD}/configure"
+	sed "s|/usr/share/fonts/unifont|${GRUB2_UNIFONT_PATH}|g" -i "${WD}/configure"
 	
 	"${WD}/configure" ${GRUB2_BIOS_Configure_Flags} ${GRUB2_Other_BIOS_Configure_Flags} ${GRUB2_BIOS_Configure_PATHS_1} ${GRUB2_BIOS_Configure_PATHS_2}
 	echo
 	
 	make
 	echo
+	
+	sed "s|${GRUB2_BIOS_MENU_CONFIG}.cfg|grub.cfg|g" -i "${WD}/grub-core/normal/main.c" || true
+	
+}
+
+_GRUB2_BIOS_POSTCOMPILE_SETUP_PREFIX_DIR() {
 	
 	if [ \
 		"${GRUB2_BIOS_PREFIX_DIR}" != '/' -o \
@@ -215,8 +213,6 @@ then
 	# sudo cp --verbose ${GRUB2_EXTRAS_MODULES} "${GRUB2_BIOS_LIB_DIR}/${GRUB2_BIOS_NAME}/i386-pc/" || true
 	echo
 	
-	cd "${WD}/GRUB2_BIOS_BUILD_DIR/grub-core/"
-	
 	sudo install -d "${GRUB2_BIOS_SYSCONF_DIR}/default"
 	[ -e "${WD}/grub.default" ] && sudo cp --verbose "${WD}/grub.default" "${GRUB2_BIOS_SYSCONF_DIR}/default/grub" || true
 	sudo chmod --verbose -x "${GRUB2_BIOS_SYSCONF_DIR}/default/grub" || true
@@ -226,25 +222,29 @@ then
 	sudo chmod --verbose -x "${GRUB2_BIOS_SYSCONF_DIR}/grub.d/README" || true
 	echo
 	
+	# sudo "${GRUB2_BIOS_BIN_DIR}/${GRUB2_BIOS_NAME}-mkfont" --verbose --output="${GRUB2_BIOS_DATAROOT_DIR}/${GRUB2_BIOS_NAME}/unicode.pf2" "${GRUB2_UNIFONT_PATH}/unifont.bdf" || true
+	echo
+	# sudo "${GRUB2_BIOS_BIN_DIR}/${GRUB2_BIOS_NAME}-mkfont" --verbose --ascii-bitmaps --output=""${GRUB2_BIOS_DATAROOT_DIR}/${GRUB2_BIOS_NAME}/ascii.pf2" "${GRUB2_UNIFONT_PATH}/unifont.bdf" || true
+	echo
+	
+}
+
+
+_GRUB2_BIOS_BACKUP_OLD_DIR() {
+	
 	## Backup the old GRUB2 folder in the /boot folder.
 	sudo cp -r --verbose "${GRUB2_BOOT_PART_DIR}" "${GRUB2_BIOS_Backup}" || true
 	echo
+	
 	## Delete the old GRUB2 folder in the /boot folder.
 	sudo rm -rf --verbose "${GRUB2_BOOT_PART_DIR}" || true
 	echo
 	
+}
+
+_GRUB2_BIOS_SETUP_BOOT_PART_DIR() {
+	
 	sudo "${GRUB2_BIOS_SBIN_DIR}/${GRUB2_BIOS_NAME}-install" --modules="${GRUB2_BIOS_CORE_IMG_MODULES}" --boot-directory="${GRUB2_Boot_Part_MP}" --no-floppy --recheck --debug "${GRUB2_Install_Device}" # Setup the GRUB2 folder in the /boot directory, create the core.img image and embed the image in the disk.
-	echo
-	
-	# sudo ${GRUB2_BIOS_SBIN_DIR}/${GRUB2_BIOS_NAME}-mkconfig --output=${GRUB2_BOOT_PART_DIR}/${GRUB2_BIOS_MENU_CONFIG}.cfg || true
-	echo
-	
-	cd ..
-	sed -i "s|${GRUB2_BIOS_MENU_CONFIG}.cfg|grub.cfg|g" "${WD}/grub-core/normal/main.c" || true
-	
-	# sudo "${GRUB2_BIOS_BIN_DIR}/${GRUB2_BIOS_NAME}-mkfont" --verbose --output="${GRUB2_BOOT_PART_DIR}/unicode.pf2" "${GRUB2_UNIFONT_PATH}/unifont.bdf" || true
-	echo
-	# sudo "${GRUB2_BIOS_BIN_DIR}/${GRUB2_BIOS_NAME}-mkfont" --verbose --ascii-bitmaps --output="${GRUB2_BOOT_PART_DIR}/ascii.pf2" "${GRUB2_UNIFONT_PATH}/unifont.bdf" || true
 	echo
 	
 	sudo cp "${GRUB2_BIOS_DATAROOT_DIR}/${GRUB2_BIOS_NAME}"/*.pf2 "${GRUB2_BOOT_PART_DIR}/" || true
@@ -252,17 +252,96 @@ then
 	
 	sudo cp --verbose "${GRUB2_BIOS_Backup}/${GRUB2_BIOS_MENU_CONFIG}.cfg" "${GRUB2_BOOT_PART_DIR}/${GRUB2_BIOS_MENU_CONFIG}_backup.cfg" || true
 	# sudo cp --verbose "${GRUB2_BIOS_Backup}/${GRUB2_BIOS_MENU_CONFIG}.cfg" "${GRUB2_BOOT_PART_DIR}/${GRUB2_BIOS_MENU_CONFIG}.cfg" || true
-	sudo cp --verbose "${WD}/grub.cfg" "${GRUB2_BOOT_PART_DIR}/${GRUB2_BIOS_MENU_CONFIG}.cfg" || true
-	sudo cp --verbose "${GRUB2_BIOS_Backup}"/*.jpg "${GRUB2_BIOS_Backup}"/*.png "${GRUB2_BIOS_Backup}"/*.tga "${GRUB2_BOOT_PART_DIR}/" || true
+	
+	[ -e "${WD}/grub.cfg" ] && sudo cp --verbose "${WD}/grub.cfg" "${GRUB2_BOOT_PART_DIR}/${GRUB2_BIOS_MENU_CONFIG}.cfg" || true
+	
+	# sudo ${GRUB2_BIOS_SBIN_DIR}/${GRUB2_BIOS_NAME}-mkconfig --output=${GRUB2_BOOT_PART_DIR}/${GRUB2_BIOS_MENU_CONFIG}.cfg || true
 	echo
 	
 	sudo chmod --verbose -x "${GRUB2_BOOT_PART_DIR}/${GRUB2_BIOS_MENU_CONFIG}.cfg" || true
 	echo
 	
-	echo "GRUB 2 BIOS setup in ${GRUB2_BOOT_PART_DIR} successfully."
+	sudo cp --verbose "${GRUB2_BIOS_Backup}"/*.{png,jpg,tga} "${GRUB2_BOOT_PART_DIR}/" || true
+	echo
+	
+}
+
+_GRUB2_BIOS_UNSET_ENV_VARS() {
+	
+	unset WD
+	unset GRUB_CONTRIB
+	unset PROCESS_CONTINUE
+	unset GRUB2_Install_Device
+	unset GRUB2_Boot_Part_MP
+	unset GRUB2_BIOS_NAME
+	unset GRUB2_BIOS_Backup
+	unset GRUB2_BIOS_TOOLS_Backup
+	unset GRUB2_BIOS_PREFIX_DIR
+	unset GRUB2_BIOS_BIN_DIR
+	unset GRUB2_BIOS_SBIN_DIR
+	unset GRUB2_BIOS_SYSCONF_DIR
+	unset GRUB2_BIOS_LIB_DIR
+	unset GRUB2_BIOS_DATAROOT_DIR
+	unset GRUB2_BIOS_INFO_DIR
+	unset GRUB2_BIOS_LOCALE_DIR
+	unset GRUB2_BIOS_MAN_DIR
+	unset GRUB2_BIOS_MENU_CONFIG
+	unset GRUB2_BOOT_PART_DIR
+	unset GRUB2_BIOS_Configure_Flags
+	unset GRUB2_Other_BIOS_Configure_Flags
+	unset GRUB2_BIOS_Configure_PATHS_1
+	unset GRUB2_BIOS_Configure_PATHS_2
+	unset GRUB2_BIOS_CORE_IMG_MODULES
+	unset GRUB2_EXTRAS_MODULES
+	unset GRUB2_UNIFONT_PATH
+	
+}
+
+if [ "${PROCESS_CONTINUE}" == "TRUE" ]
+then
+	
+	echo
+	
+	_GRUB2_BIOS_SET_ENV_VARS
+	
+	echo
+	
+	_GRUB2_BIOS_ECHO_CONFIG
+	
+	echo
+	
+	read -p "Do you wish to proceed? (y/n): " ans # Copied from http://www.linuxjournal.com/content/asking-yesno-question-bash-script
+	
+	case "${ans}" in
+	y | Y | yes | YES | Yes)
+	echo "Ok. Proceeding with compile and installation of GRUB2 BIOS."
+	echo
+	
+	_GRUB2_BIOS_PRECOMPILE_STEPS
+	
+	echo
+	
+	_GRUB2_BIOS_COMPILE_STEPS
+	
+	echo
+	
+	_GRUB2_BIOS_POSTCOMPILE_SETUP_PREFIX_DIR
+	
+	echo
+	
+	_GRUB2_BIOS_BACKUP_OLD_DIR
+	
+	echo
+	
+	_GRUB2_BIOS_SETUP_BOOT_PART_DIR
+	
 	echo
 	
 	set +x +e
+	
+	echo "GRUB2 BIOS setup in ${GRUB2_BOOT_PART_DIR} successfully."
+	
+	echo
 	
 	;; # End of "y" option in the case list
 	
@@ -277,29 +356,4 @@ then
 	
 fi
 
-unset WD
-unset GRUB_CONTRIB
-unset PROCESS_CONTINUE
-unset GRUB2_Install_Device
-unset GRUB2_Boot_Part_MP
-unset GRUB2_BIOS_NAME
-unset GRUB2_BIOS_Backup
-unset GRUB2_BIOS_TOOLS_Backup
-unset GRUB2_BIOS_PREFIX_DIR
-unset GRUB2_BIOS_BIN_DIR
-unset GRUB2_BIOS_SBIN_DIR
-unset GRUB2_BIOS_SYSCONF_DIR
-unset GRUB2_BIOS_LIB_DIR
-unset GRUB2_BIOS_DATAROOT_DIR
-unset GRUB2_BIOS_INFO_DIR
-unset GRUB2_BIOS_LOCALE_DIR
-unset GRUB2_BIOS_MAN_DIR
-unset GRUB2_BIOS_MENU_CONFIG
-unset GRUB2_BOOT_PART_DIR
-unset GRUB2_BIOS_Configure_Flags
-unset GRUB2_Other_BIOS_Configure_Flags
-unset GRUB2_BIOS_Configure_PATHS_1
-unset GRUB2_BIOS_Configure_PATHS_2
-unset GRUB2_BIOS_CORE_IMG_MODULES
-unset GRUB2_EXTRAS_MODULES
-unset GRUB2_UNIFONT_PATH
+_GRUB2_BIOS_UNSET_ENV_VARS

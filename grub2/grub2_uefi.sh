@@ -151,7 +151,7 @@ _GRUB2_UEFI_PRECOMPILE_STEPS() {
 	if [ "$(which python2)" ]
 	then
 		install -D -m755 "${WD}/autogen.sh" "${WD}/autogen_unmodified.sh"
-		sed -i 's|python |python2 |g' "${WD}/autogen.sh" || true
+		sed 's|python |python2 |g' -i "${WD}/autogen.sh" || true
 	fi
 	
 	chmod +x "${WD}/autogen.sh" || true
@@ -174,16 +174,16 @@ _GRUB2_UEFI_PRECOMPILE_STEPS() {
 _GRUB2_UEFI_COMPILE_STEPS() {
 	
 	## Uncomment below to use ${GRUB2_UEFI_MENU_CONFIG}.cfg as the menu config file instead of grub.cfg
-	sed -i "s|grub.cfg|${GRUB2_UEFI_MENU_CONFIG}.cfg|g" "${WD}/grub-core/normal/main.c" || true
+	sed "s|grub.cfg|${GRUB2_UEFI_MENU_CONFIG}.cfg|g" -i "${WD}/grub-core/normal/main.c" || true
 	
 	"${WD}/autogen.sh"
 	echo
 	
-	cd "GRUB2_UEFI_BUILD_DIR_${TARGET_UEFI_ARCH}"
+	cd "${PWD}/GRUB2_UEFI_BUILD_DIR_${TARGET_UEFI_ARCH}"
 	echo
 	
 	## fix unifont.bdf location
-	sed -i "s|/usr/share/fonts/unifont|${GRUB2_UNIFONT_PATH}|g" "${WD}/configure"
+	sed "s|/usr/share/fonts/unifont|${GRUB2_UNIFONT_PATH}|g" -i "${WD}/configure"
 	
 	"${WD}/configure" ${GRUB2_UEFI_Configure_Flags} ${GRUB2_Other_UEFI_Configure_Flags} ${GRUB2_UEFI_Configure_PATHS_1} ${GRUB2_UEFI_Configure_PATHS_2}
 	echo
@@ -191,11 +191,11 @@ _GRUB2_UEFI_COMPILE_STEPS() {
 	make
 	echo
 	
-	sed -i "s|${GRUB2_UEFI_MENU_CONFIG}.cfg|grub.cfg|g" "${WD}/grub-core/normal/main.c" || true
+	sed "s|${GRUB2_UEFI_MENU_CONFIG}.cfg|grub.cfg|g" -i "${WD}/grub-core/normal/main.c" || true
 	
 }
 
-_GRUB2_UEFI_POSTCOMPILE_SETUP_PREFIX() {
+_GRUB2_UEFI_POSTCOMPILE_SETUP_PREFIX_DIR() {
 	
 	if [ \
 		"${GRUB2_UEFI_PREFIX_DIR}" != '/' -o \
@@ -236,6 +236,12 @@ _GRUB2_UEFI_POSTCOMPILE_SETUP_PREFIX() {
 	sudo chmod --verbose -x "${GRUB2_UEFI_SYSCONF_DIR}/grub.d/README" || true
 	echo
 	
+	# sudo "${GRUB2_UEFI_BIN_DIR}/${GRUB2_UEFI_NAME}-mkfont" --verbose --output="${GRUB2_UEFI_DATAROOT_DIR}/${GRUB2_UEFI_NAME}/unicode.pf2" "${GRUB2_UNIFONT_PATH}/unifont.bdf" || true
+	echo
+	
+	# sudo "${GRUB2_UEFI_BIN_DIR}/${GRUB2_UEFI_NAME}-mkfont" --verbose --ascii-bitmaps --output="${GRUB2_UEFI_DATAROOT_DIR}/${GRUB2_UEFI_NAME}/ascii.pf2" "${GRUB2_UNIFONT_PATH}/unifont.bdf" || true
+	echo
+	
 }
 
 _GRUB2_UEFI_BACKUP_OLD_DIR() {
@@ -251,7 +257,7 @@ _GRUB2_UEFI_BACKUP_OLD_DIR() {
 
 _GRUB2_UEFI_SETUP_UEFISYS_PART_DIR() {
 	
-	sudo sed -i 's|--bootloader_id=|--bootloader-id=|g' "${GRUB2_UEFI_SBIN_DIR}/${GRUB2_UEFI_NAME}-install" || true
+	sudo sed 's|--bootloader_id=|--bootloader-id=|g' -i "${GRUB2_UEFI_SBIN_DIR}/${GRUB2_UEFI_NAME}-install" || true
 	
 	## Setup the GRUB2 folder in the UEFI System Partition and create the grub.efi application
 	sudo "${GRUB2_UEFI_SBIN_DIR}/${GRUB2_UEFI_NAME}-install" --boot-directory="${UEFI_SYSTEM_PART_MP}/efi" --bootloader-id="${GRUB2_UEFI_NAME}" --no-floppy --recheck --debug
@@ -281,10 +287,10 @@ _GRUB2_UEFI_SETUP_UEFISYS_PART_DIR() {
 	# sudo "${GRUB2_UEFI_SBIN_DIR}/${GRUB2_UEFI_NAME}-mkconfig" --output="${GRUB2_UEFI_SYSTEM_PART_DIR}/${GRUB2_UEFI_MENU_CONFIG}.cfg" || true
 	echo
 	
-	sudo cp --verbose "${GRUB2_UEFI_Backup}"/*.jpg "${GRUB2_UEFI_Backup}"/*.png "${GRUB2_UEFI_Backup}"/*.tga "${GRUB2_UEFI_SYSTEM_PART_DIR}/" || true
+	sudo chmod --verbose -x "${GRUB2_UEFI_SYSTEM_PART_DIR}/${GRUB2_UEFI_MENU_CONFIG}.cfg" || true
 	echo
 	
-	sudo chmod --verbose -x "${GRUB2_UEFI_SYSTEM_PART_DIR}/${GRUB2_UEFI_MENU_CONFIG}.cfg" || true
+	sudo cp --verbose "${GRUB2_UEFI_Backup}"/*.{png,jpg,tga} "${GRUB2_UEFI_SYSTEM_PART_DIR}/" || true
 	echo
 	
 }
@@ -299,7 +305,7 @@ _GRUB2_UEFI_EFIBOOTMGR() {
 		EFISYS_PART_NUM="$(sudo blkid -p -o value -s PART_ENTRY_NUMBER "${EFISYS_PART_DEVICE}")"
 		EFISYS_PARENT_DEVICE="$(echo "${EFISYS_PART_DEVICE}" | sed "s/${EFISYS_PART_NUM}//g")"
 		
-		## Run efibootmgr script in sh compatibility mode, does not work in bash mode in ubuntu for some unknown reason (maybe some dash/bash difference?)
+		## Run efibootmgr script in sh compatibility mode, does not work in bash mode in ubuntu for some unknown reason (maybe some dash vs bash issue?)
 		cat << EOF > "${WD}/execute_efibootmgr.sh"
 #!/bin/sh
 
@@ -395,9 +401,15 @@ _GRUB2_UEFI_UNSET_ENV_VARS() {
 if [ "${PROCESS_CONTINUE}" == "TRUE" ]
 then
 	
+	echo
+	
 	_GRUB2_UEFI_SET_ENV_VARS
 	
+	echo
+	
 	_GRUB2_UEFI_ECHO_CONFIG
+	
+	echo
 	
 	read -p "Do you wish to proceed? (y/n): " ans ## Copied from http://www.linuxjournal.com/content/asking-yesno-question-bash-script
 	
@@ -418,7 +430,7 @@ then
 	
 	echo
 	
-	_GRUB2_UEFI_POSTCOMPILE_SETUP_PREFIX
+	_GRUB2_UEFI_POSTCOMPILE_SETUP_PREFIX_DIR
 	
 	echo
 	
@@ -440,7 +452,8 @@ then
 	
 	set +x +e
 	
-	echo "GRUB 2 UEFI ${TARGET_UEFI_ARCH} Setup in ${GRUB2_UEFI_SYSTEM_PART_DIR} successfully."
+	echo "GRUB2 UEFI ${TARGET_UEFI_ARCH} Setup in ${GRUB2_UEFI_SYSTEM_PART_DIR} successfully."
+	
 	echo
 	
 	;; # End of "y" option in the case list
