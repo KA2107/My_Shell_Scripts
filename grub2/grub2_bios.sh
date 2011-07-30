@@ -24,9 +24,9 @@ export PROCESS_CONTINUE="TRUE"
 _USAGE() {
 	
 	echo
-	echo Usage : ${0} [GRUB2_Install_Device] [GRUB2_Root_Partition_MountPoint] [GRUB2_BIOS_Install_Dir_Name] [GRUB2_BIOS_Backup_Path] [GRUB2_BIOS_Tools_Backup_Path] [GRUB2_BIOS_PREFIX_DIR_Path]
+	echo Usage : ${0} [GRUB2_Install_Device] [GRUB2_Boot_Partition_MountPoint] [GRUB2_BIOS_Install_Dir_Name] [GRUB2_BIOS_Backup_Path] [GRUB2_BIOS_Tools_Backup_Path] [GRUB2_BIOS_PREFIX_DIR_Path]
 	echo
-	echo Example : ${0} /dev/sda / grub2 /media/Data_3/grub2_BIOS_Backup /media/Data_3/grub2_BIOS_Tools_Backup /grub2/grub2_BIOS
+	echo Example : ${0} /dev/sda /boot grub2 /media/Data_3/grub2_BIOS_Backup /media/Data_3/grub2_BIOS_Tools_Backup /grub2/grub2_BIOS
 	echo
 	echo "For example if you did 'bzr branch bzr://bzr.savannah.gnu.org/grub/trunk/grub /home/user/grub'"
 	echo "Then copy this script to /home/user/grub and cd into /home/user/grub and then run this script from /home/user/grub."
@@ -61,7 +61,7 @@ _SET_ENV_VARS() {
 	export REPLACE_GRUB2_BIOS_MENU_CONFIG="0"
 	
 	export GRUB2_Install_Device="${1}"
-	export GRUB2_Root_Part_MP="${2}"
+	export GRUB2_Boot_Part_MP="${2}"
 	export GRUB2_BIOS_NAME="${3}"
 	export GRUB2_BIOS_Backup="${4}"
 	export GRUB2_BIOS_TOOLS_Backup="${5}"
@@ -82,7 +82,7 @@ _SET_ENV_VARS() {
 	export GRUB2_BIOS_LOCALE_DIR="${GRUB2_BIOS_DATAROOT_DIR}/locale"
 	export GRUB2_BIOS_MAN_DIR="${GRUB2_BIOS_DATAROOT_DIR}/man"
 	
-	export GRUB2_BOOT_PART_DIR="${GRUB2_Root_Part_MP}/boot/${GRUB2_BIOS_NAME}"
+	export GRUB2_BOOT_PART_DIR="${GRUB2_Boot_Part_MP}/${GRUB2_BIOS_NAME}"
 	export GRUB2_BIOS_Configure_Flags="--with-platform=pc --program-transform-name=s,grub,${GRUB2_BIOS_NAME},"
 	export GRUB2_Other_BIOS_Configure_Flags="--enable-mm-debug --enable-grub-mkfont --disable-nls"
 	
@@ -103,7 +103,7 @@ _ECHO_CONFIG() {
 	echo
 	echo GRUB2_Install_Device="${GRUB2_Install_Device}"
 	echo
-	echo GRUB2_Root_Partition_MountPoint="${GRUB2_Root_Part_MP}"
+	echo GRUB2_Boot_Partition_MountPoint="${GRUB2_Boot_Part_MP}"
 	echo
 	echo GRUB2_BIOS_Install_Dir_Name="${GRUB2_BOOT_PART_DIR}"
 	echo
@@ -233,7 +233,7 @@ then
 	sudo rm -rf --verbose "${GRUB2_BOOT_PART_DIR}" || true
 	echo
 	
-	sudo "${GRUB2_BIOS_SBIN_DIR}/${GRUB2_BIOS_NAME}-install" --modules="${GRUB2_BIOS_CORE_IMG_MODULES}" --root-directory="${GRUB2_Root_Part_MP}" --no-floppy --recheck --debug "${GRUB2_Install_Device}" # Setup the GRUB2 folder in the /boot directory, create the core.img image and embed the image in the disk.
+	sudo "${GRUB2_BIOS_SBIN_DIR}/${GRUB2_BIOS_NAME}-install" --modules="${GRUB2_BIOS_CORE_IMG_MODULES}" --boot-directory="${GRUB2_Boot_Part_MP}" --no-floppy --recheck --debug "${GRUB2_Install_Device}" # Setup the GRUB2 folder in the /boot directory, create the core.img image and embed the image in the disk.
 	echo
 	
 	# sudo ${GRUB2_BIOS_SBIN_DIR}/${GRUB2_BIOS_NAME}-mkconfig --output=${GRUB2_BOOT_PART_DIR}/${GRUB2_BIOS_MENU_CONFIG}.cfg || true
@@ -281,7 +281,7 @@ unset WD
 unset GRUB_CONTRIB
 unset PROCESS_CONTINUE
 unset GRUB2_Install_Device
-unset GRUB2_Root_Part_MP
+unset GRUB2_Boot_Part_MP
 unset GRUB2_BIOS_NAME
 unset GRUB2_BIOS_Backup
 unset GRUB2_BIOS_TOOLS_Backup
