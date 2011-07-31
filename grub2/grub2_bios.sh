@@ -51,7 +51,7 @@ then
 	exit 0
 fi
 
-__GRUB2_BIOS_SET_ENV_VARS() {
+# _GRUB2_BIOS_SET_ENV_VARS() {
 	
 	export WD="${PWD}/"
 	
@@ -96,9 +96,9 @@ __GRUB2_BIOS_SET_ENV_VARS() {
 	
 	## GRUB2_BIOS_CORE_IMG_MODULES - Those modules that will be included in the core.img image generated for your system. Note the maximum permitted size of core.img image is 32 KB.
 	
-}
+# }
 
-_GRUB2_BIOS_ECHO_CONFIG() {
+# _GRUB2_BIOS_ECHO_CONFIG() {
 	
 	echo
 	echo GRUB2_Install_Device="${GRUB2_Install_Device}"
@@ -114,7 +114,7 @@ _GRUB2_BIOS_ECHO_CONFIG() {
 	echo GRUB2_BIOS_PREFIX_DIR_FOLDER="${GRUB2_BIOS_PREFIX_DIR}"
 	echo
 	
-}
+# }
 
 _GRUB2_BIOS_PRECOMPILE_STEPS() {
 	
@@ -266,47 +266,16 @@ _GRUB2_BIOS_SETUP_BOOT_PART_DIR() {
 	
 }
 
-_GRUB2_BIOS_UNSET_ENV_VARS() {
-	
-	unset WD
-	unset GRUB_CONTRIB
-	unset PROCESS_CONTINUE
-	unset GRUB2_Install_Device
-	unset GRUB2_Boot_Part_MP
-	unset GRUB2_BIOS_NAME
-	unset GRUB2_BIOS_Backup
-	unset GRUB2_BIOS_TOOLS_Backup
-	unset GRUB2_BIOS_PREFIX_DIR
-	unset GRUB2_BIOS_BIN_DIR
-	unset GRUB2_BIOS_SBIN_DIR
-	unset GRUB2_BIOS_SYSCONF_DIR
-	unset GRUB2_BIOS_LIB_DIR
-	unset GRUB2_BIOS_DATAROOT_DIR
-	unset GRUB2_BIOS_INFO_DIR
-	unset GRUB2_BIOS_LOCALE_DIR
-	unset GRUB2_BIOS_MAN_DIR
-	unset GRUB2_BIOS_MENU_CONFIG
-	unset GRUB2_BOOT_PART_DIR
-	unset GRUB2_BIOS_Configure_Flags
-	unset GRUB2_Other_BIOS_Configure_Flags
-	unset GRUB2_BIOS_Configure_PATHS_1
-	unset GRUB2_BIOS_Configure_PATHS_2
-	unset GRUB2_BIOS_CORE_IMG_MODULES
-	unset GRUB2_EXTRAS_MODULES
-	unset GRUB2_UNIFONT_PATH
-	
-}
-
 if [ "${PROCESS_CONTINUE}" == "TRUE" ]
 then
 	
 	echo
 	
-	_GRUB2_BIOS_SET_ENV_VARS
+	# _GRUB2_BIOS_SET_ENV_VARS
 	
 	echo
 	
-	_GRUB2_BIOS_ECHO_CONFIG
+	# _GRUB2_BIOS_ECHO_CONFIG
 	
 	echo
 	
@@ -356,4 +325,35 @@ then
 	
 fi
 
-_GRUB2_BIOS_UNSET_ENV_VARS
+# _GRUB2_BIOS_UNSET_ENV_VARS() {
+	
+	unset WD
+	unset GRUB_CONTRIB
+	unset PROCESS_CONTINUE
+	unset GRUB2_Install_Device
+	unset GRUB2_Boot_Part_MP
+	unset GRUB2_BIOS_NAME
+	unset GRUB2_BIOS_Backup
+	unset GRUB2_BIOS_TOOLS_Backup
+	unset GRUB2_BIOS_PREFIX_DIR
+	unset GRUB2_BIOS_BIN_DIR
+	unset GRUB2_BIOS_SBIN_DIR
+	unset GRUB2_BIOS_SYSCONF_DIR
+	unset GRUB2_BIOS_LIB_DIR
+	unset GRUB2_BIOS_DATAROOT_DIR
+	unset GRUB2_BIOS_INFO_DIR
+	unset GRUB2_BIOS_LOCALE_DIR
+	unset GRUB2_BIOS_MAN_DIR
+	unset GRUB2_BIOS_MENU_CONFIG
+	unset GRUB2_BOOT_PART_DIR
+	unset GRUB2_BIOS_Configure_Flags
+	unset GRUB2_Other_BIOS_Configure_Flags
+	unset GRUB2_BIOS_Configure_PATHS_1
+	unset GRUB2_BIOS_Configure_PATHS_2
+	unset GRUB2_BIOS_CORE_IMG_MODULES
+	unset GRUB2_EXTRAS_MODULES
+	unset GRUB2_UNIFONT_PATH
+	
+# }
+
+# _GRUB2_BIOS_UNSET_ENV_VARS
