@@ -48,6 +48,7 @@ if [ \
 	]
 then
 	_USAGE
+	export PROCESS_CONTINUE="FALSE"
 	exit 0
 fi
 
