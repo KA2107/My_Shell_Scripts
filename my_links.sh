@@ -251,17 +251,17 @@ COPY_BIOS_BOOTLOADER_FILES() {
 	SOURCE_FILE="syslinux.cfg"
 	LINK_DIR="${BOOT_PART}/syslinux/"
 	LINK_FILE="${SOURCE_FILE}"
-	[ -e "${LINK_DIR}/${LINK_FILE}" ] && SUDO_COPY_FILE
+	[ -d "${LINK_DIR}/" ] && SUDO_COPY_FILE
 	
 	SOURCE_FILE="grub2_bios.cfg"
 	LINK_DIR="${BOOT_PART}/grub2_bios/"
 	LINK_FILE="grub.cfg"
-	[ -e "${LINK_DIR}/${LINK_FILE}" ] && SUDO_COPY_FILE
+	[ -d "${LINK_DIR}/" ] && SUDO_COPY_FILE
 	
 	SOURCE_FILE="grub2_bios.cfg"
 	LINK_DIR="${BOOT_PART}/grub/"
 	LINK_FILE="grub.cfg"
-	[ -e "${LINK_DIR}/${LINK_FILE}" ] && SUDO_COPY_FILE
+	[ -d "${LINK_DIR}/" ] && SUDO_COPY_FILE
 	
 	echo
 	
@@ -286,22 +286,22 @@ COPY_UEFI_BOOTLOADER_FILES() {
 	SOURCE_FILE="grub2_uefi.cfg"
 	LINK_DIR="${UEFI_SYS_PART_DIR}/grub2_uefi_x86_64/"
 	LINK_FILE="grub.cfg"
-	[ -e "${LINK_DIR}/${LINK_FILE}" ] && SUDO_COPY_FILE
+	[ -d "${LINK_DIR}/" ] && SUDO_COPY_FILE
 	
 	SOURCE_FILE="grub2_uefi.cfg"
 	LINK_DIR="${UEFI_SYS_PART_DIR}/grub/"
 	LINK_FILE="grub.cfg"
-	[ -e "${LINK_DIR}/${LINK_FILE}" ] && SUDO_COPY_FILE
+	[ -d "${LINK_DIR}/" ] && SUDO_COPY_FILE
 	
 	SOURCE_FILE="grub-legacy_uefi.conf"
 	LINK_DIR="${UEFI_SYS_PART_DIR}/grub-legacy/"
 	LINK_FILE="grub-legacy.conf"
-	[ -e "${LINK_DIR}/${LINK_FILE}" ] && SUDO_COPY_FILE
+	[ -d "${LINK_DIR}/" ] && SUDO_COPY_FILE
 	
 	SOURCE_FILE="elilo.conf"
 	LINK_DIR="${UEFI_SYS_PART_DIR}/elilo/"
 	LINK_FILE="${SOURCE_FILE}"
-	[ -e "${LINK_DIR}/${LINK_FILE}" ] && SUDO_COPY_FILE
+	[ -d "${LINK_DIR}/" ] && SUDO_COPY_FILE
 	
 	echo
 	
