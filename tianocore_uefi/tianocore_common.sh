@@ -75,8 +75,8 @@ CORRECT_WERROR() {
 	
 	echo
 	
-	sed -i 's|-Werror||g' "${EDK2_DIR}/BaseTools/Source/C/Makefiles"/*
-	sed -i 's|-Werror||g' "${EDK2_DIR}/BaseTools/Conf/tools_def.template"
+	sed -i 's|-Werror|-Wno-error|g' "${EDK2_DIR}/BaseTools/Source/C/Makefiles"/*
+	sed -i 's|-Werror|-Wno-error|g' "${EDK2_DIR}/BaseTools/Conf/tools_def.template"
 	sed -i 's|--64||g' "${EDK2_DIR}/BaseTools/Conf/tools_def.template"
 	
 	echo
