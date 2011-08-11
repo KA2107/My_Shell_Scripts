@@ -248,9 +248,9 @@ COPY_BIOS_BOOTLOADER_FILES() {
 	
 	SOURCE_DIR="${GRUB2_BIOS_SCRIPTS_DIR}/"
 	
-	SOURCE_FILE="syslinux.cfg"
+	SOURCE_FILE="syslinux_bios.cfg"
 	LINK_DIR="${BOOT_PART}/syslinux/"
-	LINK_FILE="${SOURCE_FILE}"
+	LINK_FILE="syslinux.cfg"
 	[ -d "${LINK_DIR}/" ] && SUDO_COPY_FILE
 	
 	SOURCE_FILE="grub2_bios.cfg"
