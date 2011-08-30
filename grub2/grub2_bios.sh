@@ -85,7 +85,7 @@ fi
 	
 	export GRUB2_BOOT_PART_DIR="${GRUB2_Boot_Part_MP}/${GRUB2_BIOS_NAME}"
 	export GRUB2_BIOS_Configure_Flags="--with-platform=pc --program-transform-name=s,grub,${GRUB2_BIOS_NAME},"
-	export GRUB2_Other_BIOS_Configure_Flags="--enable-mm-debug --enable-grub-mkfont --disable-nls"
+	export GRUB2_Other_BIOS_Configure_Flags="--enable-mm-debug --enable-device-mapper --enable-cache-stats --enable-grub-mkfont --disable-nls"
 	
 	export GRUB2_BIOS_Configure_PATHS_1="--prefix="${GRUB2_BIOS_PREFIX_DIR}" --bindir="${GRUB2_BIOS_BIN_DIR}" --sbindir="${GRUB2_BIOS_SBIN_DIR}" --sysconfdir="${GRUB2_BIOS_SYSCONF_DIR}" --libdir="${GRUB2_BIOS_LIB_DIR}""
 	export GRUB2_BIOS_Configure_PATHS_2="--datarootdir="${GRUB2_BIOS_DATAROOT_DIR}" --infodir="${GRUB2_BIOS_INFO_DIR}" --localedir="${GRUB2_BIOS_LOCALE_DIR}" --mandir="${GRUB2_BIOS_MAN_DIR}""
@@ -118,9 +118,6 @@ fi
 # }
 
 _GRUB2_BIOS_PRECOMPILE_STEPS() {
-	
-	## Load device-mapper kernel module - needed by grub-probe
-	sudo modprobe -q dm-mod || true
 	
 	set -x -e
 	
@@ -244,6 +241,9 @@ _GRUB2_BIOS_BACKUP_OLD_DIR() {
 }
 
 _GRUB2_BIOS_SETUP_BOOT_PART_DIR() {
+	
+	## Load device-mapper kernel module - needed by grub-probe
+	sudo modprobe -q dm-mod || true
 	
 	sudo "${GRUB2_BIOS_SBIN_DIR}/${GRUB2_BIOS_NAME}-install" --modules="${GRUB2_BIOS_CORE_IMG_MODULES}" --boot-directory="${GRUB2_Boot_Part_MP}" --no-floppy --recheck --debug "${GRUB2_Install_Device}" # Setup the GRUB2 folder in the /boot directory, create the core.img image and embed the image in the disk.
 	echo

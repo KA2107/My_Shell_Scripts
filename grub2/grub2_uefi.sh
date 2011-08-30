@@ -95,7 +95,7 @@ fi
 	export GRUB2_UNIFONT_PATH="/usr/share/fonts/misc"
 	
 	export GRUB2_UEFI_Configure_Flags="--with-platform=efi --target=${TARGET_UEFI_ARCH} --program-transform-name=s,grub,${GRUB2_UEFI_NAME},"
-	export GRUB2_Other_UEFI_Configure_Flags="--enable-mm-debug --enable-grub-mkfont --enable-nls"
+	export GRUB2_Other_UEFI_Configure_Flags="--enable-mm-debug --enable-device-mapper --enable-cache-stats --enable-grub-mkfont --enable-nls"
 	
 	export GRUB2_UEFI_Configure_PATHS_1="--prefix="${GRUB2_UEFI_PREFIX_DIR}" --bindir="${GRUB2_UEFI_BIN_DIR}" --sbindir="${GRUB2_UEFI_SBIN_DIR}" --sysconfdir="${GRUB2_UEFI_SYSCONF_DIR}" --libdir="${GRUB2_UEFI_LIB_DIR}""
 	export GRUB2_UEFI_Configure_PATHS_2="--datarootdir="${GRUB2_UEFI_DATAROOT_DIR}" --infodir="${GRUB2_UEFI_INFO_DIR}" --localedir="${GRUB2_UEFI_LOCALE_DIR}" --mandir="${GRUB2_UEFI_MAN_DIR}""
@@ -133,9 +133,6 @@ fi
 # }
 
 _GRUB2_UEFI_PRECOMPILE_STEPS() {
-	
-	## Load device-mapper kernel module - needed by grub-probe
-	sudo modprobe -q dm-mod || true
 	
 	cd "${WD}/"
 	
@@ -260,6 +257,9 @@ _GRUB2_UEFI_SETUP_UEFISYS_PART_DIR() {
 	
 	sudo sed 's|--bootloader_id=|--bootloader-id=|g' -i "${GRUB2_UEFI_SBIN_DIR}/${GRUB2_UEFI_NAME}-install" || true
 	
+	## Load device-mapper kernel module - needed by grub-probe
+	sudo modprobe -q dm-mod || true
+	
 	## Setup the GRUB2 folder in the UEFI System Partition and create the grub.efi application
 	sudo "${GRUB2_UEFI_SBIN_DIR}/${GRUB2_UEFI_NAME}-install" --boot-directory="${UEFI_SYSTEM_PART_MP}/efi" --bootloader-id="${GRUB2_UEFI_NAME}" --no-floppy --recheck --debug
 	echo
@@ -349,14 +349,21 @@ _GRUB2_UEFI_SETUP_BOOTX64_EFI_APP() {
 		sudo cp --verbose "${GRUB2_UEFI_SYSTEM_PART_DIR}/grub.efi" "${UEFI_SYSTEM_PART_MP}/efi/boot/boot${OTHER_UEFI_ARCH_NAME}.efi"
 	fi
 	
-	sudo rm -f --verbose "${UEFI_SYSTEM_PART_MP}/efi/boot/${GRUB2_UEFI_MENU_CONFIG}.cfg" || true
-	
-	sudo cat << EOF > "${UEFI_SYSTEM_PART_MP}/efi/boot/${GRUB2_UEFI_MENU_CONFIG}.cfg"
+	cat << EOF > "${WD}/efi_boot_${GRUB2_UEFI_MENU_CONFIG}.cfg"
 search --file --no-floppy --set=grub2_uefi_root "/${GRUB2_UEFI_APP_PREFIX}/grub.efi"
 set prefix=(\${grub2_uefi_root})/${GRUB2_UEFI_APP_PREFIX}
 configfile \${prefix}/${GRUB2_UEFI_MENU_CONFIG}.cfg
 
 EOF
+	
+	sudo rm -f --verbose "${UEFI_SYSTEM_PART_MP}/efi/boot/${GRUB2_UEFI_MENU_CONFIG}.cfg" || true
+	
+	if [ -e "${WD}/efi_boot_${GRUB2_UEFI_MENU_CONFIG}.cfg" ]
+	then
+		sudo cp --verbose "${WD}/efi_boot_${GRUB2_UEFI_MENU_CONFIG}.cfg" "${UEFI_SYSTEM_PART_MP}/efi/boot/${GRUB2_UEFI_MENU_CONFIG}.cfg"
+	else
+		sudo cp --verbose "${GRUB2_UEFI_SYSTEM_PART_DIR}/${GRUB2_UEFI_MENU_CONFIG}.cfg" "${UEFI_SYSTEM_PART_MP}/efi/boot/${GRUB2_UEFI_MENU_CONFIG}.cfg"
+	fi
 	
 }
 
