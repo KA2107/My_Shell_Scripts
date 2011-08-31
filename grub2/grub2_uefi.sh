@@ -94,7 +94,7 @@ fi
 	
 	export GRUB2_UNIFONT_PATH="/usr/share/fonts/misc"
 	
-	export GRUB2_UEFI_Configure_Flags="--with-platform=efi --target=${TARGET_UEFI_ARCH} --program-transform-name=s,grub,${GRUB2_UEFI_NAME},"
+	export GRUB2_UEFI_Configure_Flags="--with-platform=efi --target=${TARGET_UEFI_ARCH} --program-prefix="" --program-transform-name=s,grub,${GRUB2_UEFI_NAME},"
 	export GRUB2_Other_UEFI_Configure_Flags="--enable-mm-debug --enable-device-mapper --enable-cache-stats --enable-grub-mkfont --enable-nls"
 	
 	export GRUB2_UEFI_Configure_PATHS_1="--prefix="${GRUB2_UEFI_PREFIX_DIR}" --bindir="${GRUB2_UEFI_BIN_DIR}" --sbindir="${GRUB2_UEFI_SBIN_DIR}" --sysconfdir="${GRUB2_UEFI_SYSCONF_DIR}" --libdir="${GRUB2_UEFI_LIB_DIR}""
