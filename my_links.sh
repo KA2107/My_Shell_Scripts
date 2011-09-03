@@ -11,7 +11,7 @@ export GRUB2_SCRIPTS_DIR="${SCRIPTS_DIR}/grub2"
 export TIANO_SCRIPTS_DIR="${SCRIPTS_DIR}/tianocore_uefi"
 
 export GRUB2_DIR="${SOURCE_CODES_DIR}/Utilities/Boot_Managers__UEFI_GPT/grub2"
-export GRUB2_SOURCE_DIR="${GRUB2_DIR}/Source"
+export GRUB2_SOURCE_DIR="${GRUB2_DIR}/Source__GIT_BZR"
 export TIANO_SOURCE_DIR="${SOURCE_CODES_DIR}/Firmware/UEFI/TianoCore_Sourceforge"
 
 export GRUB2_BIOS_SCRIPTS_DIR="${GRUB2_SOURCE_DIR}/grub2_bios_linux_scripts"
