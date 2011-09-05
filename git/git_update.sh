@@ -80,6 +80,11 @@ RUN()
 					
 					_GIT_REMOTE_BRANCH="$(git branch -a | grep '  remotes/origin/HEAD -> origin/' | sed 's:  remotes/origin/HEAD -> origin/::g')"
 					
+					if [ "${_GIT_REMOTE_BRANCH}" == "" ]
+					then
+						_GIT_REMOTE_BRANCH="master"
+					fi
+					
 					git checkout ${_GIT_REMOTE_BRANCH}
 					echo
 					
