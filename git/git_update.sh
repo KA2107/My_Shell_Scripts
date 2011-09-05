@@ -1,6 +1,7 @@
 #!/bin/bash
 
 MILD_FETCH=('Linux_Kernel_Mainline_GIT')
+NO_MASTER_BRANCH=('ntfs-3g_ntfsprogs_GIT')
 
 RUN()
 {
@@ -77,10 +78,12 @@ RUN()
 					git fetch
 					echo
 					
-					git checkout master
+					_GIT_REMOTE_BRANCH="$(git branch -a | grep '  remotes/origin/HEAD -> origin/' | sed 's:  remotes/origin/HEAD -> origin/::g')"
+					
+					git checkout ${_GIT_REMOTE_BRANCH}
 					echo
 					
-					git merge remotes/origin/master
+					git merge remotes/origin/${_GIT_REMOTE_BRANCH}
 					echo
 					
 					git reset --hard
