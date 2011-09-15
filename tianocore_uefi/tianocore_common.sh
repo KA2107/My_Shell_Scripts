@@ -13,17 +13,17 @@ export EDK_TOOLS_PATH="${EDK2_DIR}/BaseTools"
 
 EDK2_C_SOURCE_DIR="${EDK2_BUILD_TOOLS_DIR}/Source/C"
 
-EDK2_TOOLS_PATH_CLEAN() {
+_EDK2_TOOLS_PATH_CLEAN() {
 	
 	rm -rf "${EDK_TOOLS_PATH}" || true
 	
 }
 
-EDK2_BUILD_CLEAN() {
+_EDK2_BUILD_CLEAN() {
 	
 	echo
 	
-	EDK2_TOOLS_PATH_CLEAN
+	_EDK2_TOOLS_PATH_CLEAN
 	
 	echo
 	
@@ -41,11 +41,11 @@ EDK2_BUILD_CLEAN() {
 	
 }
 
-COPY_BUILDTOOLS_BASETOOLS() {
+_COPY_BUILDTOOLS_BASETOOLS() {
 	
 	echo
 	
-	EDK2_TOOLS_PATH_CLEAN
+	_EDK2_TOOLS_PATH_CLEAN
 	
 	echo
 	
@@ -55,7 +55,7 @@ COPY_BUILDTOOLS_BASETOOLS() {
 	
 }
 
-COMPILE_BASETOOLS_MANUAL() {
+_COMPILE_BASETOOLS_MANUAL() {
 	
 	echo
 	
@@ -71,7 +71,7 @@ COMPILE_BASETOOLS_MANUAL() {
 	
 }
 
-CORRECT_WERROR() {
+_CORRECT_WERROR() {
 	
 	echo
 	
@@ -83,7 +83,7 @@ CORRECT_WERROR() {
 	
 }
 
-SET_PYTHON2() {
+_SET_PYTHON2() {
 	
 	echo
 	
@@ -96,7 +96,7 @@ SET_PYTHON2() {
 	
 }
 
-SET_PYTHON3() {
+_SET_PYTHON3() {
 	
 	echo
 	
@@ -109,13 +109,13 @@ SET_PYTHON3() {
 	
 }
 
-APPLY_PATCHES() {
+_APPLY_PATCHES() {
 	
 	echo
 	
 }
 
-APPLY_CHANGES() {
+_APPLY_CHANGES() {
 	
 	echo
 	

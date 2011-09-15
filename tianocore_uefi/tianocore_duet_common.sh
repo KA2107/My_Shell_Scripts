@@ -19,7 +19,7 @@ UEFI_DUET_INSTALLER_DIR="${DUET_BUILDS_DIR}/Tianocore_UEFI_DUET_Installer_GIT/"
 DUET_MEMDISK_COMPILED_DIR="${DUET_BUILDS_DIR}/Tianocore_UEFI_DUET_memdisk_compiled_GIT/"
 DUET_MEMDISK_TOOLS_DIR="${DUET_BUILDS_DIR}/Tianocore_UEFI_DUET_memdisk_tools_GIT/"
 
-MIGLE_BOOTDUET_COMPILE_DIR="${SOURCE_CODES_DIR}/Firmware/UEFI/Tianocore_UEFI_DUET_3rd_Party_Projects/migle_BootDuet_GIT"
+_MIGLE_BOOTDUET_COMPILE_DIR="${SOURCE_CODES_DIR}/Firmware/UEFI/Tianocore_UEFI_DUET_3rd_Party_Projects/migle_BootDuet_GIT"
 SRS5694_DUET_INSTALL_DIR="${SOURCE_CODES_DIR}/Firmware/UEFI/Tianocore_UEFI_DUET_3rd_Party_Projects/srs5694_duet-install_my_GIT"
 
 BOOTPART="/boot/"
@@ -29,24 +29,24 @@ SYSLINUX_DIR="/usr/lib/syslinux/"
 DUET_PART_FS_UUID="5FA3-2472"
 DUET_PART_MP="/media/DUET"
 
-MIGLE_BOOTDUET_CLEAN() {
+_MIGLE_BOOTDUET_CLEAN() {
 	
 	echo
 	
-	cd "${MIGLE_BOOTDUET_COMPILE_DIR}/"
+	cd "${_MIGLE_BOOTDUET_COMPILE_DIR}/"
 	make clean
 	
 	echo
 	
 }
 
-MIGLE_BOOTDUET_COMPILE() {
+_MIGLE_BOOTDUET_COMPILE() {
 	
 	echo
 	echo "Compiling Migle's BootDuet"
 	echo
 	
-	MIGLE_BOOTDUET_CLEAN
+	_MIGLE_BOOTDUET_CLEAN
 	
 	echo
 	
@@ -58,7 +58,7 @@ MIGLE_BOOTDUET_COMPILE() {
 	
 }
 
-POST_DUET_MEMDISK() {
+_POST_DUET_MEMDISK() {
 	
 	echo
 	
@@ -68,7 +68,7 @@ POST_DUET_MEMDISK() {
 	
 }
 
-COPY_MEMDISK_SYSLINUX() {
+_COPY_MEMDISK_SYSLINUX() {
 	
 	echo
 	
@@ -79,7 +79,7 @@ COPY_MEMDISK_SYSLINUX() {
 	
 }
 
-COPY_EFILDR_MEMDISK() {
+_COPY_EFILDR_MEMDISK() {
 	
 	echo
 	
@@ -90,7 +90,7 @@ COPY_EFILDR_MEMDISK() {
 	
 }
 
-COPY_EFILDR_DUET_PART() {
+_COPY_EFILDR_DUET_PART() {
 	
 	echo
 	
@@ -110,7 +110,7 @@ COPY_EFILDR_DUET_PART() {
 	
 }
 
-COPY_UEFI_SHELL_EFISYS_PART() {
+_COPY_UEFI_SHELL_EFISYS_PART() {
 	
 	echo
 	
