@@ -19,16 +19,16 @@
 
 ## This script uses the 'sudo' tool at certain places so make sure you have that installed.
 
-SCRIPTNAME="$(basename "${0}")" 
+_SCRIPTNAME="$(basename "${0}")" 
 
-export PROCESS_CONTINUE="TRUE"
+export _PROCESS_CONTINUE="TRUE"
 
 _USAGE() {
 	
 	echo
-	echo Usage : ${SCRIPTNAME} [TARGET_UEFI_ARCH] [UEFI_SYSTEM_PART_MOUNTPOINT] [GRUB2_UEFI_Install_Dir_Name] [GRUB2_UEFI_Backup_Path] [GRUB2_UEFI_Tools_Backup_Path] [GRUB2_UEFI_PREFIX_DIR_Path]
+	echo Usage : ${_SCRIPTNAME} [TARGET_UEFI_ARCH] [UEFI_SYSTEM_PART_MOUNTPOINT] [GRUB2_UEFI_Install_Dir_Name] [GRUB2_UEFI_Backup_Path] [GRUB2_UEFI_Tools_Backup_Path] [GRUB2_UEFI_PREFIX_DIR_Path]
 	echo
-	echo Example : ${SCRIPTNAME} x86_64 /boot/efi grub2 /media/Data_3/grub2_UEFI_x86_64_Backup /media/Data_3/grub2_UEFI_x86_64_Tools_Backup /grub2/grub2_uefi_x86_64
+	echo Example : ${_SCRIPTNAME} x86_64 /boot/efi grub2 /media/Data_3/grub2_UEFI_x86_64_Backup /media/Data_3/grub2_UEFI_x86_64_Tools_Backup /grub2/grub2_uefi_x86_64
 	echo
 	echo "For example if you did 'bzr branch bzr://bzr.savannah.gnu.org/grub/trunk/grub /home/user/grub'"
 	echo "Then copy this script to /home/user/grub and cd into /home/user/grub and then run this script from /home/user/grub."
@@ -37,7 +37,7 @@ _USAGE() {
 	echo
 	echo "Please read this script fully and modify it to suite your requirements before actually running it"
 	echo
-	export PROCESS_CONTINUE="FALSE"
+	export _PROCESS_CONTINUE="FALSE"
 	
 }
 
@@ -50,19 +50,19 @@ if [ \
 	]
 then
 	_USAGE
-	export PROCESS_CONTINUE="FALSE"
+	export _PROCESS_CONTINUE="FALSE"
 	exit 0
 fi
 
 # _GRUB2_UEFI_SET_ENV_VARS() {
 	
-	export WD="${PWD}/"
+	export _WD="${PWD}/"
 	
 	## The location of grub-extras source folder if you have.
-	export GRUB_CONTRIB="${WD}/grub2_extras__GIT_BZR/"
+	export GRUB_CONTRIB="${_WD}/grub2_extras__GIT_BZR/"
 	
-	export REPLACE_GRUB2_UEFI_MENU_CONFIG="0"
-	export EXECUTE_EFIBOOTMGR="1"
+	export _REPLACE_GRUB2_UEFI_MENU_CONFIG="0"
+	export _EXECUTE_EFIBOOTMGR="1"
 	
 	export TARGET_UEFI_ARCH="${1}"
 	export UEFI_SYSTEM_PART_MP="${2}"
@@ -73,7 +73,7 @@ fi
 	## If not mentioned, GRUB2_UEFI_PREFIX_DIR env variable will be set to /grub2/grub2_uefi_${TARGET_UEFI_ARCH} dir
 	
 	export GRUB2_UEFI_MENU_CONFIG="grub"
-	[ "${REPLACE_GRUB2_UEFI_MENU_CONFIG}" == "1" ] && export GRUB2_UEFI_MENU_CONFIG="${GRUB2_UEFI_NAME}"
+	[ "${_REPLACE_GRUB2_UEFI_MENU_CONFIG}" == "1" ] && export GRUB2_UEFI_MENU_CONFIG="${GRUB2_UEFI_NAME}"
 	
 	[ "${GRUB2_UEFI_PREFIX_DIR}" == "" ] && GRUB2_UEFI_PREFIX_DIR="/grub2/grub2_uefi_${TARGET_UEFI_ARCH}"
 	
@@ -134,12 +134,12 @@ fi
 
 _GRUB2_UEFI_PRECOMPILE_STEPS() {
 	
-	cd "${WD}/"
+	cd "${_WD}/"
 	
 	## Convert the line endings of all the source files from DOS to UNIX mode
-	[ ! -e "${WD}/xman_dos2unix.sh" ] && wget --no-check-certificate --output-file="${WD}/xman_dos2unix.sh" "https://raw.github.com/skodabenz/My_Shell_Scripts/master/xmanutility/xman_dos2unix.sh" || true
-	chmod +x "${WD}/xman_dos2unix.sh" || true
-	"${WD}/xman_dos2unix.sh" * || true
+	[ ! -e "${_WD}/xman_dos2unix.sh" ] && wget --no-check-certificate --output-file="${_WD}/xman_dos2unix.sh" "https://raw.github.com/skodabenz/My_Shell_Scripts/master/xmanutility/xman_dos2unix.sh" || true
+	chmod +x "${_WD}/xman_dos2unix.sh" || true
+	"${_WD}/xman_dos2unix.sh" * || true
 	echo
 	
 	## Check whether python2 exists, otherwise create /usr/bin/python2 symlink to python executable
@@ -148,48 +148,48 @@ _GRUB2_UEFI_PRECOMPILE_STEPS() {
 	## Archlinux changed default /usr/bin/python to python3, need to use /usr/bin/python2 instead
 	if [ "$(which python2)" ]
 	then
-		install -D -m755 "${WD}/autogen.sh" "${WD}/autogen_unmodified.sh"
-		sed 's|python |python2 |g' -i "${WD}/autogen.sh" || true
+		install -D -m755 "${_WD}/autogen.sh" "${_WD}/autogen_unmodified.sh"
+		sed 's|python |python2 |g' -i "${_WD}/autogen.sh" || true
 	fi
 	
-	chmod +x "${WD}/autogen.sh" || true
+	chmod +x "${_WD}/autogen.sh" || true
 	
-	if [ ! -e "${WD}/po/LINGUAS" ]
+	if [ ! -e "${_WD}/po/LINGUAS" ]
 	then
-		cd "${WD}/"
-		rsync -Lrtvz translationproject.org::tp/latest/grub/ "${WD}/po" || true
-		(cd "${WD}/po" && ls *.po | cut -d. -f1 | xargs) > "${WD}/po/LINGUAS" || true
-		chmod -x "${WD}/po/LINGUAS" || true
+		cd "${_WD}/"
+		rsync -Lrtvz translationproject.org::tp/latest/grub/ "${_WD}/po" || true
+		(cd "${_WD}/po" && ls *.po | cut -d. -f1 | xargs) > "${_WD}/po/LINGUAS" || true
+		chmod -x "${_WD}/po/LINGUAS" || true
 	fi
 	
 	## GRUB2 UEFI Build Directory
-	install -d "${PWD}/GRUB2_UEFI_BUILD_DIR_${TARGET_UEFI_ARCH}"
-	[ -e "${WD}/grub.default" ] && cp --verbose "${WD}/grub.default" "${WD}/GRUB2_UEFI_BUILD_DIR_${TARGET_UEFI_ARCH}/" || true
-	[ -e "${WD}/grub.cfg" ] && cp --verbose "${WD}/grub.cfg" "${WD}/GRUB2_UEFI_BUILD_DIR_${TARGET_UEFI_ARCH}/" || true
+	install -d "${P_WD}/GRUB2_UEFI_BUILD_DIR_${TARGET_UEFI_ARCH}"
+	[ -e "${_WD}/grub.default" ] && cp --verbose "${_WD}/grub.default" "${_WD}/GRUB2_UEFI_BUILD_DIR_${TARGET_UEFI_ARCH}/" || true
+	[ -e "${_WD}/grub.cfg" ] && cp --verbose "${_WD}/grub.cfg" "${_WD}/GRUB2_UEFI_BUILD_DIR_${TARGET_UEFI_ARCH}/" || true
 	
 }
 
 _GRUB2_UEFI_COMPILE_STEPS() {
 	
 	## Uncomment below to use ${GRUB2_UEFI_MENU_CONFIG}.cfg as the menu config file instead of grub.cfg
-	sed "s|grub.cfg|${GRUB2_UEFI_MENU_CONFIG}.cfg|g" -i "${WD}/grub-core/normal/main.c" || true
+	sed "s|grub.cfg|${GRUB2_UEFI_MENU_CONFIG}.cfg|g" -i "${_WD}/grub-core/normal/main.c" || true
 	
-	"${WD}/autogen.sh"
+	"${_WD}/autogen.sh"
 	echo
 	
-	cd "${PWD}/GRUB2_UEFI_BUILD_DIR_${TARGET_UEFI_ARCH}"
+	cd "${P_WD}/GRUB2_UEFI_BUILD_DIR_${TARGET_UEFI_ARCH}"
 	echo
 	
 	## fix unifont.bdf location
-	sed "s|/usr/share/fonts/unifont|${GRUB2_UNIFONT_PATH}|g" -i "${WD}/configure"
+	sed "s|/usr/share/fonts/unifont|${GRUB2_UNIFONT_PATH}|g" -i "${_WD}/configure"
 	
-	"${WD}/configure" ${GRUB2_UEFI_Configure_Flags} ${GRUB2_Other_UEFI_Configure_Flags} ${GRUB2_UEFI_Configure_PATHS_1} ${GRUB2_UEFI_Configure_PATHS_2}
+	"${_WD}/configure" ${GRUB2_UEFI_Configure_Flags} ${GRUB2_Other_UEFI_Configure_Flags} ${GRUB2_UEFI_Configure_PATHS_1} ${GRUB2_UEFI_Configure_PATHS_2}
 	echo
 	
 	make
 	echo
 	
-	sed "s|${GRUB2_UEFI_MENU_CONFIG}.cfg|grub.cfg|g" -i "${WD}/grub-core/normal/main.c" || true
+	sed "s|${GRUB2_UEFI_MENU_CONFIG}.cfg|grub.cfg|g" -i "${_WD}/grub-core/normal/main.c" || true
 	
 }
 
@@ -221,12 +221,12 @@ _GRUB2_UEFI_POSTCOMPILE_SETUP_PREFIX_DIR() {
 	sudo make install
 	echo
 	
-	cd "${WD}/GRUB2_UEFI_BUILD_DIR_${TARGET_UEFI_ARCH}/grub-core/"
+	cd "${_WD}/GRUB2_UEFI_BUILD_DIR_${TARGET_UEFI_ARCH}/grub-core/"
 	# sudo cp --verbose ${GRUB2_EXTRAS_MODULES} "${GRUB2_UEFI_LIB_DIR}/${GRUB2_UEFI_NAME}/${TARGET_UEFI_ARCH}-efi/" || true
 	echo
 	
 	sudo install -d "${GRUB2_UEFI_SYSCONF_DIR}/default"
-	[ -e "${WD}/grub.default" ] && sudo cp --verbose "${WD}/grub.default" "${GRUB2_UEFI_SYSCONF_DIR}/default/grub" || true
+	[ -e "${_WD}/grub.default" ] && sudo cp --verbose "${_WD}/grub.default" "${GRUB2_UEFI_SYSCONF_DIR}/default/grub" || true
 	sudo chmod --verbose -x "${GRUB2_UEFI_SYSCONF_DIR}/default/grub" || true
 	echo
 	
@@ -271,7 +271,7 @@ _GRUB2_UEFI_SETUP_UEFISYS_PART_DIR() {
 	sudo "${GRUB2_UEFI_BIN_DIR}/${GRUB2_UEFI_NAME}-mkimage" --verbose --directory="${GRUB2_UEFI_LIB_DIR}/${GRUB2_UEFI_NAME}/${TARGET_UEFI_ARCH}-efi" --prefix="" --output="${GRUB2_UEFI_SYSTEM_PART_DIR}/${GRUB2_UEFI_NAME}.efi" --format="${TARGET_UEFI_ARCH}-efi" ${GRUB2_UEFI_FINAL_MODULES}
 	echo
 	
-	cd "${WD}/GRUB2_UEFI_BUILD_DIR_${TARGET_UEFI_ARCH}/grub-core/"
+	cd "${_WD}/GRUB2_UEFI_BUILD_DIR_${TARGET_UEFI_ARCH}/grub-core/"
 	sudo cp --verbose "${GRUB2_UEFI_LIB_DIR}/${GRUB2_UEFI_NAME}/${TARGET_UEFI_ARCH}-efi"/*.img "${GRUB2_UEFI_SYSTEM_PART_DIR}/" || true
 	# sudo cp --verbose ${GRUB2_EXTRAS_MODULES} "${GRUB2_UEFI_SYSTEM_PART_DIR}/" || true
 	echo
@@ -283,7 +283,7 @@ _GRUB2_UEFI_SETUP_UEFISYS_PART_DIR() {
 	sudo cp --verbose "${GRUB2_UEFI_Backup}/${GRUB2_UEFI_MENU_CONFIG}.cfg" "${GRUB2_UEFI_SYSTEM_PART_DIR}/${GRUB2_UEFI_MENU_CONFIG}_backup.cfg" || true
 	# sudo cp --verbose "${GRUB2_UEFI_Backup}/${GRUB2_UEFI_MENU_CONFIG}.cfg" "${GRUB2_UEFI_SYSTEM_PART_DIR}/${GRUB2_UEFI_MENU_CONFIG}.cfg" || true
 	
-	[ -e "${WD}/grub.cfg" ] && sudo cp --verbose "${WD}/grub.cfg" "${GRUB2_UEFI_SYSTEM_PART_DIR}/${GRUB2_UEFI_MENU_CONFIG}.cfg" || true
+	[ -e "${_WD}/grub.cfg" ] && sudo cp --verbose "${_WD}/grub.cfg" "${GRUB2_UEFI_SYSTEM_PART_DIR}/${GRUB2_UEFI_MENU_CONFIG}.cfg" || true
 	
 	# sudo "${GRUB2_UEFI_SBIN_DIR}/${GRUB2_UEFI_NAME}-mkconfig" --output="${GRUB2_UEFI_SYSTEM_PART_DIR}/${GRUB2_UEFI_MENU_CONFIG}.cfg" || true
 	echo
@@ -298,7 +298,7 @@ _GRUB2_UEFI_SETUP_UEFISYS_PART_DIR() {
 
 _GRUB2_UEFI_EFIBOOTMGR() {
 	
-	if [ "${EXECUTE_EFIBOOTMGR}" == "1" ]
+	if [ "${_EXECUTE_EFIBOOTMGR}" == "1" ]
 	then
 		echo
 		
@@ -307,7 +307,7 @@ _GRUB2_UEFI_EFIBOOTMGR() {
 		EFISYS_PARENT_DEVICE="$(echo "${EFISYS_PART_DEVICE}" | sed "s/${EFISYS_PART_NUM}//g")"
 		
 		## Run efibootmgr script in sh compatibility mode, does not work in bash mode in ubuntu for some unknown reason (maybe some dash vs bash issue?)
-		cat << EOF > "${WD}/execute_efibootmgr.sh"
+		cat << EOF > "${_WD}/execute_efibootmgr.sh"
 #!/bin/sh
 
 set -x
@@ -323,13 +323,13 @@ set +x
 echo
 EOF
 		
-		chmod +x "${WD}/execute_efibootmgr.sh" || true
+		chmod +x "${_WD}/execute_efibootmgr.sh" || true
 		
-		sudo "${WD}/execute_efibootmgr.sh"
+		sudo "${_WD}/execute_efibootmgr.sh"
 		
 		set -x -e
 		
-		# rm -f --verbose "${WD}/execute_efibootmgr.sh"
+		# rm -f --verbose "${_WD}/execute_efibootmgr.sh"
 		
 		echo
 	fi
@@ -349,7 +349,7 @@ _GRUB2_UEFI_SETUP_BOOTX64_EFI_APP() {
 		sudo cp --verbose "${GRUB2_UEFI_SYSTEM_PART_DIR}/grub.efi" "${UEFI_SYSTEM_PART_MP}/efi/boot/boot${OTHER_UEFI_ARCH_NAME}.efi"
 	fi
 	
-	cat << EOF > "${WD}/efi_boot_${GRUB2_UEFI_MENU_CONFIG}.cfg"
+	cat << EOF > "${_WD}/efi_boot_${GRUB2_UEFI_MENU_CONFIG}.cfg"
 search --file --no-floppy --set=grub2_uefi_root "/${GRUB2_UEFI_APP_PREFIX}/grub.efi"
 set prefix=(\${grub2_uefi_root})/${GRUB2_UEFI_APP_PREFIX}
 configfile \${prefix}/${GRUB2_UEFI_MENU_CONFIG}.cfg
@@ -358,16 +358,16 @@ EOF
 	
 	sudo rm -f --verbose "${UEFI_SYSTEM_PART_MP}/efi/boot/${GRUB2_UEFI_MENU_CONFIG}.cfg" || true
 	
-	if [ -e "${WD}/efi_boot_${GRUB2_UEFI_MENU_CONFIG}.cfg" ]
+	if [ -e "${_WD}/efi_boot_${GRUB2_UEFI_MENU_CONFIG}.cfg" ]
 	then
-		sudo cp --verbose "${WD}/efi_boot_${GRUB2_UEFI_MENU_CONFIG}.cfg" "${UEFI_SYSTEM_PART_MP}/efi/boot/${GRUB2_UEFI_MENU_CONFIG}.cfg"
+		sudo cp --verbose "${_WD}/efi_boot_${GRUB2_UEFI_MENU_CONFIG}.cfg" "${UEFI_SYSTEM_PART_MP}/efi/boot/${GRUB2_UEFI_MENU_CONFIG}.cfg"
 	else
 		sudo cp --verbose "${GRUB2_UEFI_SYSTEM_PART_DIR}/${GRUB2_UEFI_MENU_CONFIG}.cfg" "${UEFI_SYSTEM_PART_MP}/efi/boot/${GRUB2_UEFI_MENU_CONFIG}.cfg"
 	fi
 	
 }
 
-if [ "${PROCESS_CONTINUE}" == "TRUE" ]
+if [ "${_PROCESS_CONTINUE}" == "TRUE" ]
 then
 	
 	echo
@@ -440,11 +440,11 @@ fi
 
 # _GRUB2_UEFI_UNSET_ENV_VARS() {
 	
-	unset WD
+	unset _WD
 	unset GRUB_CONTRIB
-	unset PROCESS_CONTINUE
-	unset REPLACE_GRUB2_UEFI_MENU_CONFIG
-	unset EXECUTE_EFIBOOTMGR
+	unset _PROCESS_CONTINUE
+	unset _REPLACE_GRUB2_UEFI_MENU_CONFIG
+	unset _EXECUTE_EFIBOOTMGR
 	unset TARGET_UEFI_ARCH
 	unset UEFI_SYSTEM_PART_MP
 	unset GRUB2_UEFI_NAME
