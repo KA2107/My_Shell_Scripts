@@ -2,38 +2,38 @@
 
 set -x -e
 
-SOURCE_CODES_DIR="/media/Source_Codes/Source_Codes"
-WD="${SOURCE_CODES_DIR}/Firmware/UEFI/TianoCore_Sourceforge"
-BACKUP_BUILDS_DIR="${WD}/BACKUP_BUILDS"
+_SOURCE_CODES_DIR="/media/Source_Codes/Source_Codes"
+_WD="${_SOURCE_CODES_DIR}/Firmware/UEFI/TianoCore_Sourceforge"
+_BACKUP_BUILDS_DIR="${_WD}/BACKUP_BUILDS"
 
-EDK2_DIR="${WD}/edk2_GIT"
-EDK2_BUILD_TOOLS_DIR="${WD}/buildtools-BaseTools_GIT"
+_UDK_DIR="${_WD}/udk_GIT"
+_UDK_BUILD_TOOLS_DIR="${_WD}/buildtools-BaseTools_GIT"
 
-export EDK_TOOLS_PATH="${EDK2_DIR}/BaseTools"
+export EDK_TOOLS_PATH="${_UDK_DIR}/BaseTools"
 
-EDK2_C_SOURCE_DIR="${EDK2_BUILD_TOOLS_DIR}/Source/C"
+_UDK_C_SOURCE_DIR="${_UDK_BUILD_TOOLS_DIR}/Source/C"
 
-_EDK2_TOOLS_PATH_CLEAN() {
+_UDK_TOOLS_PATH_CLEAN() {
 	
 	rm -rf "${EDK_TOOLS_PATH}" || true
 	
 }
 
-_EDK2_BUILD_CLEAN() {
+_UDK_BUILD_CLEAN() {
 	
 	echo
 	
-	_EDK2_TOOLS_PATH_CLEAN
+	_UDK_TOOLS_PATH_CLEAN
 	
 	echo
 	
-	rm -rf "${EDK2_BUILD_OUTER_DIR}" || true
-	rm -rf "${EDK2_DIR}/Build" || true
-	rm -rf "${EDK2_DIR}/Conf" || true
+	rm -rf "${_UDK_BUILD_OUTER_DIR}" || true
+	rm -rf "${_UDK_DIR}/Build" || true
+	rm -rf "${_UDK_DIR}/Conf" || true
 	
 	echo
 	
-	cd "${EDK2_DIR}/"
+	cd "${_UDK_DIR}/"
 	git reset --hard
 	git checkout keshav_pr
 	
@@ -45,11 +45,11 @@ _COPY_BUILDTOOLS_BASETOOLS() {
 	
 	echo
 	
-	_EDK2_TOOLS_PATH_CLEAN
+	_UDK_TOOLS_PATH_CLEAN
 	
 	echo
 	
-	cp -r "${EDK2_BUILD_TOOLS_DIR}" "${EDK_TOOLS_PATH}"
+	cp -r "${_UDK_BUILD_TOOLS_DIR}" "${EDK_TOOLS_PATH}"
 	
 	echo
 	
@@ -59,13 +59,13 @@ _COMPILE_BASETOOLS_MANUAL() {
 	
 	echo
 	
-	cd "${EDK2_DIR}/"
-	source "${EDK2_DIR}/edksetup.sh" BaseTools
+	cd "${_UDK_DIR}/"
+	source "${_UDK_DIR}/edksetup.sh" BaseTools
 	
 	echo
 	
-	cd "${EDK2_DIR}/"
-	make -C "${EDK2_DIR}/BaseTools"
+	cd "${_UDK_DIR}/"
+	make -C "${_UDK_DIR}/BaseTools"
 	
 	echo
 	
@@ -75,9 +75,9 @@ _CORRECT_WERROR() {
 	
 	echo
 	
-	sed -i 's|-Werror|-Wno-error|g' "${EDK2_DIR}/BaseTools/Source/C/Makefiles"/*
-	sed -i 's|-Werror|-Wno-error|g' "${EDK2_DIR}/BaseTools/Conf/tools_def.template"
-	sed -i 's|--64||g' "${EDK2_DIR}/BaseTools/Conf/tools_def.template"
+	sed -i 's|-Werror|-Wno-error|g' "${_UDK_DIR}/BaseTools/Source/C/Makefiles"/*
+	sed -i 's|-Werror|-Wno-error|g' "${_UDK_DIR}/BaseTools/Conf/tools_def.template"
+	sed -i 's|--64||g' "${_UDK_DIR}/BaseTools/Conf/tools_def.template"
 	
 	echo
 	
@@ -127,8 +127,8 @@ _APPLY_CHANGES() {
 	# sed -i 's|#define EFI_PAGE_BASE_OFFSET_IN_LDR 0x70000|#define EFI_PAGE_BASE_OFFSET_IN_LDR 0x80000|g' "${EDK_TOOLS_PATH}/Source/C/GenPage/GenPage.c" || true
 	
 	## EmulatorPkg
-	sed -i 's|export LIB_ARCH_SFX=64|export LIB_ARCH_SFX=""|g' "${EDK2_DIR}/EmulatorPkg/build.sh"
-	# sed -i 's|UNIXPKG_TOOLS=GCC44|UNIXPKG_TOOLS=GCC45|g' "${EDK2_DIR}/EmulatorPkg/build.sh"
+	sed -i 's|export LIB_ARCH_SFX=64|export LIB_ARCH_SFX=""|g' "${_UDK_DIR}/EmulatorPkg/build.sh"
+	# sed -i 's|UNIXPKG_TOOLS=GCC44|UNIXPKG_TOOLS=GCC45|g' "${_UDK_DIR}/EmulatorPkg/build.sh"
 	
 	echo
 	

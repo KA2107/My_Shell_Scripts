@@ -2,17 +2,17 @@
 
 set -x -e
 
-SOURCE_CODES_DIR="/media/Source_Codes/Source_Codes"
-WD="${SOURCE_CODES_DIR}/Firmware/UEFI/TianoCore_Sourceforge"
+_SOURCE_CODES_DIR="/media/Source_Codes/Source_Codes"
+_WD="${_SOURCE_CODES_DIR}/Firmware/UEFI/TianoCore_Sourceforge"
 
-source "${WD}/tianocore_common.sh"
+source "${_WD}/tianocore_uefi_common.sh"
 
-EDK2_BUILD_OUTER_DIR="${EDK2_DIR}/Build/Emulator/"
-EDK2_BUILD_DIR="${EDK2_BUILD_OUTER_DIR}/DEBUG_GCC44/"
+_UDK_BUILD_OUTER_DIR="${_UDK_DIR}/Build/Emulator/"
+_UDK_BUILD_DIR="${_UDK_BUILD_OUTER_DIR}/DEBUG_GCC44/"
 
-EMULATORPKG_UNIX_X64_DIR="${BACKUP_BUILDS_DIR}/EMULATORPKG_UNIX_X64_BUILD"
+_EMULATORPKG_UNIX_X86_64_DIR="${_BACKUP_BUILDS_DIR}/EMULATORPKG_UNIX_X64_BUILD"
 
-_COMPILE_EMULATORPKG_UNIX_X64() {
+_COMPILE_EMULATORPKG_UNIX_X86_64() {
 	
 	echo
 	
@@ -20,11 +20,11 @@ _COMPILE_EMULATORPKG_UNIX_X64() {
 	
 	echo
 	
-	_EDK2_BUILD_CLEAN
+	_UDK_BUILD_CLEAN
 	
 	echo
 	
-	cd "${EDK2_DIR}/"
+	cd "${_UDK_DIR}/"
 	git checkout keshav_pr
 	
 	echo
@@ -45,16 +45,16 @@ _COMPILE_EMULATORPKG_UNIX_X64() {
 	
 	echo
 	
-	cd "${EDK2_DIR}/EmulatorPkg/"
-	"${EDK2_DIR}/EmulatorPkg/build.sh"
+	cd "${_UDK_DIR}/EmulatorPkg/"
+	"${_UDK_DIR}/EmulatorPkg/build.sh"
 	
 	echo
 	
-	cp -r "${EDK2_BUILD_DIR}" "${EMULATORPKG_UNIX_X64_DIR}"
+	cp -r "${_UDK_BUILD_DIR}" "${_EMULATORPKG_UNIX_X86_64_DIR}"
 	
 	echo
 	
-	_EDK2_BUILD_CLEAN
+	_UDK_BUILD_CLEAN
 	
 	echo
 	
@@ -66,17 +66,17 @@ _COMPILE_EMULATORPKG_UNIX_X64() {
 
 echo
 
-_COMPILE_EMULATORPKG_UNIX_X64
+_COMPILE_EMULATORPKG_UNIX_X86_64
 
 echo
 
-unset SOURCE_CODES_DIR
-unset WD
-unset EDK2_DIR
-unset EDK2_BUILD_TOOLS_DIR
-unset EDK2_C_SOURCE_DIR
+unset _SOURCE_CODES_DIR
+unset _WD
+unset _UDK_DIR
+unset _UDK_BUILD_TOOLS_DIR
+unset _UDK_C_SOURCE_DIR
 unset EDK_TOOLS_PATH
-unset EMUUNIX64PKG_BUILD_DIR
-unset BACKUP_BUILDS_DIR
+unset _EMULATORPKG_UNIX_X86_64_DIR
+unset _BACKUP_BUILDS_DIR
 
 set +x +e

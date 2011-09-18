@@ -2,10 +2,10 @@
 
 set -x -e
 
-SOURCE_CODES_DIR="/media/Source_Codes/Source_Codes"
-WD="${SOURCE_CODES_DIR}/Firmware/UEFI/TianoCore_Sourceforge"
+_SOURCE_CODES_DIR="/media/Source_Codes/Source_Codes"
+_WD="${_SOURCE_CODES_DIR}/Firmware/UEFI/TianoCore_Sourceforge"
 
-source "${WD}/tianocore_duet_common.sh"
+source "${_WD}/tianocore_uefi_duetpkg_common.sh"
 
 _CREATE_FLOPPY_MEMDISK_EMUVARIABLE() {
 	
@@ -15,11 +15,11 @@ _CREATE_FLOPPY_MEMDISK_EMUVARIABLE() {
 	
 	echo
 	
-	_EDK2_BUILD_CLEAN
+	_UDK_BUILD_CLEAN
 	
 	echo
 	
-	cd "${EDK2_DIR}/"
+	cd "${_UDK_DIR}/"
 	git checkout keshav_pr
 	
 	echo
@@ -32,12 +32,12 @@ _CREATE_FLOPPY_MEMDISK_EMUVARIABLE() {
 	
 	echo
 	
-	export WORKSPACE="${EDK2_DIR}/"
+	export WORKSPACE="${_UDK_DIR}/"
 	
 	echo
 	
-	mkdir -p "${EDK2_BUILD_OUTER_DIR}"
-	cp -r "${DUET_EMUVARIABLE_BUILD_DIR}" "${EDK2_BUILD_DIR}"
+	mkdir -p "${_UDK_BUILD_OUTER_DIR}"
+	cp -r "${_DUETPKG_EMUVARIABLE_BUILD_DIR}" "${_UDK_BUILD_DIR}"
 	
 	echo
 	
@@ -46,10 +46,10 @@ _CREATE_FLOPPY_MEMDISK_EMUVARIABLE() {
 	
 	echo
 	
-	"${WORKSPACE}/DuetPkg/CreateBootDisk.sh" file "${DUET_EMUVARIABLE_BUILD_DIR}/floppy.img" /dev/null FAT12 X64 GCC45 RELEASE
-	chmod -x "${DUET_EMUVARIABLE_BUILD_DIR}/floppy.img" || true
+	"${WORKSPACE}/DuetPkg/CreateBootDisk.sh" file "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/floppy.img" /dev/null FAT12 X64 GCC45 RELEASE
+	chmod -x "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/floppy.img" || true
 	
-	_EDK2_BUILD_CLEAN
+	_UDK_BUILD_CLEAN
 	
 	echo
 	
@@ -66,11 +66,11 @@ _CREATE_FLOPPY_MEMDISK_FSVARIABLE() {
 	
 	echo
 	
-	_EDK2_BUILD_CLEAN
+	_UDK_BUILD_CLEAN
 	
 	echo
 	
-	cd "${EDK2_DIR}/"
+	cd "${_UDK_DIR}/"
 	git checkout duet_fsvariable
 	
 	echo
@@ -83,12 +83,12 @@ _CREATE_FLOPPY_MEMDISK_FSVARIABLE() {
 	
 	echo
 	
-	export WORKSPACE="${EDK2_DIR}/"
+	export WORKSPACE="${_UDK_DIR}/"
 	
 	echo
 	
-	mkdir -p "${EDK2_BUILD_OUTER_DIR}"
-	cp -r "${DUET_FSVARIABLE_BUILD_DIR}" "${EDK2_BUILD_DIR}"
+	mkdir -p "${_UDK_BUILD_OUTER_DIR}"
+	cp -r "${_DUETPKG_FSVARIABLE_BUILD_DIR}" "${_UDK_BUILD_DIR}"
 	
 	echo
 	
@@ -97,12 +97,12 @@ _CREATE_FLOPPY_MEMDISK_FSVARIABLE() {
 	
 	echo
 	
-	"${WORKSPACE}/DuetPkg/CreateBootDisk.sh" file "${DUET_FSVARIABLE_BUILD_DIR}/floppy.img" /dev/null FAT12 X64 GCC45 RELEASE
-	chmod -x "${DUET_FSVARIABLE_BUILD_DIR}/floppy.img" || true
+	"${WORKSPACE}/DuetPkg/CreateBootDisk.sh" file "${_DUETPKG_FSVARIABLE_BUILD_DIR}/floppy.img" /dev/null FAT12 X64 GCC45 RELEASE
+	chmod -x "${_DUETPKG_FSVARIABLE_BUILD_DIR}/floppy.img" || true
 	
 	echo
 	
-	_EDK2_BUILD_CLEAN
+	_UDK_BUILD_CLEAN
 	
 	echo
 	
@@ -129,25 +129,25 @@ _COPY_EFILDR_MEMDISK
 
 echo
 
-unset SOURCE_CODES_DIR
-unset WD
-unset EDK2_DIR
-unset EDK2_BUILD_TOOLS_DIR
-unset EDK2_C_SOURCE_DIR
-unset EDK2_DUET_BOOTSECT_BIN_DIR
-unset EDK2_BUILD_DIR
-unset BACKUP_BUILDS_DIR
-unset DUET_EMUVARIABLE_BUILD_DIR
-unset DUET_FSVARIABLE_BUILD_DIR
-unset DUET_COMPILED_DIR
-unset UEFI_DUET_INSTALLER_DIR
-unset DUET_MEMDISK_COMPILED_DIR
-unset MEMDISK_DIR
+unset _SOURCE_CODES_DIR
+unset _WD
+unset _UDK_DIR
+unset _UDK_BUILD_TOOLS_DIR
+unset _UDK_C_SOURCE_DIR
+unset _UDK_DUETPKG_BOOTSECT_BIN_DIR
+unset _UDK_BUILD_DIR
+unset _BACKUP_BUILDS_DIR
+unset _DUETPKG_EMUVARIABLE_BUILD_DIR
+unset _DUETPKG_FSVARIABLE_BUILD_DIR
+unset _DUETPKG_COMPILED_DIR
+unset _UEFI_DUET_INSTALLER_DIR
+unset _DUET_MEMDISK_COMPILED_DIR
+unset _MEMDISK_DIR
 unset _MIGLE_BOOTDUET_COMPILE_DIR
-unset SRS5694_DUET_INSTALL_DIR
-unset BOOTPART
-unset EFISYS
-unset SYSLINUX_DIR
+unset _ROD_SMITH_DUET_INSTALL_DIR
+unset _BOOTPART
+unset _UEFI_SYS_PART
+unset _SYSLINUX_LIB_DIR
 unset WORKSPACE
 
 set +x +e

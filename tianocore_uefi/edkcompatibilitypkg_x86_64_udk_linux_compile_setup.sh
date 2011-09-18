@@ -2,17 +2,17 @@
 
 set -x -e
 
-SOURCE_CODES_DIR="/media/Source_Codes/Source_Codes"
-WD="${SOURCE_CODES_DIR}/Firmware/UEFI/TianoCore_Sourceforge"
+_SOURCE_CODES_DIR="/media/Source_Codes/Source_Codes"
+_WD="${_SOURCE_CODES_DIR}/Firmware/UEFI/TianoCore_Sourceforge"
 
-source "${WD}/tianocore_common.sh"
+source "${_WD}/tianocore_uefi_common.sh"
 
-EDK2_BUILD_OUTER_DIR="${EDK2_DIR}/Build/EdkCompatibilityPkg/"
-EDK2_BUILD_DIR="${EDK2_BUILD_OUTER_DIR}/DEBUG_GCC45/"
+_UDK_BUILD_OUTER_DIR="${_UDK_DIR}/Build/EdkCompatibilityPkg/"
+_UDK_BUILD_DIR="${_UDK_BUILD_OUTER_DIR}/DEBUG_GCC45/"
 
-EDKCOMPPKG_BUILD_DIR="${BACKUP_BUILDS_DIR}/EDKCOMPPKG_BUILD"
+_EDKCOMPATIBILITYPKG_BUILD_DIR="${_BACKUP_BUILDS_DIR}/EDKCOMPATIBILITYPKG_BUILD"
 
-_COMPILE_EDKCOMPPKG() {
+_COMPILE_EDKCOMPATIBILITYPKG() {
 	
 	echo
 	
@@ -20,11 +20,11 @@ _COMPILE_EDKCOMPPKG() {
 	
 	echo
 	
-	_EDK2_BUILD_CLEAN
+	_UDK_BUILD_CLEAN
 	
 	echo
 	
-	cd "${EDK2_DIR}/"
+	cd "${_UDK_DIR}/"
 	git checkout keshav_pr
 	
 	echo
@@ -49,15 +49,15 @@ _COMPILE_EDKCOMPPKG() {
 	
 	echo
 	
-	build -p "${EDK2_DIR}/EdkCompatibilityPkg/EdkCompatibilityPkg.dsc" -a X64 -b DEBUG -t GCC45
+	build -p "${_UDK_DIR}/EdkCompatibilityPkg/EdkCompatibilityPkg.dsc" -a X64 -b DEBUG -t GCC45
 	
 	echo
 	
-	cp -r "${EDK2_BUILD_DIR}" "${EDKCOMPPKG_BUILD_DIR}"
+	cp -r "${_UDK_BUILD_DIR}" "${_EDKCOMPATIBILITYPKG_BUILD_DIR}"
 	
 	echo
 	
-	_EDK2_BUILD_CLEAN
+	_UDK_BUILD_CLEAN
 	
 	echo
 	
@@ -69,17 +69,17 @@ _COMPILE_EDKCOMPPKG() {
 
 echo
 
-_COMPILE_EDKCOMPPKG
+_COMPILE_EDKCOMPATIBILITYPKG
 
 echo
 
-unset SOURCE_CODES_DIR
-unset WD
-unset EDK2_DIR
-unset EDK2_BUILD_TOOLS_DIR
-unset EDK2_C_SOURCE_DIR
+unset _SOURCE_CODES_DIR
+unset _WD
+unset _UDK_DIR
+unset _UDK_BUILD_TOOLS_DIR
+unset _UDK_C_SOURCE_DIR
 unset EDK_TOOLS_PATH
-unset EDKCOMPPKG_BUILD_DIR
-unset BACKUP_BUILDS_DIR
+unset _EDKCOMPATIBILITYPKG_BUILD_DIR
+unset _BACKUP_BUILDS_DIR
 
 set +x +e
