@@ -87,10 +87,12 @@ _SET_PYTHON2() {
 	
 	echo
 	
-	_PYTHON_="$(which python)"
-	sudo rm -f "${_PYTHON_}"
-	sudo ln -s "$(which python2)" "${_PYTHON_}"
-	unset _PYTHON_
+	# _PYTHON_="$(which python)"
+	# sudo rm -f "${_PYTHON_}"
+	# sudo ln -s "$(which python2)" "${_PYTHON_}"
+	# unset _PYTHON_
+	
+	export PYTHON="python2"
 	
 	echo
 	
@@ -100,10 +102,12 @@ _SET_PYTHON3() {
 	
 	echo
 	
-	_PYTHON_="$(which python)"
-	sudo rm -f "${_PYTHON_}"
-	sudo ln -s "$(which python3)" "${_PYTHON_}"
-	unset _PYTHON_
+	# _PYTHON_="$(which python)"
+	# sudo rm -f "${_PYTHON_}"
+	# sudo ln -s "$(which python3)" "${_PYTHON_}"
+	# unset _PYTHON_
+	
+	export PYTHON="python3"
 	
 	echo
 	
