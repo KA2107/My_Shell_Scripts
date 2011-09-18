@@ -16,6 +16,12 @@ _RUN()
 				echo "HG - ${PWD}"
 				echo
 				
+				hg revert -a --no-backup
+				echo
+				
+				hg revert -r tip
+				echo
+				
 				hg pull
 				echo
 				
