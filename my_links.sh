@@ -8,16 +8,16 @@ export _SOURCE_CODES_DIR="/media/Source_Codes/Source_Codes"
 export _SCRIPTS_DIR="${_SOURCE_CODES_DIR}/My_Shell_Scripts"
 
 export _GRUB2_SCRIPTS_DIR="${_SCRIPTS_DIR}/grub2"
-export _TIANO_SCRIPTS_DIR="${_SCRIPTS_DIR}/tianocore_uefi"
-
 export _GRUB2_DIR="${_SOURCE_CODES_DIR}/Utilities/Boot_Managers__UEFI_GPT/grub2"
 export _GRUB2_SOURCE_DIR="${_GRUB2_DIR}/Source__GIT_BZR"
-export _TIANO_SOURCE_DIR="${_SOURCE_CODES_DIR}/Firmware/UEFI/TianoCore_Sourceforge"
 
 export _GRUB2_BIOS_SCRIPTS_DIR="${_GRUB2_SOURCE_DIR}/grub2_bios_linux_scripts"
 export _GRUB2_UEFI_SCRIPTS_DIR="${_GRUB2_SOURCE_DIR}/grub2_uefi_linux_scripts"
 
 export _BOOTLOADER_CONFIG_FILES_DIR="${_SOURCE_CODES_DIR}/My_Files/Bootloader_Config_Files/"
+
+export _TIANOCORE_UEFI_SCRIPTS_DIR="${_SCRIPTS_DIR}/tianocore_uefi"
+export _TIANOCORE_UEFI_SOURCE_CODES_DIR="${_SOURCE_CODES_DIR}/Firmware/UEFI/TianoCore_Sourceforge"
 
 echo
 
@@ -154,82 +154,44 @@ _GRUB2() {
 	
 }
 
-_TIANOCORE() {
+_TIANOCORE_UEFI() {
 	
 	echo
 	
-	_SOURCE_DIR="${_TIANO_SCRIPTS_DIR}/"
-	_LINK_DIR="${_TIANO_SOURCE_DIR}/"
+	_SOURCE_DIR="${_TIANOCORE_UEFI_SCRIPTS_DIR}/"
+	_LINK_DIR="${_TIANOCORE_UEFI_SOURCE_CODES_DIR}/"
 	
-	_SOURCE_FILE="tianocore_common.sh"
+	_SOURCE_FILE="tianocore_uefi_common.sh"
 	_LINK_FILE="${_SOURCE_FILE}"
 	_CREATE_SYMLINK
 	
-	_SOURCE_FILE="tianocore_duet_common.sh"
+	_SOURCE_FILE="tianocore_uefi_duetpkg_common.sh"
 	_LINK_FILE="${_SOURCE_FILE}"
 	_CREATE_SYMLINK
 	
-	_SOURCE_FILE="duet_x64_edk2_linux_compile_setup.sh"
+	_SOURCE_FILE="duetpkg_x86_64_udk_linux_compile_setup.sh"
 	_LINK_FILE="${_SOURCE_FILE}"
 	_CREATE_SYMLINK
 	
-	_SOURCE_FILE="post_duet_x64_compile.sh"
+	_SOURCE_FILE="duetpkg_x86_64_post_compile.sh"
 	_LINK_FILE="${_SOURCE_FILE}"
 	_CREATE_SYMLINK
 	
-	_SOURCE_FILE="create_duet_x64_memdisk_old.sh"
+	_SOURCE_FILE="duetpkg_x86_64_create_memdisk_old.sh"
 	_LINK_FILE="${_SOURCE_FILE}"
 	_CREATE_SYMLINK
 	
-	_SOURCE_FILE="create_duet_x64_memdisk_new.sh"
+	_SOURCE_FILE="ovmfpkg_x86_64_udk_linux_compile_setup.sh"
 	_LINK_FILE="${_SOURCE_FILE}"
 	_CREATE_SYMLINK
 	
-	echo
-	
-	_SOURCE_DIR="${_TIANO_SCRIPTS_DIR}/"
-	_LINK_DIR="${_TIANO_SOURCE_DIR}/"
-	
-	_SOURCE_FILE="ovmf_x64_edk2_linux_compile_setup.sh"
+	_SOURCE_FILE="emulatorpkg_unix_x86_64_udk_linux_compile_setup.sh"
 	_LINK_FILE="${_SOURCE_FILE}"
 	_CREATE_SYMLINK
 	
-	_SOURCE_FILE="stdlib_x64_edk2_linux_compile_setup.sh"
+	_SOURCE_FILE="shellpkg_x86_64_udk_linux_compile_setup.sh"
 	_LINK_FILE="${_SOURCE_FILE}"
 	_CREATE_SYMLINK
-	
-	_SOURCE_FILE="emulatorpkg_unix_x64_edk2_linux_compile_setup.sh"
-	_LINK_FILE="${_SOURCE_FILE}"
-	_CREATE_SYMLINK
-	
-	_SOURCE_FILE="unixpkg_x64_edk2_linux_compile_setup.sh"
-	_LINK_FILE="${_SOURCE_FILE}"
-	_CREATE_SYMLINK
-	
-	_SOURCE_FILE="iso9660_vbox_x64_edk2_linux_compile_setup.sh"
-	_LINK_FILE="${_SOURCE_FILE}"
-	_CREATE_SYMLINK
-	
-	echo
-	
-	_SOURCE_DIR="${_TIANO_SCRIPTS_DIR}/"
-	_LINK_DIR="${_TIANO_SOURCE_DIR}/"
-	
-	_SOURCE_FILE="compile_edk2_duet_x64.cmd"
-	_LINK_FILE="${_SOURCE_FILE}"
-	_COPY_FILE
-	
-	_SOURCE_FILE="compile_edk2_ovmf_x64.cmd"
-	_LINK_FILE="${_SOURCE_FILE}"
-	_COPY_FILE
-	
-	_SOURCE_FILE="compile_edk_duet_uefi64.cmd"
-	_LINK_FILE="${_SOURCE_FILE}"
-	_COPY_FILE
-	
-	_SOURCE_FILE="compile_edk2_nt32pkg.cmd"
-	_LINK_FILE="${_SOURCE_FILE}"
-	_COPY_FILE
 	
 	echo
 	
@@ -317,6 +279,17 @@ _COPY_UEFI_BOOTLOADER_FILES() {
 	
 }
 
+_PACMAN() {
+	
+	echo
+	
+	ls --color=none -1 "/var/lib/pacman/local/" | sed 's#\/##g' > "${_SOURCE_CODES_DIR}/Pacman_Installed_Packages_List.txt"
+	ls --color=none -1 "/var/cache/pacman/pkg/" > "${_SOURCE_CODES_DIR}/Pacman_Packages_Cache_List.txt"
+	
+	echo
+	
+}
+
 echo
 
 _SOURCE_DIR="${_SCRIPTS_DIR}/git/"
@@ -343,7 +316,7 @@ _CREATE_SYMLINK
 
 echo
 
-_TIANOCORE
+_TIANOCORE_UEFI
 
 echo
 
@@ -359,8 +332,7 @@ _COPY_UEFI_BOOTLOADER_FILES
 
 echo
 
-ls --color=none -1 "/var/lib/pacman/local/" | sed 's#\/##g' > "/media/Source_Codes/Source_Codes/Pacman_Installed_Packages_List.txt"
-ls --color=none -1 "/var/cache/pacman/pkg/" > "/media/Source_Codes/Source_Codes/Pacman_Packages_Cache_List.txt"
+_PACMAN
 
 echo
 
@@ -368,10 +340,10 @@ unset _WD
 unset _SOURCE_CODES_DIR
 unset _SCRIPTS_DIR
 unset _GRUB2_SCRIPTS_DIR
-unset _TIANO_SCRIPTS_DIR
+unset _TIANOCORE_UEFI_SCRIPTS_DIR
 unset _GRUB2_DIR
 unset _GRUB2_SOURCE_DIR
-unset _TIANO_SOURCE_DIR
+unset _TIANOCORE_UEFI_SOURCE_CODES_DIR
 unset _GRUB2_BIOS_SCRIPTS_DIR
 unset _GRUB2_UEFI_SCRIPTS_DIR
 
