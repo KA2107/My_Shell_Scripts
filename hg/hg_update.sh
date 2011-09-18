@@ -19,7 +19,7 @@ _RUN()
 				hg revert -a --no-backup
 				echo
 				
-				hg revert -r tip
+				hg revert -r tip --all
 				echo
 				
 				hg pull
