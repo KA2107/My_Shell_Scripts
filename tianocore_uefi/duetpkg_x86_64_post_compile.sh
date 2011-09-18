@@ -29,11 +29,6 @@ _MIGLE_BOOTDUET_COPY() {
 	
 	echo
 	
-	sed -i 's|https://github.com/skodabenz/UEFI_DUETPKG|https://gitorious.org/tianocore_uefi_duet_builds/tianocore_uefi_duet_installer|g' "${_UEFI_DUET_INSTALLER_DIR}/Migle_BootDuet_INSTALL.txt" || true
-	sed -i 's|https://github.com/skodabenz/EFI_DUETPKG|https://gitorious.org/tianocore_uefi_duet_builds/tianocore_uefi_duet_installer|g' "${_UEFI_DUET_INSTALLER_DIR}/Migle_BootDuet_INSTALL.txt" || true
-	
-	echo
-	
 	rm -f "${_UEFI_DUET_INSTALLER_DIR}/Licenses/Migle_BootDuet_LICENSE.txt" || true
 	install -D -m644 "${_MIGLE_BOOTDUET_COMPILE_DIR}/COPYING" "${_UEFI_DUET_INSTALLER_DIR}/Licenses/Migle_BootDuet_LICENSE.txt"
 	
@@ -122,9 +117,9 @@ _UEFI_DUET_INSTALLER_GIT() {
 	echo
 	
 	cd "${_UDK_DIR}/"
-	rm -f "${_UEFI_DUET_INSTALLER_DIR}/UDK_UDK_DuetPkg_Changes_to_Makefiles.patch" || true
-	git diff remotes/origin/master...keshav_pr > "${_UEFI_DUET_INSTALLER_DIR}/UDK_UDK_DuetPkg_Changes_to_Makefiles.patch"
-	chmod -x "${_UEFI_DUET_INSTALLER_DIR}/UDK_UDK_DuetPkg_Changes_to_Makefiles.patch" || true
+	rm -f "${_UEFI_DUET_INSTALLER_DIR}/UDK_EDK2_DuetPkg_Changes_to_Makefiles.patch" || true
+	git diff remotes/origin/master...keshav_pr > "${_UEFI_DUET_INSTALLER_DIR}/UDK_EDK2_DuetPkg_Changes_to_Makefiles.patch"
+	chmod -x "${_UEFI_DUET_INSTALLER_DIR}/UDK_EDK2_DuetPkg_Changes_to_Makefiles.patch" || true
 	
 	echo
 	

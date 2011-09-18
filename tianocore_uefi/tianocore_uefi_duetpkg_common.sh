@@ -7,7 +7,7 @@ _WD="${_SOURCE_CODES_DIR}/Firmware/UEFI/TianoCore_Sourceforge"
 
 source "${_WD}/tianocore_uefi_common.sh"
 
-_UDK_DUET_BOOTSECT_BIN_DIR="${_UDK_DIR}/DuetPkg/BootSector/bin/"
+_UDK_DUETPKG_BOOTSECT_BIN_DIR="${_UDK_DIR}/DuetPkg/BootSector/bin/"
 _UDK_BUILD_OUTER_DIR="${_UDK_DIR}/Build/DuetPkgX64/"
 _UDK_BUILD_DIR="${_UDK_BUILD_OUTER_DIR}/RELEASE_GCC45/"
 
