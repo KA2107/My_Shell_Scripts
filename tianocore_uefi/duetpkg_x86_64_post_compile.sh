@@ -142,9 +142,9 @@ _DUET_MEMDISK_COMPILED_GIT() {
 	
 	if [ -e "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/floppy.img" ]
 	then
-		rm -f "${_DUET_MEMDISK_COMPILED_DIR}/Tianocore_UEFI_UDK_DUETPKG_X64.img" || true
-		install -D -m644 "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/floppy.img" "${_DUET_MEMDISK_COMPILED_DIR}/Tianocore_UEFI_UDK_DUETPKG_X64.img"
-		# [ -e "${_WD}/duet_x86_64_memdisk.bin" ] && install -D -m644 "${_WD}/duet_x86_64_memdisk.bin" "${_DUET_MEMDISK_COMPILED_DIR}/Tianocore_UEFI_UDK_DUETPKG_X64.img"
+		rm -f "${_DUET_MEMDISK_COMPILED_DIR}/Tianocore_UEFI_UDK_DUET_X86_64.img" || true
+		install -D -m644 "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/floppy.img" "${_DUET_MEMDISK_COMPILED_DIR}/Tianocore_UEFI_UDK_DUET_X86_64.img"
+		# [ -e "${_WD}/duet_x86_64_memdisk.bin" ] && install -D -m644 "${_WD}/duet_x86_64_memdisk.bin" "${_DUET_MEMDISK_COMPILED_DIR}/Tianocore_UEFI_UDK_DUET_X86_64.img"
 	fi
 	
 	echo

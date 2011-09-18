@@ -83,8 +83,8 @@ _COPY_EFILDR_MEMDISK() {
 	
 	echo
 	
-	sudo rm -f "${_BOOTPART}/Tianocore_UDK_DUET_X64.img" || true
-	sudo install -D -m644 "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/floppy.img" "${_BOOTPART}/Tianocore_UDK_DUET_X64.img"
+	sudo rm -f "${_BOOTPART}/Tianocore_UEFI_UDK_DUET_X86_64.img" || true
+	sudo install -D -m644 "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/floppy.img" "${_BOOTPART}/Tianocore_UEFI_UDK_DUET_X86_64.img"
 	
 	echo
 	
