@@ -1,25 +1,28 @@
 #!/bin/bash
 
-set -e
-
 _RUN()
 {
-	_repo=''
+	_repo=""
 	ls --all -1 | while read -r _repo
 	do
-		if [ -d "${PWD}/${_repo}" ] && [ "${_repo}" == '.bzr' ]
+		if [ -d "${PWD}/${_repo}" ] && [ "${_repo}" == '.hg' ]
 		then
-			if [ $(echo "${PWD}" | grep '.git/bzr') ]
+			if [ $(echo "${PWD}" | grep '.git/hgcheckout') ]
 			then
 				true
-			else
+			elif [ $(cat "${PWD}/${_repo}/hgrc" | grep 'default = ') ]
+			then
 				echo
-				echo "BZR - ${PWD}"
+				echo "HG - ${PWD}"
 				echo
 				
-				bzr upgrade --default
+				hg pull
+				echo
+				
+				hg update
 				echo
 			fi
+			
 		elif [ -d "${PWD}/${_repo}" ] && [ "${_repo}" != '.' ] && [ "${_repo}" != '..' ] && [ ! "$(file "${PWD}/${_repo}" | grep 'symbolic link to')" ]
 		then
 			pushd "${_repo}" > /dev/null
@@ -30,5 +33,3 @@ _RUN()
 }
 
 _RUN
-
-set +e

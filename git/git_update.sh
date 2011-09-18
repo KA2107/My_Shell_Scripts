@@ -1,31 +1,31 @@
 #!/bin/bash
 
-MILD_FETCH=('Linux_Kernel_Mainline_GIT')
-NO_MASTER_BRANCH=('ntfs-3g_ntfsprogs_GIT')
+_MILD_FETCH=('Linux_Kernel_Mainline_GIT')
+_NO_MASTER_BRANCH=('ntfs-3g_ntfsprogs_GIT')
 
-RUN()
+_RUN()
 {
-	repo=""
-	ls --all -1 | while read -r repo
+	_repo=''
+	ls --all -1 | while read -r _repo
 	do
-		if [ -d "${PWD}/${repo}" ] && [ "${repo}" == ".git" ]
+		if [ -d "${PWD}/${_repo}" ] && [ "${_repo}" == '.git' ]
 		then
-			if [ -d "${PWD}/.git/svn" ]
+			if [ -d "${PWD}/.git/hgcheckout" ] && [ -d "${PWD}/.git/hgremote" ]
 			then
 				echo
-				echo "GIT SVN - ${PWD}"
+				echo "GIT HG - ${PWD}"
 				echo
 				
 				git reset --hard
 				echo
 				
-				git svn rebase --verbose
+				git hg pull
 				echo
 				
 				git checkout master
 				echo
 				
-				git merge remotes/git-svn
+				git merge remotes/hg/master
 				echo
 				
 				git reset --hard
@@ -52,6 +52,27 @@ RUN()
 				git reset --hard
 				echo
 				
+			elif [ -d "${PWD}/.git/svn" ]
+			then
+				echo
+				echo "GIT SVN - ${PWD}"
+				echo
+				
+				git reset --hard
+				echo
+				
+				git svn rebase --verbose
+				echo
+				
+				git checkout master
+				echo
+				
+				git merge remotes/git-svn || git merge remotes/origin/svn/trunk 
+				echo
+				
+				git reset --hard
+				echo
+				
 			else
 				if [ -d "${PWD}/.git/refs/remotes" ]
 				then
@@ -62,9 +83,9 @@ RUN()
 					git reset --hard
 					echo
 					
-					for check in ${MILD_FETCH[@]}
+					for check in ${_MILD_FETCH[@]}
 					do
-						if [ "$(basename "${PWD}")" = "${check}" ]
+						if [ "$(basename "${PWD}")" == "${check}" ]
 						then
 							# git fetch --depth=1
 							echo
@@ -80,15 +101,15 @@ RUN()
 					
 					_GIT_REMOTE_BRANCH="$(git branch -a | grep '  remotes/origin/HEAD -> origin/' | sed 's:  remotes/origin/HEAD -> origin/::g')"
 					
-					if [ "${_GIT_REMOTE_BRANCH}" == "" ]
+					if [ "${_GIT_REMOTE_BRANCH}" == '' ]
 					then
-						_GIT_REMOTE_BRANCH="master"
+						_GIT_REMOTE_BRANCH='master'
 					fi
 					
-					git checkout ${_GIT_REMOTE_BRANCH}
+					git checkout "${_GIT_REMOTE_BRANCH}"
 					echo
 					
-					git merge remotes/origin/${_GIT_REMOTE_BRANCH}
+					git merge "remotes/origin/${_GIT_REMOTE_BRANCH}"
 					echo
 					
 					git reset --hard
@@ -97,13 +118,16 @@ RUN()
 			fi
 			echo
 			
-		elif [ -d "${PWD}/${repo}" ] && [ "${repo}" != "." ] && [ "${repo}" != ".." ] && [ ! "$(file "${PWD}/${repo}" | grep 'symbolic link to')" ]
+		elif [ -d "${PWD}/${_repo}" ] && [ "${_repo}" != '.' ] && [ "${_repo}" != '..' ] && [ ! "$(file "${PWD}/${_repo}" | grep 'symbolic link to')" ]
 		then
-			pushd "${repo}" > /dev/null
-			RUN
+			pushd "${_repo}" > /dev/null
+			_RUN
 			popd > /dev/null
 		fi
 	done
 }
 
-RUN
+_RUN
+
+unset _MILD_FETCH
+unset _NO_MASTER_BRANCH

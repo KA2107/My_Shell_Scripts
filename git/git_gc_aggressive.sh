@@ -2,12 +2,12 @@
 
 set -e
 
-RUN()
+_RUN()
 {
-	repo=""
-	ls --all -1 | while read -r repo
+	_repo=''
+	ls --all -1 | while read -r _repo
 	do
-		if [ -d "${PWD}/${repo}" ] && [ "${repo}" == ".git" ]
+		if [ -d "${PWD}/${_repo}" ] && [ "${_repo}" == '.git' ]
 		then
 			echo
 			echo "${PWD}"
@@ -15,15 +15,15 @@ RUN()
 			
 			git gc --aggressive
 			echo
-		elif [ -d "${PWD}/${repo}" ] && [ "${repo}" != "." ] && [ "${repo}" != ".." ] && [ ! "$(file "${PWD}/${repo}" | grep 'symbolic link to')" ]
+		elif [ -d "${PWD}/${_repo}" ] && [ "${_repo}" != '.' ] && [ "${_repo}" != '..' ] && [ ! "$(file "${PWD}/${_repo}" | grep 'symbolic link to')" ]
 		then
-			pushd "${repo}" > /dev/null
-			RUN
+			pushd "${_repo}" > /dev/null
+			_RUN
 			popd > /dev/null
 		fi
 	done
 }
 
-RUN
+_RUN
 
 set +e
