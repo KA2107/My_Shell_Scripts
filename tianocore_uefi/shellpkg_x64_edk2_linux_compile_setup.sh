@@ -8,7 +8,7 @@ WD="${SOURCE_CODES_DIR}/Firmware/UEFI/TianoCore_Sourceforge"
 source "${WD}/tianocore_common.sh"
 
 EDK2_BUILD_OUTER_DIR="${EDK2_DIR}/Build/Shell/"
-EDK2_BUILD_DIR="${EDK2_BUILD_OUTER_DIR}/DEBUG_GCC45/"
+EDK2_BUILD_DIR="${EDK2_BUILD_OUTER_DIR}/RELEASE_GCC45/"
 
 _SHELLPKG_BUILD_DIR="${BACKUP_BUILDS_DIR}/SHELLPKG_BUILD"
 
@@ -49,7 +49,7 @@ _COMPILE_SHELLPKG() {
 	
 	echo
 	
-	build -p "${EDK2_DIR}/ShellPkg/ShellPkg.dsc" -a X64 -b DEBUG -t GCC45
+	build -p "${EDK2_DIR}/ShellPkg/ShellPkg.dsc" -a X64 -b RELEASE -t GCC45
 	
 	echo
 	
