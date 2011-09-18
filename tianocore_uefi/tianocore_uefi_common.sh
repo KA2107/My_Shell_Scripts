@@ -6,7 +6,7 @@ _SOURCE_CODES_DIR="/media/Source_Codes/Source_Codes"
 _WD="${_SOURCE_CODES_DIR}/Firmware/UEFI/TianoCore_Sourceforge"
 _BACKUP_BUILDS_DIR="${_WD}/BACKUP_BUILDS"
 
-_UDK_DIR="${_WD}/udk_GIT"
+_UDK_DIR="${_WD}/UDK_GIT"
 _UDK_BUILD_TOOLS_DIR="${_WD}/buildtools-BaseTools_GIT"
 
 export EDK_TOOLS_PATH="${_UDK_DIR}/BaseTools"
