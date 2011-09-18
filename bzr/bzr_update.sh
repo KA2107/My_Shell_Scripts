@@ -12,14 +12,16 @@ _RUN()
 			if [ $(echo "${PWD}" | grep '.git/bzr') ]
 			then
 				true
-			elif [ $(cat "${PWD}/${_repo}/branch/branch.conf" | grep 'parent_location = ') ]
-			then
-				echo
-				echo "BZR - ${PWD}"
-				echo
-				
-				bzr pull
-				echo
+			else
+				if [ "$(cat "${PWD}/${_repo}/branch/branch.conf" | grep 'parent_location = ')" ]
+				then
+					echo
+					echo "BZR - ${PWD}"
+					echo
+					
+					bzr pull
+					echo
+				fi
 			fi
 			
 		elif [ -d "${PWD}/${_repo}" ] && [ "${_repo}" != '.' ] && [ "${_repo}" != '..' ] && [ ! "$(file "${PWD}/${_repo}" | grep 'symbolic link to')" ]

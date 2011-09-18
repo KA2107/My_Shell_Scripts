@@ -9,7 +9,7 @@ _RUN()
 	do
 		if [ -d "${PWD}/${_repo}" ] && [ "${_repo}" == '.bzr' ]
 		then
-			if [ $(echo "${PWD}" | grep '.git/bzr') ]
+			if [ "$(echo "${PWD}" | grep '.git/bzr')" ]
 			then
 				true
 			else

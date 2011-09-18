@@ -7,10 +7,10 @@ _RUN()
 	do
 		if [ -d "${PWD}/${_repo}" ] && [ "${_repo}" == '.hg' ]
 		then
-			if [ $(echo "${PWD}" | grep '.git/hgcheckout') ]
+			if [ "$(echo "${PWD}" | grep '.git/hgcheckout')" ]
 			then
 				true
-			elif [ $(cat "${PWD}/${_repo}/hgrc" | grep 'default = ') ]
+			elif [ "$(cat "${PWD}/${_repo}/hgrc" | grep 'default = ')" ]
 			then
 				echo
 				echo "HG - ${PWD}"
