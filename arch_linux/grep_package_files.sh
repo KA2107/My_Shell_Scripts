@@ -1,9 +1,16 @@
 #!/bin/bash
 
-# set -x -e
+echo
+echo "Usage: ${0} [PATTERN] [PACKAGE]"
+echo
 
 _pattern="${1}"
 _package="${2}"
+
+[ "${_pattern}" == '' ] && exit 1
+[ "${_package}" == '' ] && exit 2
+
+# set -x -e
 
 echo
 
