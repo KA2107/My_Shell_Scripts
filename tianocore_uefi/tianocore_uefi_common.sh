@@ -49,6 +49,26 @@ _COPY_BUILDTOOLS_BASETOOLS() {
 	
 	echo
 	
+	cd "${_UDK_BUILD_TOOLS_DIR}/"
+	
+	echo
+	
+	git reset --hard
+	
+	echo
+	
+	git checkout master
+	
+	echo
+	
+	git merge remotes/origin/master
+	
+	echo
+	
+	cd "${_UDK_DIR}/"
+	
+	echo
+	
 	cp -r "${_UDK_BUILD_TOOLS_DIR}" "${EDK_TOOLS_PATH}"
 	
 	echo
