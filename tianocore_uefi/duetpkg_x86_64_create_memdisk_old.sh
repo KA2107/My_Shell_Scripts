@@ -11,10 +11,6 @@ _CREATE_FLOPPY_MEMDISK_EMUVARIABLE() {
 	
 	echo
 	
-	_SET_PYTHON2
-	
-	echo
-	
 	_UDK_BUILD_CLEAN
 	
 	echo
@@ -24,7 +20,11 @@ _CREATE_FLOPPY_MEMDISK_EMUVARIABLE() {
 	
 	echo
 	
-	_COPY_BUILDTOOLS_BASETOOLS
+	_COPY_BUILDTOOLS_BASETOOLSp[
+	
+	echo
+	
+	_SET_PYTHON2
 	
 	echo
 	
@@ -53,16 +53,12 @@ _CREATE_FLOPPY_MEMDISK_EMUVARIABLE() {
 	
 	echo
 	
-	_SET_PYTHON3
+	# _SET_PYTHON3
 	
 	echo
 }
 
 _CREATE_FLOPPY_MEMDISK_FSVARIABLE() {
-	
-	echo
-	
-	_SET_PYTHON2
 	
 	echo
 	
@@ -76,6 +72,10 @@ _CREATE_FLOPPY_MEMDISK_FSVARIABLE() {
 	echo
 	
 	_COPY_BUILDTOOLS_BASETOOLS
+	
+	echo
+	
+	_SET_PYTHON2
 	
 	echo
 	
@@ -106,7 +106,7 @@ _CREATE_FLOPPY_MEMDISK_FSVARIABLE() {
 	
 	echo
 	
-	_SET_PYTHON3
+	# _SET_PYTHON3
 	
 	echo
 }

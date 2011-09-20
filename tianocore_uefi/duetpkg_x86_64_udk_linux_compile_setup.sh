@@ -11,10 +11,6 @@ _COMPILE_DUETPKG_EMUVARIABLE_BRANCH() {
 	
 	echo
 	
-	_SET_PYTHON2
-	
-	echo
-	
 	_UDK_BUILD_CLEAN
 	
 	echo
@@ -24,7 +20,11 @@ _COMPILE_DUETPKG_EMUVARIABLE_BRANCH() {
 	
 	echo
 	
-	# _COPY_BUILDTOOLS_BASETOOLS
+	_COPY_BUILDTOOLS_BASETOOLS
+	
+	echo
+	
+	_SET_PYTHON2
 	
 	echo
 	
@@ -54,17 +54,13 @@ _COMPILE_DUETPKG_EMUVARIABLE_BRANCH() {
 	
 	echo
 	
-	_SET_PYTHON3
+	# _SET_PYTHON3
 	
 	echo
 	
 }
 
 _COMPILE_DUETPKG_FSVARIABLE_BRANCH() {
-	
-	echo
-	
-	_SET_PYTHON2
 	
 	echo
 	
@@ -77,7 +73,11 @@ _COMPILE_DUETPKG_FSVARIABLE_BRANCH() {
 	
 	echo
 	
-	# _COPY_BUILDTOOLS_BASETOOLS
+	_COPY_BUILDTOOLS_BASETOOLS
+	
+	echo
+	
+	_SET_PYTHON2
 	
 	echo
 	
@@ -107,7 +107,7 @@ _COMPILE_DUETPKG_FSVARIABLE_BRANCH() {
 	
 	echo
 	
-	_SET_PYTHON3
+	# _SET_PYTHON3
 	
 	echo
 	
@@ -136,7 +136,7 @@ _COPY_EFILDR_MEMDISK
 echo
 
 cd "${_WD}/"
-# "${_WD}/post_duet_x64_compile.sh"
+# "${_WD}/duetpkg_x86_64_post_compile.sh"
 
 echo
 

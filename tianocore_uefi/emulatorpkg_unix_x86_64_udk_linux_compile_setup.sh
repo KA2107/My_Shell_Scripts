@@ -16,10 +16,6 @@ _COMPILE_EMULATORPKG_UNIX_X86_64() {
 	
 	echo
 	
-	_SET_PYTHON2
-	
-	echo
-	
 	_UDK_BUILD_CLEAN
 	
 	echo
@@ -30,6 +26,10 @@ _COMPILE_EMULATORPKG_UNIX_X86_64() {
 	echo
 	
 	_COPY_BUILDTOOLS_BASETOOLS
+	
+	echo
+	
+	_SET_PYTHON2
 	
 	echo
 	
@@ -58,7 +58,7 @@ _COMPILE_EMULATORPKG_UNIX_X86_64() {
 	
 	echo
 	
-	_SET_PYTHON3
+	# _SET_PYTHON3
 	
 	echo
 	

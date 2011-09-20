@@ -75,9 +75,9 @@ _CORRECT_WERROR() {
 	
 	echo
 	
-	sed -i 's|-Werror|-Wno-error -Wno-unused-but-set-variable|g' "${_UDK_DIR}/BaseTools/Source/C/Makefiles"/*
-	sed -i 's|-Werror|-Wno-error -Wno-unused-but-set-variable|g' "${_UDK_DIR}/BaseTools/Conf/tools_def.template"
-	sed -i 's|--64||g' "${_UDK_DIR}/BaseTools/Conf/tools_def.template"
+	sed 's|-Werror |-Wno-error -Wno-unused-but-set-variable |g' -i "${_UDK_DIR}/BaseTools/Source/C/Makefiles/header.makefile"
+	sed 's|-Werror |-Wno-error -Wno-unused-but-set-variable |g' -i "${_UDK_DIR}/BaseTools/Conf/tools_def.template"
+	sed 's|--64 | |g' -i "${_UDK_DIR}/BaseTools/Conf/tools_def.template"
 	
 	echo
 	
@@ -87,12 +87,22 @@ _SET_PYTHON2() {
 	
 	echo
 	
-	_PYTHON_="$(which python)"
-	sudo rm -f "${_PYTHON_}"
-	sudo ln -s "$(which python2)" "${_PYTHON_}"
-	unset _PYTHON_
+	# _PYTHON_="$(which python)"
+	# sudo rm -f "${_PYTHON_}"
+	# sudo ln -s "$(which python2)" "${_PYTHON_}"
+	# unset _PYTHON_
 	
 	# export PYTHON="python2"
+	
+	echo
+	
+	sed 's|python |python2 |g' -i "${_UDK_DIR}/BaseTools/BinWrappers/PosixLike/RunToolFromSource"
+	sed 's|python |python2 |g' -i "${_UDK_DIR}/BaseTools/BinWrappers/PosixLike/RunBinToolFromBuildDir"
+	sed 's|python |python2 |g' -i "${_UDK_DIR}/BaseTools/BinWrappers/PosixLike/GenDepex"
+	
+	echo
+	
+	sed 's|python |python2 |g' -i "${_UDK_DIR}/BaseTools/Tests/GNUmakefile"
 	
 	echo
 	
@@ -124,11 +134,11 @@ _APPLY_CHANGES() {
 	echo
 	
 	## DuetPkg
-	# sed -i 's|#define EFI_PAGE_BASE_OFFSET_IN_LDR 0x70000|#define EFI_PAGE_BASE_OFFSET_IN_LDR 0x80000|g' "${EDK_TOOLS_PATH}/Source/C/GenPage/GenPage.c" || true
+	# sed 's|#define EFI_PAGE_BASE_OFFSET_IN_LDR 0x70000|#define EFI_PAGE_BASE_OFFSET_IN_LDR 0x80000|g' -i "${EDK_TOOLS_PATH}/Source/C/GenPage/GenPage.c" || true
 	
 	## EmulatorPkg
-	sed -i 's|export LIB_ARCH_SFX=64|export LIB_ARCH_SFX=""|g' "${_UDK_DIR}/EmulatorPkg/build.sh"
-	# sed -i 's|UNIXPKG_TOOLS=GCC44|UNIXPKG_TOOLS=GCC45|g' "${_UDK_DIR}/EmulatorPkg/build.sh"
+	sed 's|export LIB_ARCH_SFX=64|export LIB_ARCH_SFX=""|g' -i "${_UDK_DIR}/EmulatorPkg/build.sh"
+	# sed 's|UNIXPKG_TOOLS=GCC44|UNIXPKG_TOOLS=GCC45|g' -i "${_UDK_DIR}/EmulatorPkg/build.sh"
 	
 	echo
 	
