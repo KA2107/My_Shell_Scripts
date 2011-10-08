@@ -1,6 +1,6 @@
 #!/bin/bash
 
-_LAUNCHPAD_USER="skodabenz"
+_LAUNCHPAD_USER="the-ridikulus-rat"
 
 _RUN()
 {
