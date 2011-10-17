@@ -19,7 +19,7 @@
 
 _SCRIPTNAME="$(basename "${0}")" 
 
-export _PROCESS_CONTINUE="TRUE"
+export _PROCESS_CONTINUE='TRUE'
 
 _USAGE() {
 	
@@ -28,27 +28,30 @@ _USAGE() {
 	echo
 	echo "Example : ${_SCRIPTNAME} /dev/sda /boot grub_bios /media/Data_3/grub_bios_backup /media/Data_3/grub_bios_utils_backup /_grub_/grub_bios"
 	echo
-	echo "For example if you did 'bzr branch bzr://bzr.savannah.gnu.org/grub/trunk/grub /home/user/grub'"
-	echo "Then copy this script to /home/user/grub and cd into /home/user/grub and then run this script from /home/user/grub."
+	echo 'For example if you did'
 	echo
-	echo "This script uses the 'sudo' tool at certain places so make sure you have that installed."
+	echo 'bzr branch bzr://bzr.savannah.gnu.org/grub/trunk/grub /home/user/grub'
 	echo
-	echo "Please read this script fully and modify it to suite your requirements before actually running it"
+	echo 'then copy this script to /home/user/grub and cd into /home/user/grub and then run this script from /home/user/grub.'
 	echo
-	export _PROCESS_CONTINUE="FALSE"
+	echo 'This script uses the "sudo" tool at certain places so make sure you have that installed.'
+	echo
+	echo 'Please read this script fully and modify it to suite your requirements before actually running it'
+	echo
+	export _PROCESS_CONTINUE='FALSE'
 	
 }
 
-if [ \
-	"${1}" == "" -o \
-	"${1}" == "-h" -o \
-	"${1}" == "-u" -o \
-	"${1}" == "--help" -o \
-	"${1}" == "--usage" \
-	]
+if [[ \
+	"${1}" == '' -o \
+	"${1}" == '-h' -o \
+	"${1}" == '-u' -o \
+	"${1}" == '--help' -o \
+	"${1}" == '--usage' \
+	]]
 then
 	_USAGE
-	export _PROCESS_CONTINUE="FALSE"
+	export _PROCESS_CONTINUE='FALSE'
 	exit 0
 fi
 
@@ -59,7 +62,7 @@ fi
 	## The location of grub-extras source folder if you have.
 	export GRUB_CONTRIB="${_WD}/grub2_extras__GIT_BZR/"
 	
-	export _REPLACE_GRUB2_BIOS_MENU_CONFIG="0"
+	export _REPLACE_GRUB2_BIOS_MENU_CONFIG='0'
 	
 	export _GRUB2_INSTALL_DEVICE="${1}"
 	export _GRUB2_BOOT_PART_MP="${2}"
@@ -67,12 +70,19 @@ fi
 	export _GRUB2_BIOS_BACKUP_DIR="${4}"
 	export _GRUB2_BIOS_UTILS_BACKUP_DIR="${5}"
 	export _GRUB2_BIOS_PREFIX_DIR="${6}"
-	## If not mentioned, _GRUB2_BIOS_PREFIX_DIR env variable will be set to /grub2/grub2_BIOS dir
+	## If not mentioned, _GRUB2_BIOS_PREFIX_DIR env variable will be set to /_grub_/grub_bios dir
 	
-	export _GRUB2_BIOS_MENU_CONFIG="grub"
-	[ "${_REPLACE_GRUB2_BIOS_MENU_CONFIG}" == "1" ] && _GRUB2_BIOS_MENU_CONFIG="${_GRUB2_BIOS_NAME}"
+	export _GRUB2_BIOS_MENU_CONFIG='grub'
 	
-	[ "${_GRUB2_BIOS_PREFIX_DIR}" == "" ] && export _GRUB2_BIOS_PREFIX_DIR="/grub2/grub2_bios"
+	if [[ "${_REPLACE_GRUB2_BIOS_MENU_CONFIG}" == '1' ]]
+	then
+		export _GRUB2_BIOS_MENU_CONFIG="${_GRUB2_BIOS_NAME}"
+	fi
+	
+	if [[ "${_GRUB2_BIOS_PREFIX_DIR}" == '' ]]
+	then
+		export _GRUB2_BIOS_PREFIX_DIR='/_grub_/grub_bios'
+	fi
 	
 	export _GRUB2_BIOS_BIN_DIR="${_GRUB2_BIOS_PREFIX_DIR}/bin"
 	export _GRUB2_BIOS_SBIN_DIR="${_GRUB2_BIOS_PREFIX_DIR}/sbin"
@@ -90,7 +100,7 @@ fi
 	export _GRUB2_BIOS_CONFIGURE_PATHS_1="--prefix="${_GRUB2_BIOS_PREFIX_DIR}" --bindir="${_GRUB2_BIOS_BIN_DIR}" --sbindir="${_GRUB2_BIOS_SBIN_DIR}" --sysconfdir="${_GRUB2_BIOS_SYSCONF_DIR}" --libdir="${_GRUB2_BIOS_LIB_DIR}""
 	export _GRUB2_BIOS_CONFIGURE_PATHS_2="--datarootdir="${_GRUB2_BIOS_DATAROOT_DIR}" --infodir="${_GRUB2_BIOS_INFO_DIR}" --localedir="${_GRUB2_BIOS_LOCALE_DIR}" --mandir="${_GRUB2_BIOS_MAN_DIR}""
 	
-	export _GRUB2_UNIFONT_PATH="/usr/share/fonts/misc"
+	export _GRUB2_UNIFONT_PATH='/usr/share/fonts/misc'
 	
 	export _GRUB2_BIOS_CORE_IMG_MODULES="part_gpt part_msdos fat ext2 ntfs ntfscomp"
 	export _GRUB2_EXTRAS_MODULES="lua.mod 915resolution.mod"
@@ -102,17 +112,17 @@ fi
 # _GRUB2_BIOS_ECHO_CONFIG() {
 	
 	echo
-	echo _GRUB2_INSTALL_DEVICE="${_GRUB2_INSTALL_DEVICE}"
+	echo GRUB2_INSTALL_DEVICE="${_GRUB2_INSTALL_DEVICE}"
 	echo
-	echo _GRUB2_Boot_Partition_MountPoint="${_GRUB2_BOOT_PART_MP}"
+	echo GRUB2_Boot_Partition_MountPoint="${_GRUB2_BOOT_PART_MP}"
 	echo
-	echo _GRUB2_BIOS_Install_Dir_Name="${_GRUB2_BOOT_PART_DIR}"
+	echo GRUB2_BIOS_Install_Dir_Name="${_GRUB2_BOOT_PART_DIR}"
 	echo
-	echo _GRUB2_BIOS_BACKUP_DIR_Path="${_GRUB2_BIOS_BACKUP_DIR}"
+	echo GRUB2_BIOS_BACKUP_DIR_Path="${_GRUB2_BIOS_BACKUP_DIR}"
 	echo
-	echo _GRUB2_BIOS_Tools_Backup_Path="${_GRUB2_BIOS_UTILS_BACKUP_DIR}"
+	echo GRUB2_BIOS_Tools_Backup_Path="${_GRUB2_BIOS_UTILS_BACKUP_DIR}"
 	echo
-	echo _GRUB2_BIOS_PREFIX_DIR_FOLDER="${_GRUB2_BIOS_PREFIX_DIR}"
+	echo GRUB2_BIOS_PREFIX_DIR_FOLDER="${_GRUB2_BIOS_PREFIX_DIR}"
 	echo
 	
 # }
@@ -124,16 +134,23 @@ _GRUB2_BIOS_PRECOMPILE_STEPS() {
 	cd "${_WD}/"
 	
 	## Convert the line endings of all the source files from DOS to UNIX mode
-	[ ! -e "${_WD}/xman_dos2unix.sh" ] && wget --no-check-certificate --output-file="${_WD}/xman_dos2unix.sh" "https://raw.github.com/the-ridikulus-rat/My_Shell_Scripts/master/xmanutility/xman_dos2unix.sh" || true
+	if [[ ! -e "${_WD}/xman_dos2unix.sh" ]]
+	then
+		wget --no-check-certificate --output-file="${_WD}/xman_dos2unix.sh" "https://raw.github.com/the-ridikulus-rat/My_Shell_Scripts/master/xmanutility/xman_dos2unix.sh" || true
+	fi
+	
 	chmod +x "${_WD}/xman_dos2unix.sh" || true
 	"${_WD}/xman_dos2unix.sh" * || true
 	echo
 	
 	## Check whether python2 exists, otherwise create /usr/bin/python2 symlink to python executable 
-	# [ "$(which python2)" ] || sudo ln -s "$(which python)" "/usr/bin/python2"
+	# if [[ "$(which python2)" ]]
+	# then
+	# 	sudo ln -s "$(which python)" "/usr/bin/python2"
+	# fi
 	
 	## Archlinux changed default /usr/bin/python to python3, need to use /usr/bin/python2 instead
-	# if [ "$(which python2)" ]
+	# if [[ "$(which python2)" ]]
 	# then
 	# 	install -D -m755 "${_WD}/autogen.sh" "${_WD}/autogen_unmodified.sh"
 	# 	sed 's|python |python2 |g' -i "${_WD}/autogen.sh" || true
@@ -141,7 +158,7 @@ _GRUB2_BIOS_PRECOMPILE_STEPS() {
 	
 	chmod +x "${_WD}/autogen.sh" || true
 	
-	if [ ! -e "${_WD}/po/LINGUAS" ]
+	if [[ ! -e "${_WD}/po/LINGUAS" ]]
 	then
 		cd "${_WD}/"
 		rsync -Lrtvz translationproject.org::tp/latest/grub/ "${_WD}/po" || true
@@ -152,9 +169,9 @@ _GRUB2_BIOS_PRECOMPILE_STEPS() {
 	echo
 	
 	## GRUB2 BIOS Build Directory
-	install -d "${P_WD}/_GRUB2_BIOS_BUILD_DIR"
-	cp --verbose "${_WD}/grub.default" "${_WD}/_GRUB2_BIOS_BUILD_DIR/" || true
-	cp --verbose "${_WD}/grub.cfg" "${_WD}/_GRUB2_BIOS_BUILD_DIR/" || true
+	install -d "${_WD}/GRUB2_BIOS_BUILD_DIR"
+	cp --verbose "${_WD}/grub.default" "${_WD}/GRUB2_BIOS_BUILD_DIR/" || true
+	cp --verbose "${_WD}/grub.cfg" "${_WD}/GRUB2_BIOS_BUILD_DIR/" || true
 	
 }
 
@@ -163,7 +180,7 @@ _GRUB2_BIOS_COMPILE_STEPS() {
 	## Uncomment below to use ${_GRUB2_BIOS_MENU_CONFIG}.cfg as the menu config file instead of grub.cfg
 	sed "s|grub.cfg|${_GRUB2_BIOS_MENU_CONFIG}.cfg|g" -i "${_WD}/grub-core/normal/main.c" || true
 	
-	cd _GRUB2_BIOS_BUILD_DIR
+	cd "${_WD}/GRUB2_BIOS_BUILD_DIR"
 	echo
 	
 	## fix unifont.bdf location
@@ -181,7 +198,7 @@ _GRUB2_BIOS_COMPILE_STEPS() {
 
 _GRUB2_BIOS_POSTCOMPILE_SETUP_PREFIX_DIR() {
 	
-	if [ \
+	if [[ \
 		"${_GRUB2_BIOS_PREFIX_DIR}" != '/' -o \
 		"${_GRUB2_BIOS_PREFIX_DIR}" != '/usr' -o \
 		"${_GRUB2_BIOS_PREFIX_DIR}" != '/usr/local' -o \
@@ -196,7 +213,7 @@ _GRUB2_BIOS_POSTCOMPILE_SETUP_PREFIX_DIR() {
 		"${_GRUB2_BIOS_PREFIX_DIR}" != '/run' -o \
 		"${_GRUB2_BIOS_PREFIX_DIR}" != '/etc' -o \
 		"${_GRUB2_BIOS_PREFIX_DIR}" != '/opt' \
-		]
+		]]
 	then
 		sudo cp -r --verbose "${_GRUB2_BIOS_PREFIX_DIR}" "${_GRUB2_BIOS_UTILS_BACKUP_DIR}" || true
 		echo
@@ -207,12 +224,17 @@ _GRUB2_BIOS_POSTCOMPILE_SETUP_PREFIX_DIR() {
 	sudo make install
 	echo
 	
-	cd "${_WD}/_GRUB2_BIOS_BUILD_DIR/grub-core/"
+	cd "${_WD}/GRUB2_BIOS_BUILD_DIR/grub-core/"
 	# sudo cp --verbose ${_GRUB2_EXTRAS_MODULES} "${_GRUB2_BIOS_LIB_DIR}/${_GRUB2_BIOS_NAME}/i386-pc/" || true
 	echo
 	
 	sudo install -d "${_GRUB2_BIOS_SYSCONF_DIR}/default"
-	[ -e "${_WD}/grub.default" ] && sudo cp --verbose "${_WD}/grub.default" "${_GRUB2_BIOS_SYSCONF_DIR}/default/grub" || true
+	
+	if [[ -e "${_WD}/grub.default" ]]
+	then
+		sudo cp --verbose "${_WD}/grub.default" "${_GRUB2_BIOS_SYSCONF_DIR}/default/grub" || true
+	fi
+	
 	sudo chmod --verbose -x "${_GRUB2_BIOS_SYSCONF_DIR}/default/grub" || true
 	echo
 	
@@ -254,7 +276,10 @@ _GRUB2_BIOS_SETUP_BOOT_PART_DIR() {
 	sudo cp --verbose "${_GRUB2_BIOS_BACKUP_DIR}/${_GRUB2_BIOS_MENU_CONFIG}.cfg" "${_GRUB2_BOOT_PART_DIR}/${_GRUB2_BIOS_MENU_CONFIG}_backup.cfg" || true
 	# sudo cp --verbose "${_GRUB2_BIOS_BACKUP_DIR}/${_GRUB2_BIOS_MENU_CONFIG}.cfg" "${_GRUB2_BOOT_PART_DIR}/${_GRUB2_BIOS_MENU_CONFIG}.cfg" || true
 	
-	[ -e "${_WD}/grub.cfg" ] && sudo cp --verbose "${_WD}/grub.cfg" "${_GRUB2_BOOT_PART_DIR}/${_GRUB2_BIOS_MENU_CONFIG}.cfg" || true
+	if [[ -e "${_WD}/grub.cfg" ]]
+	then
+		sudo cp --verbose "${_WD}/grub.cfg" "${_GRUB2_BOOT_PART_DIR}/${_GRUB2_BIOS_MENU_CONFIG}.cfg" || true
+	fi
 	
 	# sudo ${_GRUB2_BIOS_SBIN_DIR}/${_GRUB2_BIOS_NAME}-mkconfig --output=${_GRUB2_BOOT_PART_DIR}/${_GRUB2_BIOS_MENU_CONFIG}.cfg || true
 	echo
@@ -267,7 +292,7 @@ _GRUB2_BIOS_SETUP_BOOT_PART_DIR() {
 	
 }
 
-if [ "${_PROCESS_CONTINUE}" == "TRUE" ]
+if [[ "${_PROCESS_CONTINUE}" == 'TRUE' ]]
 then
 	
 	echo
@@ -280,47 +305,52 @@ then
 	
 	echo
 	
-	read -p "Do you wish to proceed? (y/n): " ans # Copied from http://www.linuxjournal.com/content/asking-yesno-question-bash-script
+	read -p 'Do you wish to proceed? (y/n): ' ans # Copied from http://www.linuxjournal.com/content/asking-yesno-question-bash-script
 	
 	case "${ans}" in
 	y | Y | yes | YES | Yes)
-	echo "Ok. Proceeding with compile and installation of GRUB2 BIOS."
-	echo
-	
-	_GRUB2_BIOS_PRECOMPILE_STEPS
-	
-	echo
-	
-	_GRUB2_BIOS_COMPILE_STEPS
-	
-	echo
-	
-	_GRUB2_BIOS_POSTCOMPILE_SETUP_PREFIX_DIR
-	
-	echo
-	
-	_GRUB2_BIOS_BACKUP_OLD_DIR
-	
-	echo
-	
-	_GRUB2_BIOS_SETUP_BOOT_PART_DIR
-	
-	echo
-	
-	set +x +e
-	
-	echo "GRUB2 BIOS setup in ${_GRUB2_BOOT_PART_DIR} successfully."
-	
-	echo
-	
+		echo
+		echo 'Ok. Proceeding with compile and installation of GRUB2 BIOS.'
+		echo
+		
+		_GRUB2_BIOS_PRECOMPILE_STEPS
+		
+		echo
+		
+		_GRUB2_BIOS_COMPILE_STEPS
+		
+		echo
+		
+		_GRUB2_BIOS_POSTCOMPILE_SETUP_PREFIX_DIR
+		
+		echo
+		
+		_GRUB2_BIOS_BACKUP_OLD_DIR
+		
+		echo
+		
+		_GRUB2_BIOS_SETUP_BOOT_PART_DIR
+		
+		echo
+		
+		set +x +e
+		
+		echo "GRUB2 BIOS setup in ${_GRUB2_BOOT_PART_DIR} successfully."
+		
+		echo
+		
 	;; # End of "y" option in the case list
 	
 	n | N | no | NO | No)
-	echo "You said no. Exiting to shell."
+		echo
+		echo 'You said no. Exiting to shell.'
+		echo
 	;; # End of "n" option in the case list
 	
 	*) # Any other input
-	echo "Invalid answer. Exiting to shell."
+		echo
+		echo 'Invalid answer. Exiting to shell.'
+		echo
 	;;
 	esac # ends the case list
 	

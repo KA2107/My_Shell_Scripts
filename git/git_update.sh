@@ -8,9 +8,9 @@ _RUN()
 	_repo=''
 	ls --all -1 | while read -r _repo
 	do
-		if [ -d "${PWD}/${_repo}" ] && [ "${_repo}" == '.git' ]
+		if [[ -d "${PWD}/${_repo}" ]] && [[ "${_repo}" == '.git' ]]
 		then
-			if [ -d "${PWD}/.git/hgcheckout" ] && [ -d "${PWD}/.git/hgremote" ]
+			if [[ -d "${PWD}/.git/hgcheckout" ]] && [[ -d "${PWD}/.git/hgremote" ]]
 			then
 				echo
 				echo "GIT HG - ${PWD}"
@@ -31,7 +31,7 @@ _RUN()
 				git reset --hard
 				echo
 				
-			elif [ -d "${PWD}/.git/bzr" ]
+			elif [[ -d "${PWD}/.git/bzr" ]]
 			then
 				echo
 				echo "GIT BZR - ${PWD}"
@@ -52,7 +52,7 @@ _RUN()
 				git reset --hard
 				echo
 				
-			elif [ -d "${PWD}/.git/svn" ]
+			elif [[ -d "${PWD}/.git/svn" ]]
 			then
 				echo
 				echo "GIT SVN - ${PWD}"
@@ -74,7 +74,7 @@ _RUN()
 				echo
 				
 			else
-				if [ -d "${PWD}/.git/refs/remotes" ]
+				if [[ -d "${PWD}/.git/refs/remotes" ]]
 				then
 					echo
 					echo "GIT - ${PWD}"
@@ -85,7 +85,7 @@ _RUN()
 					
 					for check in ${_MILD_FETCH[@]}
 					do
-						if [ "$(basename "${PWD}")" == "${check}" ]
+						if [[ "$(basename "${PWD}")" == "${check}" ]]
 						then
 							# git fetch --depth=1
 							echo
@@ -101,7 +101,7 @@ _RUN()
 					
 					_GIT_REMOTE_BRANCH="$(git branch -a | grep '  remotes/origin/HEAD -> origin/' | sed 's:  remotes/origin/HEAD -> origin/::g')"
 					
-					if [ "${_GIT_REMOTE_BRANCH}" == '' ]
+					if [[ "${_GIT_REMOTE_BRANCH}" == '' ]]
 					then
 						_GIT_REMOTE_BRANCH='master'
 					fi
@@ -118,7 +118,7 @@ _RUN()
 			fi
 			echo
 			
-		elif [ -d "${PWD}/${_repo}" ] && [ "${_repo}" != '.' ] && [ "${_repo}" != '..' ] && [ ! "$(file "${PWD}/${_repo}" | grep 'symbolic link to')" ]
+		elif [[ -d "${PWD}/${_repo}" ]] && [[ "${_repo}" != '.' ]] && [[ "${_repo}" != '..' ]] && [[ ! "$(file "${PWD}/${_repo}" | grep 'symbolic link to')" ]]
 		then
 			pushd "${_repo}" > /dev/null
 			_RUN

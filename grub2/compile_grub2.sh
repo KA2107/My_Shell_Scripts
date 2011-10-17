@@ -1,101 +1,101 @@
 #!/bin/bash
 
-export _PROCESS_CONTINUE_UEFI="FALSE"
-export _PROCESS_CONTINUE_BIOS="FALSE"
+export _PROCESS_CONTINUE_UEFI='FALSE'
+export _PROCESS_CONTINUE_BIOS='FALSE'
 
-export _BOOTLOADER_CONFIG_FILES_DIR="/media/Source_Codes/Source_Codes/My_Files/Bootloader_Config_Files/"
-export _WD_OUTER="${PWD}"
-export _X86_32_CHROOT="/opt/arch32"
+export _BOOTLOADER_CONFIG_FILES_DIR='/media/Source_Codes/Source_Codes/My_Files/Bootloader_Config_Files/'
+export _WD_OUTER="${PWD}/"
+export _X86_32_CHROOT='/opt/arch32'
 
-if [ \
-	"${1}" = "" -o \
-	"${1}" = "-h" -o \
-	"${1}" = "-u" -o \
-	"${1}" = "--help" -o \
-	"${1}" = "--usage" \
-	]
+if [[ \
+	"${1}" == '' -o \
+	"${1}" == '-h' -o \
+	"${1}" == '-u' -o \
+	"${1}" == '--help' -o \
+	"${1}" == '--usage' \
+	]]
 then
 	echo
-	echo  "1 for EFI-MAIN and BIOS-MAIN"
-	echo  "2 for EFI-EXP and BIOS-MAIN"
-	echo  "3 for EFI-MAIN and BIOS-EXP"
-	echo  "4 for EFI-EXP and BIOS-EXP"
+	echo '1 for EFI-MAIN and BIOS-MAIN'
+	echo '2 for EFI-EXP and BIOS-MAIN'
+	echo '3 for EFI-MAIN and BIOS-EXP'
+	echo '4 for EFI-EXP and BIOS-EXP'
 	echo
-	echo  "5 for EFI-MAIN alone"
-	echo  "6 for EFI-EXP alone"
-	echo  "7 for BIOS-MAIN alone"
-	echo  "8 for BIOS-EXP alone"
+	echo '5 for EFI-MAIN alone'
+	echo '6 for EFI-EXP alone'
+	echo '7 for BIOS-MAIN alone'
+	echo '8 for BIOS-EXP alone'
 	echo
-	export _PROCESS_CONTINUE_UEFI="FALSE"
-	export _PROCESS_CONTINUE_BIOS="FALSE"
+	export _PROCESS_CONTINUE_UEFI='FALSE'
+	export _PROCESS_CONTINUE_BIOS='FALSE'
 fi
 
-if [ "${1}" = "1" ]
+if [[ "${1}" == '1' ]]
 then
-	export _GRUB2_UEFI="-efi-main"
-	export _GRUB2_BIOS="-bios-main"
-elif [ "${1}" = "2" ]
+	export _GRUB2_UEFI='-efi-main'
+	export _GRUB2_BIOS='-bios-main'
+elif [[ "${1}" == '2' ]]
 then
-	export _GRUB2_UEFI="-efi-exp"
-	export _GRUB2_BIOS="-bios-main"
-elif [ "${1}" = "3" ]
+	export _GRUB2_UEFI='-efi-exp'
+	export _GRUB2_BIOS='-bios-main'
+elif [[ "${1}" == '3' ]]
 then
-	export _GRUB2_UEFI="-efi-main"
-	export _GRUB2_BIOS="-bios-exp"
-elif [ "${1}" = "4" ]
+	export _GRUB2_UEFI='-efi-main'
+	export _GRUB2_BIOS='-bios-exp'
+elif [[ "${1}" == '4' ]]
 then
-	export _GRUB2_UEFI="-efi-exp"
-	export _GRUB2_BIOS="-bios-exp"
-elif [ "${1}" = "5" ]
+	export _GRUB2_UEFI='-efi-exp'
+	export _GRUB2_BIOS='-bios-exp'
+elif [[ "${1}" == '5' ]]
 then
-	export _GRUB2_UEFI="-efi-main"
-	export _GRUB2_BIOS="NULL"
-elif [ "${1}" = "6" ]
+	export _GRUB2_UEFI='-efi-main'
+	export _GRUB2_BIOS='NULL'
+elif [[ "${1}" == '6' ]]
 then
-	export _GRUB2_UEFI="-efi-exp"
-	export _GRUB2_BIOS="NULL"
-elif [ "${1}" = "7" ]
+	export _GRUB2_UEFI='-efi-exp'
+	export _GRUB2_BIOS='NULL'
+elif [[ "${1}" == '7' ]]
 then
-	export _GRUB2_UEFI="NULL"
-	export _GRUB2_BIOS="-bios-main"
-elif [ "${1}" = "8" ]
+	export _GRUB2_UEFI='NULL'
+	export _GRUB2_BIOS='-bios-main'
+elif [[ "${1}" == '8' ]]
 then
-	export _GRUB2_UEFI="NULL"
-	export _GRUB2_BIOS="-bios-exp"
+	export _GRUB2_UEFI='NULL'
+	export _GRUB2_BIOS='-bios-exp'
 fi
 
-if [ "${_GRUB2_UEFI}" == "-efi-exp" ]
+if [[ "${_GRUB2_UEFI}" == '-efi-exp' ]]
 then
-	export _GRUB2_UEFI_Source_DIR_Name="grub2_experimental__GIT_BZR"
-	export _PROCESS_CONTINUE_UEFI="TRUE"
-elif [ "${_GRUB2_UEFI}" == "-efi-main" ]
+	export _GRUB2_UEFI_Source_DIR_Name='grub2_experimental__GIT_BZR'
+	export _PROCESS_CONTINUE_UEFI='TRUE'
+elif [[ "${_GRUB2_UEFI}" == '-efi-main' ]]
 then
-	export _GRUB2_UEFI_Source_DIR_Name="grub2__GIT_BZR"
-	export _PROCESS_CONTINUE_UEFI="TRUE"
+	export _GRUB2_UEFI_Source_DIR_Name='grub2__GIT_BZR'
+	export _PROCESS_CONTINUE_UEFI='TRUE'
 fi
 
-if [ "${_GRUB2_BIOS}" == "-bios-exp" ]
+if [[ "${_GRUB2_BIOS}" == '-bios-exp' ]]
 then
-	export _GRUB2_BIOS_Source_DIR_Name="grub2_experimental__GIT_BZR"
-	export _PROCESS_CONTINUE_BIOS="TRUE"
-elif [ "${_GRUB2_BIOS}" == "-bios-main" ]
+	export _GRUB2_BIOS_Source_DIR_Name='grub2_experimental__GIT_BZR'
+	export _PROCESS_CONTINUE_BIOS='TRUE'
+elif [[ "${_GRUB2_BIOS}" == '-bios-main' ]]
 then
-	export _GRUB2_BIOS_Source_DIR_Name="grub2__GIT_BZR"
-	export _PROCESS_CONTINUE_BIOS="TRUE"
+	export _GRUB2_BIOS_Source_DIR_Name='grub2__GIT_BZR'
+	export _PROCESS_CONTINUE_BIOS='TRUE'
 fi
 
 echo
 
-if [ "${_PROCESS_CONTINUE_UEFI}" == "TRUE" ] && [ "${_PROCESS_CONTINUE_BIOS}" == "TRUE" ]
+if [[ "${_PROCESS_CONTINUE_UEFI}" == 'TRUE' ]] && [[ "${_PROCESS_CONTINUE_BIOS}" == 'TRUE' ]]
 then
-	if [ "${_GRUB2_UEFI_Source_DIR_Name}" == "${_GRUB2_BIOS_Source_DIR_Name}" ]
+	if [[ "${_GRUB2_UEFI_Source_DIR_Name}" == "${_GRUB2_BIOS_Source_DIR_Name}" ]]
 	then
 		cd "${_WD_OUTER}/${_GRUB2_UEFI_Source_DIR_Name}/"
 		echo
 	fi
 fi
 
-if [ "${_PROCESS_CONTINUE_UEFI}" == "TRUE" ]
+if [[ "${_PROCESS_CONTINUE_UEFI}" == 'TRUE' ]]
 then
 	
 	set -x -e
@@ -111,7 +111,7 @@ then
 	rm -rf "${_WD_OUTER}/${_GRUB2_UEFI_Source_DIR_Name}/grub2_extras__GIT_BZR/915resolution" || true
 	rm -rf "${_WD_OUTER}/${_GRUB2_UEFI_Source_DIR_Name}/grub2_extras__GIT_BZR/ntldr-img" || true
 	
-	if [ "${_GRUB2_UEFI_Source_DIR_Name}" != "${_GRUB2_BIOS_Source_DIR_Name}" ]
+	if [[ "${_GRUB2_UEFI_Source_DIR_Name}" != "${_GRUB2_BIOS_Source_DIR_Name}" ]
 	then
 		cd "${_WD_OUTER}/${_GRUB2_UEFI_Source_DIR_Name}/"
 		echo
@@ -138,7 +138,7 @@ then
 	
 fi
 
-if [ "${_PROCESS_CONTINUE_BIOS}" = "TRUE" ]
+if [[ "${_PROCESS_CONTINUE_BIOS}" == 'TRUE' ]]
 then
 	
 	set -x -e
@@ -153,7 +153,7 @@ then
 	rm -rf "${_WD_OUTER}/${_GRUB2_BIOS_Source_DIR_Name}/grub2_extras__GIT_BZR/zfs" || true
 	rm -rf "${_WD_OUTER}/${_GRUB2_BIOS_Source_DIR_Name}/grub2_extras__GIT_BZR/915resolution" || true
 	
-	if [ "${_GRUB2_BIOS_Source_DIR_Name}" != "${_GRUB2_UEFI_Source_DIR_Name}" ]
+	if [[ "${_GRUB2_BIOS_Source_DIR_Name}" != "${_GRUB2_UEFI_Source_DIR_Name}" ]
 	then
 		cd "${_WD_OUTER}/${_GRUB2_BIOS_Source_DIR_Name}/"
 		echo
