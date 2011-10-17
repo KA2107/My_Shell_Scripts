@@ -8,10 +8,12 @@ export _WD_OUTER="${PWD}/"
 export _X86_32_CHROOT='/opt/arch32'
 
 if [[ \
-	"${1}" == '' -o \
-	"${1}" == '-h' -o \
-	"${1}" == '-u' -o \
-	"${1}" == '--help' -o \
+	"${1}" == '' || \
+	"${1}" == '-h' || \
+	"${1}" == '-u' || \
+	"${1}" == '-help' || \
+	"${1}" == '-usage' || \
+	"${1}" == '--help' || \
 	"${1}" == '--usage' \
 	]]
 then
@@ -111,7 +113,7 @@ then
 	rm -rf "${_WD_OUTER}/${_GRUB2_UEFI_Source_DIR_Name}/grub2_extras__GIT_BZR/915resolution" || true
 	rm -rf "${_WD_OUTER}/${_GRUB2_UEFI_Source_DIR_Name}/grub2_extras__GIT_BZR/ntldr-img" || true
 	
-	if [[ "${_GRUB2_UEFI_Source_DIR_Name}" != "${_GRUB2_BIOS_Source_DIR_Name}" ]
+	if [[ "${_GRUB2_UEFI_Source_DIR_Name}" != "${_GRUB2_BIOS_Source_DIR_Name}" ]]
 	then
 		cd "${_WD_OUTER}/${_GRUB2_UEFI_Source_DIR_Name}/"
 		echo
@@ -153,7 +155,7 @@ then
 	rm -rf "${_WD_OUTER}/${_GRUB2_BIOS_Source_DIR_Name}/grub2_extras__GIT_BZR/zfs" || true
 	rm -rf "${_WD_OUTER}/${_GRUB2_BIOS_Source_DIR_Name}/grub2_extras__GIT_BZR/915resolution" || true
 	
-	if [[ "${_GRUB2_BIOS_Source_DIR_Name}" != "${_GRUB2_UEFI_Source_DIR_Name}" ]
+	if [[ "${_GRUB2_BIOS_Source_DIR_Name}" != "${_GRUB2_UEFI_Source_DIR_Name}" ]]
 	then
 		cd "${_WD_OUTER}/${_GRUB2_BIOS_Source_DIR_Name}/"
 		echo
