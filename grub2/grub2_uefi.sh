@@ -86,7 +86,7 @@ fi
 	
 	if [[ "${_GRUB2_UEFI_PREFIX_DIR}" == '' ]]
 	then
-		export _GRUB2_UEFI_PREFIX_DIR="/grub2/grub2_uefi_${_TARGET_UEFI_ARCH}"
+		export _GRUB2_UEFI_PREFIX_DIR="/_grub_/grub_uefi_${_TARGET_UEFI_ARCH}"
 	fi
 	
 	export _GRUB2_UEFI_BIN_DIR="${_GRUB2_UEFI_PREFIX_DIR}/bin"
