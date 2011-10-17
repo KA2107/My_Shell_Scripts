@@ -117,12 +117,12 @@ then
 		echo
 	fi
 	
-	cp --verbose "${_WD_OUTER}/xman_dos2unix.sh" "${_WD_OUTER}/grub.default" "${_WD_OUTER}/${_GRUB2_UEFI_Source_DIR_Name}/" || true
 	cp --verbose "${_WD_OUTER}/grub2_uefi_linux_scripts/grub2_uefi.sh" "${_WD_OUTER}/grub2_uefi_linux_scripts/grub2_uefi_linux_my.sh" "${_WD_OUTER}/${_GRUB2_UEFI_Source_DIR_Name}/"
+	cp --verbose "${_WD_OUTER}/xman_dos2unix.sh" "${_WD_OUTER}/grub.default" "${_WD_OUTER}/${_GRUB2_UEFI_Source_DIR_Name}/" || true
 	echo
 	
 	rm -f "${_WD_OUTER}/${_GRUB2_UEFI_Source_DIR_Name}/grub.cfg" || true
-	cp --verbose "${_BOOTLOADER_CONFIG_FILES_DIR}/UEFI/grub2_uefi.cfg" "${_WD_OUTER}/${_GRUB2_UEFI_Source_DIR_Name}/grub.cfg" || true
+	cp --verbose "${_BOOTLOADER_CONFIG_FILES_DIR}/UEFI/grub_uefi.cfg" "${_WD_OUTER}/${_GRUB2_UEFI_Source_DIR_Name}/grub.cfg" || true
 	echo
 	
 	cd "${_WD_OUTER}/${_GRUB2_UEFI_Source_DIR_Name}/"
@@ -164,7 +164,7 @@ then
 	echo
 	
 	rm -f "${_WD_OUTER}/${_GRUB2_BIOS_Source_DIR_Name}/grub.cfg" || true
-	cp --verbose "${_BOOTLOADER_CONFIG_FILES_DIR}/BIOS/grub2_bios.cfg" "${_WD_OUTER}/${_GRUB2_BIOS_Source_DIR_Name}/grub.cfg" || true
+	cp --verbose "${_BOOTLOADER_CONFIG_FILES_DIR}/BIOS/grub_bios.cfg" "${_WD_OUTER}/${_GRUB2_BIOS_Source_DIR_Name}/grub.cfg" || true
 	echo
 	
 	cd "${_WD_OUTER}/${_GRUB2_BIOS_Source_DIR_Name}/"
