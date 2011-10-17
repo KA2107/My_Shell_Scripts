@@ -217,12 +217,12 @@ _COPY_BIOS_BOOTLOADER_FILES() {
 	_LINK_FILE="syslinux.cfg"
 	[ -d "${_LINK_DIR}/" ] && _SUDO_COPY_FILE
 	
-	_SOURCE_FILE="grub2_bios.cfg"
-	_LINK_DIR="${_BOOT_PART}/grub2_bios/"
+	_SOURCE_FILE="grub_bios.cfg"
+	_LINK_DIR="${_BOOT_PART}/grub_bios/"
 	_LINK_FILE="grub.cfg"
 	[ -d "${_LINK_DIR}/" ] && _SUDO_COPY_FILE
 	
-	_SOURCE_FILE="grub2_bios.cfg"
+	_SOURCE_FILE="grub_bios.cfg"
 	_LINK_DIR="${_BOOT_PART}/grub/"
 	_LINK_FILE="grub.cfg"
 	[ -d "${_LINK_DIR}/" ] && _SUDO_COPY_FILE
@@ -247,12 +247,12 @@ _COPY_UEFI_BOOTLOADER_FILES() {
 	
 	_SOURCE_DIR="${_BOOTLOADER_CONFIG_FILES_DIR}/UEFI/"
 	
-	_SOURCE_FILE="grub2_uefi.cfg"
-	_LINK_DIR="${_UEFI_SYS_PART_DIR}/grub2_uefi_x86_64/"
+	_SOURCE_FILE="grub_uefi.cfg"
+	_LINK_DIR="${_UEFI_SYS_PART_DIR}/grub_uefi_x86_64/"
 	_LINK_FILE="grub.cfg"
 	[ -d "${_LINK_DIR}/" ] && _SUDO_COPY_FILE
 	
-	_SOURCE_FILE="grub2_uefi.cfg"
+	_SOURCE_FILE="grub_uefi.cfg"
 	_LINK_DIR="${_UEFI_SYS_PART_DIR}/grub/"
 	_LINK_FILE="grub.cfg"
 	[ -d "${_LINK_DIR}/" ] && _SUDO_COPY_FILE
