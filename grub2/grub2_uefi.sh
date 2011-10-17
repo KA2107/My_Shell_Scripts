@@ -216,19 +216,19 @@ _GRUB2_UEFI_COMPILE_STEPS() {
 _GRUB2_UEFI_POSTCOMPILE_SETUP_PREFIX_DIR() {
 	
 	if [[ \
-		"${_GRUB2_UEFI_PREFIX_DIR}" != '/' -o \
-		"${_GRUB2_UEFI_PREFIX_DIR}" != '/usr' -o \
-		"${_GRUB2_UEFI_PREFIX_DIR}" != '/usr/local' -o \
-		"${_GRUB2_UEFI_PREFIX_DIR}" != '/media' -o \
-		"${_GRUB2_UEFI_PREFIX_DIR}" != '/mnt' -o \
-		"${_GRUB2_UEFI_PREFIX_DIR}" != '/home' -o \
-		"${_GRUB2_UEFI_PREFIX_DIR}" != '/lib' -o \
-		"${_GRUB2_UEFI_PREFIX_DIR}" != '/lib64' -o \
-		"${_GRUB2_UEFI_PREFIX_DIR}" != '/lib32' -o \
-		"${_GRUB2_UEFI_PREFIX_DIR}" != '/tmp' -o \
-		"${_GRUB2_UEFI_PREFIX_DIR}" != '/var' -o \
-		"${_GRUB2_UEFI_PREFIX_DIR}" != '/run' -o \
-		"${_GRUB2_UEFI_PREFIX_DIR}" != '/etc' -o \
+		"${_GRUB2_UEFI_PREFIX_DIR}" != '/' || \
+		"${_GRUB2_UEFI_PREFIX_DIR}" != '/usr' || \
+		"${_GRUB2_UEFI_PREFIX_DIR}" != '/usr/local' || \
+		"${_GRUB2_UEFI_PREFIX_DIR}" != '/media' || \
+		"${_GRUB2_UEFI_PREFIX_DIR}" != '/mnt' || \
+		"${_GRUB2_UEFI_PREFIX_DIR}" != '/home' || \
+		"${_GRUB2_UEFI_PREFIX_DIR}" != '/lib' || \
+		"${_GRUB2_UEFI_PREFIX_DIR}" != '/lib64' || \
+		"${_GRUB2_UEFI_PREFIX_DIR}" != '/lib32' || \
+		"${_GRUB2_UEFI_PREFIX_DIR}" != '/tmp' || \
+		"${_GRUB2_UEFI_PREFIX_DIR}" != '/var' || \
+		"${_GRUB2_UEFI_PREFIX_DIR}" != '/run' || \
+		"${_GRUB2_UEFI_PREFIX_DIR}" != '/etc' || \
 		"${_GRUB2_UEFI_PREFIX_DIR}" != '/opt' \
 		]]
 	then
