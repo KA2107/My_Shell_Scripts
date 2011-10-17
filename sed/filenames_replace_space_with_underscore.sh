@@ -1,16 +1,16 @@
 #!/bin/bash
 
-RUN()
+_RUN()
 {
 	
-	old_filename=""
-	new_filename=""
+	_old_filename=''
+	_new_filename=''
 	
-	ls --all -1 | while read -r old_filename
+	ls --all -1 | while read -r _old_filename
 	do
 		echo
 		
-		if [ "${old_filename}" != "." ] && [ "${old_filename}" != ".." ]
+		if [[ "${_old_filename}" != '.' ]] && [[ "${_old_filename}" != '..' ]]
 		then
 			
 			echo
@@ -19,17 +19,17 @@ RUN()
 			
 			echo
 			
-			new_filename="$(echo "${old_filename}" | sed 's#[[:space:]]#_#g')"
-			new_filename="$(echo "${new_filename}" | sed 's#:#_#g')"
-			new_filename="$(echo "${new_filename}" | sed 's#\|#_#g')"
-			new_filename="$(echo "${new_filename}" | sed 's#\-#_#g')"
+			_new_filename="$(echo "${_old_filename}" | sed 's#[[:space:]]#_#g')"
+			_new_filename="$(echo "${_new_filename}" | sed 's#:#_#g')"
+			_new_filename="$(echo "${_new_filename}" | sed 's#\|#_#g')"
+			_new_filename="$(echo "${_new_filename}" | sed 's#\-#_#g')"
 			
 			echo
 			
-			if [ -e "${PWD}/${old_filename}" ] && [ ! -e "${PWD}/${new_filename}" ]
+			if [[ -e "${PWD}/${_old_filename}" ]] && [[ ! -e "${PWD}/${_new_filename}" ]]
 			then
 				echo
-				mv "${PWD}/${old_filename}" "${PWD}/${new_filename}"
+				mv "${PWD}/${_old_filename}" "${PWD}/${_new_filename}"
 			fi
 			
 			echo
@@ -38,10 +38,10 @@ RUN()
 		
 		echo
 		
-		if [ -d "${PWD}/${old_filename}" ] && [ "${old_filename}" != "." ] && [ "${old_filename}" != ".." ] && [ ! "$(file "${PWD}/${old_filename}" | grep 'symbolic link to')" ]
+		if [[ -d "${PWD}/${_old_filename}" ]] && [[ "${_old_filename}" != '.' ]] && [[ "${_old_filename}" != '..' ]] && [[ ! "$(file "${PWD}/${_old_filename}" | grep 'symbolic link to')" ]]
 		then
-			pushd "${old_filename}" > /dev/null
-			RUN
+			pushd "${_old_filename}" > /dev/null
+			_RUN
 			popd > /dev/null
 		fi
 		
@@ -55,22 +55,22 @@ set -x -e
 
 echo
 
-RUN
+_RUN
 
 echo
 echo
 
-RUN
+_RUN
 
 echo
 echo
 
-RUN
+_RUN
 
 echo
 echo
 
-RUN
+_RUN
 
 echo
 
@@ -78,5 +78,5 @@ set +x +e
 
 echo
 
-unset old_filename
-unset new_filename
+unset _old_filename
+unset _new_filename

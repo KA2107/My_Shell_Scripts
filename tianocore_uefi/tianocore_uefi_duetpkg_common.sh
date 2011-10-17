@@ -2,7 +2,8 @@
 
 set -x -e
 
-_SOURCE_CODES_DIR="/media/Source_Codes/Source_Codes"
+_SOURCE_CODES_DIR='/media/Source_Codes/Source_Codes'
+
 _WD="${_SOURCE_CODES_DIR}/Firmware/UEFI/TianoCore_Sourceforge"
 
 source "${_WD}/tianocore_uefi_common.sh"
@@ -94,7 +95,7 @@ _COPY_EFILDR_DUET_PART() {
 	
 	echo
 	
-	if [ -d "${_DUET_PART_MP}" ]
+	if [[ -d "${_DUET_PART_MP}" ]]
 	then
 		sudo umount "${_DUET_PART_MP}" || true
 	else

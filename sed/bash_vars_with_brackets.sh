@@ -1,21 +1,24 @@
 #!/bin/bash
 
-RUN()
+_RUN()
 {
-	name=""
-	ls --all -1 | while read -r name
+	_name=''
+	ls --all -1 | while read -r _name
 	do
-		if [ ! -d "${PWD}/${name}" ]
+		if [[ ! -d "${PWD}/${_name}" ]]
 		then
-			[[ $(file "${name}" | grep 'POSIX shell script') ]] && sed -i 's/\$\([a-zA-Z0-9_]\+\)/${\1}/g' "${PWD}/${name}"
+			if [[ "$(file "${_name}" | grep 'POSIX shell script')" ]]
+			then
+				sed 's/\$\([a-zA-Z0-9_]\+\)/${\1}/g' -i "${PWD}/${_name}"
+			fi
 			
-		elif [ -d "${PWD}/${name}" ] && [ "${name}" != "." ] && [ "${name}" != ".." ]
+		elif [[ -d "${PWD}/${_name}" ]] && [[ "${_name}" != '.' ]] && [[ "${_name}" != '..' ]]
 		then
-			pushd "${name}" > /dev/null
+			pushd "${_name}" > /dev/null
 			RUN
 			popd > /dev/null
 		fi
 	done
 }
 
-RUN
+_RUN

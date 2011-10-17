@@ -2,7 +2,8 @@
 
 set -x -e
 
-_SOURCE_CODES_DIR="/media/Source_Codes/Source_Codes"
+_SOURCE_CODES_DIR='/media/Source_Codes/Source_Codes'
+
 _WD="${_SOURCE_CODES_DIR}/Firmware/UEFI/TianoCore_Sourceforge"
 
 source "${_WD}/tianocore_duet_common.sh"
@@ -49,8 +50,8 @@ _COMPILE_ISO9660() {
 	
 	echo
 	
-	sed -i 's|TARGET_ARCH           = IA32|TARGET_ARCH           = X64|g' "${_UDK_DIR}/Conf/target.txt"
-	sed -i 's|ACTIVE_PLATFORM       = Nt32Pkg/Nt32Pkg.dsc|ACTIVE_PLATFORM       = DuetPkg/DuetPkgX64.dsc|g' "${_UDK_DIR}/Conf/target.txt"
+	sed 's|TARGET_ARCH           = IA32|TARGET_ARCH           = X64|g' -i "${_UDK_DIR}/Conf/target.txt"
+	sed 's|ACTIVE_PLATFORM       = Nt32Pkg/Nt32Pkg.dsc|ACTIVE_PLATFORM       = DuetPkg/DuetPkgX64.dsc|g' -i "${_UDK_DIR}/Conf/target.txt"
 	
 	echo
 	

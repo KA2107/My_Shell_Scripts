@@ -1,15 +1,15 @@
 #!/bin/bash
 
-RUN()
+_RUN()
 {
 	
-	name=""
+	_name=''
 	
-	ls --all -1 | while read -r name
+	ls --all -1 | while read -r _name
 	do
 		echo
 		
-		if [ ! -d "${PWD}/${name}" ] && [ "${name}" != "." ] && [ "${name}" != ".." ]
+		if [[ ! -d "${PWD}/${_name}" ]] && [[ "${_name}" != '.' ]] && [[ "${_name}" != '..' ]]
 		then
 			
 			echo
@@ -18,7 +18,7 @@ RUN()
 			
 			echo
 			
-			touch --no-create "${name}"
+			touch --no-create "${_name}"
 			
 			echo
 			
@@ -26,10 +26,10 @@ RUN()
 		
 		echo
 		
-		if [ -d "${PWD}/${name}" ] && [ "${name}" != "." ] && [ "${name}" != ".." ] && [ ! "$(file "${PWD}/${name}" | grep 'symbolic link to')" ]
+		if [[ -d "${PWD}/${_name}" ]] && [[ "${_name}" != '.' ]] && [[ "${_name}" != '..' ]] && [[ ! "$(file "${PWD}/${_name}" | grep 'symbolic link to')" ]]
 		then
-			pushd "${name}" > /dev/null
-			RUN
+			pushd "${_name}" > /dev/null
+			_RUN
 			popd > /dev/null
 		fi
 		
@@ -43,22 +43,22 @@ set -x -e
 
 echo
 
-RUN
+_RUN
 
 echo
 echo
 
-RUN
+_RUN
 
 echo
 echo
 
-RUN
+_RUN
 
 echo
 echo
 
-RUN
+_RUN
 
 echo
 
@@ -66,4 +66,4 @@ set +x +e
 
 echo
 
-unset name
+unset _name

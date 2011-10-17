@@ -2,7 +2,8 @@
 
 set -x -e
 
-_SOURCE_CODES_DIR="/media/Source_Codes/Source_Codes"
+_SOURCE_CODES_DIR='/media/Source_Codes/Source_Codes'
+
 _WD="${_SOURCE_CODES_DIR}/Firmware/UEFI/TianoCore_Sourceforge"
 
 source "${_WD}/tianocore_uefi_duetpkg_common.sh"

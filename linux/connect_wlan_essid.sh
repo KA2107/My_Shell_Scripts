@@ -4,9 +4,9 @@ echo
 
 set -x -e
 
-ESSID="${1}"
-ENCRYPTION_TYPE="${2}"
-PASSPHRASE="${3}"
+_ESSID="${1}"
+_ENCRYPTION_TYPE="${2}"
+_PASSPHRASE="${3}"
 
 echo
 
@@ -33,7 +33,7 @@ sudo iwlist scan
 
 echo
 
-sudo iwconfig wlan0 essid "${ESSID}"
+sudo iwconfig wlan0 essid "${_ESSID}"
 
 echo
 

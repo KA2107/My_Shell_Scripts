@@ -2,7 +2,8 @@
 
 set -x -e
 
-_SOURCE_CODES_DIR="/media/Source_Codes/Source_Codes"
+_SOURCE_CODES_DIR='/media/Source_Codes/Source_Codes'
+
 _WD="${_SOURCE_CODES_DIR}/Firmware/UEFI/TianoCore_Sourceforge"
 
 source "${_WD}/tianocore_uefi_duetpkg_common.sh"
@@ -50,8 +51,8 @@ _ROD_SMITH_DUET_INSTALL() {
 	
 	echo
 	
-	sed -i 's|https://github.com/skodabenz/EFI_DUETPKG|https://gitorious.org/tianocore_uefi_duet_builds/tianocore_uefi_duet_installer|g' "${_UEFI_DUET_INSTALLER_DIR}/duet-install.8" || true
-	sed -i 's|BootDuet source code and UEFI DUETPKG binaries can be obtained from GitHub|BootDuet source code can be obtained from GitHub and UEFI DUETPKG binaries can be obtained from Gitorious|g' "${_UEFI_DUET_INSTALLER_DIR}/duet-install.8" || true
+	sed 's|https://github.com/skodabenz/EFI_DUETPKG|https://gitorious.org/tianocore_uefi_duet_builds/tianocore_uefi_duet_installer|g' -i "${_UEFI_DUET_INSTALLER_DIR}/duet-install.8" || true
+	sed 's|BootDuet source code and UEFI DUETPKG binaries can be obtained from GitHub|BootDuet source code can be obtained from GitHub and UEFI DUETPKG binaries can be obtained from Gitorious|g' -i "${_UEFI_DUET_INSTALLER_DIR}/duet-install.8" || true
 	
 	echo
 	
@@ -68,7 +69,7 @@ _UEFI_DUET_INSTALLER_GIT() {
 	echo "Tianocore_UEFI_DUET_Installer_GIT"
 	echo
 	
-	if [ -e "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/FV/Efildr20" ]
+	if [[ -e "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/FV/Efildr20" ]]
 	then
 		rm -f "${_UEFI_DUET_INSTALLER_DIR}/Efildr/UDK_X64/Efildr20" || true
 		install -D -m644 "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/FV/Efildr20" "${_UEFI_DUET_INSTALLER_DIR}/Efildr/UDK_X64/Efildr20"
@@ -76,7 +77,7 @@ _UEFI_DUET_INSTALLER_GIT() {
 	
 	echo
 	
-	if [ -e "${_DUETPKG_FSVARIABLE_BUILD_DIR}/FV/Efildr20" ]
+	if [[ -e "${_DUETPKG_FSVARIABLE_BUILD_DIR}/FV/Efildr20" ]]
 	then
 		rm -f "${_UEFI_DUET_INSTALLER_DIR}/Efildr/UDK_X64/Efildr20_FSVariable" || true
 		install -D -m644 "${_DUETPKG_FSVARIABLE_BUILD_DIR}/FV/Efildr20" "${_UEFI_DUET_INSTALLER_DIR}/Efildr/UDK_X64/Efildr20_FSVariable"
@@ -140,11 +141,11 @@ _DUET_MEMDISK_COMPILED_GIT() {
 	echo "Tianocore_UEFI_DUET_memdisk_compiled_GIT"
 	echo
 	
-	if [ -e "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/floppy.img" ]
+	if [[ -e "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/floppy.img" ]]
 	then
 		rm -f "${_DUET_MEMDISK_COMPILED_DIR}/Tianocore_UEFI_UDK_DUET_X86_64.img" || true
 		install -D -m644 "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/floppy.img" "${_DUET_MEMDISK_COMPILED_DIR}/Tianocore_UEFI_UDK_DUET_X86_64.img"
-		# [ -e "${_WD}/duet_x86_64_memdisk.bin" ] && install -D -m644 "${_WD}/duet_x86_64_memdisk.bin" "${_DUET_MEMDISK_COMPILED_DIR}/Tianocore_UEFI_UDK_DUET_X86_64.img"
+		# [[ -e "${_WD}/duet_x86_64_memdisk.bin" ]] && install -D -m644 "${_WD}/duet_x86_64_memdisk.bin" "${_DUET_MEMDISK_COMPILED_DIR}/Tianocore_UEFI_UDK_DUET_X86_64.img"
 	fi
 	
 	echo
@@ -181,7 +182,7 @@ _DUET_MEMDISK_TOOLS_GIT() {
 	rm -f "${_DUET_MEMDISK_TOOLS_DIR}/bootsect.com.unmod" || true
 	install -D -m644 "${_UDK_DUETPKG_BOOTSECT_BIN_DIR}/bootsect.com" "${_DUET_MEMDISK_TOOLS_DIR}/bootsect.com.unmod"
 	
-	if [ -e "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/FV/Efildr" ]
+	if [[ -e "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/FV/Efildr" ]]
 	then
 		rm -f "${_DUET_MEMDISK_TOOLS_DIR}/Efildr" || true
 		install -D -m644 "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/FV/Efildr" "${_DUET_MEMDISK_TOOLS_DIR}/Efildr"

@@ -2,15 +2,15 @@
 
 _RUN()
 {
-	_repo=""
+	_repo=''
 	ls --all -1 | while read -r _repo
 	do
-		if [ -d "${PWD}/${_repo}" ] && [ "${_repo}" == '.hg' ]
+		if [[ -d "${PWD}/${_repo}" ]] && [[ "${_repo}" == '.hg' ]]
 		then
-			if [ "$(echo "${PWD}" | grep '.git/hgcheckout')" ]
+			if [[ "$(echo "${PWD}" | grep '.git/hgcheckout')" ]]
 			then
 				true
-			elif [ "$(cat "${PWD}/${_repo}/hgrc" | grep 'default = ')" ]
+			elif [[ "$(cat "${PWD}/${_repo}/hgrc" | grep 'default = ')" ]]
 			then
 				echo
 				echo "HG - ${PWD}"
@@ -29,7 +29,7 @@ _RUN()
 				echo
 			fi
 			
-		elif [ -d "${PWD}/${_repo}" ] && [ "${_repo}" != '.' ] && [ "${_repo}" != '..' ] && [ ! "$(file "${PWD}/${_repo}" | grep 'symbolic link to')" ]
+		elif [[ -d "${PWD}/${_repo}" ]] && [[ "${_repo}" != '.' ]] && [[ "${_repo}" != '..' ]] && [[ ! "$(file "${PWD}/${_repo}" | grep 'symbolic link to')" ]]
 		then
 			pushd "${_repo}" > /dev/null
 			_RUN

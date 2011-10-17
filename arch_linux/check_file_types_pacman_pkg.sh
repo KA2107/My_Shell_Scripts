@@ -1,15 +1,15 @@
 #!/bin/bash
 
-pkgname="${1}"
+_pkgname="${1}"
 
-RUN()
+_RUN()
 {
-	_file_=""
-	sudo pacman -Ql "${pkgname}" | while read -r _file_
+	_file_=''
+	sudo pacman -Ql "${_pkgname}" | while read -r _file_
 	do
 		echo
 		
-		_file_=$(echo "${_file_}" | sed "s|${pkgname} ||g")
+		_file_="$(echo "${_file_}" | sed "s|${_pkgname} ||g")"
 		
 		echo
 		
@@ -23,6 +23,6 @@ RUN()
 
 set -x -e
 
-RUN
+_RUN
 
 set +x +e
