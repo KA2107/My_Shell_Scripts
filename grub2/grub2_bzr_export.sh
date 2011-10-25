@@ -19,6 +19,8 @@
 _WD="${PWD}/"
 _OUTPUT_DIR="${_WD}/"
 
+_ACTUAL_PKGVER="1.99"
+
 _GRUB2_BZR_REPO_DIR="${_WD}/grub2_BZR/"
 _GRUB2_BZR_EXP_REPO_DIR="${_WD}/grub2_experimental_BZR/"
 _GRUB2_EXTRAS_REPOS_DIR="${_WD}/grub2_extras_BZR/"
@@ -29,7 +31,7 @@ _MAIN_SNAPSHOT() {
 	echo
 	
 	_REVNUM="$(bzr revno ${_GRUB2_BZR_REPO_DIR})"
-	bzr export --root=grub2 --format=tar "${_OUTPUT_DIR}/grub2_r${_REVNUM}.tar"
+	bzr export --root="grub-${_ACTUAL_PKGVER}" --format="tar" "${_OUTPUT_DIR}/grub2_r${_REVNUM}.tar"
 	echo
 	
 	cd "${_OUTPUT_DIR}/"
@@ -45,7 +47,7 @@ _EXP_SNAPSHOT() {
 	echo
 	
 	_REVNUM="$(bzr revno ${_GRUB2_BZR_EXP_REPO_DIR})"
-	bzr export --root=grub2_exp --format=tar "${_OUTPUT_DIR}/grub2_exp_r${_REVNUM}.tar"
+	bzr export --root="grub-${_ACTUAL_PKGVER}" --format="tar" "${_OUTPUT_DIR}/grub2_exp_r${_REVNUM}.tar"
 	echo
 	
 	cd "${_OUTPUT_DIR}/"
