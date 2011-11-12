@@ -9,7 +9,7 @@ _WD="${_SOURCE_CODES_DIR}/Firmware/UEFI/TianoCore_Sourceforge"
 source "${_WD}/tianocore_duet_common.sh"
 
 _UDK_BUILD_OUTER_DIR="${_UDK_DIR}/Build/StdLib/"
-_UDK_BUILD_DIR="${_UDK_BUILD_OUTER_DIR}/DEBUG_GCC45/"
+_UDK_BUILD_DIR="${_UDK_BUILD_OUTER_DIR}/DEBUG_GCC46/"
 
 _ISO9660_BUILD_DIR="${_BACKUP_BUILDS_DIR}/ISO9660_BUILD"
 
@@ -55,7 +55,7 @@ _COMPILE_ISO9660() {
 	
 	echo
 	
-	build -p "${_UDK_DIR}/DuetPkg/DuetPkgX64.dsc" -m "${_UDK_DIR}/VBoxPkg/VBoxFsDxe/VBoxIso9660.inf" -a X64 -b RELEASE -t GCC45
+	build -p "${_UDK_DIR}/DuetPkg/DuetPkgX64.dsc" -m "${_UDK_DIR}/VBoxPkg/VBoxFsDxe/VBoxIso9660.inf" -a X64 -b RELEASE -t GCC46
 	
 	echo
 	

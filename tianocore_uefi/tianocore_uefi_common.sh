@@ -159,7 +159,7 @@ _APPLY_CHANGES() {
 	
 	## EmulatorPkg
 	sed 's|export LIB_ARCH_SFX=64|export LIB_ARCH_SFX=""|g' -i "${_UDK_DIR}/EmulatorPkg/build.sh"
-	# sed 's|UNIXPKG_TOOLS=GCC44|UNIXPKG_TOOLS=GCC45|g' -i "${_UDK_DIR}/EmulatorPkg/build.sh"
+	# sed 's|UNIXPKG_TOOLS=GCC44|UNIXPKG_TOOLS=GCC46|g' -i "${_UDK_DIR}/EmulatorPkg/build.sh"
 	
 	echo
 	

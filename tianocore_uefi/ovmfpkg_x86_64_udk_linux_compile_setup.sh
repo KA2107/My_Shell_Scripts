@@ -9,7 +9,7 @@ _WD="${_SOURCE_CODES_DIR}/Firmware/UEFI/TianoCore_Sourceforge"
 source "${_WD}/tianocore_uefi_common.sh"
 
 _UDK_BUILD_OUTER_DIR="${_UDK_DIR}/Build/OvmfX64/"
-_UDK_BUILD_DIR="${_UDK_BUILD_OUTER_DIR}/DEBUG_GCC45/"
+_UDK_BUILD_DIR="${_UDK_BUILD_OUTER_DIR}/DEBUG_GCC46/"
 
 _OVMFPKG_BUILD_DIR="${_BACKUP_BUILDS_DIR}/OVMFPKG_BUILD"
 
@@ -47,7 +47,7 @@ _COMPILE_OVMFPKG() {
 	echo
 	
 	cd "${_UDK_DIR}/OvmfPkg"
-	"${_UDK_DIR}/OvmfPkg/build.sh" -a X64 -b DEBUG -t GCC45
+	"${_UDK_DIR}/OvmfPkg/build.sh" -a X64 -b DEBUG -t GCC46
 	
 	echo
 	
