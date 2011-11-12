@@ -96,9 +96,9 @@ _CORRECT_WERROR() {
 	
 	echo
 	
-	sed 's|-Werror |-Wno-error -Wno-unused-but-set-variable |g' -i "${_UDK_DIR}/BaseTools/Source/C/Makefiles/header.makefile"
-	sed 's|-Werror |-Wno-error -Wno-unused-but-set-variable |g' -i "${_UDK_DIR}/BaseTools/Conf/tools_def.template"
-	sed 's|--64 | |g' -i "${_UDK_DIR}/BaseTools/Conf/tools_def.template"
+	# sed 's|-Werror |-Wno-error -Wno-unused-but-set-variable |g' -i "${_UDK_DIR}/BaseTools/Source/C/Makefiles/header.makefile"
+	# sed 's|-Werror |-Wno-error -Wno-unused-but-set-variable |g' -i "${_UDK_DIR}/BaseTools/Conf/tools_def.template"
+	# sed 's|--64 | |g' -i "${_UDK_DIR}/BaseTools/Conf/tools_def.template"
 	
 	echo
 	
