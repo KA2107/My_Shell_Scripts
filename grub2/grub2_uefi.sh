@@ -79,13 +79,11 @@ fi
 	
 	export _GRUB2_UEFI_MENU_CONFIG='grub'
 	
-	if [[ "${_REPLACE_GRUB2_UEFI_MENU_CONFIG}" == '1' ]]
-	then
+	if [[ "${_REPLACE_GRUB2_UEFI_MENU_CONFIG}" == '1' ]]; then
 		export _GRUB2_UEFI_MENU_CONFIG="${_GRUB2_UEFI_NAME}"
 	fi
 	
-	if [[ "${_GRUB2_UEFI_PREFIX_DIR}" == '' ]]
-	then
+	if [[ "${_GRUB2_UEFI_PREFIX_DIR}" == '' ]]; then
 		export _GRUB2_UEFI_PREFIX_DIR="/_grub_/grub_uefi_${_TARGET_UEFI_ARCH}"
 	fi
 	
@@ -101,12 +99,12 @@ fi
 	export _GRUB2_UEFI_APP_PREFIX="efi/${_GRUB2_UEFI_NAME}"
 	export _GRUB2_UEFI_SYSTEM_PART_DIR="${_UEFI_SYSTEM_PART_MP}/${_GRUB2_UEFI_APP_PREFIX}"
 	
-	if [[ "${_TARGET_UEFI_ARCH}" == 'x86_64' ]]
-	then
+	if [[ "${_TARGET_UEFI_ARCH}" == 'x86_64' ]]; then
 		export _OTHER_UEFI_ARCH_NAME='x64'
-	elif [[ "${_TARGET_UEFI_ARCH}" == 'i386' ]]
-	then
+		
+	elif [[ "${_TARGET_UEFI_ARCH}" == 'i386' ]]; then
 		export _OTHER_UEFI_ARCH_NAME='ia32'
+		
 	fi
 	
 	export _GRUB2_UNIFONT_PATH='/usr/share/fonts/misc'
@@ -174,8 +172,7 @@ _GRUB2_UEFI_PRECOMPILE_STEPS() {
 	
 	chmod +x "${_WD}/autogen.sh" || true
 	
-	if [[ ! -e "${_WD}/po/LINGUAS" ]]
-	then
+	if [[ ! -e "${_WD}/po/LINGUAS" ]]; then
 		cd "${_WD}/"
 		rsync -Lrtvz translationproject.org::tp/latest/grub/ "${_WD}/po" || true
 		(cd "${_WD}/po" && ls *.po | cut -d. -f1 | xargs) > "${_WD}/po/LINGUAS" || true
@@ -247,8 +244,7 @@ _GRUB2_UEFI_POSTCOMPILE_SETUP_PREFIX_DIR() {
 	
 	sudo install -d "${_GRUB2_UEFI_SYSCONF_DIR}/default"
 	
-	if [[ -e "${_WD}/grub.default" ]]
-	then
+	if [[ -e "${_WD}/grub.default" ]]; then
 		sudo cp --verbose "${_WD}/grub.default" "${_GRUB2_UEFI_SYSCONF_DIR}/default/grub" || true
 	fi
 	
@@ -308,8 +304,7 @@ _GRUB2_UEFI_SETUP_UEFISYS_PART_DIR() {
 	sudo cp --verbose "${_GRUB2_UEFI_BACKUP_DIR}/${_GRUB2_UEFI_MENU_CONFIG}.cfg" "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_MENU_CONFIG}_backup.cfg" || true
 	# sudo cp --verbose "${_GRUB2_UEFI_BACKUP_DIR}/${_GRUB2_UEFI_MENU_CONFIG}.cfg" "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_MENU_CONFIG}.cfg" || true
 	
-	if [[ -e "${_WD}/grub.cfg" ]]
-	then
+	if [[ -e "${_WD}/grub.cfg" ]]; then
 		sudo cp --verbose "${_WD}/grub.cfg" "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_MENU_CONFIG}.cfg" || true
 	fi
 	
@@ -326,8 +321,7 @@ _GRUB2_UEFI_SETUP_UEFISYS_PART_DIR() {
 
 _GRUB2_UEFI_EFIBOOTMGR() {
 	
-	if [[ "${_EXECUTE_EFIBOOTMGR}" == '1' ]]
-	then
+	if [[ "${_EXECUTE_EFIBOOTMGR}" == '1' ]]; then
 		echo
 		
 		EFISYS_PART_DEVICE="$(sudo "${_GRUB2_UEFI_SBIN_DIR}/${_GRUB2_UEFI_NAME}-probe" --target=device "${_GRUB2_UEFI_SYSTEM_PART_DIR}/")"
@@ -342,12 +336,10 @@ set -x
 
 modprobe -q efivars
 
-if [[ "$(lsmod | grep efivars)" ]]
-then
-	if [[ -d "/sys/firmware/efi/vars" ]]
-	then
+if [[ "\$(grep ^efivars /proc/modules)" ]]; then
+	if [[ -d "/sys/firmware/efi/vars" ]]; then
 		# Delete old entries of grub2 - command to be checked
-		for bootnum in $(efibootmgr | grep '^Boot[0-9]' | fgrep -i " ${_GRUB2_UEFI_NAME}" | cut -b5-8)
+		for bootnum in \$(efibootmgr | grep '^Boot[0-9]' | fgrep -i " ${_GRUB2_UEFI_NAME}" | cut -b5-8)
 		do
 			efibootmgr --bootnum "${bootnum}" --delete-bootnum
 		done
@@ -382,15 +374,13 @@ EOF
 
 _GRUB2_UEFI_SETUP_BOOTX64_EFI_APP() {
 	
-	if [[ ! -d "${_UEFI_SYSTEM_PART_MP}/efi/boot" ]]
-	then
+	if [[ ! -d "${_UEFI_SYSTEM_PART_MP}/efi/boot" ]]; then
 		sudo mkdir -p "${_UEFI_SYSTEM_PART_MP}/efi/boot/" || true
 	fi
 	
 	sudo rm -f --verbose "${_UEFI_SYSTEM_PART_MP}/efi/boot/boot${_OTHER_UEFI_ARCH_NAME}.efi" || true
 	
-	if [[ -e "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_NAME}.efi" ]]
-	then
+	if [[ -e "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_NAME}.efi" ]]; then
 		sudo cp --verbose "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_NAME}.efi" "${_UEFI_SYSTEM_PART_MP}/efi/boot/boot${_OTHER_UEFI_ARCH_NAME}.efi"
 	else
 		sudo cp --verbose "${_GRUB2_UEFI_SYSTEM_PART_DIR}/grub.efi" "${_UEFI_SYSTEM_PART_MP}/efi/boot/boot${_OTHER_UEFI_ARCH_NAME}.efi"
@@ -405,8 +395,7 @@ EOF
 	
 	sudo rm -f --verbose "${_UEFI_SYSTEM_PART_MP}/efi/boot/${_GRUB2_UEFI_MENU_CONFIG}.cfg" || true
 	
-	if [[ -e "${_WD}/efi_boot_${_GRUB2_UEFI_MENU_CONFIG}.cfg" ]]
-	then
+	if [[ -e "${_WD}/efi_boot_${_GRUB2_UEFI_MENU_CONFIG}.cfg" ]]; then
 		sudo cp --verbose "${_WD}/efi_boot_${_GRUB2_UEFI_MENU_CONFIG}.cfg" "${_UEFI_SYSTEM_PART_MP}/efi/boot/${_GRUB2_UEFI_MENU_CONFIG}.cfg"
 	else
 		sudo cp --verbose "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_MENU_CONFIG}.cfg" "${_UEFI_SYSTEM_PART_MP}/efi/boot/${_GRUB2_UEFI_MENU_CONFIG}.cfg"
@@ -414,8 +403,7 @@ EOF
 	
 }
 
-if [[ "${_PROCESS_CONTINUE}" == 'TRUE' ]]
-then
+if [[ "${_PROCESS_CONTINUE}" == 'TRUE' ]]; then
 	
 	echo
 	

@@ -25,8 +25,7 @@ _CREATE_SYMLINK() {
 	
 	echo
 	
-	if [ ! -d "${_LINK_DIR}/${_LINK_FILE}" ]
-	then
+	if [[ ! -d "${_LINK_DIR}/${_LINK_FILE}" ]]; then
 		rm -f "${_LINK_DIR}/${_LINK_FILE}" || true
 		ln -s "${_SOURCE_DIR}/${_SOURCE_FILE}" "${_LINK_DIR}/${_LINK_FILE}"
 	fi
@@ -39,8 +38,7 @@ _SUDO_CREATE_SYMLINK() {
 	
 	echo
 	
-	if [ ! -d "${_LINK_DIR}/${_LINK_FILE}" ]
-	then
+	if [[ ! -d "${_LINK_DIR}/${_LINK_FILE}" ]]; then
 		sudo rm -f "${_LINK_DIR}/${_LINK_FILE}" || true
 		sudo ln -s "${_SOURCE_DIR}/${_SOURCE_FILE}" "${_LINK_DIR}/${_LINK_FILE}"
 	fi
@@ -53,8 +51,7 @@ _COPY_FILE() {
 	
 	echo
 	
-	if [ ! -d "${_LINK_DIR}/${_LINK_FILE}" ]
-	then
+	if [[ ! -d "${_LINK_DIR}/${_LINK_FILE}" ]]; then
 		rm -f "${_LINK_DIR}/${_LINK_FILE}" || true
 		cp "${_SOURCE_DIR}/${_SOURCE_FILE}" "${_LINK_DIR}/${_LINK_FILE}"
 	fi
@@ -67,8 +64,7 @@ _SUDO_COPY_FILE() {
 	
 	echo
 	
-	if [ ! -d "${_LINK_DIR}/${_LINK_FILE}" ]
-	then
+	if [[ ! -d "${_LINK_DIR}/${_LINK_FILE}" ]]; then
 		sudo rm -f "${_LINK_DIR}/${_LINK_FILE}" || true
 		sudo cp "${_SOURCE_DIR}/${_SOURCE_FILE}" "${_LINK_DIR}/${_LINK_FILE}"
 	fi

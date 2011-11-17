@@ -76,13 +76,11 @@ fi
 	
 	export _GRUB2_BIOS_MENU_CONFIG='grub'
 	
-	if [[ "${_REPLACE_GRUB2_BIOS_MENU_CONFIG}" == '1' ]]
-	then
+	if [[ "${_REPLACE_GRUB2_BIOS_MENU_CONFIG}" == '1' ]]; then
 		export _GRUB2_BIOS_MENU_CONFIG="${_GRUB2_BIOS_NAME}"
 	fi
 	
-	if [[ "${_GRUB2_BIOS_PREFIX_DIR}" == '' ]]
-	then
+	if [[ "${_GRUB2_BIOS_PREFIX_DIR}" == '' ]]; then
 		export _GRUB2_BIOS_PREFIX_DIR='/_grub_/grub_bios'
 	fi
 	
@@ -136,8 +134,7 @@ _GRUB2_BIOS_PRECOMPILE_STEPS() {
 	cd "${_WD}/"
 	
 	## Convert the line endings of all the source files from DOS to UNIX mode
-	if [[ ! -e "${_WD}/xman_dos2unix.sh" ]]
-	then
+	if [[ ! -e "${_WD}/xman_dos2unix.sh" ]]; then
 		wget --no-check-certificate --output-file="${_WD}/xman_dos2unix.sh" "https://raw.github.com/the-ridikulus-rat/My_Shell_Scripts/master/xmanutility/xman_dos2unix.sh" || true
 	fi
 	
@@ -160,8 +157,7 @@ _GRUB2_BIOS_PRECOMPILE_STEPS() {
 	
 	chmod +x "${_WD}/autogen.sh" || true
 	
-	if [[ ! -e "${_WD}/po/LINGUAS" ]]
-	then
+	if [[ ! -e "${_WD}/po/LINGUAS" ]]; then
 		cd "${_WD}/"
 		rsync -Lrtvz translationproject.org::tp/latest/grub/ "${_WD}/po" || true
 		(cd "${_WD}/po" && ls *.po | cut -d. -f1 | xargs) > "${_WD}/po/LINGUAS" || true
@@ -232,8 +228,7 @@ _GRUB2_BIOS_POSTCOMPILE_SETUP_PREFIX_DIR() {
 	
 	sudo install -d "${_GRUB2_BIOS_SYSCONF_DIR}/default"
 	
-	if [[ -e "${_WD}/grub.default" ]]
-	then
+	if [[ -e "${_WD}/grub.default" ]]; then
 		sudo cp --verbose "${_WD}/grub.default" "${_GRUB2_BIOS_SYSCONF_DIR}/default/grub" || true
 	fi
 	
@@ -278,8 +273,7 @@ _GRUB2_BIOS_SETUP_BOOT_PART_DIR() {
 	sudo cp --verbose "${_GRUB2_BIOS_BACKUP_DIR}/${_GRUB2_BIOS_MENU_CONFIG}.cfg" "${_GRUB2_BOOT_PART_DIR}/${_GRUB2_BIOS_MENU_CONFIG}_backup.cfg" || true
 	# sudo cp --verbose "${_GRUB2_BIOS_BACKUP_DIR}/${_GRUB2_BIOS_MENU_CONFIG}.cfg" "${_GRUB2_BOOT_PART_DIR}/${_GRUB2_BIOS_MENU_CONFIG}.cfg" || true
 	
-	if [[ -e "${_WD}/grub.cfg" ]]
-	then
+	if [[ -e "${_WD}/grub.cfg" ]]; then
 		sudo cp --verbose "${_WD}/grub.cfg" "${_GRUB2_BOOT_PART_DIR}/${_GRUB2_BIOS_MENU_CONFIG}.cfg" || true
 	fi
 	
@@ -294,8 +288,7 @@ _GRUB2_BIOS_SETUP_BOOT_PART_DIR() {
 	
 }
 
-if [[ "${_PROCESS_CONTINUE}" == 'TRUE' ]]
-then
+if [[ "${_PROCESS_CONTINUE}" == 'TRUE' ]]; then
 	
 	echo
 	
