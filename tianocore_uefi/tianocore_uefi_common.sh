@@ -86,7 +86,7 @@ _COMPILE_BASETOOLS_MANUAL() {
 	echo
 	
 	cd "${_UDK_DIR}/"
-	make -C "${_UDK_DIR}/BaseTools"
+	make -C "${EDK_TOOLS_PATH}"
 	
 	echo
 	
@@ -96,9 +96,9 @@ _CORRECT_WERROR() {
 	
 	echo
 	
-	# sed 's|-Werror |-Wno-error -Wno-unused-but-set-variable |g' -i "${_UDK_DIR}/BaseTools/Source/C/Makefiles/header.makefile"
-	# sed 's|-Werror |-Wno-error -Wno-unused-but-set-variable |g' -i "${_UDK_DIR}/BaseTools/Conf/tools_def.template"
-	# sed 's|--64 | |g' -i "${_UDK_DIR}/BaseTools/Conf/tools_def.template"
+	# sed 's|-Werror |-Wno-error -Wno-unused-but-set-variable |g' -i "${EDK_TOOLS_PATH}/Source/C/Makefiles/header.makefile"
+	# sed 's|-Werror |-Wno-error -Wno-unused-but-set-variable |g' -i "${EDK_TOOLS_PATH}/Conf/tools_def.template"
+	# sed 's|--64 | |g' -i "${EDK_TOOLS_PATH}/Conf/tools_def.template"
 	
 	echo
 	
@@ -117,13 +117,13 @@ _SET_PYTHON2() {
 	
 	echo
 	
-	sed 's|python |python2 |g' -i "${_UDK_DIR}/BaseTools/BinWrappers/PosixLike/RunToolFromSource"
-	sed 's|python |python2 |g' -i "${_UDK_DIR}/BaseTools/BinWrappers/PosixLike/RunBinToolFromBuildDir"
-	sed 's|python |python2 |g' -i "${_UDK_DIR}/BaseTools/BinWrappers/PosixLike/GenDepex"
+	sed 's|python |python2 |g' -i "${EDK_TOOLS_PATH}/BinWrappers/PosixLike/RunToolFromSource"
+	sed 's|python |python2 |g' -i "${EDK_TOOLS_PATH}/BinWrappers/PosixLike/RunBinToolFromBuildDir"
+	sed 's|python |python2 |g' -i "${EDK_TOOLS_PATH}/BinWrappers/PosixLike/GenDepex"
 	
 	echo
 	
-	sed 's|python |python2 |g' -i "${_UDK_DIR}/BaseTools/Tests/GNUmakefile"
+	sed 's|python |python2 |g' -i "${EDK_TOOLS_PATH}/Tests/GNUmakefile"
 	
 	echo
 	
@@ -153,6 +153,10 @@ _APPLY_PATCHES() {
 _APPLY_CHANGES() {
 	
 	echo
+	
+	## Remove GCC -g debug option
+	sed 's|^DEFINE GCC_ALL_CC_FLAGS            = -g |^DEFINE GCC_ALL_CC_FLAGS            = |g' -i "${EDK_TOOLS_PATH}/Conf/tools_def.template" || true
+	sed 's|^DEFINE GCC44_ALL_CC_FLAGS            = -g |^DEFINE GCC44_ALL_CC_FLAGS            = |g' -i "${EDK_TOOLS_PATH}/Conf/tools_def.template" || true
 	
 	## DuetPkg
 	# sed 's|#define EFI_PAGE_BASE_OFFSET_IN_LDR 0x70000|#define EFI_PAGE_BASE_OFFSET_IN_LDR 0x80000|g' -i "${EDK_TOOLS_PATH}/Source/C/GenPage/GenPage.c" || true
