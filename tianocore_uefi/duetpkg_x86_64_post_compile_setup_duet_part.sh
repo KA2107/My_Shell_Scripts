@@ -52,15 +52,17 @@ _COPY_EFILDR_MEMDISK() {
 	echo
 	
 	if [[ -e "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/floppy.img" ]]; then
-		if [[ "$(file "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/FV/Efildr" | grep "Efildr: x86 boot sector")" ]]; then
-			sudo rm -f "${_BOOTPART}/Tianocore_UEFI_UDK_DUET_X86_64.img" || true
-			sudo install -D -m0644 "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/floppy.img" "${_BOOTPART}/Tianocore_UEFI_UDK_DUET_X86_64.img"
-			
-			echo
-			
-			_COPY_MEMDISK_SYSLINUX_BOOTPART
-			
-			echo
+		if [[ -e "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/FV/Efildr" ]]; then
+			if [[ "$(file "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/FV/Efildr" | grep "Efildr: x86 boot sector")" ]]; then
+				sudo rm -f "${_BOOTPART}/Tianocore_UEFI_UDK_DUET_X86_64.img" || true
+				sudo install -D -m0644 "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/floppy.img" "${_BOOTPART}/Tianocore_UEFI_UDK_DUET_X86_64.img"
+				
+				echo
+				
+				_COPY_MEMDISK_SYSLINUX_BOOTPART
+				
+				echo
+			fi
 		fi
 	fi
 	

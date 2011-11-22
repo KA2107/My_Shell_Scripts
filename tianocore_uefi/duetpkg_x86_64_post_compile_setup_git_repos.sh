@@ -144,10 +144,20 @@ _DUET_MEMDISK_COMPILED_GIT() {
 	echo
 	
 	if [[ -e "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/floppy.img" ]]; then
-		if [[ "$(file "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/FV/Efildr" | grep "Efildr: x86 boot sector")" ]]; then
-			rm -f "${_DUET_MEMDISK_COMPILED_DIR}/Tianocore_UEFI_UDK_DUET_X86_64.img" || true
-			install -D -m0644 "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/floppy.img" "${_DUET_MEMDISK_COMPILED_DIR}/Tianocore_UEFI_UDK_DUET_X86_64.img"
-			# [[ -e "${_WD}/duet_x86_64_memdisk.bin" ]] && install -D -m0644 "${_WD}/duet_x86_64_memdisk.bin" "${_DUET_MEMDISK_COMPILED_DIR}/Tianocore_UEFI_UDK_DUET_X86_64.img"
+		if [[ -e "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/FV/Efildr" ]]; then
+			if [[ "$(file "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/FV/Efildr" | grep "Efildr: x86 boot sector")" ]]; then
+				rm -f "${_DUET_MEMDISK_COMPILED_DIR}/Tianocore_UEFI_UDK_DUET_X86_64.img" || true
+				install -D -m0644 "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/floppy.img" "${_DUET_MEMDISK_COMPILED_DIR}/Tianocore_UEFI_UDK_DUET_X86_64.img"
+			fi
+		fi
+	fi
+	
+	if [[ -e "${_WD}/duet_x86_64_memdisk.bin" ]]; then
+		if [[ -e "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/FV/Efildr" ]]; then
+			if [[ "$(file "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/FV/Efildr" | grep "Efildr: x86 boot sector")" ]]; then
+				rm -f "${_DUET_MEMDISK_COMPILED_DIR}/Tianocore_UEFI_UDK_DUET_X86_64.img" || true
+				install -D -m0644 "${_WD}/duet_x86_64_memdisk.bin" "${_DUET_MEMDISK_COMPILED_DIR}/Tianocore_UEFI_UDK_DUET_X86_64.img"
+			fi
 		fi
 	fi
 	
