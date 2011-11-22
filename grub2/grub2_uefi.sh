@@ -166,7 +166,7 @@ _GRUB2_UEFI_PRECOMPILE_STEPS() {
 	## Archlinux changed default /usr/bin/python to python3, need to use /usr/bin/python2 instead
 	# if [[ "$(which python2)" ]]
 	# then
-	# 	install -D -m755 "${_WD}/autogen.sh" "${_WD}/autogen_unmodified.sh"
+	# 	install -D -m0755 "${_WD}/autogen.sh" "${_WD}/autogen_unmodified.sh"
 	# 	sed 's|python |python2 |g' -i "${_WD}/autogen.sh" || true
 	# fi
 	

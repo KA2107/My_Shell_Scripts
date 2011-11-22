@@ -74,7 +74,7 @@ _COPY_MEMDISK_SYSLINUX_BOOTPART() {
 	echo
 	
 	sudo rm -f "${_BOOTPART}/memdisk_syslinux" || true
-	sudo install -D -m644 "${_SYSLINUX_LIB_DIR}/memdisk" "${_BOOTPART}/memdisk_syslinux"
+	sudo install -D -m0644 "${_SYSLINUX_LIB_DIR}/memdisk" "${_BOOTPART}/memdisk_syslinux"
 	
 	echo
 	

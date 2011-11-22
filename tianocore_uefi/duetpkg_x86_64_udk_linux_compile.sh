@@ -47,7 +47,7 @@ _COMPILE_DUETPKG_EMUVARIABLE_BRANCH() {
 	echo
 	
 	cp -r "${_UDK_BUILD_DIR}" "${_DUETPKG_EMUVARIABLE_BUILD_DIR}"
-	install -D -m644 "${_UDK_BUILD_OUTER_DIR}/floppy.img" "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/floppy.img"
+	install -D -m0644 "${_UDK_BUILD_OUTER_DIR}/floppy.img" "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/floppy.img"
 	
 	echo
 	
@@ -100,7 +100,7 @@ _COMPILE_DUETPKG_FSVARIABLE_BRANCH() {
 	echo
 	
 	cp -r "${_UDK_BUILD_DIR}" "${_DUETPKG_FSVARIABLE_BUILD_DIR}"
-	install -D -m644 "${_UDK_BUILD_OUTER_DIR}/floppy.img" "${_DUETPKG_FSVARIABLE_BUILD_DIR}/floppy.img"
+	install -D -m0644 "${_UDK_BUILD_OUTER_DIR}/floppy.img" "${_DUETPKG_FSVARIABLE_BUILD_DIR}/floppy.img"
 	
 	echo
 	

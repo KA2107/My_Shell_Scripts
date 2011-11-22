@@ -40,8 +40,8 @@ _COPY_UEFI_SHELL_UEFI_SYS_PART() {
 	
 	echo
 	
-	sudo install -D -m644 "${_UDK_DIR}/ShellBinPkg/UefiShell/X64/Shell.efi" "${_UEFI_SYS_PART}/shellx64.efi"
-	sudo install -D -m644 "${_UDK_DIR}/EdkShellBinPkg/FullShell/X64/Shell_Full.efi" "${_UEFI_SYS_PART}/shellx64_old.efi"
+	sudo install -D -m0644 "${_UDK_DIR}/ShellBinPkg/UefiShell/X64/Shell.efi" "${_UEFI_SYS_PART}/shellx64.efi"
+	sudo install -D -m0644 "${_UDK_DIR}/EdkShellBinPkg/FullShell/X64/Shell_Full.efi" "${_UEFI_SYS_PART}/shellx64_old.efi"
 	
 	echo
 	

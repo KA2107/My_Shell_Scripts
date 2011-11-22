@@ -17,7 +17,7 @@ _MIGLE_BOOTDUET_COPY() {
 	echo
 	
 	rm -f "${_UEFI_DUET_INSTALLER_DIR}/BootSector"/bd*.bin || true
-	install -D -m644 "${_MIGLE_BOOTDUET_COMPILE_DIR}"/bd*.bin "${_UEFI_DUET_INSTALLER_DIR}/BootSector/"
+	install -D -m0644 "${_MIGLE_BOOTDUET_COMPILE_DIR}"/bd*.bin "${_UEFI_DUET_INSTALLER_DIR}/BootSector/"
 	
 	echo
 	
@@ -26,12 +26,12 @@ _MIGLE_BOOTDUET_COPY() {
 	echo
 	
 	rm -f "${_UEFI_DUET_INSTALLER_DIR}/Migle_BootDuet_INSTALL.txt" || true
-	install -D -m644 "${_MIGLE_BOOTDUET_COMPILE_DIR}/INSTALL" "${_UEFI_DUET_INSTALLER_DIR}/Migle_BootDuet_INSTALL.txt"
+	install -D -m0644 "${_MIGLE_BOOTDUET_COMPILE_DIR}/INSTALL" "${_UEFI_DUET_INSTALLER_DIR}/Migle_BootDuet_INSTALL.txt"
 	
 	echo
 	
 	rm -f "${_UEFI_DUET_INSTALLER_DIR}/Licenses/Migle_BootDuet_LICENSE.txt" || true
-	install -D -m644 "${_MIGLE_BOOTDUET_COMPILE_DIR}/COPYING" "${_UEFI_DUET_INSTALLER_DIR}/Licenses/Migle_BootDuet_LICENSE.txt"
+	install -D -m0644 "${_MIGLE_BOOTDUET_COMPILE_DIR}/COPYING" "${_UEFI_DUET_INSTALLER_DIR}/Licenses/Migle_BootDuet_LICENSE.txt"
 	
 	echo
 	
@@ -42,12 +42,12 @@ _ROD_SMITH_DUET_INSTALL() {
 	echo
 	
 	rm -f "${_UEFI_DUET_INSTALLER_DIR}/duet-install" || true
-	install -D -m644 "${_ROD_SMITH_DUET_INSTALL_DIR}/duet-install" "${_UEFI_DUET_INSTALLER_DIR}/duet-install"
+	install -D -m0644 "${_ROD_SMITH_DUET_INSTALL_DIR}/duet-install" "${_UEFI_DUET_INSTALLER_DIR}/duet-install"
 	
 	echo
 	
 	rm -f "${_UEFI_DUET_INSTALLER_DIR}/duet-install.8" || true
-	install -D -m644 "${_ROD_SMITH_DUET_INSTALL_DIR}/duet-install.8" "${_UEFI_DUET_INSTALLER_DIR}/duet-install.8"
+	install -D -m0644 "${_ROD_SMITH_DUET_INSTALL_DIR}/duet-install.8" "${_UEFI_DUET_INSTALLER_DIR}/duet-install.8"
 	
 	echo
 	
@@ -57,7 +57,7 @@ _ROD_SMITH_DUET_INSTALL() {
 	echo
 	
 	rm -f "${_UEFI_DUET_INSTALLER_DIR}/Licenses/srs5694_duet-install_LICENSE.txt" || true
-	install -D -m644 "${_ROD_SMITH_DUET_INSTALL_DIR}/COPYING" "${_UEFI_DUET_INSTALLER_DIR}/Licenses/srs5694_duet-install_LICENSE.txt"
+	install -D -m0644 "${_ROD_SMITH_DUET_INSTALL_DIR}/COPYING" "${_UEFI_DUET_INSTALLER_DIR}/Licenses/srs5694_duet-install_LICENSE.txt"
 	
 	echo
 	
@@ -72,7 +72,7 @@ _UEFI_DUET_INSTALLER_GIT() {
 	if [[ -e "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/FV/Efildr20" ]]; then
 		if [[ "$(file "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/FV/Efildr20" | grep "Efildr20: x86 boot sector")" ]]; then
 			rm -f "${_UEFI_DUET_INSTALLER_DIR}/Efildr/UDK_X64/Efildr20" || true
-			install -D -m644 "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/FV/Efildr20" "${_UEFI_DUET_INSTALLER_DIR}/Efildr/UDK_X64/Efildr20"
+			install -D -m0644 "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/FV/Efildr20" "${_UEFI_DUET_INSTALLER_DIR}/Efildr/UDK_X64/Efildr20"
 		fi
 	fi
 	
@@ -81,7 +81,7 @@ _UEFI_DUET_INSTALLER_GIT() {
 	if [[ -e "${_DUETPKG_FSVARIABLE_BUILD_DIR}/FV/Efildr20" ]]; then
 		if [[ "$(file "${_DUETPKG_FSVARIABLE_BUILD_DIR}/FV/Efildr20" | grep "Efildr20: x86 boot sector")" ]]; then
 			rm -f "${_UEFI_DUET_INSTALLER_DIR}/Efildr/UDK_X64/Efildr20_FSVariable" || true
-			install -D -m644 "${_DUETPKG_FSVARIABLE_BUILD_DIR}/FV/Efildr20" "${_UEFI_DUET_INSTALLER_DIR}/Efildr/UDK_X64/Efildr20_FSVariable"
+			install -D -m0644 "${_DUETPKG_FSVARIABLE_BUILD_DIR}/FV/Efildr20" "${_UEFI_DUET_INSTALLER_DIR}/Efildr/UDK_X64/Efildr20_FSVariable"
 		fi
 	fi
 	
@@ -89,8 +89,8 @@ _UEFI_DUET_INSTALLER_GIT() {
 	
 	rm -f "${_UEFI_DUET_INSTALLER_DIR}/Shell/UDK_X64/Shell_Full.efi" || true
 	rm -f "${_UEFI_DUET_INSTALLER_DIR}/Shell/UDK_X64/Shell_Full_old.efi" || true
-	install -D -m644 "${_UDK_DIR}/ShellBinPkg/UefiShell/X64/Shell.efi" "${_UEFI_DUET_INSTALLER_DIR}/Shell/UDK_X64/Shell_Full.efi"
-	install -D -m644 "${_UDK_DIR}/EdkShellBinPkg/FullShell/X64/Shell_Full.efi" "${_UEFI_DUET_INSTALLER_DIR}/Shell/UDK_X64/Shell_Full_old.efi"
+	install -D -m0644 "${_UDK_DIR}/ShellBinPkg/UefiShell/X64/Shell.efi" "${_UEFI_DUET_INSTALLER_DIR}/Shell/UDK_X64/Shell_Full.efi"
+	install -D -m0644 "${_UDK_DIR}/EdkShellBinPkg/FullShell/X64/Shell_Full.efi" "${_UEFI_DUET_INSTALLER_DIR}/Shell/UDK_X64/Shell_Full_old.efi"
 	
 	echo
 	
@@ -103,7 +103,7 @@ _UEFI_DUET_INSTALLER_GIT() {
 	echo
 	
 	rm -f "${_UEFI_DUET_INSTALLER_DIR}/BootSector"/{bs32,Gpt,Mbr}.com || true
-	install -D -m644 "${_UDK_DUETPKG_BOOTSECT_BIN_DIR}"/{bs32,Gpt,Mbr}.com "${_UEFI_DUET_INSTALLER_DIR}/BootSector/"
+	install -D -m0644 "${_UDK_DUETPKG_BOOTSECT_BIN_DIR}"/{bs32,Gpt,Mbr}.com "${_UEFI_DUET_INSTALLER_DIR}/BootSector/"
 	
 	echo
 	
@@ -115,7 +115,7 @@ _UEFI_DUET_INSTALLER_GIT() {
 	echo
 	
 	rm -f "${_UEFI_DUET_INSTALLER_DIR}/Windows_Binaries"/{BootSectImage,GenBootSector}.exe || true
-	install -D -m644 "${_UDK_DIR}/BaseTools/Bin/Win32"/{BootSectImage,GenBootSector}.exe "${_UEFI_DUET_INSTALLER_DIR}/Windows_Binaries/"
+	install -D -m0644 "${_UDK_DIR}/BaseTools/Bin/Win32"/{BootSectImage,GenBootSector}.exe "${_UEFI_DUET_INSTALLER_DIR}/Windows_Binaries/"
 	
 	echo
 	
@@ -146,8 +146,8 @@ _DUET_MEMDISK_COMPILED_GIT() {
 	if [[ -e "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/floppy.img" ]]; then
 		if [[ "$(file "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/FV/Efildr" | grep "Efildr: x86 boot sector")" ]]; then
 			rm -f "${_DUET_MEMDISK_COMPILED_DIR}/Tianocore_UEFI_UDK_DUET_X86_64.img" || true
-			install -D -m644 "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/floppy.img" "${_DUET_MEMDISK_COMPILED_DIR}/Tianocore_UEFI_UDK_DUET_X86_64.img"
-			# [[ -e "${_WD}/duet_x86_64_memdisk.bin" ]] && install -D -m644 "${_WD}/duet_x86_64_memdisk.bin" "${_DUET_MEMDISK_COMPILED_DIR}/Tianocore_UEFI_UDK_DUET_X86_64.img"
+			install -D -m0644 "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/floppy.img" "${_DUET_MEMDISK_COMPILED_DIR}/Tianocore_UEFI_UDK_DUET_X86_64.img"
+			# [[ -e "${_WD}/duet_x86_64_memdisk.bin" ]] && install -D -m0644 "${_WD}/duet_x86_64_memdisk.bin" "${_DUET_MEMDISK_COMPILED_DIR}/Tianocore_UEFI_UDK_DUET_X86_64.img"
 		fi
 	fi
 	
@@ -178,17 +178,17 @@ _DUET_MEMDISK_TOOLS_GIT() {
 	echo
 	
 	rm -f "${_DUET_MEMDISK_TOOLS_DIR}/Windows"/{BootSectImage,GenBootSector}.exe || true
-	install -D -m644 "${_UDK_DIR}/BaseTools/Bin/Win32"/{BootSectImage,GenBootSector}.exe "${_DUET_MEMDISK_TOOLS_DIR}/Windows/"
+	install -D -m0644 "${_UDK_DIR}/BaseTools/Bin/Win32"/{BootSectImage,GenBootSector}.exe "${_DUET_MEMDISK_TOOLS_DIR}/Windows/"
 	
 	echo
 	
 	rm -f "${_DUET_MEMDISK_TOOLS_DIR}/bootsect.com.unmod" || true
-	install -D -m644 "${_UDK_DUETPKG_BOOTSECT_BIN_DIR}/bootsect.com" "${_DUET_MEMDISK_TOOLS_DIR}/bootsect.com.unmod"
+	install -D -m0644 "${_UDK_DUETPKG_BOOTSECT_BIN_DIR}/bootsect.com" "${_DUET_MEMDISK_TOOLS_DIR}/bootsect.com.unmod"
 	
 	if [[ -e "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/FV/Efildr" ]]; then
 		if [[ "$(file "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/FV/Efildr" | grep "Efildr: x86 boot sector")" ]]; then
 			rm -f "${_DUET_MEMDISK_TOOLS_DIR}/Efildr" || true
-			install -D -m644 "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/FV/Efildr" "${_DUET_MEMDISK_TOOLS_DIR}/Efildr"
+			install -D -m0644 "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/FV/Efildr" "${_DUET_MEMDISK_TOOLS_DIR}/Efildr"
 		fi
 	fi
 	
