@@ -69,18 +69,20 @@ _UEFI_DUET_INSTALLER_GIT() {
 	echo "Tianocore_UEFI_DUET_Installer_GIT"
 	echo
 	
-	if [[ -e "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/FV/Efildr20" ]]
-	then
-		rm -f "${_UEFI_DUET_INSTALLER_DIR}/Efildr/UDK_X64/Efildr20" || true
-		install -D -m644 "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/FV/Efildr20" "${_UEFI_DUET_INSTALLER_DIR}/Efildr/UDK_X64/Efildr20"
+	if [[ -e "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/FV/Efildr20" ]]; then
+		if [[ "$(file "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/FV/Efildr20" | grep "Efildr20: x86 boot sector")" ]]; then
+			rm -f "${_UEFI_DUET_INSTALLER_DIR}/Efildr/UDK_X64/Efildr20" || true
+			install -D -m644 "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/FV/Efildr20" "${_UEFI_DUET_INSTALLER_DIR}/Efildr/UDK_X64/Efildr20"
+		fi
 	fi
 	
 	echo
 	
-	if [[ -e "${_DUETPKG_FSVARIABLE_BUILD_DIR}/FV/Efildr20" ]]
-	then
-		rm -f "${_UEFI_DUET_INSTALLER_DIR}/Efildr/UDK_X64/Efildr20_FSVariable" || true
-		install -D -m644 "${_DUETPKG_FSVARIABLE_BUILD_DIR}/FV/Efildr20" "${_UEFI_DUET_INSTALLER_DIR}/Efildr/UDK_X64/Efildr20_FSVariable"
+	if [[ -e "${_DUETPKG_FSVARIABLE_BUILD_DIR}/FV/Efildr20" ]]; then
+		if [[ "$(file "${_DUETPKG_FSVARIABLE_BUILD_DIR}/FV/Efildr20" | grep "Efildr20: x86 boot sector")" ]]; then
+			rm -f "${_UEFI_DUET_INSTALLER_DIR}/Efildr/UDK_X64/Efildr20_FSVariable" || true
+			install -D -m644 "${_DUETPKG_FSVARIABLE_BUILD_DIR}/FV/Efildr20" "${_UEFI_DUET_INSTALLER_DIR}/Efildr/UDK_X64/Efildr20_FSVariable"
+		fi
 	fi
 	
 	echo

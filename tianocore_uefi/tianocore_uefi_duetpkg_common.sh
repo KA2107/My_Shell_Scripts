@@ -84,8 +84,10 @@ _COPY_EFILDR_MEMDISK() {
 	
 	echo
 	
-	sudo rm -f "${_BOOTPART}/Tianocore_UEFI_UDK_DUET_X86_64.img" || true
-	sudo install -D -m644 "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/floppy.img" "${_BOOTPART}/Tianocore_UEFI_UDK_DUET_X86_64.img"
+	if [[ "$(file "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/FV/Efildr20" | grep "Efildr20: x86 boot sector")" ]]; then
+		sudo rm -f "${_BOOTPART}/Tianocore_UEFI_UDK_DUET_X86_64.img" || true
+		sudo install -D -m644 "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/floppy.img" "${_BOOTPART}/Tianocore_UEFI_UDK_DUET_X86_64.img"
+	fi
 	
 	echo
 	
@@ -95,17 +97,18 @@ _COPY_EFILDR_DUET_PART() {
 	
 	echo
 	
-	if [[ -d "${_DUET_PART_MP}" ]]
-	then
+	if [[ -d "${_DUET_PART_MP}" ]]; then
 		sudo umount "${_DUET_PART_MP}" || true
 	else
 		sudo mkdir -p "${_DUET_PART_MP}"
 	fi
 	
-	sudo mount -t vfat -o rw,users,exec -U "${_DUET_PART_FS_UUID}" "${_DUET_PART_MP}"
-	sudo rm -f "${_DUET_PART_MP}/EFILDR20" || true
-	sudo install -D -m644 "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/FV/Efildr20" "${_DUET_PART_MP}/EFILDR20"
-	sudo umount "${_DUET_PART_MP}"
+	if [[ "$(file "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/FV/Efildr20" | grep "Efildr20: x86 boot sector")" ]]; then
+		sudo mount -t vfat -o rw,users,exec -U "${_DUET_PART_FS_UUID}" "${_DUET_PART_MP}"
+		sudo rm -f "${_DUET_PART_MP}/EFILDR20" || true
+		sudo install -D -m644 "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/FV/Efildr20" "${_DUET_PART_MP}/EFILDR20"
+		sudo umount "${_DUET_PART_MP}"
+	fi
 	
 	echo
 	

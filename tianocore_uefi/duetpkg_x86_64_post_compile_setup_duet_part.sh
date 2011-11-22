@@ -1,0 +1,45 @@
+#!/bin/bash
+
+set -x -e
+
+_SOURCE_CODES_DIR='/media/Source_Codes/Source_Codes'
+
+_WD="${_SOURCE_CODES_DIR}/Firmware/UEFI/TianoCore_Sourceforge"
+
+source "${_WD}/tianocore_uefi_duetpkg_common.sh"
+
+echo
+
+_COPY_EFILDR_DUET_PART
+
+echo
+
+_COPY_UEFI_SHELL_UEFI_SYS_PART
+
+echo
+
+_COPY_EFILDR_MEMDISK
+
+echo
+
+unset _SOURCE_CODES_DIR
+unset _WD
+unset _UDK_DIR
+unset _UDK_BUILD_TOOLS_DIR
+unset EDK_TOOLS_PATH
+unset _UDK_C_SOURCE_DIR
+unset _UDK_DUETPKG_BOOTSECT_BIN_DIR
+unset _UDK_BUILD_DIR
+unset _DUETPKG_EMUVARIABLE_BUILD_DIR
+unset _DUETPKG_FSVARIABLE_BUILD_DIR
+unset _DUETPKG_COMPILED_DIR
+unset _UEFI_DUET_INSTALLER_DIR
+unset _DUET_MEMDISK_COMPILED_DIR
+unset _DUET_MEMDISK_TOOLS_DIR
+unset _MIGLE_BOOTDUET_COMPILE_DIR
+unset _ROD_SMITH_DUET_INSTALL_DIR
+unset _BOOTPART
+unset _UEFI_SYS_PART
+unset _SYSLINUX_LIB_DIR
+
+set +x +e

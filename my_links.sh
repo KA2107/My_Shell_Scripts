@@ -169,7 +169,11 @@ _TIANOCORE_UEFI() {
 	_LINK_FILE="${_SOURCE_FILE}"
 	_CREATE_SYMLINK
 	
-	_SOURCE_FILE="duetpkg_x86_64_post_compile.sh"
+	_SOURCE_FILE="duetpkg_x86_64_post_compile_setup_duet_part.sh"
+	_LINK_FILE="${_SOURCE_FILE}"
+	_CREATE_SYMLINK
+	
+	_SOURCE_FILE="duetpkg_x86_64_post_compile_setup_git_repos.sh"
 	_LINK_FILE="${_SOURCE_FILE}"
 	_CREATE_SYMLINK
 	
