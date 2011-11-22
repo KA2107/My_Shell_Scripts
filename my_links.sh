@@ -165,7 +165,7 @@ _TIANOCORE_UEFI() {
 	_LINK_FILE="${_SOURCE_FILE}"
 	_CREATE_SYMLINK
 	
-	_SOURCE_FILE="duetpkg_x86_64_udk_linux_compile_setup.sh"
+	_SOURCE_FILE="duetpkg_x86_64_udk_linux_compile.sh"
 	_LINK_FILE="${_SOURCE_FILE}"
 	_CREATE_SYMLINK
 	
@@ -181,15 +181,15 @@ _TIANOCORE_UEFI() {
 	_LINK_FILE="${_SOURCE_FILE}"
 	_CREATE_SYMLINK
 	
-	_SOURCE_FILE="ovmfpkg_x86_64_udk_linux_compile_setup.sh"
+	_SOURCE_FILE="ovmfpkg_x86_64_udk_linux_compile.sh"
 	_LINK_FILE="${_SOURCE_FILE}"
 	_CREATE_SYMLINK
 	
-	_SOURCE_FILE="emulatorpkg_unix_x86_64_udk_linux_compile_setup.sh"
+	_SOURCE_FILE="emulatorpkg_unix_x86_64_udk_linux_compile.sh"
 	_LINK_FILE="${_SOURCE_FILE}"
 	_CREATE_SYMLINK
 	
-	_SOURCE_FILE="shellpkg_x86_64_udk_linux_compile_setup.sh"
+	_SOURCE_FILE="shellpkg_x86_64_udk_linux_compile.sh"
 	_LINK_FILE="${_SOURCE_FILE}"
 	_CREATE_SYMLINK
 	

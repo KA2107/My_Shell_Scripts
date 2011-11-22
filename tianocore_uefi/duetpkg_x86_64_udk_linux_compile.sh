@@ -124,11 +124,6 @@ _COMPILE_DUETPKG_FSVARIABLE_BRANCH
 
 echo
 
-cd "${_WD}/"
-# "${_WD}/duetpkg_x86_64_post_compile.sh"
-
-echo
-
 unset _SOURCE_CODES_DIR
 unset _WD
 unset _UDK_DIR
