@@ -164,8 +164,7 @@ _GRUB2_UEFI_PRECOMPILE_STEPS() {
 	# fi
 	
 	## Archlinux changed default /usr/bin/python to python3, need to use /usr/bin/python2 instead
-	# if [[ "$(which python2)" ]]
-	# then
+	# if [[ "$(which python2)" ]]; then
 	# 	install -D -m0755 "${_WD}/autogen.sh" "${_WD}/autogen_unmodified.sh"
 	# 	sed 's|python |python2 |g' -i "${_WD}/autogen.sh" || true
 	# fi
@@ -181,8 +180,8 @@ _GRUB2_UEFI_PRECOMPILE_STEPS() {
 	
 	## GRUB2 UEFI Build Directory
 	install -d "${_WD}/GRUB2_UEFI_BUILD_DIR_${_TARGET_UEFI_ARCH}"
-	cp --verbose "${_WD}/grub.default" "${_WD}/GRUB2_UEFI_BUILD_DIR_${_TARGET_UEFI_ARCH}/" || true
-	cp --verbose "${_WD}/grub.cfg" "${_WD}/GRUB2_UEFI_BUILD_DIR_${_TARGET_UEFI_ARCH}/" || true
+	install -D -m0644 "${_WD}/grub.default" "${_WD}/GRUB2_UEFI_BUILD_DIR_${_TARGET_UEFI_ARCH}/grub.default" || true
+	install -D -m0644 "${_WD}/grub.cfg" "${_WD}/GRUB2_UEFI_BUILD_DIR_${_TARGET_UEFI_ARCH}/grub.cfg" || true
 	
 }
 
@@ -245,13 +244,13 @@ _GRUB2_UEFI_POSTCOMPILE_SETUP_PREFIX_DIR() {
 	sudo install -d "${_GRUB2_UEFI_SYSCONF_DIR}/default"
 	
 	if [[ -e "${_WD}/grub.default" ]]; then
-		sudo cp --verbose "${_WD}/grub.default" "${_GRUB2_UEFI_SYSCONF_DIR}/default/grub" || true
+		sudo install -D -m0644 "${_WD}/grub.default" "${_GRUB2_UEFI_SYSCONF_DIR}/default/grub" || true
 	fi
 	
 	sudo chmod --verbose -x "${_GRUB2_UEFI_SYSCONF_DIR}/default/grub" || true
 	echo
 	
-	sudo cp --verbose "$(which gettext.sh)" "${_GRUB2_UEFI_BIN_DIR}/" || true
+	sudo install -D -m0755 "$(which gettext.sh)" "${_GRUB2_UEFI_BIN_DIR}/gettext.sh" || true
 	sudo chmod --verbose -x "${_GRUB2_UEFI_SYSCONF_DIR}/grub.d/README" || true
 	echo
 	
@@ -301,11 +300,11 @@ _GRUB2_UEFI_SETUP_UEFISYS_PART_DIR() {
 	echo
 	
 	## Copy the old config file as ${_GRUB2_UEFI_MENU_CONFIG}_backup.cfg
-	sudo cp --verbose "${_GRUB2_UEFI_BACKUP_DIR}/${_GRUB2_UEFI_MENU_CONFIG}.cfg" "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_MENU_CONFIG}_backup.cfg" || true
-	# sudo cp --verbose "${_GRUB2_UEFI_BACKUP_DIR}/${_GRUB2_UEFI_MENU_CONFIG}.cfg" "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_MENU_CONFIG}.cfg" || true
+	sudo install -D -m0644 "${_GRUB2_UEFI_BACKUP_DIR}/${_GRUB2_UEFI_MENU_CONFIG}.cfg" "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_MENU_CONFIG}_backup.cfg" || true
+	# sudo install -D -m0644 "${_GRUB2_UEFI_BACKUP_DIR}/${_GRUB2_UEFI_MENU_CONFIG}.cfg" "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_MENU_CONFIG}.cfg" || true
 	
 	if [[ -e "${_WD}/grub.cfg" ]]; then
-		sudo cp --verbose "${_WD}/grub.cfg" "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_MENU_CONFIG}.cfg" || true
+		sudo install -D -m0644 "${_WD}/grub.cfg" "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_MENU_CONFIG}.cfg" || true
 	fi
 	
 	# sudo "${_GRUB2_UEFI_SBIN_DIR}/${_GRUB2_UEFI_NAME}-mkconfig" --output="${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_MENU_CONFIG}.cfg" || true
@@ -381,9 +380,9 @@ _GRUB2_UEFI_SETUP_BOOTX64_EFI_APP() {
 	sudo rm -f --verbose "${_UEFI_SYSTEM_PART_MP}/efi/boot/boot${_OTHER_UEFI_ARCH_NAME}.efi" || true
 	
 	if [[ -e "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_NAME}.efi" ]]; then
-		sudo cp --verbose "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_NAME}.efi" "${_UEFI_SYSTEM_PART_MP}/efi/boot/boot${_OTHER_UEFI_ARCH_NAME}.efi"
+		sudo install -D -m0644 "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_NAME}.efi" "${_UEFI_SYSTEM_PART_MP}/efi/boot/boot${_OTHER_UEFI_ARCH_NAME}.efi"
 	else
-		sudo cp --verbose "${_GRUB2_UEFI_SYSTEM_PART_DIR}/grub.efi" "${_UEFI_SYSTEM_PART_MP}/efi/boot/boot${_OTHER_UEFI_ARCH_NAME}.efi"
+		sudo install -D -m0644 "${_GRUB2_UEFI_SYSTEM_PART_DIR}/grub.efi" "${_UEFI_SYSTEM_PART_MP}/efi/boot/boot${_OTHER_UEFI_ARCH_NAME}.efi"
 	fi
 	
 	cat << EOF > "${_WD}/efi_boot_${_GRUB2_UEFI_MENU_CONFIG}.cfg"
@@ -396,9 +395,9 @@ EOF
 	sudo rm -f --verbose "${_UEFI_SYSTEM_PART_MP}/efi/boot/${_GRUB2_UEFI_MENU_CONFIG}.cfg" || true
 	
 	if [[ -e "${_WD}/efi_boot_${_GRUB2_UEFI_MENU_CONFIG}.cfg" ]]; then
-		sudo cp --verbose "${_WD}/efi_boot_${_GRUB2_UEFI_MENU_CONFIG}.cfg" "${_UEFI_SYSTEM_PART_MP}/efi/boot/${_GRUB2_UEFI_MENU_CONFIG}.cfg"
+		sudo install -D -m0644 "${_WD}/efi_boot_${_GRUB2_UEFI_MENU_CONFIG}.cfg" "${_UEFI_SYSTEM_PART_MP}/efi/boot/${_GRUB2_UEFI_MENU_CONFIG}.cfg"
 	else
-		sudo cp --verbose "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_MENU_CONFIG}.cfg" "${_UEFI_SYSTEM_PART_MP}/efi/boot/${_GRUB2_UEFI_MENU_CONFIG}.cfg"
+		sudo install -D -m0644 "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_MENU_CONFIG}.cfg" "${_UEFI_SYSTEM_PART_MP}/efi/boot/${_GRUB2_UEFI_MENU_CONFIG}.cfg"
 	fi
 	
 }

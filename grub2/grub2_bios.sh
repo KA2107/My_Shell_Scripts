@@ -168,8 +168,8 @@ _GRUB2_BIOS_PRECOMPILE_STEPS() {
 	
 	## GRUB2 BIOS Build Directory
 	install -d "${_WD}/GRUB2_BIOS_BUILD_DIR"
-	cp --verbose "${_WD}/grub.default" "${_WD}/GRUB2_BIOS_BUILD_DIR/" || true
-	cp --verbose "${_WD}/grub.cfg" "${_WD}/GRUB2_BIOS_BUILD_DIR/" || true
+	install -D -m0644 "${_WD}/grub.default" "${_WD}/GRUB2_BIOS_BUILD_DIR/grub.default" || true
+	install -D -m0644 "${_WD}/grub.cfg" "${_WD}/GRUB2_BIOS_BUILD_DIR/grub.cfg" || true
 	
 }
 
@@ -229,13 +229,13 @@ _GRUB2_BIOS_POSTCOMPILE_SETUP_PREFIX_DIR() {
 	sudo install -d "${_GRUB2_BIOS_SYSCONF_DIR}/default"
 	
 	if [[ -e "${_WD}/grub.default" ]]; then
-		sudo cp --verbose "${_WD}/grub.default" "${_GRUB2_BIOS_SYSCONF_DIR}/default/grub" || true
+		sudo install -D -m0644 "${_WD}/grub.default" "${_GRUB2_BIOS_SYSCONF_DIR}/default/grub" || true
 	fi
 	
 	sudo chmod --verbose -x "${_GRUB2_BIOS_SYSCONF_DIR}/default/grub" || true
 	echo
 	
-	sudo cp --verbose "$(which gettext.sh)" "${_GRUB2_BIOS_BIN_DIR}/" || true
+	sudo install -D -m0755 "$(which gettext.sh)" "${_GRUB2_BIOS_BIN_DIR}/gettext.sh" || true
 	sudo chmod --verbose -x "${_GRUB2_BIOS_SYSCONF_DIR}/grub.d/README" || true
 	echo
 	
@@ -270,11 +270,11 @@ _GRUB2_BIOS_SETUP_BOOT_PART_DIR() {
 	sudo cp "${_GRUB2_BIOS_DATAROOT_DIR}/${_GRUB2_BIOS_NAME}"/*.pf2 "${_GRUB2_BOOT_PART_DIR}/" || true
 	echo
 	
-	sudo cp --verbose "${_GRUB2_BIOS_BACKUP_DIR}/${_GRUB2_BIOS_MENU_CONFIG}.cfg" "${_GRUB2_BOOT_PART_DIR}/${_GRUB2_BIOS_MENU_CONFIG}_backup.cfg" || true
-	# sudo cp --verbose "${_GRUB2_BIOS_BACKUP_DIR}/${_GRUB2_BIOS_MENU_CONFIG}.cfg" "${_GRUB2_BOOT_PART_DIR}/${_GRUB2_BIOS_MENU_CONFIG}.cfg" || true
+	sudo install -D -m0644 "${_GRUB2_BIOS_BACKUP_DIR}/${_GRUB2_BIOS_MENU_CONFIG}.cfg" "${_GRUB2_BOOT_PART_DIR}/${_GRUB2_BIOS_MENU_CONFIG}_backup.cfg" || true
+	# sudo install -D -m0644 "${_GRUB2_BIOS_BACKUP_DIR}/${_GRUB2_BIOS_MENU_CONFIG}.cfg" "${_GRUB2_BOOT_PART_DIR}/${_GRUB2_BIOS_MENU_CONFIG}.cfg" || true
 	
 	if [[ -e "${_WD}/grub.cfg" ]]; then
-		sudo cp --verbose "${_WD}/grub.cfg" "${_GRUB2_BOOT_PART_DIR}/${_GRUB2_BIOS_MENU_CONFIG}.cfg" || true
+		sudo install -D -m0644 "${_WD}/grub.cfg" "${_GRUB2_BOOT_PART_DIR}/${_GRUB2_BIOS_MENU_CONFIG}.cfg" || true
 	fi
 	
 	# sudo ${_GRUB2_BIOS_SBIN_DIR}/${_GRUB2_BIOS_NAME}-mkconfig --output=${_GRUB2_BOOT_PART_DIR}/${_GRUB2_BIOS_MENU_CONFIG}.cfg || true
