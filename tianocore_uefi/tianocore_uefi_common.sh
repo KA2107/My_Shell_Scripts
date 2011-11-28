@@ -156,7 +156,7 @@ _APPLY_CHANGES() {
 	
 	## Remove GCC -g debug option
 	sed 's|^DEFINE GCC_ALL_CC_FLAGS            = -g |^DEFINE GCC_ALL_CC_FLAGS            = |g' -i "${EDK_TOOLS_PATH}/Conf/tools_def.template" || true
-	sed 's|^DEFINE GCC44_ALL_CC_FLAGS            = -g |^DEFINE GCC44_ALL_CC_FLAGS            = |g' -i "${EDK_TOOLS_PATH}/Conf/tools_def.template" || true
+	sed 's|^DEFINE GCC44_ALL_CC_FLAGS            = -g |^DEFINE GCC44_ALL_CC_FLAGS            = -Os |g' -i "${EDK_TOOLS_PATH}/Conf/tools_def.template" || true
 	
 	## DuetPkg
 	# sed 's|#define EFI_PAGE_BASE_OFFSET_IN_LDR 0x70000|#define EFI_PAGE_BASE_OFFSET_IN_LDR 0x80000|g' -i "${EDK_TOOLS_PATH}/Source/C/GenPage/GenPage.c" || true
