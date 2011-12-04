@@ -175,8 +175,8 @@ _GRUB2_BIOS_PRECOMPILE_STEPS() {
 
 _GRUB2_BIOS_COMPILE_STEPS() {
 	
-	## Uncomment below to use ${_GRUB2_BIOS_MENU_CONFIG}.cfg as the menu config file instead of grub.cfg
-	sed "s|grub.cfg|${_GRUB2_BIOS_MENU_CONFIG}.cfg|g" -i "${_WD}/grub-core/normal/main.c" || true
+	## Uncomment below to use ${_GRUB2_BIOS_MENU_CONFIG}.cfg as the menu config file instead of grub.cfg - not recommended
+	# sed "s|grub.cfg|${_GRUB2_BIOS_MENU_CONFIG}.cfg|g" -i "${_WD}/grub-core/normal/main.c" || true
 	
 	cd "${_WD}/GRUB2_BIOS_BUILD_DIR"
 	echo
