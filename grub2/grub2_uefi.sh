@@ -289,20 +289,33 @@ _GRUB2_UEFI_SETUP_UEFISYS_PART_DIR() {
 	
 	cat << EOF > "${_WD}/grub_standalone_memdisk_${_GRUB2_UEFI_MENU_CONFIG}.cfg"
 search --file --no-floppy --set=grub2_uefi_root "/${_GRUB2_UEFI_APP_PREFIX}/${_GRUB2_UEFI_NAME}-standalone.efi"
+
 # set prefix=(\${grub2_uefi_root})/${_GRUB2_UEFI_APP_PREFIX}
-configfile (\${grub2_uefi_root})/${_GRUB2_UEFI_APP_PREFIX}/${_GRUB2_UEFI_MENU_CONFIG}.cfg
+source (\${grub2_uefi_root})/${_GRUB2_UEFI_APP_PREFIX}/${_GRUB2_UEFI_MENU_CONFIG}.cfg
 
 EOF
 	
-	## Create the grub2 standalone uefi application
-	sudo "${_GRUB2_UEFI_BIN_DIR}/${_GRUB2_UEFI_NAME}-mkstandalone" --directory="${_GRUB2_UEFI_LIB_DIR}/${_GRUB2_UEFI_NAME}/${_TARGET_UEFI_ARCH}-efi" --format="${_TARGET_UEFI_ARCH}-efi" --compression="xz" --config="${_WD}/grub_standalone_memdisk_${_GRUB2_UEFI_MENU_CONFIG}.cfg" --output="${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_NAME}-standalone.efi"
+	[[ ! -d "${_WD}/boot/grub" ]] && mkdir -p "${_WD}/boot/grub"
+	install -D -m0644 "${_WD}/grub_standalone_memdisk_${_GRUB2_UEFI_MENU_CONFIG}.cfg" "${_WD}/boot/grub/grub.cfg"
 	
-	sudo rm -f --verbose "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_NAME}-standalone.cfg" || true
+	__WD="${PWD}/"
+	
+	cd "${_WD}/"
+	
+	## Create the grub2 standalone uefi application
+	sudo "${_GRUB2_UEFI_BIN_DIR}/${_GRUB2_UEFI_NAME}-mkstandalone" --directory="${_GRUB2_UEFI_LIB_DIR}/${_GRUB2_UEFI_NAME}/${_TARGET_UEFI_ARCH}-efi" --format="${_TARGET_UEFI_ARCH}-efi" --compression="xz" --output="${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_NAME}-standalone.efi" "boot/grub/grub.cfg"
+	
+	cd "${__WD}/"
+	
+	sudo rm -rf "${_WD}/boot/grub"
+	# sudo rm -rf "${_WD}/boot"
+	
+	sudo rm -f --verbose "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_NAME}_standalone.cfg" || true
 	
 	if [[ -e "${_WD}/grub_standalone_memdisk_${_GRUB2_UEFI_MENU_CONFIG}.cfg" ]]; then
-		sudo install -D -m0644 "${_WD}/grub_standalone_memdisk_${_GRUB2_UEFI_MENU_CONFIG}.cfg" "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_NAME}-standalone.cfg"
+		sudo install -D -m0644 "${_WD}/grub_standalone_memdisk_${_GRUB2_UEFI_MENU_CONFIG}.cfg" "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_NAME}_standalone.cfg"
 	fi
-	
+	 
 	## Create the grub2 custom uefi application
 	# sudo "${_GRUB2_UEFI_BIN_DIR}/${_GRUB2_UEFI_NAME}-mkimage" --verbose --directory="${_GRUB2_UEFI_LIB_DIR}/${_GRUB2_UEFI_NAME}/${_TARGET_UEFI_ARCH}-efi" --format="${_TARGET_UEFI_ARCH}-efi" --compression="xz" --prefix="" --output="${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_NAME}.efi" ${_GRUB2_UEFI_FINAL_MODULES}
 	echo
@@ -372,6 +385,7 @@ echo
 set +x
 
 echo
+
 EOF
 		
 		chmod +x "${_WD}/execute_efibootmgr.sh" || true
@@ -413,8 +427,9 @@ _GRUB2_UEFI_SETUP_BOOTX64_EFI_APP() {
 	
 	cat << EOF > "${_WD}/efi_boot_${_GRUB2_UEFI_MENU_CONFIG}.cfg"
 search --file --no-floppy --set=grub2_uefi_root "/${_GRUB2_UEFI_APP_PREFIX}/grub.efi"
+
 set prefix=(\${grub2_uefi_root})/${_GRUB2_UEFI_APP_PREFIX}
-configfile \${prefix}/${_GRUB2_UEFI_MENU_CONFIG}.cfg
+source \${prefix}/${_GRUB2_UEFI_MENU_CONFIG}.cfg
 
 EOF
 	
