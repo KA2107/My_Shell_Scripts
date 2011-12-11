@@ -3,6 +3,7 @@
 export _WD="${PWD}/"
 
 export _TARGET_UEFI_ARCH='x86_64'
+export _UEFI_SYSTEM_PART_MP="/boot/efi"
 
 export _GRUB2_UEFI_PREFIX_DIR="/_grub_/grub_uefi_${_TARGET_UEFI_ARCH}"
 export _GRUB2_UEFI_BIN_DIR="${_GRUB2_UEFI_PREFIX_DIR}/bin"
@@ -15,7 +16,7 @@ export _GRUB2_UEFI_NAME='grub_uefi_x86_64'
 export _GRUB2_UEFI_MENU_CONFIG="grub"
 
 export _GRUB2_UEFI_APP_PREFIX="efi/${_GRUB2_UEFI_NAME}"
-export _GRUB2_UEFI_SYSTEM_PART_DIR="/boot/efi/${_GRUB2_UEFI_APP_PREFIX}"
+export _GRUB2_UEFI_SYSTEM_PART_DIR="${_UEFI_SYSTEM_PART_MP}/${_GRUB2_UEFI_APP_PREFIX}"
 
 export _GRUB2_UNIFONT_PATH='/usr/share/fonts/misc'
 
@@ -83,6 +84,12 @@ if [[ -e "${_WD}/grub_standalone_memdisk_${_GRUB2_UEFI_NAME}.cfg" ]]; then
 	echo
 fi
 
+sudo rm -f --verbose "${_UEFI_SYSTEM_PART_MP}/efi/boot/bootx64.efi"
+echo
+
+sudo install -D -m0644 "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_NAME}_standalone.efi" "${_UEFI_SYSTEM_PART_MP}/efi/boot/bootx64.efi"
+echo
+
 # sudo "${_GRUB2_UEFI_BIN_DIR}/${_GRUB2_UEFI_NAME}-mkfont" --verbose --output="${_GRUB2_UEFI_SYSTEM_PART_DIR}/unicode.pf2" "${_GRUB2_UNIFONT_PATH}/unifont.bdf" || true
 echo
 # sudo "${_GRUB2_UEFI_BIN_DIR}/${_GRUB2_UEFI_NAME}-mkfont" --verbose --ascii-bitmaps --output="${_GRUB2_UEFI_SYSTEM_PART_DIR}/ascii.pf2" "${_GRUB2_UNIFONT_PATH}/unifont.bdf" || true
@@ -95,6 +102,7 @@ set +x +e
 
 unset _WD
 unset _TARGET_UEFI_ARCH
+unset _UEFI_SYSTEM_PART_MP
 unset _GRUB2_UEFI_PREFIX_DIR
 unset _GRUB2_UEFI_BIN_DIR
 unset _GRUB2_UEFI_SBIN_DIR
