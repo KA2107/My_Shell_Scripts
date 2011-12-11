@@ -12,7 +12,7 @@ export _GRUB2_UEFI_LIB_DIR="${_GRUB2_UEFI_PREFIX_DIR}/lib"
 export _GRUB2_UEFI_DATAROOT_DIR="${_GRUB2_UEFI_PREFIX_DIR}/share"
 
 export _GRUB2_UEFI_NAME='grub_uefi_x86_64'
-export _GRUB2_UEFI_MENU_CONFIG="${_GRUB2_UEFI_NAME}"
+export _GRUB2_UEFI_MENU_CONFIG="grub"
 
 export _GRUB2_UEFI_APP_PREFIX="efi/${_GRUB2_UEFI_NAME}"
 export _GRUB2_UEFI_SYSTEM_PART_DIR="/boot/efi/${_GRUB2_UEFI_APP_PREFIX}"
@@ -23,7 +23,7 @@ set -x -e
 
 echo
 
-cat << EOF > "${_WD}/grub_standalone_memdisk_${_GRUB2_UEFI_MENU_CONFIG}.cfg"
+cat << EOF > "${_WD}/grub_standalone_memdisk_${_GRUB2_UEFI_NAME}.cfg"
 set _UEFI_ARCH="${_TARGET_UEFI_ARCH}"
 
 insmod usbms
@@ -56,7 +56,7 @@ echo
 [[ -e "${_WD}/boot/grub/grub.cfg" ]] && mv "${_WD}/boot/grub/grub.cfg" "${_WD}/boot/grub/grub.cfg.save"
 echo
 
-install -D -m0644 "${_WD}/grub_standalone_memdisk_${_GRUB2_UEFI_MENU_CONFIG}.cfg" "${_WD}/boot/grub/grub.cfg"
+install -D -m0644 "${_WD}/grub_standalone_memdisk_${_GRUB2_UEFI_NAME}.cfg" "${_WD}/boot/grub/grub.cfg"
 echo
 
 __WD="${PWD}/"
@@ -78,8 +78,8 @@ echo
 sudo rm -f --verbose "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_NAME}_standalone.cfg" || true
 echo
 
-if [[ -e "${_WD}/grub_standalone_memdisk_${_GRUB2_UEFI_MENU_CONFIG}.cfg" ]]; then
-	sudo install -D -m0644 "${_WD}/grub_standalone_memdisk_${_GRUB2_UEFI_MENU_CONFIG}.cfg" "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_NAME}_standalone.cfg"
+if [[ -e "${_WD}/grub_standalone_memdisk_${_GRUB2_UEFI_NAME}.cfg" ]]; then
+	sudo install -D -m0644 "${_WD}/grub_standalone_memdisk_${_GRUB2_UEFI_NAME}.cfg" "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_NAME}_standalone.cfg"
 	echo
 fi
 

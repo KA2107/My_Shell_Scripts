@@ -66,7 +66,7 @@ fi
 	## The location of grub-extras source folder if you have.
 	export GRUB_CONTRIB="${_WD}/grub2_extras__GIT_BZR/"
 	
-	export _REPLACE_GRUB2_UEFI_MENU_CONFIG='0'
+	# export _REPLACE_GRUB2_UEFI_MENU_CONFIG='0'
 	export _EXECUTE_EFIBOOTMGR='1'
 	
 	export _TARGET_UEFI_ARCH="${1}"
@@ -79,9 +79,10 @@ fi
 	
 	export _GRUB2_UEFI_MENU_CONFIG='grub'
 	
-	if [[ "${_REPLACE_GRUB2_UEFI_MENU_CONFIG}" == '1' ]]; then
-		export _GRUB2_UEFI_MENU_CONFIG="${_GRUB2_UEFI_NAME}"
-	fi
+	# if [[ "${_REPLACE_GRUB2_UEFI_MENU_CONFIG}" == '1' ]]; then
+		# export _GRUB2_UEFI_MENU_CONFIG="${_GRUB2_UEFI_NAME}"
+		export _GRUB2_UEFI_MENU_CONFIG="grub"
+	# fi
 	
 	if [[ "${_GRUB2_UEFI_PREFIX_DIR}" == '' ]]; then
 		export _GRUB2_UEFI_PREFIX_DIR="/_grub_/grub_uefi_${_TARGET_UEFI_ARCH}"
@@ -285,7 +286,7 @@ _GRUB2_UEFI_SETUP_UEFISYS_PART_DIR() {
 	sudo "${_GRUB2_UEFI_SBIN_DIR}/${_GRUB2_UEFI_NAME}-install" --root-directory="${_UEFI_SYSTEM_PART_MP}" --boot-directory="${_UEFI_SYSTEM_PART_MP}/efi" --bootloader-id="${_GRUB2_UEFI_NAME}" --no-floppy --recheck --debug
 	echo
 	
-	cat << EOF > "${_WD}/grub_standalone_memdisk_${_GRUB2_UEFI_MENU_CONFIG}.cfg"
+	cat << EOF > "${_WD}/grub_standalone_memdisk_${_GRUB2_UEFI_NAME}.cfg"
 set _UEFI_ARCH="${_TARGET_UEFI_ARCH}"
 
 insmod usbms
@@ -318,7 +319,7 @@ EOF
 	[[ -e "${_WD}/boot/grub/grub.cfg" ]] && mv "${_WD}/boot/grub/grub.cfg" "${_WD}/boot/grub/grub.cfg.save"
 	echo
 	
-	install -D -m0644 "${_WD}/grub_standalone_memdisk_${_GRUB2_UEFI_MENU_CONFIG}.cfg" "${_WD}/boot/grub/grub.cfg"
+	install -D -m0644 "${_WD}/grub_standalone_memdisk_${_GRUB2_UEFI_NAME}.cfg" "${_WD}/boot/grub/grub.cfg"
 	echo
 	
 	__WD="${PWD}/"
@@ -340,8 +341,8 @@ EOF
 	sudo rm -f --verbose "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_NAME}_standalone.cfg" || true
 	echo
 	
-	if [[ -e "${_WD}/grub_standalone_memdisk_${_GRUB2_UEFI_MENU_CONFIG}.cfg" ]]; then
-		sudo install -D -m0644 "${_WD}/grub_standalone_memdisk_${_GRUB2_UEFI_MENU_CONFIG}.cfg" "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_NAME}_standalone.cfg"
+	if [[ -e "${_WD}/grub_standalone_memdisk_${_GRUB2_UEFI_NAME}.cfg" ]]; then
+		sudo install -D -m0644 "${_WD}/grub_standalone_memdisk_${_GRUB2_UEFI_NAME}.cfg" "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_NAME}_standalone.cfg"
 		echo
 	fi
 	 
