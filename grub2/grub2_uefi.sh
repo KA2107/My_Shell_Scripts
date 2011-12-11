@@ -279,15 +279,30 @@ _GRUB2_UEFI_SETUP_UEFISYS_PART_DIR() {
 	
 	## Load device-mapper kernel module - needed by grub-probe
 	sudo modprobe -q dm-mod || true
+	echo
 	
 	## Setup the GRUB2 folder in the UEFI System Partition and create the grub.efi application
 	sudo "${_GRUB2_UEFI_SBIN_DIR}/${_GRUB2_UEFI_NAME}-install" --root-directory="${_UEFI_SYSTEM_PART_MP}" --boot-directory="${_UEFI_SYSTEM_PART_MP}/efi" --bootloader-id="${_GRUB2_UEFI_NAME}" --no-floppy --recheck --debug
 	echo
 	
-	# sudo rm -f --verbose "${_GRUB2_UEFI_SYSTEM_PART_DIR}/core.efi" || true
-	echo
-	
 	cat << EOF > "${_WD}/grub_standalone_memdisk_${_GRUB2_UEFI_MENU_CONFIG}.cfg"
+set _UEFI_ARCH="${_TARGET_UEFI_ARCH}"
+
+insmod usbms
+insmod usb_keyboard
+
+insmod part_gpt
+insmod part_msdos
+
+insmod fat
+insmod iso9660
+insmod udf
+
+insmod ext2
+insmod reiserfs
+insmod ntfs
+insmod hfsplus
+
 search --file --no-floppy --set=grub2_uefi_root "/${_GRUB2_UEFI_APP_PREFIX}/${_GRUB2_UEFI_NAME}_standalone.efi"
 
 # set prefix=(\${grub2_uefi_root})/${_GRUB2_UEFI_APP_PREFIX}
@@ -295,25 +310,39 @@ source (\${grub2_uefi_root})/${_GRUB2_UEFI_APP_PREFIX}/${_GRUB2_UEFI_MENU_CONFIG
 
 EOF
 	
-	[[ ! -d "${_WD}/boot/grub" ]] && mkdir -p "${_WD}/boot/grub"
+	echo
+	
+	mkdir -p "${_WD}/boot/grub" || true
+	echo
+	
+	[[ -e "${_WD}/boot/grub/grub.cfg" ]] && mv "${_WD}/boot/grub/grub.cfg" "${_WD}/boot/grub/grub.cfg.save"
+	echo
+	
 	install -D -m0644 "${_WD}/grub_standalone_memdisk_${_GRUB2_UEFI_MENU_CONFIG}.cfg" "${_WD}/boot/grub/grub.cfg"
+	echo
 	
 	__WD="${PWD}/"
+	echo
 	
 	cd "${_WD}/"
+	echo
 	
 	## Create the grub2 standalone uefi application
 	sudo "${_GRUB2_UEFI_BIN_DIR}/${_GRUB2_UEFI_NAME}-mkstandalone" --directory="${_GRUB2_UEFI_LIB_DIR}/${_GRUB2_UEFI_NAME}/${_TARGET_UEFI_ARCH}-efi" --format="${_TARGET_UEFI_ARCH}-efi" --compression="xz" --output="${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_NAME}_standalone.efi" "boot/grub/grub.cfg"
+	echo
 	
 	cd "${__WD}/"
+	echo
 	
-	sudo rm -rf "${_WD}/boot/grub"
-	# sudo rm -rf "${_WD}/boot"
+	[[ -e "${_WD}/boot/grub/grub.cfg.save" ]] && mv "${_WD}/boot/grub/grub.cfg.save" "${_WD}/boot/grub/grub.cfg"
+	echo
 	
 	sudo rm -f --verbose "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_NAME}_standalone.cfg" || true
+	echo
 	
 	if [[ -e "${_WD}/grub_standalone_memdisk_${_GRUB2_UEFI_MENU_CONFIG}.cfg" ]]; then
 		sudo install -D -m0644 "${_WD}/grub_standalone_memdisk_${_GRUB2_UEFI_MENU_CONFIG}.cfg" "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_NAME}_standalone.cfg"
+		echo
 	fi
 	 
 	## Create the grub2 custom uefi application
