@@ -4,7 +4,7 @@ export _WD="${PWD}/"
 
 export _TARGET_UEFI_ARCH='x86_64'
 
-export _GRUB2_UEFI_PREFIX="/_grub_/grub_uefi_${_TARGET_UEFI_ARCH}"
+export _GRUB2_UEFI_PREFIX_DIR="/_grub_/grub_uefi_${_TARGET_UEFI_ARCH}"
 export _GRUB2_UEFI_BIN_DIR="${_GRUB2_UEFI_PREFIX_DIR}/bin"
 export _GRUB2_UEFI_SBIN_DIR="${_GRUB2_UEFI_PREFIX_DIR}/bin"
 export _GRUB2_UEFI_SYSCONF_DIR="${_GRUB2_UEFI_PREFIX_DIR}/etc"
@@ -95,7 +95,7 @@ set +x +e
 
 unset _WD
 unset _TARGET_UEFI_ARCH
-unset _GRUB2_UEFI_PREFIX
+unset _GRUB2_UEFI_PREFIX_DIR
 unset _GRUB2_UEFI_BIN_DIR
 unset _GRUB2_UEFI_SBIN_DIR
 unset _GRUB2_UEFI_SYSCONF_DIR
