@@ -426,7 +426,7 @@ _GRUB2_UEFI_SETUP_BOOTX64_EFI_APP() {
 	fi
 	
 	cat << EOF > "${_WD}/efi_boot_${_GRUB2_UEFI_MENU_CONFIG}.cfg"
-search --file --no-floppy --set=grub2_uefi_root "/${_GRUB2_UEFI_APP_PREFIX}/grub.efi"
+search --file --no-floppy --set=grub2_uefi_root "/${_GRUB2_UEFI_APP_PREFIX}/core.efi"
 
 set prefix=(\${grub2_uefi_root})/${_GRUB2_UEFI_APP_PREFIX}
 source \${prefix}/${_GRUB2_UEFI_MENU_CONFIG}.cfg
