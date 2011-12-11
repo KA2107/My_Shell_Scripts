@@ -431,6 +431,15 @@ EOF
 	
 }
 
+_GRUB2_APPLE_EFI_BOOTMGR() {
+	
+	echo
+	
+	echo "TODO: Apple Mac EFI Bootloader Setup"
+	
+	echo
+	
+}
 _GRUB2_UEFI_SETUP_BOOTX64_EFI_APP() {
 	
 	if [[ ! -d "${_UEFI_SYSTEM_PART_MP}/efi/boot" ]]; then
@@ -517,7 +526,11 @@ if [[ "${_PROCESS_CONTINUE}" == 'TRUE' ]]; then
 		
 		echo
 		
-		_GRUB2_UEFI_EFIBOOTMGR
+		if [[ "$(dmidecode -s system-manufacturer)" == "Apple Inc." ]] || [[ "$(dmidecode -s system-manufacturer)" == "Apple Computer, Inc." ]]; then
+			_GRUB2_APPLE_EFI_BOOTMGR
+		else
+			_GRUB2_UEFI_EFIBOOTMGR
+		fi
 		
 		echo
 		
