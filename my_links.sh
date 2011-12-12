@@ -133,14 +133,6 @@ _GRUB2() {
 	
 	echo
 	
-	_SOURCE_DIR="${_SCRIPTS_DIR}/bzr/"
-	_SOURCE_FILE="grub2_bzr_export.sh"
-	_LINK_DIR="${_GRUB2_DIR}/Source_BZR/"
-	_LINK_FILE="${_SOURCE_FILE}"
-	_CREATE_SYMLINK
-	
-	echo
-	
 	unset _SOURCE_DIR
 	unset _SOURCE_FILE
 	unset _LINK_DIR
