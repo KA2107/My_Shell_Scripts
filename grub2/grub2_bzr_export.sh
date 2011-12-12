@@ -80,7 +80,7 @@ set -x -e
 
 echo
 
-# _MAIN_SNAPSHOT
+_MAIN_SNAPSHOT
 
 echo
 
