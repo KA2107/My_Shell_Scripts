@@ -40,8 +40,9 @@ _USAGE() {
 	echo
 	echo 'Please read this script fully and modify it to suite your requirements before actually running it'
 	echo
-	export _PROCESS_CONTINUE='FALSE'
 	
+	export _PROCESS_CONTINUE='FALSE'
+	exit 0
 }
 
 if [[ \
@@ -55,8 +56,6 @@ if [[ \
 	]]
 then
 	_USAGE
-	export _PROCESS_CONTINUE="FALSE"
-	exit 0
 fi
 
 # _GRUB2_UEFI_SET_ENV_VARS() {
@@ -67,7 +66,7 @@ fi
 	export GRUB_CONTRIB="${_WD}/grub2_extras__GIT_BZR/"
 	
 	# export _REPLACE_GRUB2_UEFI_MENU_CONFIG='0'
-	export _EXECUTE_EFIBOOTMGR='1'
+	export _GRUB2_CREATE_ENTRY_UEFI_BOOTMGR='1'
 	
 	export _TARGET_UEFI_ARCH="${1}"
 	export _UEFI_SYSTEM_PART_MP="${2}"
@@ -75,18 +74,17 @@ fi
 	export _GRUB2_UEFI_BACKUP_DIR="${4}"
 	export _GRUB2_UEFI_UTILS_BACKUP_DIR="${5}"
 	export _GRUB2_UEFI_PREFIX_DIR="${6}"
+	
 	## If not mentioned, _GRUB2_UEFI_PREFIX_DIR env variable will be set to /_grub_/grub_uefi_${_TARGET_UEFI_ARCH} dir
+	if [[ "${_GRUB2_UEFI_PREFIX_DIR}" == '' ]]; then
+		export _GRUB2_UEFI_PREFIX_DIR="/_grub_/grub_uefi_${_TARGET_UEFI_ARCH}"
+	fi
 	
 	export _GRUB2_UEFI_MENU_CONFIG='grub'
 	
 	# if [[ "${_REPLACE_GRUB2_UEFI_MENU_CONFIG}" == '1' ]]; then
 		# export _GRUB2_UEFI_MENU_CONFIG="${_GRUB2_UEFI_NAME}"
-		export _GRUB2_UEFI_MENU_CONFIG="grub"
 	# fi
-	
-	if [[ "${_GRUB2_UEFI_PREFIX_DIR}" == '' ]]; then
-		export _GRUB2_UEFI_PREFIX_DIR="/_grub_/grub_uefi_${_TARGET_UEFI_ARCH}"
-	fi
 	
 	export _GRUB2_UEFI_BIN_DIR="${_GRUB2_UEFI_PREFIX_DIR}/bin"
 	export _GRUB2_UEFI_SBIN_DIR="${_GRUB2_UEFI_PREFIX_DIR}/sbin"
@@ -116,17 +114,9 @@ fi
 	export _GRUB2_UEFI_CONFIGURE_PATHS_1="--prefix="${_GRUB2_UEFI_PREFIX_DIR}" --bindir="${_GRUB2_UEFI_BIN_DIR}" --sbindir="${_GRUB2_UEFI_SBIN_DIR}" --sysconfdir="${_GRUB2_UEFI_SYSCONF_DIR}" --libdir="${_GRUB2_UEFI_LIB_DIR}""
 	export _GRUB2_UEFI_CONFIGURE_PATHS_2="--datarootdir="${_GRUB2_UEFI_DATAROOT_DIR}" --infodir="${_GRUB2_UEFI_INFO_DIR}" --localedir="${_GRUB2_UEFI_LOCALE_DIR}" --mandir="${_GRUB2_UEFI_MAN_DIR}""
 	
-	# export _GRUB2_UEFI_LST_files="command.lst crypto.lst fs.lst handler.lst moddep.lst partmap.lst parttool.lst terminal.lst video.lst"
+	export _GRUB2_UEFI_LST_files='command.lst crypto.lst fs.lst handler.lst moddep.lst partmap.lst parttool.lst terminal.lst video.lst'
 	
-	export _GRUB2_PARTMAP_FS_MODULES="part_gpt part_msdos part_apple fat ext2 reiserfs iso9660 udf hfsplus hfs btrfs nilfs2 xfs ntfs ntfscomp zfs zfsinfo"
-	export _GRUB2_COMMON_IMP_MODULES="relocator reboot multiboot multiboot2 fshelp xzio gzio memdisk tar normal gfxterm chain linux ls cat search search_fs_file search_fs_uuid search_label help loopback boot configfile echo lvm usbms usb_keyboard"
-	export _GRUB2_UEFI_APP_MODULES="efi_gop efi_uga font png jpeg password pbkdf2 password_pbkdf2"
-	export _GRUB2_EXTRAS_MODULES="lua.mod"
-	
-	# export _GRUB2_UEFI_FINAL_MODULES="${_GRUB2_PARTMAP_FS_MODULES} ${_GRUB2_COMMON_IMP_MODULES} ${_GRUB2_UEFI_APP_MODULES} ${_GRUB2_EXTRAS_MODULES}"
-	export _GRUB2_UEFI_FINAL_MODULES="${_GRUB2_PARTMAP_FS_MODULES} ${_GRUB2_COMMON_IMP_MODULES} ${_GRUB2_UEFI_APP_MODULES}"
-	
-	## _GRUB2_UEFI_FINAL_MODULES - Those modules that will be in the final <_GRUB2_UEFI_NAME>.efi application.
+	export _GRUB2_EXTRAS_MODULES='lua.mod'
 	
 # }
 
@@ -143,26 +133,40 @@ fi
 	echo
 	echo GRUB2_UEFI_Tools_Backup_Path="${_GRUB2_UEFI_UTILS_BACKUP_DIR}"
 	echo
-	echo GRUB2_UEFI_PREFIX_DIR_FOLDER="${_GRUB2_UEFI_PREFIX_DIR}" ## Not compulsory
+	echo GRUB2_UEFI_PREFIX_DIR_FOLDER="${_GRUB2_UEFI_PREFIX_DIR}"
 	echo
 	
 # }
 
-_GRUB2_UEFI_PRECOMPILE_STEPS() {
+_GRUB2_UEFI_DOS2UNIX() {
 	
-	cd "${_WD}/"
+	echo
 	
 	## Convert the line endings of all the source files from DOS to UNIX mode
-	[ ! -e "${_WD}/xman_dos2unix.sh" ] && wget --no-check-certificate --output-file="${_WD}/xman_dos2unix.sh" "https://raw.github.com/the-ridikulus-rat/My_Shell_Scripts/master/xmanutility/xman_dos2unix.sh" || true
-	chmod +x "${_WD}/xman_dos2unix.sh" || true
+	if [[ ! -e "${_WD}/xman_dos2unix.sh" ]]; then
+		wget --no-check-certificate --output-file="${_WD}/xman_dos2unix.sh" "https://raw.github.com/the-ridikulus-rat/My_Shell_Scripts/master/xmanutility/xman_dos2unix.sh" || true
+		echo
+	fi
+	
+	echo
+	
+	chmod --verbose +x "${_WD}/xman_dos2unix.sh" || true
 	"${_WD}/xman_dos2unix.sh" * || true
+	
+	echo
+	
+}
+
+_GRUB2_UEFI_PYTHON_TO_PYTHON2() {
+	
 	echo
 	
 	## Check whether python2 exists, otherwise create /usr/bin/python2 symlink to python executable
-	# if [[ "$(which python2)" ]]
-	# then
+	# if [[ "$(which python2)" ]]; then
 	# 	sudo ln -s "$(which python)" "/usr/bin/python2"
 	# fi
+	
+	echo
 	
 	## Archlinux changed default /usr/bin/python to python3, need to use /usr/bin/python2 instead
 	# if [[ "$(which python2)" ]]; then
@@ -170,26 +174,58 @@ _GRUB2_UEFI_PRECOMPILE_STEPS() {
 	# 	sed 's|python |python2 |g' -i "${_WD}/autogen.sh" || true
 	# fi
 	
-	chmod +x "${_WD}/autogen.sh" || true
+	echo
+	
+}
+
+_GRUB2_UEFI_PO_LINGUAS() {
+	
+	echo
 	
 	if [[ ! -e "${_WD}/po/LINGUAS" ]]; then
 		cd "${_WD}/"
 		rsync -Lrtvz translationproject.org::tp/latest/grub/ "${_WD}/po" || true
+		echo
+		
 		(cd "${_WD}/po" && ls *.po | cut -d. -f1 | xargs) > "${_WD}/po/LINGUAS" || true
-		chmod -x "${_WD}/po/LINGUAS" || true
+		chmod --verbose -x "${_WD}/po/LINGUAS" || true
+		echo
 	fi
+	
+	echo
+	
+}
+
+_GRUB2_UEFI_PRECOMPILE_STEPS() {
+	
+	cd "${_WD}/"
+	echo
+	
+	_GRUB2_UEFI_DOS2UNIX
+	
+	_GRUB2_UEFI_PYTHON_TO_PYTHON2
+	
+	_GRUB2_UEFI_PO_LINGUAS
+	
+	chmod --verbose +x "${_WD}/autogen.sh" || true
+	echo
 	
 	## GRUB2 UEFI Build Directory
 	install -d "${_WD}/GRUB2_UEFI_BUILD_DIR_${_TARGET_UEFI_ARCH}"
+	echo
+	
 	install -D -m0644 "${_WD}/grub.default" "${_WD}/GRUB2_UEFI_BUILD_DIR_${_TARGET_UEFI_ARCH}/grub.default" || true
 	install -D -m0644 "${_WD}/grub.cfg" "${_WD}/GRUB2_UEFI_BUILD_DIR_${_TARGET_UEFI_ARCH}/grub.cfg" || true
+	echo
 	
 }
 
 _GRUB2_UEFI_COMPILE_STEPS() {
 	
-	## Uncomment below to use ${_GRUB2_UEFI_MENU_CONFIG}.cfg as the menu config file instead of grub.cfg - not recommended
-	# sed "s|grub.cfg|${_GRUB2_UEFI_MENU_CONFIG}.cfg|g" -i "${_WD}/grub-core/normal/main.c" || true
+	echo
+	
+	## sed "s|grub.cfg|${_GRUB2_UEFI_MENU_CONFIG}.cfg|g" -i "${_WD}/grub-core/normal/main.c" || true
+	echo
 	
 	"${_WD}/autogen.sh"
 	echo
@@ -199,6 +235,7 @@ _GRUB2_UEFI_COMPILE_STEPS() {
 	
 	## fix unifont.bdf location
 	sed "s|/usr/share/fonts/unifont|${_GRUB2_UNIFONT_PATH}|g" -i "${_WD}/configure"
+	echo
 	
 	"${_WD}/configure" ${_GRUB2_UEFI_CONFIGURE_OPTIONS} ${_GRUB2_UEFI_OTHER_CONFIGURE_OPTIONS} ${_GRUB2_UEFI_CONFIGURE_PATHS_1} ${_GRUB2_UEFI_CONFIGURE_PATHS_2}
 	echo
@@ -206,11 +243,14 @@ _GRUB2_UEFI_COMPILE_STEPS() {
 	make
 	echo
 	
-	sed "s|${_GRUB2_UEFI_MENU_CONFIG}.cfg|grub.cfg|g" -i "${_WD}/grub-core/normal/main.c" || true
+	## sed "s|${_GRUB2_UEFI_MENU_CONFIG}.cfg|grub.cfg|g" -i "${_WD}/grub-core/normal/main.c" || true
+	echo
 	
 }
 
 _GRUB2_UEFI_POSTCOMPILE_SETUP_PREFIX_DIR() {
+	
+	echo
 	
 	if [[ \
 		"${_GRUB2_UEFI_PREFIX_DIR}" != '/' || \
@@ -231,6 +271,7 @@ _GRUB2_UEFI_POSTCOMPILE_SETUP_PREFIX_DIR() {
 	then
 		sudo cp -r --verbose "${_GRUB2_UEFI_PREFIX_DIR}" "${_GRUB2_UEFI_UTILS_BACKUP_DIR}" || true
 		echo
+		
 		sudo rm -rf --verbose "${_GRUB2_UEFI_PREFIX_DIR}" || true
 		echo
 	fi
@@ -238,14 +279,11 @@ _GRUB2_UEFI_POSTCOMPILE_SETUP_PREFIX_DIR() {
 	sudo make install
 	echo
 	
-	cd "${_WD}/GRUB2_UEFI_BUILD_DIR_${_TARGET_UEFI_ARCH}/grub-core/"
-	# sudo cp --verbose ${_GRUB2_EXTRAS_MODULES} "${_GRUB2_UEFI_LIB_DIR}/${_GRUB2_UEFI_NAME}/${_TARGET_UEFI_ARCH}-efi/" || true
-	echo
-	
 	sudo install -d "${_GRUB2_UEFI_SYSCONF_DIR}/default"
 	
 	if [[ -e "${_WD}/grub.default" ]]; then
 		sudo install -D -m0644 "${_WD}/grub.default" "${_GRUB2_UEFI_SYSCONF_DIR}/default/grub" || true
+		echo
 	fi
 	
 	sudo chmod --verbose -x "${_GRUB2_UEFI_SYSCONF_DIR}/default/grub" || true
@@ -268,25 +306,18 @@ _GRUB2_UEFI_BACKUP_OLD_DIR() {
 	## Backup the old GRUB2 folder in the UEFI System Partition
 	sudo cp -r --verbose "${_GRUB2_UEFI_SYSTEM_PART_DIR}" "${_GRUB2_UEFI_BACKUP_DIR}" || true
 	echo
+	
 	## Delete the old GRUB2 folder in the UEFI System Partition
 	sudo rm -rf --verbose "${_GRUB2_UEFI_SYSTEM_PART_DIR}" || true
 	echo
 	
 }
 
-_GRUB2_UEFI_SETUP_UEFISYS_PART_DIR() {
+_GRUB2_UEFI_SETUP_STANDALONE_APP() {
 	
-	sudo sed 's|--bootloader_id=|--bootloader-id=|g' -i "${_GRUB2_UEFI_SBIN_DIR}/${_GRUB2_UEFI_NAME}-install" || true
-	
-	## Load device-mapper kernel module - needed by grub-probe
-	sudo modprobe -q dm-mod || true
 	echo
 	
-	## Setup the GRUB2 folder in the UEFI System Partition and create the grub.efi application
-	sudo "${_GRUB2_UEFI_SBIN_DIR}/${_GRUB2_UEFI_NAME}-install" --root-directory="${_UEFI_SYSTEM_PART_MP}" --boot-directory="${_UEFI_SYSTEM_PART_MP}/efi" --bootloader-id="${_GRUB2_UEFI_NAME}" --no-floppy --recheck --debug
-	echo
-	
-	cat << EOF > "${_WD}/grub_standalone_memdisk_${_GRUB2_UEFI_NAME}.cfg"
+	cat << EOF > "${_WD}/${_GRUB2_UEFI_NAME}_standalone_memdisk_config.cfg"
 set _UEFI_ARCH="${_TARGET_UEFI_ARCH}"
 
 insmod usbms
@@ -316,10 +347,12 @@ EOF
 	mkdir -p "${_WD}/boot/grub" || true
 	echo
 	
-	[[ -e "${_WD}/boot/grub/grub.cfg" ]] && mv "${_WD}/boot/grub/grub.cfg" "${_WD}/boot/grub/grub.cfg.save"
-	echo
+	if [[ -e "${_WD}/boot/grub/grub.cfg" ]]; then
+		mv "${_WD}/boot/grub/grub.cfg" "${_WD}/boot/grub/grub.cfg.save"
+		echo
+	fi
 	
-	install -D -m0644 "${_WD}/grub_standalone_memdisk_${_GRUB2_UEFI_NAME}.cfg" "${_WD}/boot/grub/grub.cfg"
+	install -D -m0644 "${_WD}/${_GRUB2_UEFI_NAME}_standalone_memdisk_config.cfg" "${_WD}/boot/grub/grub.cfg"
 	echo
 	
 	__WD="${PWD}/"
@@ -335,24 +368,44 @@ EOF
 	cd "${__WD}/"
 	echo
 	
-	[[ -e "${_WD}/boot/grub/grub.cfg.save" ]] && mv "${_WD}/boot/grub/grub.cfg.save" "${_WD}/boot/grub/grub.cfg"
-	echo
+	if [[ -e "${_WD}/boot/grub/grub.cfg.save" ]]; then
+		mv "${_WD}/boot/grub/grub.cfg.save" "${_WD}/boot/grub/grub.cfg"
+		echo
+	fi
 	
 	sudo rm -f --verbose "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_NAME}_standalone.cfg" || true
 	echo
 	
-	if [[ -e "${_WD}/grub_standalone_memdisk_${_GRUB2_UEFI_NAME}.cfg" ]]; then
-		sudo install -D -m0644 "${_WD}/grub_standalone_memdisk_${_GRUB2_UEFI_NAME}.cfg" "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_NAME}_standalone.cfg"
+	if [[ -e "${_WD}/${_GRUB2_UEFI_NAME}_standalone_memdisk_config.cfg" ]]; then
+		sudo install -D -m0644 "${_WD}/${_GRUB2_UEFI_NAME}_standalone_memdisk_config.cfg" "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_NAME}_standalone.cfg"
 		echo
 	fi
-	 
-	## Create the grub2 custom uefi application
-	# sudo "${_GRUB2_UEFI_BIN_DIR}/${_GRUB2_UEFI_NAME}-mkimage" --verbose --directory="${_GRUB2_UEFI_LIB_DIR}/${_GRUB2_UEFI_NAME}/${_TARGET_UEFI_ARCH}-efi" --format="${_TARGET_UEFI_ARCH}-efi" --compression="xz" --prefix="" --output="${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_NAME}.efi" ${_GRUB2_UEFI_FINAL_MODULES}
+	
 	echo
 	
-	cd "${_WD}/GRUB2_UEFI_BUILD_DIR_${_TARGET_UEFI_ARCH}/grub-core/"
+}
+
+_GRUB2_UEFI_SETUP_UEFISYS_PART_DIR() {
+	
+	echo
+	
+	sudo sed 's|--bootloader_id=|--bootloader-id=|g' -i "${_GRUB2_UEFI_SBIN_DIR}/${_GRUB2_UEFI_NAME}-install" || true
+	echo
+	
+	## Load device-mapper kernel module - needed by grub-probe
+	sudo modprobe -q dm-mod || true
+	echo
+	
+	## Setup the GRUB2 folder in the UEFI System Partition and create the grub.efi application
+	sudo "${_GRUB2_UEFI_SBIN_DIR}/${_GRUB2_UEFI_NAME}-install" --root-directory="${_UEFI_SYSTEM_PART_MP}" --boot-directory="${_UEFI_SYSTEM_PART_MP}/efi" --bootloader-id="${_GRUB2_UEFI_NAME}" --no-floppy --recheck --debug
+	echo
+	
+	echo
+	
+	_GRUB2_UEFI_SETUP_STANDALONE_APP
+	echo
+	
 	sudo cp --verbose "${_GRUB2_UEFI_LIB_DIR}/${_GRUB2_UEFI_NAME}/${_TARGET_UEFI_ARCH}-efi"/*.img "${_GRUB2_UEFI_SYSTEM_PART_DIR}/" || true
-	# sudo cp --verbose ${_GRUB2_EXTRAS_MODULES} "${_GRUB2_UEFI_SYSTEM_PART_DIR}/" || true
 	echo
 	
 	sudo cp "${_GRUB2_UEFI_DATAROOT_DIR}/${_GRUB2_UEFI_NAME}"/*.pf2 "${_GRUB2_UEFI_SYSTEM_PART_DIR}/" || true
@@ -360,13 +413,19 @@ EOF
 	
 	## Copy the old config file as ${_GRUB2_UEFI_MENU_CONFIG}_backup.cfg
 	sudo install -D -m0644 "${_GRUB2_UEFI_BACKUP_DIR}/${_GRUB2_UEFI_MENU_CONFIG}.cfg" "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_MENU_CONFIG}_backup.cfg" || true
-	# sudo install -D -m0644 "${_GRUB2_UEFI_BACKUP_DIR}/${_GRUB2_UEFI_MENU_CONFIG}.cfg" "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_MENU_CONFIG}.cfg" || true
+	echo
 	
 	if [[ -e "${_WD}/grub.cfg" ]]; then
 		sudo install -D -m0644 "${_WD}/grub.cfg" "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_MENU_CONFIG}.cfg" || true
+		echo
+	elif [[ -e "${_GRUB2_UEFI_BACKUP_DIR}/${_GRUB2_UEFI_MENU_CONFIG}.cfg" ]]; then
+		sudo install -D -m0644 "${_GRUB2_UEFI_BACKUP_DIR}/${_GRUB2_UEFI_MENU_CONFIG}.cfg" "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_MENU_CONFIG}.cfg" || true
+		echo
+	else
+		sudo GRUB_PREFIX="${_GRUB2_UEFI_SYSTEM_PART_DIR}" "${_GRUB2_UEFI_SBIN_DIR}/${_GRUB2_UEFI_NAME}-mkconfig" --output="${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_MENU_CONFIG}.cfg" || true
+		echo
 	fi
 	
-	# sudo "${_GRUB2_UEFI_SBIN_DIR}/${_GRUB2_UEFI_NAME}-mkconfig" --output="${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_MENU_CONFIG}.cfg" || true
 	echo
 	
 	sudo chmod --verbose -x "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_MENU_CONFIG}.cfg" || true
@@ -379,15 +438,14 @@ EOF
 
 _GRUB2_UEFI_EFIBOOTMGR() {
 	
-	if [[ "${_EXECUTE_EFIBOOTMGR}" == '1' ]]; then
-		echo
-		
-		EFISYS_PART_DEVICE="$(sudo "${_GRUB2_UEFI_SBIN_DIR}/${_GRUB2_UEFI_NAME}-probe" --target=device "${_GRUB2_UEFI_SYSTEM_PART_DIR}/")"
-		EFISYS_PART_NUM="$(sudo blkid -p -o value -s PART_ENTRY_NUMBER "${EFISYS_PART_DEVICE}")"
-		EFISYS_PARENT_DEVICE="$(echo "${EFISYS_PART_DEVICE}" | sed "s/${EFISYS_PART_NUM}//g")"
-		
-		## Run efibootmgr script in sh compatibility mode, does not work in bash mode in ubuntu for some unknown reason (maybe some dash vs bash issue?)
-		cat << EOF > "${_WD}/execute_efibootmgr.sh"
+	echo
+	
+	EFISYS_PART_DEVICE="$(sudo "${_GRUB2_UEFI_SBIN_DIR}/${_GRUB2_UEFI_NAME}-probe" --target=device "${_GRUB2_UEFI_SYSTEM_PART_DIR}/")"
+	EFISYS_PART_NUM="$(sudo blkid -p -o value -s PART_ENTRY_NUMBER "${EFISYS_PART_DEVICE}")"
+	EFISYS_PARENT_DEVICE="$(echo "${EFISYS_PART_DEVICE}" | sed "s/${EFISYS_PART_NUM}//g")"
+	
+	## Run efibootmgr script in sh compatibility mode, does not work in bash mode in ubuntu for some unknown reason (maybe some dash vs bash issue?)
+	cat << EOF > "${_WD}/grub2_uefi_create_entry_efibootmgr.sh"
 #!/bin/sh
 
 set -x
@@ -417,17 +475,16 @@ set +x
 echo
 
 EOF
-		
-		chmod +x "${_WD}/execute_efibootmgr.sh" || true
-		
-		sudo "${_WD}/execute_efibootmgr.sh"
-		
-		set -x -e
-		
-		# rm -f --verbose "${_WD}/execute_efibootmgr.sh"
-		
-		echo
-	fi
+	
+	chmod --verbose +x "${_WD}/grub2_uefi_create_entry_efibootmgr.sh" || true
+	
+	sudo "${_WD}/grub2_uefi_create_entry_efibootmgr.sh"
+	
+	set -x -e
+	
+	# rm -f --verbose "${_WD}/grub2_uefi_create_entry_efibootmgr.sh"
+	
+	echo
 	
 }
 
@@ -440,31 +497,41 @@ _GRUB2_APPLE_EFI_BOOTMGR() {
 	echo
 	
 }
+
 _GRUB2_UEFI_SETUP_BOOTX64_EFI_APP() {
 	
 	if [[ ! -d "${_UEFI_SYSTEM_PART_MP}/efi/boot" ]]; then
 		sudo mkdir -p "${_UEFI_SYSTEM_PART_MP}/efi/boot/" || true
+		echo
 	fi
 	
 	sudo rm -f --verbose "${_UEFI_SYSTEM_PART_MP}/efi/boot/boot${_OTHER_UEFI_ARCH_NAME}.efi" || true
+	echo
 	
 	if [[ -e "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_NAME}_standalone.efi" ]]; then
 		sudo install -D -m0644 "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_NAME}_standalone.efi" "${_UEFI_SYSTEM_PART_MP}/efi/boot/boot${_OTHER_UEFI_ARCH_NAME}.efi"
+		echo
 	else
 		if [[ -e "${_GRUB2_UEFI_SYSTEM_PART_DIR}/grub${_OTHER_UEFI_ARCH_NAME}.efi" ]]; then
 			sudo install -D -m0644 "${_GRUB2_UEFI_SYSTEM_PART_DIR}/grub${_OTHER_UEFI_ARCH_NAME}.efi" "${_UEFI_SYSTEM_PART_MP}/efi/boot/boot${_OTHER_UEFI_ARCH_NAME}.efi"
+			echo
 		elif [[ -e "${_UEFI_SYSTEM_PART_MP}/efi/grub/core.efi" ]]; then
 			sudo install -D -m0644 "${_UEFI_SYSTEM_PART_MP}/efi/grub/core.efi" "${_UEFI_SYSTEM_PART_MP}/efi/boot/boot${_OTHER_UEFI_ARCH_NAME}.efi"
+			echo
 		else
 			if [[ -e "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_NAME}.efi" ]]; then
 				sudo install -D -m0644 "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_NAME}.efi" "${_UEFI_SYSTEM_PART_MP}/efi/boot/boot${_OTHER_UEFI_ARCH_NAME}.efi"
+				echo
 			elif [[ -e "${_UEFI_SYSTEM_PART_MP}/efi/grub/grub.efi" ]]; then
 				sudo install -D -m0644 "${_UEFI_SYSTEM_PART_MP}/efi/grub/grub.efi" "${_UEFI_SYSTEM_PART_MP}/efi/boot/boot${_OTHER_UEFI_ARCH_NAME}.efi"
+				echo
 			fi
 		fi
 	fi
 	
-	cat << EOF > "${_WD}/efi_boot_${_GRUB2_UEFI_MENU_CONFIG}.cfg"
+	echo
+	
+	cat << EOF > "${_WD}/${_GRUB2_UEFI_NAME}_efi_boot_config.cfg"
 search --file --no-floppy --set=grub2_uefi_root "/${_GRUB2_UEFI_APP_PREFIX}/core.efi"
 
 set prefix=(\${grub2_uefi_root})/${_GRUB2_UEFI_APP_PREFIX}
@@ -472,13 +539,20 @@ source \${prefix}/${_GRUB2_UEFI_MENU_CONFIG}.cfg
 
 EOF
 	
-	sudo rm -f --verbose "${_UEFI_SYSTEM_PART_MP}/efi/boot/${_GRUB2_UEFI_MENU_CONFIG}.cfg" || true
+	echo
 	
-	if [[ -e "${_WD}/efi_boot_${_GRUB2_UEFI_MENU_CONFIG}.cfg" ]]; then
-		sudo install -D -m0644 "${_WD}/efi_boot_${_GRUB2_UEFI_MENU_CONFIG}.cfg" "${_UEFI_SYSTEM_PART_MP}/efi/boot/${_GRUB2_UEFI_MENU_CONFIG}.cfg"
+	sudo rm -f --verbose "${_UEFI_SYSTEM_PART_MP}/efi/boot/${_GRUB2_UEFI_MENU_CONFIG}.cfg" || true
+	echo
+	
+	if [[ -e "${_WD}/${_GRUB2_UEFI_NAME}_efi_boot_config.cfg" ]]; then
+		sudo install -D -m0644 "${_WD}/${_GRUB2_UEFI_NAME}_efi_boot_config.cfg" "${_UEFI_SYSTEM_PART_MP}/efi/boot/${_GRUB2_UEFI_MENU_CONFIG}.cfg"
+		echo
 	else
 		sudo install -D -m0644 "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_MENU_CONFIG}.cfg" "${_UEFI_SYSTEM_PART_MP}/efi/boot/${_GRUB2_UEFI_MENU_CONFIG}.cfg"
+		echo
 	fi
+	
+	echo
 	
 }
 
@@ -526,10 +600,20 @@ if [[ "${_PROCESS_CONTINUE}" == 'TRUE' ]]; then
 		
 		echo
 		
-		if [[ "$(dmidecode -s system-manufacturer)" == "Apple Inc." ]] || [[ "$(dmidecode -s system-manufacturer)" == "Apple Computer, Inc." ]]; then
-			_GRUB2_APPLE_EFI_BOOTMGR
-		else
-			_GRUB2_UEFI_EFIBOOTMGR
+		if [[ "${_GRUB2_CREATE_ENTRY_UEFI_BOOTMGR}" == '1' ]]; then
+			
+			echo
+			
+			if [[ "$(dmidecode -s system-manufacturer)" == 'Apple Inc.' ]] || [[ "$(dmidecode -s system-manufacturer)" == 'Apple Computer, Inc.' ]]; then
+				_GRUB2_APPLE_EFI_BOOTMGR
+				echo
+			else
+				_GRUB2_UEFI_EFIBOOTMGR
+				echo
+			fi
+			
+			echo
+			
 		fi
 		
 		echo
@@ -540,7 +624,9 @@ if [[ "${_PROCESS_CONTINUE}" == 'TRUE' ]]; then
 		
 		set +x +e
 		
-		echo "GRUB2 UEFI ${_TARGET_UEFI_ARCH} Setup in ${_GRUB2_UEFI_SYSTEM_PART_DIR} successfully."
+		if [[ -e "${_GRUB2_UEFI_SYSTEM_PART_DIR}/core.efi" ]] && [[ -e "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_NAME}_standalone.efi" ]]; then
+			echo "GRUB2 UEFI ${_TARGET_UEFI_ARCH} Setup in ${_GRUB2_UEFI_SYSTEM_PART_DIR} successfully."
+		fi
 		
 		echo
 		
@@ -567,7 +653,7 @@ fi
 	unset GRUB_CONTRIB
 	unset _PROCESS_CONTINUE
 	unset _REPLACE_GRUB2_UEFI_MENU_CONFIG
-	unset _EXECUTE_EFIBOOTMGR
+	unset _GRUB2_CREATE_ENTRY_UEFI_BOOTMGR
 	unset _TARGET_UEFI_ARCH
 	unset _UEFI_SYSTEM_PART_MP
 	unset _GRUB2_UEFI_NAME

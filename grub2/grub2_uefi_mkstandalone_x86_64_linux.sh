@@ -13,7 +13,7 @@ export _GRUB2_UEFI_LIB_DIR="${_GRUB2_UEFI_PREFIX_DIR}/lib"
 export _GRUB2_UEFI_DATAROOT_DIR="${_GRUB2_UEFI_PREFIX_DIR}/share"
 
 export _GRUB2_UEFI_NAME='grub_uefi_x86_64'
-export _GRUB2_UEFI_MENU_CONFIG="grub"
+export _GRUB2_UEFI_MENU_CONFIG='grub'
 
 export _GRUB2_UEFI_APP_PREFIX="efi/${_GRUB2_UEFI_NAME}"
 export _GRUB2_UEFI_SYSTEM_PART_DIR="${_UEFI_SYSTEM_PART_MP}/${_GRUB2_UEFI_APP_PREFIX}"
@@ -24,7 +24,7 @@ set -x -e
 
 echo
 
-cat << EOF > "${_WD}/grub_standalone_memdisk_${_GRUB2_UEFI_NAME}.cfg"
+cat << EOF > "${_WD}/${_GRUB2_UEFI_NAME}_standalone_memdisk_config.cfg"
 set _UEFI_ARCH="${_TARGET_UEFI_ARCH}"
 
 insmod usbms
@@ -54,10 +54,13 @@ echo
 mkdir -p "${_WD}/boot/grub" || true
 echo
 
-[[ -e "${_WD}/boot/grub/grub.cfg" ]] && mv "${_WD}/boot/grub/grub.cfg" "${_WD}/boot/grub/grub.cfg.save"
+if [[ -e "${_WD}/boot/grub/grub.cfg" ]]; then
+	mv "${_WD}/boot/grub/grub.cfg" "${_WD}/boot/grub/grub.cfg.save"
+	echo
+fi
 echo
 
-install -D -m0644 "${_WD}/grub_standalone_memdisk_${_GRUB2_UEFI_NAME}.cfg" "${_WD}/boot/grub/grub.cfg"
+install -D -m0644 "${_WD}/${_GRUB2_UEFI_NAME}_standalone_memdisk_config.cfg" "${_WD}/boot/grub/grub.cfg"
 echo
 
 __WD="${PWD}/"
@@ -73,16 +76,20 @@ echo
 cd "${__WD}/"
 echo
 
-[[ -e "${_WD}/boot/grub/grub.cfg.save" ]] && mv "${_WD}/boot/grub/grub.cfg.save" "${_WD}/boot/grub/grub.cfg"
+if [[ -e "${_WD}/boot/grub/grub.cfg.save" ]]; then
+	mv "${_WD}/boot/grub/grub.cfg.save" "${_WD}/boot/grub/grub.cfg"
+	echo
+fi
 echo
 
 sudo rm -f --verbose "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_NAME}_standalone.cfg" || true
 echo
 
-if [[ -e "${_WD}/grub_standalone_memdisk_${_GRUB2_UEFI_NAME}.cfg" ]]; then
-	sudo install -D -m0644 "${_WD}/grub_standalone_memdisk_${_GRUB2_UEFI_NAME}.cfg" "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_NAME}_standalone.cfg"
+if [[ -e "${_WD}/${_GRUB2_UEFI_NAME}_standalone_memdisk_config.cfg" ]]; then
+	sudo install -D -m0644 "${_WD}/${_GRUB2_UEFI_NAME}_standalone_memdisk_config.cfg" "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_NAME}_standalone.cfg"
 	echo
 fi
+echo
 
 sudo rm -f --verbose "${_UEFI_SYSTEM_PART_MP}/efi/boot/bootx64.efi"
 echo
@@ -92,6 +99,7 @@ echo
 
 # sudo "${_GRUB2_UEFI_BIN_DIR}/${_GRUB2_UEFI_NAME}-mkfont" --verbose --output="${_GRUB2_UEFI_SYSTEM_PART_DIR}/unicode.pf2" "${_GRUB2_UNIFONT_PATH}/unifont.bdf" || true
 echo
+
 # sudo "${_GRUB2_UEFI_BIN_DIR}/${_GRUB2_UEFI_NAME}-mkfont" --verbose --ascii-bitmaps --output="${_GRUB2_UEFI_SYSTEM_PART_DIR}/ascii.pf2" "${_GRUB2_UNIFONT_PATH}/unifont.bdf" || true
 echo
 
