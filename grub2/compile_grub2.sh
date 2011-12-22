@@ -124,8 +124,20 @@ if [[ "${_PROCESS_CONTINUE_UEFI}" == 'TRUE' ]]; then
 	echo
 	
 	cd "${_WD_OUTER}/${_GRUB2_UEFI_Source_DIR_Name}/"
+	
 	git reset --hard
+	echo
+	
 	git checkout master
+	echo
+	
+	patch -Np1 -i "${_WD_OUTER}/grub-mkconfig-Use_outside_GRUB_PREFIX_if_defined.patch"
+	echo
+	
+	patch -Np1 -i "${_WD_OUTER}/archlinux_grub2_mkconfig_fixes.patch"
+	echo
+	
+	# patch -Np0 -i "${_WD_OUTER}/grub-mactel.patch"
 	echo
 	
 	"${PWD}/grub2_uefi_linux_my.sh"
@@ -169,8 +181,20 @@ if [[ "${_PROCESS_CONTINUE_BIOS}" == 'TRUE' ]]; then
 	echo
 	
 	cd "${_WD_OUTER}/${_GRUB2_BIOS_Source_DIR_Name}/"
+	
 	git reset --hard
+	echo
+	
 	git checkout master
+	echo
+	
+	patch -Np1 -i "${_WD_OUTER}/grub-mkconfig-Use_outside_GRUB_PREFIX_if_defined.patch"
+	echo
+	
+	patch -Np1 -i "${_WD_OUTER}/archlinux_grub2_mkconfig_fixes.patch"
+	echo
+	
+	# patch -Np0 -i "${_WD_OUTER}/grub-mactel.patch"
 	echo
 	
 	## CHROOT into the arch32 system for compiling GRUB2 BIOS i386
