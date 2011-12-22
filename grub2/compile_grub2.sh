@@ -124,6 +124,10 @@ if [[ "${_PROCESS_CONTINUE_UEFI}" == 'TRUE' ]]; then
 	echo
 	
 	cd "${_WD_OUTER}/${_GRUB2_UEFI_Source_DIR_Name}/"
+	git reset --hard
+	git checkout master
+	echo
+	
 	"${PWD}/grub2_uefi_linux_my.sh"
 	echo
 	cd ..
@@ -165,6 +169,9 @@ if [[ "${_PROCESS_CONTINUE_BIOS}" == 'TRUE' ]]; then
 	echo
 	
 	cd "${_WD_OUTER}/${_GRUB2_BIOS_Source_DIR_Name}/"
+	git reset --hard
+	git checkout master
+	echo
 	
 	## CHROOT into the arch32 system for compiling GRUB2 BIOS i386
 	# export _BCHROOT_DIR="${_WD_OUTER}"
