@@ -95,7 +95,7 @@ fi
 	
 	export _GRUB2_BOOT_PART_DIR="${_GRUB2_BOOT_PART_MP}/${_GRUB2_BIOS_NAME}"
 	export _GRUB2_BIOS_CONFIGURE_OPTIONS="--with-platform=pc --program-prefix="" --program-transform-name=s,grub,${_GRUB2_BIOS_NAME},"
-	export _GRUB2_BIOS_OTHER_CONFIGURE_OPTIONS="--enable-mm-debug --enable-device-mapper --enable-cache-stats --enable-grub-mkfont --disable-nls"
+	export _GRUB2_BIOS_OTHER_CONFIGURE_OPTIONS="--enable-mm-debug --enable-device-mapper --enable-cache-stats --enable-grub-mkfont --enable-grub-mount --enable-nls"
 	
 	export _GRUB2_BIOS_CONFIGURE_PATHS_1="--prefix="${_GRUB2_BIOS_PREFIX_DIR}" --bindir="${_GRUB2_BIOS_BIN_DIR}" --sbindir="${_GRUB2_BIOS_SBIN_DIR}" --sysconfdir="${_GRUB2_BIOS_SYSCONF_DIR}" --libdir="${_GRUB2_BIOS_LIB_DIR}""
 	export _GRUB2_BIOS_CONFIGURE_PATHS_2="--datarootdir="${_GRUB2_BIOS_DATAROOT_DIR}" --infodir="${_GRUB2_BIOS_INFO_DIR}" --localedir="${_GRUB2_BIOS_LOCALE_DIR}" --mandir="${_GRUB2_BIOS_MAN_DIR}""
