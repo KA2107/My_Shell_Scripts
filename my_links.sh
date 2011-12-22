@@ -8,7 +8,7 @@ export _SOURCE_CODES_DIR="/media/Source_Codes/Source_Codes"
 export _SCRIPTS_DIR="${_SOURCE_CODES_DIR}/My_Shell_Scripts"
 
 export _GRUB2_SCRIPTS_DIR="${_SCRIPTS_DIR}/grub2"
-export _GRUB2_DIR="${_SOURCE_CODES_DIR}/Utilities/Boot_Managers__UEFI_GPT/grub2"
+export _GRUB2_DIR="${_SOURCE_CODES_DIR}/Utilities/Boot_Managers/ALL/grub2"
 export _GRUB2_SOURCE_DIR="${_GRUB2_DIR}/Source__GIT_BZR"
 
 export _GRUB2_BIOS_SCRIPTS_DIR="${_GRUB2_SOURCE_DIR}/grub2_bios_linux_scripts"

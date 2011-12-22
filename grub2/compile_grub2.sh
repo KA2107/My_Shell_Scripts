@@ -173,6 +173,8 @@ if [[ "${_PROCESS_CONTINUE_BIOS}" == 'TRUE' ]]; then
 	# unset _BCHROOT_DIR
 	
 	# schroot --automatic-session --preserve-environment --directory ${_WD_OUTER}
+	echo
+	
 	"${PWD}/grub2_bios_linux_my.sh"
 	echo
 	cd ..
