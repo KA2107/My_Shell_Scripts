@@ -90,6 +90,7 @@ fi
 	export _GRUB2_UEFI_SBIN_DIR="${_GRUB2_UEFI_PREFIX_DIR}/sbin"
 	export _GRUB2_UEFI_SYSCONF_DIR="${_GRUB2_UEFI_PREFIX_DIR}/etc"
 	export _GRUB2_UEFI_LIB_DIR="${_GRUB2_UEFI_PREFIX_DIR}/lib"
+	export _GRUB2_UEFI_DATA_DIR="${_GRUB2_UEFI_LIB_DIR}"
 	export _GRUB2_UEFI_DATAROOT_DIR="${_GRUB2_UEFI_PREFIX_DIR}/share"
 	export _GRUB2_UEFI_INFO_DIR="${_GRUB2_UEFI_DATAROOT_DIR}/info"
 	export _GRUB2_UEFI_LOCALE_DIR="${_GRUB2_UEFI_DATAROOT_DIR}/locale"
@@ -112,7 +113,7 @@ fi
 	export _GRUB2_UEFI_OTHER_CONFIGURE_OPTIONS="--enable-mm-debug --enable-device-mapper --enable-cache-stats --enable-grub-mkfont --enable-grub-mount --enable-nls"
 	
 	export _GRUB2_UEFI_CONFIGURE_PATHS_1="--prefix="${_GRUB2_UEFI_PREFIX_DIR}" --bindir="${_GRUB2_UEFI_BIN_DIR}" --sbindir="${_GRUB2_UEFI_SBIN_DIR}" --sysconfdir="${_GRUB2_UEFI_SYSCONF_DIR}" --libdir="${_GRUB2_UEFI_LIB_DIR}""
-	export _GRUB2_UEFI_CONFIGURE_PATHS_2="--datarootdir="${_GRUB2_UEFI_DATAROOT_DIR}" --infodir="${_GRUB2_UEFI_INFO_DIR}" --localedir="${_GRUB2_UEFI_LOCALE_DIR}" --mandir="${_GRUB2_UEFI_MAN_DIR}""
+	export _GRUB2_UEFI_CONFIGURE_PATHS_2="--datadir="${_GRUB2_UEFI_DATA_DIR}" --datarootdir="${_GRUB2_UEFI_DATAROOT_DIR}" --infodir="${_GRUB2_UEFI_INFO_DIR}" --localedir="${_GRUB2_UEFI_LOCALE_DIR}" --mandir="${_GRUB2_UEFI_MAN_DIR}""
 	
 	export _GRUB2_UEFI_LST_files='command.lst crypto.lst fs.lst handler.lst moddep.lst partmap.lst parttool.lst terminal.lst video.lst'
 	
@@ -408,7 +409,13 @@ _GRUB2_UEFI_SETUP_UEFISYS_PART_DIR() {
 	sudo cp --verbose "${_GRUB2_UEFI_LIB_DIR}/${_GRUB2_UEFI_NAME}/${_TARGET_UEFI_ARCH}-efi"/*.img "${_GRUB2_UEFI_SYSTEM_PART_DIR}/" || true
 	echo
 	
-	sudo cp "${_GRUB2_UEFI_DATAROOT_DIR}/${_GRUB2_UEFI_NAME}"/*.pf2 "${_GRUB2_UEFI_SYSTEM_PART_DIR}/" || true
+	if [[ -e "${_GRUB2_UEFI_DATA_DIR}/${_GRUB2_UEFI_NAME}/unicode.pf2" ]]; then
+		mkdir -p "${_GRUB2_UEFI_DATAROOT_DIR}/${_GRUB2_UEFI_NAME}" || true
+		sudo cp --verbose "${_GRUB2_UEFI_DATA_DIR}/${_GRUB2_UEFI_NAME}"/{{ascii,euro,unicode}.pf2,{ascii,widthspec}.h} "${_GRUB2_UEFI_DATAROOT_DIR}/${_GRUB2_UEFI_NAME}/" || true
+		echo
+	fi 
+	
+	sudo cp --verbose "${_GRUB2_UEFI_DATAROOT_DIR}/${_GRUB2_UEFI_NAME}"/{ascii,euro,unicode}.pf2 "${_GRUB2_UEFI_SYSTEM_PART_DIR}/" || true
 	echo
 	
 	## Copy the old config file as ${_GRUB2_UEFI_MENU_CONFIG}_backup.cfg
@@ -664,6 +671,7 @@ fi
 	unset _GRUB2_UEFI_SBIN_DIR
 	unset _GRUB2_UEFI_SYSCONF_DIR
 	unset _GRUB2_UEFI_LIB_DIR
+	unset _GRUB2_UEFI_DATA_DIR
 	unset _GRUB2_UEFI_DATAROOT_DIR
 	unset _GRUB2_UEFI_INFO_DIR
 	unset _GRUB2_UEFI_LOCALE_DIR

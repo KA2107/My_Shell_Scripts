@@ -1,0 +1,1241 @@
+=== modified file 'Makefile.util.def'
+--- Makefile.util.def	2011-11-13 11:48:39 +0000
++++ Makefile.util.def	2011-11-28 13:00:11 +0000
+@@ -43,6 +43,7 @@
+   common_nodist = grub_script.tab.h;
+ 
+   common = grub-core/commands/blocklist.c;
++  common = grub-core/commands/macbless.c;
+   common = grub-core/commands/xnu_uuid.c;
+   common = grub-core/commands/testload.c;
+   common = grub-core/commands/ls.c;
+@@ -705,3 +706,16 @@
+   ldadd = grub-core/gnulib/libgnu.a;
+   ldadd = '$(LIBINTL) $(LIBDEVMAPPER) $(LIBZFS) $(LIBNVPAIR) $(LIBGEOM)';
+ };
++
++program = {
++  name = grub-mactelbless;
++  installdir = sbin;
++  mansection = 1;
++  common = util/grub-mactelbless.c;
++
++  ldadd = libgrubmods.a;
++  ldadd = libgrubgcry.a;
++  ldadd = libgrubkern.a;
++  ldadd = grub-core/gnulib/libgnu.a;
++  ldadd = '$(LIBINTL) $(LIBDEVMAPPER) $(LIBZFS) $(LIBNVPAIR) $(LIBGEOM)';
++};
+
+=== added file 'docs/man/grub-mactelbless.h2m'
+--- docs/man/grub-mactelbless.h2m	1970-01-01 00:00:00 +0000
++++ docs/man/grub-mactelbless.h2m	2011-11-28 10:47:58 +0000
+@@ -0,0 +1,4 @@
++[NAME]
++grub-mactelbless \- Mactel-style HFS+ bless.
++[SEE ALSO]
++.BR grub-install (1)
+
+=== modified file 'grub-core/Makefile.core.def'
+--- grub-core/Makefile.core.def	2011-11-13 21:59:46 +0000
++++ grub-core/Makefile.core.def	2011-11-28 10:18:32 +0000
+@@ -1148,6 +1148,11 @@
+ };
+ 
+ module = {
++  name = macbless;
++  common = commands/macbless.c;
++};
++
++module = {
+   name = pxe;
+   i386_pc = net/drivers/i386/pc/pxe.c;
+   enable = i386_pc;
+
+=== added file 'grub-core/commands/macbless.c'
+--- grub-core/commands/macbless.c	1970-01-01 00:00:00 +0000
++++ grub-core/commands/macbless.c	2011-11-28 12:10:25 +0000
+@@ -0,0 +1,220 @@
++/* hfspbless.c - set the hfs+ boot directory.  */
++/*
++ *  GRUB  --  GRand Unified Bootloader
++ *  Copyright (C) 2003,2005,2007,2008,2009  Free Software Foundation, Inc.
++ *
++ *  GRUB is free software: you can redistribute it and/or modify
++ *  it under the terms of the GNU General Public License as published by
++ *  the Free Software Foundation, either version 3 of the License, or
++ *  (at your option) any later version.
++ *
++ *  GRUB is distributed in the hope that it will be useful,
++ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *  GNU General Public License for more details.
++ *
++ *  You should have received a copy of the GNU General Public License
++ *  along with GRUB.  If not, see <http://www.gnu.org/licenses/>.
++ */
++
++#include <grub/command.h>
++#include <grub/fs.h>
++#include <grub/misc.h>
++#include <grub/dl.h>
++#include <grub/device.h>
++#include <grub/disk.h>
++#include <grub/hfsplus.h>
++#include <grub/hfs.h>
++#include <grub/partition.h>
++#include <grub/file.h>
++#include <grub/mm.h>
++#include <grub/err.h>
++
++static grub_uint64_t inode_found;
++static char *dirname;
++static enum { NONE, FILE, DIR } found;
++
++static int find_inode (const char *filename,
++		       const struct grub_dirhook_info *info)
++{  if (! info->inodeset)
++    return 0;
++
++  if ((grub_strcmp (dirname, filename) == 0
++       || (info->case_insensitive && grub_strcasecmp (dirname, filename) == 0)))
++    {
++      inode_found = info->inode;
++      found = info->dir ? DIR : FILE;
++    }
++  return 0;
++}
++
++grub_err_t
++grub_mac_bless_inode (grub_device_t dev, grub_uint64_t inode, int is_dir,
++		      int intel)
++{
++  grub_err_t err;
++  union {
++    struct grub_hfs_sblock hfs;
++    struct grub_hfsplus_volheader hfsplus;
++  } volheader;
++  grub_disk_addr_t embedded_offset;
++
++  /* Read the bootblock.  */
++  err = grub_disk_read (dev->disk, GRUB_HFSPLUS_SBLOCK, 0, sizeof (volheader),
++			(char *) &volheader);
++  if (err)
++    return err;
++
++  embedded_offset = 0;
++  if (grub_be_to_cpu16 (volheader.hfs.magic) == GRUB_HFS_MAGIC)
++    {
++      int extent_start;
++      int ablk_size;
++      int ablk_start;
++
++      /* See if there's an embedded HFS+ filesystem.  */
++      if (grub_be_to_cpu16 (volheader.hfs.embed_sig) != GRUB_HFSPLUS_MAGIC)
++	{
++	  return grub_error (GRUB_ERR_BAD_FS, "not a HFS+");
++	}
++
++      /* Calculate the offset needed to translate HFS+ sector numbers.  */
++      extent_start = grub_be_to_cpu16 (volheader.hfs.embed_extent.first_block);
++      ablk_size = grub_be_to_cpu32 (volheader.hfs.blksz);
++      ablk_start = grub_be_to_cpu16 (volheader.hfs.first_block);
++      embedded_offset = (ablk_start
++			 + extent_start
++			 * (ablk_size >> GRUB_DISK_SECTOR_BITS));
++
++      err = grub_disk_read (dev->disk, embedded_offset + GRUB_HFSPLUS_SBLOCK, 0,
++			    sizeof (volheader), (char *) &volheader);
++      if (err)
++	return err;
++    }
++
++  /* Make sure this is an HFS+ filesystem.  XXX: Do we really support
++     HFX?  */
++  if ((grub_be_to_cpu16 (volheader.hfsplus.magic) != GRUB_HFSPLUS_MAGIC)
++      && (grub_be_to_cpu16 (volheader.hfsplus.magic) != GRUB_HFSPLUSX_MAGIC))
++    return grub_error (GRUB_ERR_BAD_FS, "not a HFS+ filesystem");
++  if (intel)
++    {
++      if (is_dir)
++	return grub_error (GRUB_ERR_BAD_ARGUMENT,
++			   "can't bless a directory for mactel");
++      volheader.hfsplus.intel_bootfile = grub_be_to_cpu32 (inode);
++    }
++  else
++    {
++      if (!is_dir)
++	return grub_error (GRUB_ERR_NOT_IMPLEMENTED_YET,
++			   "can't bless a file for mac PPC");
++      volheader.hfsplus.ppc_bootdir = grub_be_to_cpu32 (inode);
++    }
++
++  return grub_disk_write (dev->disk, embedded_offset + GRUB_HFSPLUS_SBLOCK, 0,
++			  sizeof (volheader), (char *) &volheader);
++}
++
++grub_err_t
++grub_mac_bless_file (grub_device_t dev, const char *path_in, int intel)
++{
++  grub_fs_t fs;
++
++  char *path, *tail;
++
++  fs = grub_fs_probe (dev);
++  if (! fs || grub_strcmp (fs->name, "hfsplus") != 0)
++    return grub_error (GRUB_ERR_BAD_FS, "no suitable FS found");
++
++  {
++    path = grub_strdup (path_in);
++    if (!path)
++      return grub_errno;
++    
++    tail = path + grub_strlen (path) - 1;
++    
++    /* Remove trailing '/'. */
++    while (tail != path && *tail == '/')
++      *(tail--) = 0;
++    
++    tail = grub_strrchr (path, '/');
++    found = 0;
++
++    if (tail)
++      {
++	*tail = 0;
++	dirname = tail + 1;
++	
++	(fs->dir) (dev, *path == 0 ? "/" : path, find_inode);
++      }
++    else
++      {
++	dirname = path + 1;
++	(fs->dir) (dev, "/", find_inode);
++      }
++    if (! found)
++      {
++	grub_free (path);
++	return grub_error (GRUB_ERR_FILE_NOT_FOUND, "%s not found\n", path_in);
++      }
++    grub_free (path);
++  }
++
++  return grub_mac_bless_inode (dev, inode_found, (found == DIR), intel);
++}
++
++static grub_err_t
++grub_cmd_macbless (grub_command_t cmd, int argc, char **args)
++{
++  char *device_name;
++  char *path = 0;
++  grub_device_t dev;
++  grub_err_t err;
++  
++  if (argc != 1)
++    return grub_error (GRUB_ERR_BAD_ARGUMENT, "directory or file required");
++  device_name = grub_file_get_device_name (args[0]);
++  dev = grub_device_open (device_name);
++
++  path = grub_strchr (args[0], ')');
++  if (! path)
++    path = dirname;
++  else
++    path = path + 1;
++
++  if (! path || *path == 0 || ! device_name)
++    {
++      if (dev)
++	grub_device_close (dev);
++
++      grub_free (device_name);
++      grub_free (path);
++
++      return grub_error (GRUB_ERR_BAD_ARGUMENT, "invalid argument");
++    }
++
++  err = grub_mac_bless_file (dev, path, cmd->name[3] == 't');
++
++  grub_device_close (dev);
++  grub_free (device_name);
++  return err;
++}
++
++static grub_command_t cmd, cmd_ppc;
++
++GRUB_MOD_INIT(macbless)
++{
++  cmd = grub_register_command ("mactelbless", grub_cmd_macbless,
++			       "FILE",
++			       "Bless FILE of HFS+ partition for intel macs.");
++  cmd_ppc = grub_register_command ("macppcbless", grub_cmd_macbless,
++				   "DIRECTORY",
++				   "Bless DIRECTORY of HFS+ partition for PPC macs.");
++}
++
++GRUB_MOD_FINI(macbless)
++{
++  grub_unregister_command (cmd);
++  grub_unregister_command (cmd_ppc);
++}
+
+=== modified file 'grub-core/fs/hfsplus.c'
+--- grub-core/fs/hfsplus.c	2011-10-25 22:32:17 +0000
++++ grub-core/fs/hfsplus.c	2011-11-28 09:54:23 +0000
+@@ -28,155 +28,11 @@
+ #include <grub/types.h>
+ #include <grub/fshelp.h>
+ #include <grub/hfs.h>
++#include <grub/hfsplus.h>
+ #include <grub/charset.h>
+ 
+ GRUB_MOD_LICENSE ("GPLv3+");
+ 
+-#define GRUB_HFSPLUS_MAGIC 0x482B
+-#define GRUB_HFSPLUSX_MAGIC 0x4858
+-#define GRUB_HFSPLUS_SBLOCK 2
+-
+-/* A HFS+ extent.  */
+-struct grub_hfsplus_extent
+-{
+-  /* The first block of a file on disk.  */
+-  grub_uint32_t start;
+-  /* The amount of blocks described by this extent.  */
+-  grub_uint32_t count;
+-} __attribute__ ((packed));
+-
+-/* The descriptor of a fork.  */
+-struct grub_hfsplus_forkdata
+-{
+-  grub_uint64_t size;
+-  grub_uint32_t clumpsize;
+-  grub_uint32_t blocks;
+-  struct grub_hfsplus_extent extents[8];
+-} __attribute__ ((packed));
+-
+-/* The HFS+ Volume Header.  */
+-struct grub_hfsplus_volheader
+-{
+-  grub_uint16_t magic;
+-  grub_uint16_t version;
+-  grub_uint32_t attributes;
+-  grub_uint8_t unused1[12];
+-  grub_uint32_t utime;
+-  grub_uint8_t unused2[16];
+-  grub_uint32_t blksize;
+-  grub_uint8_t unused3[60];
+-  grub_uint64_t num_serial;
+-  struct grub_hfsplus_forkdata allocations_file;
+-  struct grub_hfsplus_forkdata extents_file;
+-  struct grub_hfsplus_forkdata catalog_file;
+-  struct grub_hfsplus_forkdata attrib_file;
+-  struct grub_hfsplus_forkdata startup_file;
+-} __attribute__ ((packed));
+-
+-/* The type of node.  */
+-enum grub_hfsplus_btnode_type
+-  {
+-    GRUB_HFSPLUS_BTNODE_TYPE_LEAF = -1,
+-    GRUB_HFSPLUS_BTNODE_TYPE_INDEX = 0,
+-    GRUB_HFSPLUS_BTNODE_TYPE_HEADER = 1,
+-    GRUB_HFSPLUS_BTNODE_TYPE_MAP = 2,
+-  };
+-
+-struct grub_hfsplus_btnode
+-{
+-  grub_uint32_t next;
+-  grub_uint32_t prev;
+-  grub_int8_t type;
+-  grub_uint8_t height;
+-  grub_uint16_t count;
+-  grub_uint16_t unused;
+-} __attribute__ ((packed));
+-
+-/* The header of a HFS+ B+ Tree.  */
+-struct grub_hfsplus_btheader
+-{
+-  grub_uint16_t depth;
+-  grub_uint32_t root;
+-  grub_uint32_t leaf_records;
+-  grub_uint32_t first_leaf_node;
+-  grub_uint32_t last_leaf_node;
+-  grub_uint16_t nodesize;
+-  grub_uint16_t keysize;
+-  grub_uint32_t total_nodes;
+-  grub_uint32_t free_nodes;
+-  grub_uint16_t reserved1;
+-  grub_uint32_t clump_size;  /* ignored */
+-  grub_uint8_t btree_type;
+-  grub_uint8_t key_compare;
+-  grub_uint32_t attributes;
+-} __attribute__ ((packed));
+-
+-/* The on disk layout of a catalog key.  */
+-struct grub_hfsplus_catkey
+-{
+-  grub_uint16_t keylen;
+-  grub_uint32_t parent;
+-  grub_uint16_t namelen;
+-  grub_uint16_t name[30];
+-} __attribute__ ((packed));
+-
+-/* The on disk layout of an extent overflow file key.  */
+-struct grub_hfsplus_extkey
+-{
+-  grub_uint16_t keylen;
+-  grub_uint8_t type;
+-  grub_uint8_t unused;
+-  grub_uint32_t fileid;
+-  grub_uint32_t start;
+-} __attribute__ ((packed));
+-
+-struct grub_hfsplus_key
+-{
+-  union
+-  {
+-    struct grub_hfsplus_extkey extkey;
+-    struct grub_hfsplus_catkey catkey;
+-    grub_uint16_t keylen;
+-  };
+-} __attribute__ ((packed));
+-
+-struct grub_hfsplus_catfile
+-{
+-  grub_uint16_t type;
+-  grub_uint16_t flags;
+-  grub_uint32_t reserved;
+-  grub_uint32_t fileid;
+-  grub_uint8_t unused1[4];
+-  grub_uint32_t mtime;
+-  grub_uint8_t unused2[22];
+-  grub_uint16_t mode;
+-  grub_uint8_t unused3[44];
+-  struct grub_hfsplus_forkdata data;
+-  struct grub_hfsplus_forkdata resource;
+-} __attribute__ ((packed));
+-
+-/* Filetype information as used in inodes.  */
+-#define GRUB_HFSPLUS_FILEMODE_MASK	0170000
+-#define GRUB_HFSPLUS_FILEMODE_REG	0100000
+-#define GRUB_HFSPLUS_FILEMODE_DIRECTORY	0040000
+-#define GRUB_HFSPLUS_FILEMODE_SYMLINK	0120000
+-
+-/* Some pre-defined file IDs.  */
+-#define GRUB_HFSPLUS_FILEID_ROOTDIR	2
+-#define GRUB_HFSPLUS_FILEID_OVERFLOW	3
+-#define GRUB_HFSPLUS_FILEID_CATALOG	4
+-
+-enum grub_hfsplus_filetype
+-  {
+-    GRUB_HFSPLUS_FILETYPE_DIR = 1,
+-    GRUB_HFSPLUS_FILETYPE_REG = 2,
+-    GRUB_HFSPLUS_FILETYPE_DIR_THREAD = 3,
+-    GRUB_HFSPLUS_FILETYPE_REG_THREAD = 4
+-  };
+-
+-#define GRUB_HFSPLUSX_BINARYCOMPARE	0xBC
+-#define GRUB_HFSPLUSX_CASEFOLDING	0xCF
+-
+ /* Internal representation of a catalog key.  */
+ struct grub_hfsplus_catkey_internal
+ {
+@@ -948,6 +804,8 @@
+       info.dir = ((filetype & GRUB_FSHELP_TYPE_MASK) == GRUB_FSHELP_DIR);
+       info.mtimeset = 1;
+       info.mtime = node->mtime;
++      info.inodeset = 1;
++      info.inode = node->fileid;
+       info.case_insensitive = !! (filetype & GRUB_FSHELP_CASE_INSENSITIVE);
+       grub_free (node);
+       return hook (filename, &info);
+
+=== modified file 'include/grub/fs.h'
+--- include/grub/fs.h	2011-11-05 13:47:25 +0000
++++ include/grub/fs.h	2011-11-28 09:51:39 +0000
+@@ -38,7 +38,9 @@
+   unsigned dir:1;
+   unsigned mtimeset:1;
+   unsigned case_insensitive:1;
++  unsigned inodeset:1;
+   grub_int32_t mtime;
++  grub_uint64_t inode;
+ };
+ 
+ /* Filesystem descriptor.  */
+
+=== added file 'include/grub/hfsplus.h'
+--- include/grub/hfsplus.h	1970-01-01 00:00:00 +0000
++++ include/grub/hfsplus.h	2011-11-28 10:55:39 +0000
+@@ -0,0 +1,182 @@
++/*
++ *  GRUB  --  GRand Unified Bootloader
++ *  Copyright (C) 2005,2006,2007,2008,2009  Free Software Foundation, Inc.
++ *
++ *  GRUB is free software: you can redistribute it and/or modify
++ *  it under the terms of the GNU General Public License as published by
++ *  the Free Software Foundation, either version 3 of the License, or
++ *  (at your option) any later version.
++ *
++ *  GRUB is distributed in the hope that it will be useful,
++ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *  GNU General Public License for more details.
++ *
++ *  You should have received a copy of the GNU General Public License
++ *  along with GRUB.  If not, see <http://www.gnu.org/licenses/>.
++ */
++
++#ifndef GRUB_HFSPLUS_HEADER
++#define GRUB_HFSPLUS_HEADER	1
++
++#include <grub/types.h>
++
++#define GRUB_HFSPLUS_MAGIC 0x482B
++#define GRUB_HFSPLUSX_MAGIC 0x4858
++#define GRUB_HFSPLUS_SBLOCK 2
++
++/* A HFS+ extent.  */
++struct grub_hfsplus_extent
++{
++  /* The first block of a file on disk.  */
++  grub_uint32_t start;
++  /* The amount of blocks described by this extent.  */
++  grub_uint32_t count;
++} __attribute__ ((packed));
++
++/* The descriptor of a fork.  */
++struct grub_hfsplus_forkdata
++{
++  grub_uint64_t size;
++  grub_uint32_t clumpsize;
++  grub_uint32_t blocks;
++  struct grub_hfsplus_extent extents[8];
++} __attribute__ ((packed));
++
++/* The HFS+ Volume Header.  */
++struct grub_hfsplus_volheader
++{
++  grub_uint16_t magic;
++  grub_uint16_t version;
++  grub_uint32_t attributes;
++  grub_uint8_t unused1[12];
++  grub_uint32_t utime;
++  grub_uint8_t unused2[16];
++  grub_uint32_t blksize;
++  grub_uint8_t unused3[36];
++  grub_uint32_t ppc_bootdir;
++  grub_uint32_t intel_bootfile;
++  /* Folder opened when disk is mounted. Unused by GRUB. */
++  grub_uint32_t showfolder;
++  grub_uint32_t os9folder;
++  grub_uint8_t unused4[4];
++  grub_uint32_t osxfolder;
++  grub_uint64_t num_serial;
++  struct grub_hfsplus_forkdata allocations_file;
++  struct grub_hfsplus_forkdata extents_file;
++  struct grub_hfsplus_forkdata catalog_file;
++  struct grub_hfsplus_forkdata attrib_file;
++  struct grub_hfsplus_forkdata startup_file;
++} __attribute__ ((packed));
++
++/* The type of node.  */
++enum grub_hfsplus_btnode_type
++  {
++    GRUB_HFSPLUS_BTNODE_TYPE_LEAF = -1,
++    GRUB_HFSPLUS_BTNODE_TYPE_INDEX = 0,
++    GRUB_HFSPLUS_BTNODE_TYPE_HEADER = 1,
++    GRUB_HFSPLUS_BTNODE_TYPE_MAP = 2,
++  };
++
++struct grub_hfsplus_btnode
++{
++  grub_uint32_t next;
++  grub_uint32_t prev;
++  grub_int8_t type;
++  grub_uint8_t height;
++  grub_uint16_t count;
++  grub_uint16_t unused;
++} __attribute__ ((packed));
++
++/* The header of a HFS+ B+ Tree.  */
++struct grub_hfsplus_btheader
++{
++  grub_uint16_t depth;
++  grub_uint32_t root;
++  grub_uint32_t leaf_records;
++  grub_uint32_t first_leaf_node;
++  grub_uint32_t last_leaf_node;
++  grub_uint16_t nodesize;
++  grub_uint16_t keysize;
++  grub_uint32_t total_nodes;
++  grub_uint32_t free_nodes;
++  grub_uint16_t reserved1;
++  grub_uint32_t clump_size;  /* ignored */
++  grub_uint8_t btree_type;
++  grub_uint8_t key_compare;
++  grub_uint32_t attributes;
++} __attribute__ ((packed));
++
++/* The on disk layout of a catalog key.  */
++struct grub_hfsplus_catkey
++{
++  grub_uint16_t keylen;
++  grub_uint32_t parent;
++  grub_uint16_t namelen;
++  grub_uint16_t name[30];
++} __attribute__ ((packed));
++
++/* The on disk layout of an extent overflow file key.  */
++struct grub_hfsplus_extkey
++{
++  grub_uint16_t keylen;
++  grub_uint8_t type;
++  grub_uint8_t unused;
++  grub_uint32_t fileid;
++  grub_uint32_t start;
++} __attribute__ ((packed));
++
++struct grub_hfsplus_key
++{
++  union
++  {
++    struct grub_hfsplus_extkey extkey;
++    struct grub_hfsplus_catkey catkey;
++    grub_uint16_t keylen;
++  };
++} __attribute__ ((packed));
++
++struct grub_hfsplus_catfile
++{
++  grub_uint16_t type;
++  grub_uint16_t flags;
++  grub_uint32_t reserved;
++  grub_uint32_t fileid;
++  grub_uint8_t unused1[4];
++  grub_uint32_t mtime;
++  grub_uint8_t unused2[22];
++  grub_uint16_t mode;
++  grub_uint8_t unused3[44];
++  struct grub_hfsplus_forkdata data;
++  struct grub_hfsplus_forkdata resource;
++} __attribute__ ((packed));
++
++/* Filetype information as used in inodes.  */
++#define GRUB_HFSPLUS_FILEMODE_MASK	0170000
++#define GRUB_HFSPLUS_FILEMODE_REG	0100000
++#define GRUB_HFSPLUS_FILEMODE_DIRECTORY	0040000
++#define GRUB_HFSPLUS_FILEMODE_SYMLINK	0120000
++
++/* Some pre-defined file IDs.  */
++#define GRUB_HFSPLUS_FILEID_ROOTDIR	2
++#define GRUB_HFSPLUS_FILEID_OVERFLOW	3
++#define GRUB_HFSPLUS_FILEID_CATALOG	4
++
++enum grub_hfsplus_filetype
++  {
++    GRUB_HFSPLUS_FILETYPE_DIR = 1,
++    GRUB_HFSPLUS_FILETYPE_REG = 2,
++    GRUB_HFSPLUS_FILETYPE_DIR_THREAD = 3,
++    GRUB_HFSPLUS_FILETYPE_REG_THREAD = 4
++  };
++
++#define GRUB_HFSPLUSX_BINARYCOMPARE	0xBC
++#define GRUB_HFSPLUSX_CASEFOLDING	0xCF
++
++grub_err_t
++grub_mac_bless_inode (grub_device_t dev, grub_uint64_t inode, int is_dir,
++		      int intel);
++grub_err_t
++grub_mac_bless_file (grub_device_t dev, const char *path_in, int intel);
++
++#endif
+
+=== modified file 'util/grub-install.in'
+--- util/grub-install.in	2011-11-12 20:12:52 +0000
++++ util/grub-install.in	2011-11-28 13:19:10 +0000
+@@ -38,6 +38,7 @@
+ self="`basename $0`"
+ 
+ grub_setup="${sbindir}/`echo grub-setup | sed ${transform}`"
++grub_mactelbless="${sbindir}/`echo grub-mactelbless | sed ${transform}`"
+ grub_mkimage="${bindir}/`echo grub-mkimage | sed ${transform}`"
+ grub_mkdevicemap="${sbindir}/`echo grub-mkdevicemap | sed ${transform}`"
+ grub_probe="${sbindir}/`echo grub-probe | sed ${transform}`"
+@@ -78,6 +79,8 @@
+     disk_module=native
+ fi
+ 
++install_ok=false
++
+ # Usage: usage
+ # Print the usage.
+ usage () {
+@@ -150,6 +153,9 @@
+ 
+ allow_floppy=""
+ 
++efidir=
++macteldir=
++
+ # Check the arguments.
+ while test $# -gt 0
+ do
+@@ -186,6 +192,16 @@
+     --boot-directory=*)
+ 	bootdir="`echo "$option" | sed 's/--boot-directory=//'`" ;;
+ 
++    --efi-directory)
++	efidir="`argument $option "$@"`"; shift;;
++    --efi-directory=*)
++	efidir="`echo "$option" | sed 's/--efi-directory=//'`" ;;
++
++    --mactel-directory)
++	macteldir="`argument $option "$@"`"; shift;;
++    --mactel-directory=*)
++	macteldir="`echo "$option" | sed 's/--mactel-directory=//'`" ;;
++
+     --grub-setup)
+ 	grub_setup="`argument "$option" "$@"`"; shift;;
+     --grub-setup=*)
+@@ -329,27 +345,20 @@
+ 
+ if [ x"$platform" = xefi ]; then
+     # Find the EFI System Partition.
+-    efidir=
+-    if test -d "${bootdir}/efi"; then
+-	install_device="`"$grub_mkdevicemap" --device-map=/dev/stdout | "$grub_probe" --target=device --device-map=/dev/stdin "${bootdir}/efi"`"
++    if test -z "$efidir" && test -d "${bootdir}/efi"; then
++	install_device="`"$grub_probe" --target=device --device-map=/dev/null "${bootdir}/efi"`"
+         # Is it a mount point?
+-	if test "x$install_device" != "x`"$grub_mkdevicemap" --device-map=/dev/stdout | "$grub_probe" --target=device --device-map=/dev/stdin "${bootdir}"`"; then
++	if test "x$install_device" != "x`"$grub_probe" --target=device --device-map=/dev/null "${bootdir}"`"; then
+ 	    efidir="${bootdir}/efi"
+ 	fi
+-    elif test -d "${bootdir}/EFI"; then
+-	install_device="`"$grub_mkdevicemap" --device-map=/dev/stdout | "$grub_probe" --target=device --device-map=/dev/stdin "${bootdir}/EFI"`"
++    elif test -z "$efidir" && test -d "${bootdir}/EFI"; then
++	install_device="`"$grub_probe" --target=device --device-map=/dev/null "${bootdir}/EFI"`"
+         # Is it a mount point?
+-	if test "x$install_device" != "x`"$grub_mkdevicemap" --device-map=/dev/stdout | "$grub_probe" --target=device --device-map=/dev/stdin "${bootdir}"`"; then
++	if test "x$install_device" != "x`"$grub_probe" --target=device --device-map=/dev/null "${bootdir}"`"; then
+ 	    efidir="${bootdir}/EFI"
+ 	fi
+-    elif test -n "$rootdir" && test "x$rootdir" != "x/"; then
+-        # The EFI System Partition may have been given directly using
+-        # --root-directory.
+-	install_device="`"$grub_mkdevicemap" --device-map=/dev/stdout | "$grub_probe" --target=device --device-map=/dev/stdin "${rootdir}"`"
+-        # Is it a mount point?
+-	if test "x$install_device" != "x`"$grub_mkdevicemap" --device-map=/dev/stdout | "$grub_probe" --target=device --device-map=/dev/stdin "${rootdir}/.."`"; then
+-	    efidir="${rootdir}"
+-	fi
++    elif test -n "$efidir"; then
++	install_device="`"$grub_probe" --target=device --device-map=/dev/null "${bootdir}/efi"`"
+     fi
+     
+     if test -n "$efidir"; then
+@@ -378,9 +387,6 @@
+ 		    efi_file=BOOTIA32.EFI ;;
+ 		x86_64)
+ 		    efi_file=BOOTX64.EFI ;;
+-	    # GRUB does not yet support these architectures, but they're defined
+-	    # by the specification so we include them here to ease future
+-	    # expansion.
+ 		ia64)
+ 		    efi_file=BOOTIA64.EFI ;;
+ 	    esac
+@@ -392,9 +398,6 @@
+ 		    efi_file=grubia32.efi ;;
+ 		x86_64)
+ 		    efi_file=grubx64.efi ;;
+-	 # GRUB does not yet support these architectures, but they're defined
+- 	 # by the specification so we include them here to ease future
+-	 # expansion.
+ 		ia64)
+ 		    efi_file=grubia64.efi ;;
+ 		*)
+@@ -405,12 +408,33 @@
+ 	fi
+ 	efidir="$efidir/EFI/$efi_distributor"
+ 	mkdir -p "$efidir" || exit 1
+-    else
+-        # We don't know what's going on.  Fall back to traditional
+-        # (non-specification-compliant) behaviour.
+-	efidir="$grubdir"
+-	efi_distributor=
+-	efi_file=grub.efi
++    fi
++
++    if test -z "$macteldir" && test -d "${bootdir}/mactel"; then
++	mactel_device="`"$grub_probe" --target=device --device-map=/dev/null "${bootdir}/mactel"`"
++        # Is it a mount point?
++	if test "x$mactel_device" != "x`"$grub_probe" --target=device --device-map=/dev/null "${bootdir}"`"; then
++	    macteldir="${bootdir}/mactel"
++	fi
++    elif test -z "$macteldir" && test -d "${bootdir}/MACTEL"; then
++	mactel_device="`"$grub_probe" --target=device --device-map=/dev/null "${bootdir}/MACTEL"`"
++        # Is it a mount point?
++	if test "x$mactel_device" != "x`"$grub_probe" --target=device --device-map=/dev/null "${bootdir}"`"; then
++	    macteldir="${bootdir}/MACTEL"
++	fi
++    elif test -n "$macteldir"; then
++	mactel_device="`"$grub_probe" --target=device --device-map=/dev/null "${bootdir}/mactel"`"
++    fi
++    
++    if test -n "$macteldir"; then
++	mactel_fs=`"$grub_probe" --target=fs "--device-map=${device_map}" "${macteldir}"`
++	if test "x$mactel_fs" = xhfsplus; then :; else
++	    echo "${macteldir} doesn't look like an MACTEL partition." 1>&2
++	    macteldir=
++	fi
++    fi
++    if test -n "$macteldir" ; then
++	mkdir -p "$macteldir/System/Library/CoreServices" || exit 1
+     fi
+ fi
+ 
+@@ -521,73 +545,79 @@
+     relative_grubdir=/
+ fi
+ 
+-prefix_drive=
+-config_opt=
+-
+-rm -f "${grubdir}/load.cfg"
+-
+-if [ "x${debug_image}" != x ]; then
+-    echo "set debug='${debug_image}'" >> "${grubdir}/load.cfg"
+-    config_opt="-c ${grubdir}/load.cfg "
+-fi
+-
+-if [ "x${devabstraction_module}" = "x" ] ; then
+-    if [ x"${install_device}" != x ]; then
+-      if echo "${install_device}" | grep -qx "(.*)" ; then
+-        install_drive="${install_device}"
+-      else
+-        install_drive="`"$grub_probe" --device-map="${device_map}" --target=drive --device "${install_device}"`" || exit 1
+-      fi
+-      install_drive="`echo "${install_drive}" | sed -e s/,[a-z0-9,]*//g`"
++create_image () {
++    create_image_install_device="$1"
++    output_image="$2"
++    prefix_drive=
++    config_opt=
++
++    rm -f "${grubdir}/load.cfg"
++
++    if [ "x${debug_image}" != x ]; then
++	echo "set debug='${debug_image}'" >> "${grubdir}/load.cfg"
++	config_opt="-c ${grubdir}/load.cfg "
+     fi
+-    grub_drive="`"$grub_probe" --device-map="${device_map}" --target=drive --device "${grub_device}"`" || exit 1
+-
+-    # Strip partition number
+-    grub_partition="`echo "${grub_drive}" | sed -e 's/^[^,]*[,)]//; s/)$//'`"
+-    grub_drive="`echo "${grub_drive}" | sed -e s/,[a-z0-9,]*//g`"
+-    if ([ "x$disk_module" != x ] && [ "x$disk_module" != xbiosdisk ]) || [ "x${grub_drive}" != "x${install_drive}" ] || ([ "x$platform" != xefi ] && [ "x$platform" != xpc ] && [ x"${platform}" != x"ieee1275" ]); then
+-        # generic method (used on coreboot and ata mod)
+-        uuid="`"$grub_probe" --device-map="${device_map}" --target=fs_uuid --device "${grub_device}"`"
+-        if [ "x${uuid}" = "x" ] ; then
+-          if [ "x$platform" != xefi ] && [ "x$platform" != xpc ] && [ x"${platform}" != x"ieee1275" ]; then
+-             echo "UUID needed with $platform, but the filesystem containing ${grubdir} does not support UUIDs." 1>&2
+-          elif [ "$disk_module" = ata ]; then
+-             echo "UUID needed with ata mod, but the filesystem containing ${grubdir} does not support UUIDs." 1>&2
+-          else
+-             echo "UUID needed with cross-disk installs, but the filesystem containing ${grubdir} does not support UUIDs." 1>&2
+-          fi
+-             
+-          exit 1
+-        fi
+-
+-        echo "search.fs_uuid ${uuid} root " >> "${grubdir}/load.cfg"
+-	echo 'set prefix=($root)'"${relative_grubdir}" >> "${grubdir}/load.cfg"
+-	config_opt="-c ${grubdir}/load.cfg "
+-        modules="$modules search_fs_uuid"
++
++    if [ "x${devabstraction_module}" = "x" ] ; then
++	if [ x"${create_image_install_device}" != x ]; then
++	    if echo "${create_image_install_device}" | grep -qx "(.*)" ; then
++		install_drive="${create_image_install_device}"
++	    else
++		install_drive="`"$grub_probe" --device-map="${device_map}" --target=drive --device "${create_image_install_device}"`" || exit 1
++	    fi
++	    install_drive="`echo "${install_drive}" | sed -e s/,[a-z0-9,]*//g`"
++	fi
++	grub_drive="`"$grub_probe" --device-map="${device_map}" --target=drive --device "${grub_device}"`" || exit 1
++
++        # Strip partition number
++	grub_partition="`echo "${grub_drive}" | sed -e 's/^[^,]*[,)]//; s/)$//'`"
++	grub_drive="`echo "${grub_drive}" | sed -e s/,[a-z0-9,]*//g`"
++	if ([ "x$disk_module" != x ] && [ "x$disk_module" != xbiosdisk ]) || [ "x${grub_drive}" != "x${install_drive}" ] || ([ "x$platform" != xefi ] && [ "x$platform" != xpc ] && [ x"${platform}" != x"ieee1275" ]); then
++            # generic method (used on coreboot and ata mod)
++            uuid="`"$grub_probe" --device-map="${device_map}" --target=fs_uuid --device "${grub_device}"`"
++            if [ "x${uuid}" = "x" ] ; then
++		if [ "x$platform" != xefi ] && [ "x$platform" != xpc ] && [ x"${platform}" != x"ieee1275" ]; then
++		    echo "UUID needed with $platform, but the filesystem containing ${grubdir} does not support UUIDs." 1>&2
++		elif [ "$disk_module" = ata ]; then
++		    echo "UUID needed with ata mod, but the filesystem containing ${grubdir} does not support UUIDs." 1>&2
++		else
++		    echo "UUID needed with cross-disk installs, but the filesystem containing ${grubdir} does not support UUIDs." 1>&2
++		fi
++		
++		exit 1
++            fi
++	    
++            echo "search.fs_uuid ${uuid} root " >> "${grubdir}/load.cfg"
++	    echo 'set prefix=($root)'"${relative_grubdir}" >> "${grubdir}/load.cfg"
++	    config_opt="-c ${grubdir}/load.cfg "
++            modules="$modules search_fs_uuid"
++	else
++           # we need to hardcode the partition number in the core image's prefix.
++	    if [ x"$grub_partition" = x ]; then
++		prefix_drive="()"
++	    else
++		prefix_drive="(,$grub_partition)"
++	    fi
++	fi
+     else
+-        # we need to hardcode the partition number in the core image's prefix.
+-	if [ x"$grub_partition" = x ]; then
+-            prefix_drive="()"
+-	else
+-            prefix_drive="(,$grub_partition)"
++	if [ x$GRUB_CRYPTODISK_ENABLE = xy ]; then
++	    for uuid in "`"${grub_probe}" --device "${grub_device}" --target=cryptodisk_uuid`"; do
++		echo "cryptomount -u $uuid" >> "${grubdir}/load.cfg"
++	    done
++	    config_opt="-c ${grubdir}/load.cfg "
+ 	fi
+-    fi
+-else
+-    if [ x$GRUB_CRYPTODISK_ENABLE = xy ]; then
+-	for uuid in "`"${grub_probe}" --device "${grub_device}" --target=cryptodisk_uuid`"; do
+-	    echo "cryptomount -u $uuid" >> "${grubdir}/load.cfg"
+-	done
+-	config_opt="-c ${grubdir}/load.cfg "
+-    fi
+-
+-    prefix_drive=`"$grub_probe" --device-map="${device_map}" --target=drive --device "${grub_device}"` || exit 1
+-fi
+-
+-case "${target_cpu}-${platform}" in
+-    sparc64-ieee1275) mkimage_target=sparc64-ieee1275-raw ;;
+-    mipsel-loongson) mkimage_target=mipsel-loongson-elf ;;
+-    *) mkimage_target="${target_cpu}-${platform}" ;;
+-esac
++	
++	prefix_drive=`"$grub_probe" --device-map="${device_map}" --target=drive --device "${grub_device}"` || exit 1
++    fi
++
++    case "${target_cpu}-${platform}" in
++	sparc64-ieee1275) mkimage_target=sparc64-ieee1275-raw ;;
++	mipsel-loongson) mkimage_target=mipsel-loongson-elf ;;
++	*) mkimage_target="${target_cpu}-${platform}" ;;
++    esac
++    
++    "$grub_mkimage" ${config_opt} -d "${pkglibdir}" -O ${mkimage_target} --output="$output_image" --prefix="${prefix_drive}${relative_grubdir}" $modules || exit 1
++}
+ 
+ case "${target_cpu}-${platform}" in
+     i386-efi | x86_64-efi) imgext=efi ;;
+@@ -596,8 +626,8 @@
+     *) imgext=img ;;
+ esac
+ 
++create_image "$install_device" "${grubdir}/core.${imgext}"
+ 
+-"$grub_mkimage" ${config_opt} -d "${pkglibdir}" -O ${mkimage_target} --output="${grubdir}/core.${imgext}" --prefix="${prefix_drive}${relative_grubdir}" $modules || exit 1
+ 
+ # Backward-compatibility kludges
+ if [ "${target_cpu}-${platform}" = "mipsel-loongson" ]; then
+@@ -608,12 +638,12 @@
+     "$grub_mkimage" ${config_opt} -d "${pkglibdir}" -O ${mkimage_target} --output="${grubdir}/grub.efi" --prefix="" $modules || exit 1
+ fi
+ 
+-
+ # Perform the platform-dependent install
+ if [ "${target_cpu}-${platform}" = "i386-pc" ] || [ "${target_cpu}-${platform}" = "sparc64-ieee1275" ] ; then
+     # Now perform the installation.
+     "$grub_setup" ${allow_floppy} ${setup_verbose} ${setup_force} --directory="${grubdir}" \
+ 	--device-map="${device_map}" "${install_device}" || exit 1
++    install_ok=true
+ elif [ "${target_cpu}-${platform}" = "i386-ieee1275" ] || [ "${target_cpu}-${platform}" = "powerpc-ieee1275" ]; then
+     if [ x"$update_nvram" = xyes ]; then
+ 	ofpathname="`which ofpathname`"
+@@ -649,11 +679,12 @@
+ 	    echo "  setenv boot-device $boot_device"
+ 	    exit 1
+ 	}
++	install_ok=true
+     fi
+ elif [ x"${target_cpu}-${platform}" = xmips-arc ]; then
+     dvhtool -d "${install_device}" --unix-to-vh "{grubdir}/core.${imgext}" grub
+     echo "You will have to set SystemPartition and OSLoader manually."
+-elif [ x"$platform" = xefi ]; then
++elif [ x"$platform" = xefi ] && [ -n "$efidir" ]; then
+     cp "${grubdir}/core.${imgext}" "${efidir}/${efi_file}"
+     # For old macs. Suggested by Peter Jones.
+     if [ x$target_cpu = xi386 ]; then
+@@ -662,6 +693,9 @@
+ 
+     # Try to make this image bootable using the EFI Boot Manager, if available.
+     efibootmgr="`which efibootmgr`"
++    if test "$removable" = yes ; then
++	install_ok=true
++    fi
+     if test "$removable" = no && test -n "$efi_distributor" && \
+ 	test -n "$efibootmgr"; then
+         # On Linux, we need the efivars kernel modules.
+@@ -689,11 +723,34 @@
+ 	    efidir_disk="$(echo "$clean_devmap" | grep "^$(echo "$efidir_drive" | sed 's/,[^)]*//')" | cut -f2)"
+ 	    efidir_part="$(echo "$efidir_drive" | sed 's/^([^,]*,[^0-9]*//; s/[^0-9].*//')"
+ 	    efibootmgr $efi_quiet -c -d "$efidir_disk" -p "$efidir_part" -w \
+-		-L "$bootloader_id" -l "\\EFI\\$efi_distributor\\$efi_file"
++		-L "$bootloader_id" -l "\\EFI\\$efi_distributor\\$efi_file" && install_ok=true
+ 	fi
+     fi
+ fi
+ 
++if ([ "${target_cpu}-${platform}" = "i386-efi" ] || [ "${target_cpu}-${platform}" = "x86_64-efi" ] ) && [ -n "$macteldir" ]; then
++    create_image "$mactel_device" "${macteldir}/System/Library/CoreServices/boot.efi"
++    touch "${macteldir}/mach_kernel"
++    cat > "${macteldir}/System/Library/CoreServices/SystemVersion.plist" <<EOF
++<plist version="1.0">
++<dict>
++        <key>ProductBuildVersion</key>
++        <string></string>
++        <key>ProductName</key>
++        <string>${bootloader_id}</string>
++        <key>ProductVersion</key>
++        <string>${PACKAGE_NAME} ${PACKAGE_VERSION}</string>
++</dict>
++</plist>
++EOF
++    "$grub_mactelbless" "${macteldir}/System/Library/CoreServices/boot.efi"
++    install_ok=true
++fi
++
++if [ x"$install_ok" != "xtrue" ]; then
++    echo "Unable to perform platform-specific install. Consult your platform manual to finish installing using ${grubdir}/core.${imgext} image"
++fi
++
+ echo "Installation finished. No error reported."
+ 
+ # Bye.
+
+=== added file 'util/grub-mactelbless.c'
+--- util/grub-mactelbless.c	1970-01-01 00:00:00 +0000
++++ util/grub-mactelbless.c	2011-11-28 12:57:01 +0000
+@@ -0,0 +1,214 @@
++/* grub-probe.c - probe device information for a given path */
++/*
++ *  GRUB  --  GRand Unified Bootloader
++ *  Copyright (C) 2005,2006,2007,2008,2009,2010  Free Software Foundation, Inc.
++ *
++ *  GRUB is free software: you can redistribute it and/or modify
++ *  it under the terms of the GNU General Public License as published by
++ *  the Free Software Foundation, either version 3 of the License, or
++ *  (at your option) any later version.
++ *
++ *  GRUB is distributed in the hope that it will be useful,
++ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *  GNU General Public License for more details.
++ *
++ *  You should have received a copy of the GNU General Public License
++ *  along with GRUB.  If not, see <http://www.gnu.org/licenses/>.
++ */
++
++#include <config.h>
++#include <grub/types.h>
++#include <grub/emu/misc.h>
++#include <grub/util/misc.h>
++#include <grub/device.h>
++#include <grub/disk.h>
++#include <grub/file.h>
++#include <grub/fs.h>
++#include <grub/partition.h>
++#include <grub/msdos_partition.h>
++#include <grub/emu/hostdisk.h>
++#include <grub/emu/getroot.h>
++#include <grub/term.h>
++#include <grub/env.h>
++#include <grub/raid.h>
++#include <grub/i18n.h>
++#include <grub/crypto.h>
++#include <grub/cryptodisk.h>
++#include <grub/hfsplus.h>
++
++#include <stdio.h>
++#include <unistd.h>
++#include <string.h>
++#include <stdlib.h>
++#include <errno.h>
++#include <sys/stat.h>
++
++#define _GNU_SOURCE	1
++#include <getopt.h>
++
++#include "progname.h"
++
++static void
++bless (const char *path)
++{
++  char *drive_name = NULL;
++  char *device_name;
++  char *grub_path = NULL;
++  char *filebuf_via_grub = NULL, *filebuf_via_sys = NULL;
++  grub_device_t dev = NULL;
++  grub_fs_t fs;
++  grub_err_t err;
++  struct stat st;
++
++  grub_path = canonicalize_file_name (path);
++
++  if (stat (grub_path, &st) < 0)
++    grub_util_error ("Can't stat %s: %s", grub_path, strerror (errno));
++
++  device_name = grub_guess_root_device (grub_path);
++
++  if (! device_name)
++    grub_util_error (_("cannot find a device for %s (is /dev mounted?)"), path);
++
++  drive_name = grub_util_get_grub_dev (device_name);
++  if (! drive_name)
++    grub_util_error (_("cannot find a GRUB drive for %s.  Check your device.map"),
++		     device_name);
++
++  grub_util_info ("opening %s", drive_name);
++  dev = grub_device_open (drive_name);
++  if (! dev)
++    grub_util_error ("%s", _(grub_errmsg));
++
++  err = grub_mac_bless_inode (dev, st.st_ino, S_ISDIR (st.st_mode), 1);
++  if (err)
++    grub_util_error ("%s", _(grub_errmsg));
++  free (grub_path);
++  free (filebuf_via_grub);
++  free (filebuf_via_sys);
++  free (drive_name);
++}
++
++static struct option options[] =
++  {
++    {"help", no_argument, 0, 'h'},
++    {"version", no_argument, 0, 'V'},
++    {"verbose", no_argument, 0, 'v'},
++    {0, 0, 0, 0}
++  };
++
++static void
++usage (int status)
++{
++  if (status)
++    fprintf (stderr,
++	     _("Try `%s --help' for more information.\n"), program_name);
++  else
++    printf (_("\
++Usage: %s FILE\n\
++\n\
++Mactel-style bless a FILE on HFS+.\n\
++\n\
++  -h, --help                display this message and exit\n\
++  -V, --version             print version information and exit\n\
++  -v, --verbose             print verbose messages\n\
++\n\
++Report bugs to <%s>.\n\
++"), program_name,
++	    DEFAULT_DEVICE_MAP, PACKAGE_BUGREPORT);
++
++  exit (status);
++}
++
++int
++main (int argc, char *argv[])
++{
++  char *dev_map = 0;
++  char *argument;
++
++  set_program_name (argv[0]);
++
++  grub_util_init_nls ();
++
++  /* Check for options.  */
++  while (1)
++    {
++      int c = getopt_long (argc, argv, "dm:t:hVv", options, 0);
++
++      if (c == -1)
++	break;
++      else
++	switch (c)
++	  {
++	  case 'm':
++	    if (dev_map)
++	      free (dev_map);
++
++	    dev_map = xstrdup (optarg);
++	    break;
++
++	  case 'h':
++	    usage (0);
++	    break;
++
++	  case 'V':
++	    printf ("%s (%s) %s\n", program_name, PACKAGE_NAME, PACKAGE_VERSION);
++	    return 0;
++
++	  case 'v':
++	    verbosity++;
++	    break;
++
++	  default:
++	    usage (1);
++	    break;
++	  }
++    }
++
++  if (verbosity > 1)
++    grub_env_set ("debug", "all");
++
++  /* Obtain ARGUMENT.  */
++  if (optind >= argc)
++    {
++      fprintf (stderr, _("No path or device is specified.\n"));
++      usage (1);
++    }
++
++  if (optind + 1 != argc)
++    {
++      fprintf (stderr, _("Unknown extra argument `%s'.\n"), argv[optind + 1]);
++      usage (1);
++    }
++
++  argument = argv[optind];
++
++  /* Initialize the emulated biosdisk driver.  */
++  grub_util_biosdisk_init (dev_map ? : DEFAULT_DEVICE_MAP);
++
++  /* Initialize all modules. */
++  grub_init_all ();
++  grub_gcry_init_all ();
++
++  grub_lvm_fini ();
++  grub_mdraid09_fini ();
++  grub_mdraid1x_fini ();
++  grub_raid_fini ();
++  grub_raid_init ();
++  grub_mdraid09_init ();
++  grub_mdraid1x_init ();
++  grub_lvm_init ();
++
++  /* Do it.  */
++  bless (argument);
++
++  /* Free resources.  */
++  grub_gcry_fini_all ();
++  grub_fini_all ();
++  grub_util_biosdisk_fini ();
++
++  free (dev_map);
++
++  return 0;
++}
+

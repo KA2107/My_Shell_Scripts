@@ -88,6 +88,7 @@ fi
 	export _GRUB2_BIOS_SBIN_DIR="${_GRUB2_BIOS_PREFIX_DIR}/sbin"
 	export _GRUB2_BIOS_SYSCONF_DIR="${_GRUB2_BIOS_PREFIX_DIR}/etc"
 	export _GRUB2_BIOS_LIB_DIR="${_GRUB2_BIOS_PREFIX_DIR}/lib"
+	export _GRUB2_BIOS_DATA_DIR="${_GRUB2_BIOS_LIB_DIR}"
 	export _GRUB2_BIOS_DATAROOT_DIR="${_GRUB2_BIOS_PREFIX_DIR}/share"
 	export _GRUB2_BIOS_INFO_DIR="${_GRUB2_BIOS_DATAROOT_DIR}/info"
 	export _GRUB2_BIOS_LOCALE_DIR="${_GRUB2_BIOS_DATAROOT_DIR}/locale"
@@ -98,7 +99,7 @@ fi
 	export _GRUB2_BIOS_OTHER_CONFIGURE_OPTIONS="--enable-mm-debug --enable-device-mapper --enable-cache-stats --enable-grub-mkfont --enable-grub-mount --enable-nls"
 	
 	export _GRUB2_BIOS_CONFIGURE_PATHS_1="--prefix="${_GRUB2_BIOS_PREFIX_DIR}" --bindir="${_GRUB2_BIOS_BIN_DIR}" --sbindir="${_GRUB2_BIOS_SBIN_DIR}" --sysconfdir="${_GRUB2_BIOS_SYSCONF_DIR}" --libdir="${_GRUB2_BIOS_LIB_DIR}""
-	export _GRUB2_BIOS_CONFIGURE_PATHS_2="--datarootdir="${_GRUB2_BIOS_DATAROOT_DIR}" --infodir="${_GRUB2_BIOS_INFO_DIR}" --localedir="${_GRUB2_BIOS_LOCALE_DIR}" --mandir="${_GRUB2_BIOS_MAN_DIR}""
+	export _GRUB2_BIOS_CONFIGURE_PATHS_2="--datadir="${_GRUB2_BIOS_DATA_DIR}" --datarootdir="${_GRUB2_BIOS_DATAROOT_DIR}" --infodir="${_GRUB2_BIOS_INFO_DIR}" --localedir="${_GRUB2_BIOS_LOCALE_DIR}" --mandir="${_GRUB2_BIOS_MAN_DIR}""
 	
 	export _GRUB2_UNIFONT_PATH='/usr/share/fonts/misc'
 	
@@ -267,7 +268,13 @@ _GRUB2_BIOS_SETUP_BOOT_PART_DIR() {
 	sudo "${_GRUB2_BIOS_SBIN_DIR}/${_GRUB2_BIOS_NAME}-install" --modules="${_GRUB2_BIOS_CORE_IMG_MODULES}" --boot-directory="${_GRUB2_BOOT_PART_MP}" --no-floppy --recheck --debug "${_GRUB2_INSTALL_DEVICE}" # Setup the GRUB2 folder in the /boot directory, create the core.img image and embed the image in the disk.
 	echo
 	
-	sudo cp "${_GRUB2_BIOS_DATAROOT_DIR}/${_GRUB2_BIOS_NAME}"/*.pf2 "${_GRUB2_BOOT_PART_DIR}/" || true
+	if [[ -e "${_GRUB2_BIOS_DATA_DIR}/${_GRUB2_BIOS_NAME}/unicode.pf2" ]]; then
+		mkdir -p "${_GRUB2_BIOS_DATAROOT_DIR}/${_GRUB2_BIOS_NAME}" || true
+		sudo cp --verbose "${_GRUB2_BIOS_DATA_DIR}/${_GRUB2_BIOS_NAME}"/{{ascii,euro,unicode}.pf2,{ascii,widthspec}.h} "${_GRUB2_BIOS_DATAROOT_DIR}/${_GRUB2_BIOS_NAME}/" || true
+		echo
+	fi 
+	
+	sudo cp --verbose "${_GRUB2_BIOS_DATAROOT_DIR}/${_GRUB2_BIOS_NAME}"/{ascii,euro,unicode}.pf2 "${_GRUB2_BIOS_SYSTEM_PART_DIR}/" || true
 	echo
 	
 	sudo install -D -m0644 "${_GRUB2_BIOS_BACKUP_DIR}/${_GRUB2_BIOS_MENU_CONFIG}.cfg" "${_GRUB2_BOOT_PART_DIR}/${_GRUB2_BIOS_MENU_CONFIG}_backup.cfg" || true
@@ -366,6 +373,7 @@ fi
 	unset _GRUB2_BIOS_SBIN_DIR
 	unset _GRUB2_BIOS_SYSCONF_DIR
 	unset _GRUB2_BIOS_LIB_DIR
+	unset _GRUB2_BIOS_DATA_DIR
 	unset _GRUB2_BIOS_DATAROOT_DIR
 	unset _GRUB2_BIOS_INFO_DIR
 	unset _GRUB2_BIOS_LOCALE_DIR

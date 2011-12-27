@@ -10,6 +10,7 @@ export _GRUB2_UEFI_BIN_DIR="${_GRUB2_UEFI_PREFIX_DIR}/bin"
 export _GRUB2_UEFI_SBIN_DIR="${_GRUB2_UEFI_PREFIX_DIR}/sbin"
 export _GRUB2_UEFI_SYSCONF_DIR="${_GRUB2_UEFI_PREFIX_DIR}/etc"
 export _GRUB2_UEFI_LIB_DIR="${_GRUB2_UEFI_PREFIX_DIR}/lib"
+export _GRUB2_UEFI_DATA_DIR="${_GRUB2_UEFI_LIB_DIR}"
 export _GRUB2_UEFI_DATAROOT_DIR="${_GRUB2_UEFI_PREFIX_DIR}/share"
 
 export _GRUB2_UEFI_NAME='grub_uefi_x86_64'
@@ -103,7 +104,13 @@ echo
 # sudo "${_GRUB2_UEFI_BIN_DIR}/${_GRUB2_UEFI_NAME}-mkfont" --verbose --ascii-bitmaps --output="${_GRUB2_UEFI_SYSTEM_PART_DIR}/ascii.pf2" "${_GRUB2_UNIFONT_PATH}/unifont.bdf" || true
 echo
 
-sudo cp "${_GRUB2_UEFI_DATAROOT_DIR}/${_GRUB2_UEFI_NAME}/unicode.pf2" "${_GRUB2_UEFI_SYSTEM_PART_DIR}/" || true
+if [[ -e "${_GRUB2_UEFI_DATA_DIR}/${_GRUB2_UEFI_NAME}/unicode.pf2" ]]; then
+	mkdir -p "${_GRUB2_UEFI_DATAROOT_DIR}/${_GRUB2_UEFI_NAME}" || true
+	sudo cp --verbose "${_GRUB2_UEFI_DATA_DIR}/${_GRUB2_UEFI_NAME}"/{{ascii,euro,unicode}.pf2,{ascii,widthspec}.h} "${_GRUB2_UEFI_DATAROOT_DIR}/${_GRUB2_UEFI_NAME}/" || true
+	echo
+fi 
+
+sudo cp --verbose "${_GRUB2_UEFI_DATAROOT_DIR}/${_GRUB2_UEFI_NAME}"/{ascii,euro,unicode}.pf2 "${_GRUB2_UEFI_SYSTEM_PART_DIR}/" || true
 echo
 
 set +x +e
@@ -116,6 +123,7 @@ unset _GRUB2_UEFI_BIN_DIR
 unset _GRUB2_UEFI_SBIN_DIR
 unset _GRUB2_UEFI_SYSCONF_DIR
 unset _GRUB2_UEFI_LIB_DIR
+unset _GRUB2_UEFI_DATA_DIR
 unset _GRUB2_UEFI_DATAROOT_DIR
 unset _GRUB2_UEFI_NAME
 unset _GRUB2_UEFI_MENU_CONFIG
