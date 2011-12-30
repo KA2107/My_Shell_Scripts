@@ -287,7 +287,10 @@ _GRUB2_BIOS_SETUP_BOOT_PART_DIR() {
 	# sudo ${_GRUB2_BIOS_SBIN_DIR}/${_GRUB2_BIOS_NAME}-mkconfig --output=${_GRUB2_BOOT_PART_DIR}/${_GRUB2_BIOS_MENU_CONFIG}.cfg || true
 	echo
 	
-	sudo chmod --verbose -x "${_GRUB2_BOOT_PART_DIR}/${_GRUB2_BIOS_MENU_CONFIG}.cfg" || true
+	sudo dos2unix -ascii --keepdate --safe --skip-symlink --oldfile "${_GRUB2_BOOT_PART_DIR}"/*.cfg || true
+	echo
+	
+	sudo chmod --verbose -x "${_GRUB2_BOOT_PART_DIR}"/*.cfg || true
 	echo
 	
 	sudo cp --verbose "${_GRUB2_BIOS_BACKUP_DIR}"/*.{png,jpg,tga} "${_GRUB2_BOOT_PART_DIR}/" || true

@@ -353,6 +353,9 @@ EOF
 		echo
 	fi
 	
+	dos2unix -ascii --keepdate --safe --skip-symlink --oldfile "${_WD}/${_GRUB2_UEFI_NAME}_standalone_memdisk_config.cfg"
+	echo
+	
 	install -D -m0644 "${_WD}/${_GRUB2_UEFI_NAME}_standalone_memdisk_config.cfg" "${_WD}/boot/grub/grub.cfg"
 	echo
 	
@@ -459,7 +462,7 @@ set -x
 
 modprobe -q efivars
 
-if [[ "\$(grep ^efivars /proc/modules)" ]]; then
+if [[ "\$(lsmod | grep ^efivars)" ]]; then
 	if [[ -d "/sys/firmware/efi/vars" ]]; then
 		# Delete old entries of grub2 - command to be checked
 		for bootnum in \$(efibootmgr | grep '^Boot[0-9]' | fgrep -i " ${_GRUB2_UEFI_NAME}" | cut -b5-8)
@@ -495,7 +498,7 @@ EOF
 	
 }
 
-_GRUB2_APPLE_EFI_BOOTMGR() {
+_GRUB2_APPLE_EFI_HFS_BLESS() {
 	
 	echo
 	
@@ -612,7 +615,7 @@ if [[ "${_PROCESS_CONTINUE}" == 'TRUE' ]]; then
 			echo
 			
 			if [[ "$(dmidecode -s system-manufacturer)" == 'Apple Inc.' ]] || [[ "$(dmidecode -s system-manufacturer)" == 'Apple Computer, Inc.' ]]; then
-				_GRUB2_APPLE_EFI_BOOTMGR
+				_GRUB2_APPLE_EFI_HFS_BLESS
 				echo
 			else
 				_GRUB2_UEFI_EFIBOOTMGR
@@ -626,6 +629,14 @@ if [[ "${_PROCESS_CONTINUE}" == 'TRUE' ]]; then
 		echo
 		
 		_GRUB2_UEFI_SETUP_BOOTX64_EFI_APP
+		
+		echo
+		
+		sudo dos2unix -ascii --keepdate --safe --skip-symlink --oldfile "${_GRUB2_UEFI_SYSTEM_PART_DIR}"/*.cfg "${_UEFI_SYSTEM_PART_MP}/efi/boot"/*.cfg || true
+		
+		echo
+		
+		sudo chmod --verbose -x "${_GRUB2_UEFI_SYSTEM_PART_DIR}"/*.cfg "${_UEFI_SYSTEM_PART_MP}/efi/boot"/*.cfg || true
 		
 		echo
 		
