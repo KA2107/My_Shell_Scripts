@@ -58,6 +58,8 @@ echo
 
 make clean
 
+rm "${_WD}/drivers/net/wireless/iwlwifi/Module.symvers"
+
 echo
 
 git reset --hard
