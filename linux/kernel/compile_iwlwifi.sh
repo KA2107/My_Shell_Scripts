@@ -58,7 +58,9 @@ echo
 
 make clean
 
-rm "${_WD}/drivers/net/wireless/iwlwifi/Module.symvers"
+rm -f "${_WD}/drivers/net/wireless/iwlwifi/Module.symvers"
+rm -f "${_WD}/Module.symvers"
+rm -f "${_WD}/.config"
 
 echo
 
