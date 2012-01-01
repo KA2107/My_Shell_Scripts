@@ -44,6 +44,11 @@ make -C "${_WD}/" CONFIG_IWLWIFI="m" CONFIG_IWLWIFI_DEBUG="y" CONFIG_IWLWIFI_DEV
 
 echo
 
+sudo rm "/lib/modules/3.2.0-1-mainline/kernel/drivers/net/wireless/iwlwifi/iwlwifi.ko" || true
+sudo rm "/lib/modules/3.2.0-1-mainline/kernel/drivers/net/wireless/iwlwifi/iwlwifi.ko.gz" || true
+
+echo
+
 # xz "${_WD}/drivers/net/wireless/iwlwifi/iwlwifi.ko"
 gzip "${_WD}/drivers/net/wireless/iwlwifi/iwlwifi.ko"
 
