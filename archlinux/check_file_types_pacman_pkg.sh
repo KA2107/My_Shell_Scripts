@@ -21,8 +21,8 @@ _RUN()
 	done
 }
 
-set -x -e
+set -e
 
 _RUN
 
-set +x +e
+set +e
