@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 _MILD_FETCH=('Linux_Kernel_Mainline_GIT')
 _NO_MASTER_BRANCH=('ntfs-3g_ntfsprogs_GIT')

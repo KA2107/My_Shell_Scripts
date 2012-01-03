@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 _LAUNCHPAD_USER="the-ridikulus-rat"
 

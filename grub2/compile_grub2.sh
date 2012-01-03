@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 export _PROCESS_CONTINUE_UEFI='FALSE'
 export _PROCESS_CONTINUE_BIOS='FALSE'

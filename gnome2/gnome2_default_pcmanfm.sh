@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 ## Originally written by aysiu from the Ubuntu Forums
 ## This is GPL'ed code

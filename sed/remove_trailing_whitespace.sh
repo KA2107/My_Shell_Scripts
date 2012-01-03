@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # strip trailing white spaces.
 for ext in "sh"

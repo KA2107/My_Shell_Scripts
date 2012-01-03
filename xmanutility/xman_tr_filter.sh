@@ -22,7 +22,7 @@
 # The GNU General Public License is contained in the file COPYING.
 #
 
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Date  : 05 Sep 2006
 
