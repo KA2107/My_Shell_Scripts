@@ -128,25 +128,35 @@ fi
 	
 # }
 
-_GRUB2_BIOS_PRECOMPILE_STEPS() {
+_GRUB2_BIOS_DOS2UNIX() {
 	
-	set -x -e
-	
-	cd "${_WD}/"
+	echo
 	
 	## Convert the line endings of all the source files from DOS to UNIX mode
 	if [[ ! -e "${_WD}/xman_dos2unix.sh" ]]; then
 		wget --no-check-certificate --output-file="${_WD}/xman_dos2unix.sh" "https://raw.github.com/the-ridikulus-rat/My_Shell_Scripts/master/xmanutility/xman_dos2unix.sh" || true
+		echo
 	fi
 	
-	chmod +x "${_WD}/xman_dos2unix.sh" || true
-	"${_WD}/xman_dos2unix.sh" * || true
 	echo
 	
-	## Check whether python2 exists, otherwise create /usr/bin/python2 symlink to python executable 
+	chmod --verbose +x "${_WD}/xman_dos2unix.sh" || true
+	"${_WD}/xman_dos2unix.sh" * || true
+	
+	echo
+	
+}
+
+_GRUB2_BIOS_PYTHON_TO_PYTHON2() {
+	
+	echo
+	
+	## Check whether python2 exists, otherwise create /usr/bin/python2 symlink to python executable
 	if [[ "$(which python2)" ]]; then
 		sudo ln -s "$(which python)" "/usr/bin/python2"
 	fi
+	
+	echo
 	
 	## Archlinux changed default /usr/bin/python to python3, need to use /usr/bin/python2 instead
 	if [[ "$(which python2)" ]]; then
@@ -154,15 +164,40 @@ _GRUB2_BIOS_PRECOMPILE_STEPS() {
 		sed 's|python |python2 |g' -i "${_WD}/autogen.sh" || true
 	fi
 	
-	chmod +x "${_WD}/autogen.sh" || true
+	echo
+	
+}
+
+_GRUB2_BIOS_PO_LINGUAS() {
+	
+	echo
 	
 	if [[ ! -e "${_WD}/po/LINGUAS" ]]; then
 		cd "${_WD}/"
 		rsync -Lrtvz translationproject.org::tp/latest/grub/ "${_WD}/po" || true
+		echo
+		
 		(cd "${_WD}/po" && ls *.po | cut -d. -f1 | xargs) > "${_WD}/po/LINGUAS" || true
+		chmod --verbose -x "${_WD}/po/LINGUAS" || true
+		echo
 	fi
 	
-	"${_WD}/autogen.sh"
+	echo
+	
+}
+
+_GRUB2_BIOS_PRECOMPILE_STEPS() {
+	
+	cd "${_WD}/"
+	echo
+	
+	_GRUB2_BIOS_DOS2UNIX
+	
+	_GRUB2_BIOS_PYTHON_TO_PYTHON2
+	
+	_GRUB2_BIOS_PO_LINGUAS
+	
+	chmod --verbose +x "${_WD}/autogen.sh" || true
 	echo
 	
 	## GRUB2 BIOS Build Directory
@@ -174,8 +209,13 @@ _GRUB2_BIOS_PRECOMPILE_STEPS() {
 
 _GRUB2_BIOS_COMPILE_STEPS() {
 	
-	## Uncomment below to use ${_GRUB2_BIOS_MENU_CONFIG}.cfg as the menu config file instead of grub.cfg - not recommended
-	# sed "s|grub.cfg|${_GRUB2_BIOS_MENU_CONFIG}.cfg|g" -i "${_WD}/grub-core/normal/main.c" || true
+	echo
+	
+	## sed "s|grub.cfg|${_GRUB2_BIOS_MENU_CONFIG}.cfg|g" -i "${_WD}/grub-core/normal/main.c" || true
+	echo
+	
+	"${_WD}/autogen.sh"
+	echo
 	
 	cd "${_WD}/GRUB2_BIOS_BUILD_DIR"
 	echo
@@ -315,6 +355,8 @@ if [[ "${_PROCESS_CONTINUE}" == 'TRUE' ]]; then
 		echo
 		echo 'Ok. Proceeding with compile and installation of GRUB2 BIOS.'
 		echo
+		
+		set -x -e
 		
 		_GRUB2_BIOS_PRECOMPILE_STEPS
 		

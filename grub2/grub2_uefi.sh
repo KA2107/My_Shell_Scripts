@@ -213,8 +213,6 @@ _GRUB2_UEFI_PRECOMPILE_STEPS() {
 	
 	## GRUB2 UEFI Build Directory
 	install -d "${_WD}/GRUB2_UEFI_BUILD_DIR_${_TARGET_UEFI_ARCH}"
-	echo
-	
 	install -D -m0644 "${_WD}/grub.default" "${_WD}/GRUB2_UEFI_BUILD_DIR_${_TARGET_UEFI_ARCH}/grub.default" || true
 	install -D -m0644 "${_WD}/grub.cfg" "${_WD}/GRUB2_UEFI_BUILD_DIR_${_TARGET_UEFI_ARCH}/grub.cfg" || true
 	echo
