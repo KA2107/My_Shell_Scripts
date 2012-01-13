@@ -50,11 +50,11 @@ _COMPILE_DUETPKG_BOOTSECTOR() {
 	
 	echo
 	
-	sed 's|ACTIVE_PLATFORM       = Nt32Pkg/Nt32Pkg.dsc|ACTIVE_PLATFORM       = DuetPkg/DuetPkgIA32.dsc|g' -i "${_UDK_DIR}/Conf/target.txt"
+	sed 's|ACTIVE_PLATFORM       = Nt32Pkg/Nt32Pkg.dsc|ACTIVE_PLATFORM       = DuetPkg/DuetPkgIa32.dsc|g' -i "${_UDK_DIR}/Conf/target.txt"
 	
 	echo
 	
-	build -p "${_UDK_DIR}/DuetPkg/DuetPkgIA32.dsc" -m "${_UDK_DIR}/DuetPkg/BootSector/BootSector.inf" -a IA32 -b RELEASE -t GCC46
+	build -p "${_UDK_DIR}/DuetPkg/DuetPkgIa32.dsc" -m "${_UDK_DIR}/DuetPkg/BootSector/BootSector.inf" -a IA32 -b RELEASE -t GCC46
 	
 	echo
 	
