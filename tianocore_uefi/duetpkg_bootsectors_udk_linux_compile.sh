@@ -8,7 +8,7 @@ _WD="${_SOURCE_CODES_DIR}/Firmware/UEFI/TianoCore_Sourceforge"
 
 source "${_WD}/tianocore_uefi_duetpkg_common.sh"
 
-_UDK_BUILD_OUTER_DIR="${_UDK_DIR}/Build/DuetPkgX64/"
+_UDK_BUILD_OUTER_DIR="${_UDK_DIR}/Build/DuetPkgIA32/"
 _UDK_BUILD_DIR="${_UDK_BUILD_OUTER_DIR}/DEBUG_GCC46/"
 
 _BOOTSECTOR_BUILD_DIR="${_BACKUP_BUILDS_DIR}/BOOTSECTOR_BUILD"
@@ -50,12 +50,11 @@ _COMPILE_DUETPKG_BOOTSECTOR() {
 	
 	echo
 	
-	sed 's|TARGET_ARCH           = IA32|TARGET_ARCH           = X64|g' -i "${_UDK_DIR}/Conf/target.txt"
-	sed 's|ACTIVE_PLATFORM       = Nt32Pkg/Nt32Pkg.dsc|ACTIVE_PLATFORM       = DuetPkg/DuetPkgX64.dsc|g' -i "${_UDK_DIR}/Conf/target.txt"
+	sed 's|ACTIVE_PLATFORM       = Nt32Pkg/Nt32Pkg.dsc|ACTIVE_PLATFORM       = DuetPkg/DuetPkgIA32.dsc|g' -i "${_UDK_DIR}/Conf/target.txt"
 	
 	echo
 	
-	build -p "${_UDK_DIR}/DuetPkg/DuetPkgX64.dsc" -m "${_UDK_DIR}/DuetPkg/BootSector/BootSector.inf" -a X64 -b RELEASE -t GCC46
+	build -p "${_UDK_DIR}/DuetPkg/DuetPkgIA32.dsc" -m "${_UDK_DIR}/DuetPkg/BootSector/BootSector.inf" -a IA32 -b RELEASE -t GCC46
 	
 	echo
 	
