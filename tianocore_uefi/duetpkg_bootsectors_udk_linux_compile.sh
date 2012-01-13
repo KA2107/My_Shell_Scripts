@@ -6,14 +6,14 @@ _SOURCE_CODES_DIR='/media/Source_Codes/Source_Codes'
 
 _WD="${_SOURCE_CODES_DIR}/Firmware/UEFI/TianoCore_Sourceforge"
 
-source "${_WD}/tianocore_duet_common.sh"
+source "${_WD}/tianocore_uefi_duetpkg_common.sh"
 
 _UDK_BUILD_OUTER_DIR="${_UDK_DIR}/Build/DuetPkgX64/"
 _UDK_BUILD_DIR="${_UDK_BUILD_OUTER_DIR}/DEBUG_GCC46/"
 
-_ISO9660_BUILD_DIR="${_BACKUP_BUILDS_DIR}/ISO9660_BUILD"
+_BOOTSECTOR_BUILD_DIR="${_BACKUP_BUILDS_DIR}/BOOTSECTOR_BUILD"
 
-_COMPILE_ISO9660() {
+_COMPILE_DUETPKG_BOOTSECTOR() {
 	
 	echo
 	
@@ -26,7 +26,7 @@ _COMPILE_ISO9660() {
 	
 	echo
 	
-	_COPY_BUILDTOOLS_BASETOOLS
+	# _COPY_BUILDTOOLS_BASETOOLS
 	
 	echo
 	
@@ -55,11 +55,11 @@ _COMPILE_ISO9660() {
 	
 	echo
 	
-	build -p "${_UDK_DIR}/DuetPkg/DuetPkgX64.dsc" -m "${_UDK_DIR}/VBoxPkg/VBoxFsDxe/VBoxIso9660.inf" -a X64 -b RELEASE -t GCC46
+	build -p "${_UDK_DIR}/DuetPkg/DuetPkgX64.dsc" -m "${_UDK_DIR}/DuetPkg/BootSector/BootSector.inf" -a X64 -b RELEASE -t GCC46
 	
 	echo
 	
-	cp -r "${_UDK_BUILD_DIR}" "${_ISO9660_BUILD_DIR}"
+	cp -r "${_UDK_BUILD_DIR}" "${_BOOTSECTOR_BUILD_DIR}"
 	
 	echo
 	
@@ -75,7 +75,7 @@ _COMPILE_ISO9660() {
 
 echo
 
-_COMPILE_ISO9660
+_COMPILE_DUETPKG_BOOTSECTOR
 
 echo
 
@@ -84,8 +84,21 @@ unset _WD
 unset _UDK_DIR
 unset _UDK_BUILD_TOOLS_DIR
 unset _UDK_C_SOURCE_DIR
-unset EDK_TOOLS_PATH
-unset _ISO9660_BUILD_DIR
+unset _UDK_DUETPKG_BOOTSECT_BIN_DIR
+unset _UDK_BUILD_DIR
 unset _BACKUP_BUILDS_DIR
+unset _DUETPKG_EMUVARIABLE_BUILD_DIR
+unset _DUETPKG_FSVARIABLE_BUILD_DIR
+unset _DUETPKG_COMPILED_DIR
+unset _UEFI_DUET_INSTALLER_DIR
+unset _DUET_MEMDISK_COMPILED_DIR
+unset _MEMDISK_DIR
+unset _MIGLE_BOOTDUET_COMPILE_DIR
+unset _ROD_SMITH_DUET_INSTALL_DIR
+unset _BOOTPART
+unset _UEFI_SYS_PART
+unset _SYSLINUX_LIB_DIR
+unset _DUET_PART_FS_UUID
+unset _DUET_PART_MP
 
 set +x +e
