@@ -134,7 +134,7 @@ _GRUB2_BIOS_DOS2UNIX() {
 	
 	## Convert the line endings of all the source files from DOS to UNIX mode
 	if [[ ! -e "${_WD}/xman_dos2unix.sh" ]]; then
-		wget --no-check-certificate --output-file="${_WD}/xman_dos2unix.sh" "https://raw.github.com/the-ridikulus-rat/My_Shell_Scripts/master/xmanutility/xman_dos2unix.sh" || true
+		curl --verbose --ipv4 -f -C - --ftp-pasv --retry 3 --retry-delay 3 -o "${_WD}/xman_dos2unix.sh" "https://raw.github.com/the-ridikulus-rat/My_Shell_Scripts/master/xmanutility/xman_dos2unix.sh" || true
 		echo
 	fi
 	

@@ -175,8 +175,8 @@ if [[ "${_PROCESS_CONTINUE_BIOS}" == 'TRUE' ]]; then
 		echo
 	fi
 	
-	cp --verbose "${_WD_OUTER}/xman_dos2unix.sh" "${_WD_OUTER}/grub.default ${_WD_OUTER}/${_GRUB2_BIOS_Source_DIR_Name}/" || true
 	cp --verbose "${_WD_OUTER}/grub2_bios_linux_scripts/grub2_bios.sh" "${_WD_OUTER}/grub2_bios_linux_scripts/grub2_bios_linux_my.sh" "${_WD_OUTER}/${_GRUB2_BIOS_Source_DIR_Name}/"
+	cp --verbose "${_WD_OUTER}/xman_dos2unix.sh" "${_WD_OUTER}/grub.default" "${_WD_OUTER}/${_GRUB2_BIOS_Source_DIR_Name}/" || true
 	echo
 	
 	rm -f "${_WD_OUTER}/${_GRUB2_BIOS_Source_DIR_Name}/grub.cfg" || true
