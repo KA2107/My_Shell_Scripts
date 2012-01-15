@@ -125,6 +125,9 @@ if [[ "${_PROCESS_CONTINUE_UEFI}" == 'TRUE' ]]; then
 	
 	cd "${_WD_OUTER}/${_GRUB2_UEFI_Source_DIR_Name}/"
 	
+	rm -f "${_WD_OUTER}/${_GRUB2_UEFI_Source_DIR_Name}/ChangeLog_Keshav" || true
+	echo
+	
 	git reset --hard
 	echo
 	
@@ -184,6 +187,9 @@ if [[ "${_PROCESS_CONTINUE_BIOS}" == 'TRUE' ]]; then
 	echo
 	
 	cd "${_WD_OUTER}/${_GRUB2_BIOS_Source_DIR_Name}/"
+	
+	rm -f "${_WD_OUTER}/${_GRUB2_BIOS_Source_DIR_Name}/ChangeLog_Keshav" || true
+	echo
 	
 	git reset --hard
 	echo
