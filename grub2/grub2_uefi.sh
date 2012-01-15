@@ -163,14 +163,14 @@ _GRUB2_UEFI_PYTHON_TO_PYTHON2() {
 	echo
 	
 	## Check whether python2 exists, otherwise create /usr/bin/python2 symlink to python executable
-	if [[ "$(which python2)" ]]; then
+	if [[ ! -e "$(which python2)" ]]; then
 		sudo ln -s "$(which python)" "/usr/bin/python2"
 	fi
 	
 	echo
 	
 	## Archlinux changed default /usr/bin/python to python3, need to use /usr/bin/python2 instead
-	if [[ "$(which python2)" ]]; then
+	if [[ -e "$(which python2)" ]]; then
 		install -D -m0755 "${_WD}/autogen.sh" "${_WD}/autogen_unmodified.sh"
 		sed 's|python |python2 |g' -i "${_WD}/autogen.sh" || true
 	fi
