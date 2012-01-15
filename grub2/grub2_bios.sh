@@ -307,7 +307,7 @@ _GRUB2_BIOS_SETUP_BOOT_PART_DIR() {
 	echo
 	
 	if [[ -e "${_GRUB2_BIOS_DATA_DIR}/${_GRUB2_BIOS_NAME}/unicode.pf2" ]]; then
-		mkdir -p "${_GRUB2_BIOS_DATAROOT_DIR}/${_GRUB2_BIOS_NAME}" || true
+		sudo install -d "${_GRUB2_BIOS_DATAROOT_DIR}/${_GRUB2_BIOS_NAME}" || true
 		sudo cp --verbose "${_GRUB2_BIOS_DATA_DIR}/${_GRUB2_BIOS_NAME}"/{{ascii,euro,unicode}.pf2,{ascii,widthspec}.h} "${_GRUB2_BIOS_DATAROOT_DIR}/${_GRUB2_BIOS_NAME}/" || true
 		echo
 	fi 

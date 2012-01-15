@@ -343,7 +343,7 @@ EOF
 	
 	echo
 	
-	mkdir -p "${_WD}/boot/grub" || true
+	install -d "${_WD}/boot/grub" || true
 	echo
 	
 	if [[ -e "${_WD}/boot/grub/grub.cfg" ]]; then
@@ -411,7 +411,7 @@ _GRUB2_UEFI_SETUP_UEFISYS_PART_DIR() {
 	echo
 	
 	if [[ -e "${_GRUB2_UEFI_DATA_DIR}/${_GRUB2_UEFI_NAME}/unicode.pf2" ]]; then
-		mkdir -p "${_GRUB2_UEFI_DATAROOT_DIR}/${_GRUB2_UEFI_NAME}" || true
+		sudo install -d "${_GRUB2_UEFI_DATAROOT_DIR}/${_GRUB2_UEFI_NAME}" || true
 		sudo cp --verbose "${_GRUB2_UEFI_DATA_DIR}/${_GRUB2_UEFI_NAME}"/{{ascii,euro,unicode}.pf2,{ascii,widthspec}.h} "${_GRUB2_UEFI_DATAROOT_DIR}/${_GRUB2_UEFI_NAME}/" || true
 		echo
 	fi 
@@ -509,7 +509,7 @@ _GRUB2_APPLE_EFI_HFS_BLESS() {
 _GRUB2_UEFI_SETUP_BOOTX64_EFI_APP() {
 	
 	if [[ ! -d "${_UEFI_SYSTEM_PART_MP}/efi/boot" ]]; then
-		sudo mkdir -p "${_UEFI_SYSTEM_PART_MP}/efi/boot/" || true
+		sudo install -d "${_UEFI_SYSTEM_PART_MP}/efi/boot/" || true
 		echo
 	fi
 	
