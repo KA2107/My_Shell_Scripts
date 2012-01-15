@@ -312,7 +312,7 @@ _GRUB2_BIOS_SETUP_BOOT_PART_DIR() {
 		echo
 	fi 
 	
-	sudo cp --verbose "${_GRUB2_BIOS_DATAROOT_DIR}/${_GRUB2_BIOS_NAME}"/{ascii,euro,unicode}.pf2 "${_GRUB2_BIOS_SYSTEM_PART_DIR}/" || true
+	sudo cp --verbose "${_GRUB2_BIOS_DATAROOT_DIR}/${_GRUB2_BIOS_NAME}"/{ascii,euro,unicode}.pf2 "${_GRUB2_BOOT_PART_DIR}/" || true
 	echo
 	
 	sudo install -D -m0644 "${_GRUB2_BIOS_BACKUP_DIR}/${_GRUB2_BIOS_MENU_CONFIG}.cfg" "${_GRUB2_BOOT_PART_DIR}/${_GRUB2_BIOS_MENU_CONFIG}_backup.cfg" || true

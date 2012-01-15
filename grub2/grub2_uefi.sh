@@ -448,9 +448,9 @@ _GRUB2_UEFI_EFIBOOTMGR() {
 	
 	echo
 	
-	EFISYS_PART_DEVICE="$(sudo "${_GRUB2_UEFI_SBIN_DIR}/${_GRUB2_UEFI_NAME}-probe" --target=device "${_GRUB2_UEFI_SYSTEM_PART_DIR}/")"
-	EFISYS_PART_NUM="$(sudo blkid -p -o value -s PART_ENTRY_NUMBER "${EFISYS_PART_DEVICE}")"
-	EFISYS_PARENT_DEVICE="$(echo "${EFISYS_PART_DEVICE}" | sed "s/${EFISYS_PART_NUM}//g")"
+	UEFISYS_PART_DEVICE="$(sudo "${_GRUB2_UEFI_SBIN_DIR}/${_GRUB2_UEFI_NAME}-probe" --target=device "${_GRUB2_UEFI_SYSTEM_PART_DIR}/")"
+	UEFISYS_PART_NUM="$(sudo blkid -p -o value -s PART_ENTRY_NUMBER "${UEFISYS_PART_DEVICE}")"
+	UEFISYS_PARENT_DEVICE="$(echo "${UEFISYS_PART_DEVICE}" | sed "s/${UEFISYS_PART_NUM}//g")"
 	
 	## Run efibootmgr script in sh compatibility mode, does not work in bash mode in ubuntu for some unknown reason (maybe some dash vs bash issue?)
 	cat << EOF > "${_WD}/grub2_uefi_create_entry_efibootmgr.sh"
@@ -468,7 +468,7 @@ if [[ "\$(lsmod | grep ^efivars)" ]]; then
 			efibootmgr --bootnum "${bootnum}" --delete-bootnum
 		done
 		
-		efibootmgr --create --gpt --disk "${EFISYS_PARENT_DEVICE}" --part "${EFISYS_PART_NUM}" --write-signature --label "${_GRUB2_UEFI_NAME}" --loader "\\\\EFI\\\\${_GRUB2_UEFI_NAME}\\\\${_GRUB2_UEFI_NAME}.efi"
+		efibootmgr --create --gpt --disk "${UEFISYS_PARENT_DEVICE}" --part "${UEFISYS_PART_NUM}" --write-signature --label "${_GRUB2_UEFI_NAME}" --loader "\\\\EFI\\\\${_GRUB2_UEFI_NAME}\\\\${_GRUB2_UEFI_NAME}.efi"
 	else
 		echo '/sys/firmware/efi/vars/ directory not found. Check whether you have booted in UEFI boot mode, manually load efivars kernel module and create a boot entry for GRUB2 in UEFI Boot Manager.'
 	fi
@@ -497,6 +497,9 @@ EOF
 }
 
 _GRUB2_APPLE_EFI_HFS_BLESS() {
+	
+	## Grub upstream bzr mactel branch => http://bzr.savannah.gnu.org/lh/grub/branches/mactel/changes
+	## Fedora's mactel-boot => https://bugzilla.redhat.com/show_bug.cgi?id=755093
 	
 	echo
 	
