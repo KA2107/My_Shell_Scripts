@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -e
-
 _RUN()
 {
 	_repo=''
@@ -25,5 +23,3 @@ _RUN()
 }
 
 _RUN
-
-set +e

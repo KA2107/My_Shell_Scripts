@@ -39,7 +39,7 @@ _RUN()
 	
 }
 
-set -x -e
+set -x
 
 echo
 
@@ -62,7 +62,7 @@ _RUN
 
 echo
 
-set +x +e
+set +x
 
 echo
 
