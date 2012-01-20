@@ -4,20 +4,23 @@ set -x -e
 
 _WD="${PWD}/"
 
-export _SOURCE_CODES_DIR="/media/Source_Codes/Source_Codes"
-export _SCRIPTS_DIR="${_SOURCE_CODES_DIR}/My_Shell_Scripts"
+export _SOURCE_CODES_DIR="/media/Source_Codes/Source_Codes/"
+export _SCRIPTS_DIR="${_SOURCE_CODES_DIR}/My_Shell_Scripts/"
 
-export _GRUB2_SCRIPTS_DIR="${_SCRIPTS_DIR}/grub2"
-export _GRUB2_DIR="${_SOURCE_CODES_DIR}/Boot_Managers/ALL/grub2"
-export _GRUB2_SOURCE_DIR="${_GRUB2_DIR}/Source__GIT_BZR"
+export _GRUB2_SCRIPTS_DIR="${_SCRIPTS_DIR}/grub2/"
+export _GRUB2_DIR="${_SOURCE_CODES_DIR}/Boot_Managers/ALL/grub2/"
+export _GRUB2_SOURCE_DIR="${_GRUB2_DIR}/Source__GIT_BZR/"
 
-export _GRUB2_BIOS_SCRIPTS_DIR="${_GRUB2_SOURCE_DIR}/grub2_bios_linux_scripts"
-export _GRUB2_UEFI_SCRIPTS_DIR="${_GRUB2_SOURCE_DIR}/grub2_uefi_linux_scripts"
+export _GRUB2_BIOS_SCRIPTS_DIR="${_GRUB2_SOURCE_DIR}/grub2_bios_linux_scripts/"
+export _GRUB2_UEFI_SCRIPTS_DIR="${_GRUB2_SOURCE_DIR}/grub2_uefi_linux_scripts/"
 
 export _BOOTLOADER_CONFIG_FILES_DIR="${_SOURCE_CODES_DIR}/My_Files/Bootloader_Config_Files/"
 
-export _TIANOCORE_UEFI_SCRIPTS_DIR="${_SCRIPTS_DIR}/tianocore_uefi"
-export _TIANOCORE_UEFI_SOURCE_CODES_DIR="${_SOURCE_CODES_DIR}/Firmware/UEFI/TianoCore_Sourceforge"
+export _TIANOCORE_UEFI_SCRIPTS_DIR="${_SCRIPTS_DIR}/tianocore_uefi/"
+export _TIANOCORE_UEFI_SOURCE_CODES_DIR="${_SOURCE_CODES_DIR}/Firmware/UEFI/TianoCore_Sourceforge/"
+
+export _TIANOCORE_UEFI_SHELL_2_PATH="${_TIANOCORE_UEFI_SOURCE_CODES_DIR}/UDK_GIT/ShellBinPkg/UefiShell/X64/"
+export _TIANOCORE_UEFI_SHELL_1_PATH="${_TIANOCORE_UEFI_SOURCE_CODES_DIR}/UDK_GIT/EdkShellBinPkg/FullShell/X64/"
 
 echo
 
@@ -271,6 +274,36 @@ _COPY_UEFI_BOOTLOADER_FILES() {
 	
 }
 
+_COPY_UEFI_SHELL_FILES() {
+	
+	echo
+	
+	_UEFI_SYS_PART_DIR="/boot/efi/efi"
+	
+	_SOURCE_DIR="${_TIANOCORE_UEFI_SHELL_2_PATH}"
+	_SOURCE_FILE="Shell.efi"
+	_LINK_DIR="${_UEFI_SYS_PART_DIR}/shell/"
+	_LINK_FILE="shellx64.efi"
+	[[ -d "${_LINK_DIR}/" ]] && _SUDO_COPY_FILE
+	
+	_SOURCE_DIR="${_TIANOCORE_UEFI_SHELL_1_PATH}"
+	_SOURCE_FILE="Shell_Full.efi"
+	_LINK_DIR="${_UEFI_SYS_PART_DIR}/shell/"
+	_LINK_FILE="shellx64_old.efi"
+	[[ -d "${_LINK_DIR}/" ]] && _SUDO_COPY_FILE
+	
+	echo
+	
+	unset _UEFI_SYS_PART_DIR
+	unset _SOURCE_DIR
+	unset _SOURCE_FILE
+	unset _LINK_DIR
+	unset _LINK_FILE
+	
+	echo
+	
+}
+
 _PACMAN() {
 	
 	echo
@@ -324,6 +357,10 @@ _COPY_UEFI_BOOTLOADER_FILES
 
 echo
 
+_COPY_UEFI_SHELL_FILES
+
+echo
+
 _PACMAN
 
 echo
@@ -336,6 +373,8 @@ unset _TIANOCORE_UEFI_SCRIPTS_DIR
 unset _GRUB2_DIR
 unset _GRUB2_SOURCE_DIR
 unset _TIANOCORE_UEFI_SOURCE_CODES_DIR
+unset _TIANOCORE_UEFI_SHELL_2_PATH
+unset _TIANOCORE_UEFI_SHELL_1_PATH
 unset _GRUB2_BIOS_SCRIPTS_DIR
 unset _GRUB2_UEFI_SCRIPTS_DIR
 

@@ -35,13 +35,13 @@ _COPY_UEFI_SHELL_UEFI_SYS_PART() {
 	
 	echo
 	
-	sudo rm -f "${_UEFI_SYS_PART}/efi/boot/shellx64.efi" || true
-	sudo rm -f "${_UEFI_SYS_PART}/efi/boot/shellx64_old.efi" || true
+	sudo rm -f "${_UEFI_SYS_PART}/efi/shell/shellx64.efi" || true
+	sudo rm -f "${_UEFI_SYS_PART}/efi/shell/shellx64_old.efi" || true
 	
 	echo
 	
-	sudo install -D -m0644 "${_UDK_DIR}/ShellBinPkg/UefiShell/X64/Shell.efi" "${_UEFI_SYS_PART}/efi/boot/shellx64.efi"
-	sudo install -D -m0644 "${_UDK_DIR}/EdkShellBinPkg/FullShell/X64/Shell_Full.efi" "${_UEFI_SYS_PART}/efi/boot/shellx64_old.efi"
+	sudo install -D -m0644 "${_UDK_DIR}/ShellBinPkg/UefiShell/X64/Shell.efi" "${_UEFI_SYS_PART}/efi/shell/shellx64.efi"
+	sudo install -D -m0644 "${_UDK_DIR}/EdkShellBinPkg/FullShell/X64/Shell_Full.efi" "${_UEFI_SYS_PART}/efi/shell/shellx64_old.efi"
 	
 	echo
 	
