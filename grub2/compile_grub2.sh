@@ -137,7 +137,7 @@ if [[ "${_PROCESS_CONTINUE_UEFI}" == 'TRUE' ]]; then
 	patch -Np1 -i "${_WD_OUTER}/grub-mkconfig-Use_outside_GRUB_PREFIX_if_defined.patch"
 	echo
 	
-	patch -Np1 -i "${_WD_OUTER}/grub2_automake_1.11.2_pkglib_to_pkgdata.patch"
+	# patch -Np1 -i "${_WD_OUTER}/grub2_automake_1.11.2_pkglib_to_pkgdata.patch"
 	echo
 	
 	patch -Np1 -i "${_WD_OUTER}/archlinux_grub2_mkconfig_fixes.patch"
@@ -200,7 +200,7 @@ if [[ "${_PROCESS_CONTINUE_BIOS}" == 'TRUE' ]]; then
 	patch -Np1 -i "${_WD_OUTER}/grub-mkconfig-Use_outside_GRUB_PREFIX_if_defined.patch"
 	echo
 	
-	patch -Np1 -i "${_WD_OUTER}/grub2_automake_1.11.2_pkglib_to_pkgdata.patch"
+	# patch -Np1 -i "${_WD_OUTER}/grub2_automake_1.11.2_pkglib_to_pkgdata.patch"
 	echo
 	
 	patch -Np1 -i "${_WD_OUTER}/archlinux_grub2_mkconfig_fixes.patch"
