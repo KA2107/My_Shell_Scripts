@@ -43,10 +43,10 @@ _USAGE() {
 	
 	export _PROCESS_CONTINUE='FALSE'
 	exit 0
+	
 }
 
-if [[ \
-	"${1}" == '' || \
+if [[ -z "${1}" || \
 	"${1}" == '-h' || \
 	"${1}" == '-u' || \
 	"${1}" == '-help' || \
@@ -58,7 +58,17 @@ then
 	_USAGE
 fi
 
-# _GRUB2_UEFI_SET_ENV_VARS() {
+
+export _TARGET_UEFI_ARCH="${1}"
+export _UEFI_SYSTEM_PART_MP="${2}"
+export _GRUB2_UEFI_NAME="${3}"
+export _GRUB2_UEFI_BACKUP_DIR="${4}"
+export _GRUB2_UEFI_UTILS_BACKUP_DIR="${5}"
+export _GRUB2_UEFI_PREFIX_DIR="${6}"
+## If not mentioned, _GRUB2_UEFI_PREFIX_DIR env variable will be set to "/_grub_/grub_uefi_${_TARGET_UEFI_ARCH}" dir
+
+
+_GRUB2_UEFI_SET_ENV_VARS() {
 	
 	export _WD="${PWD}/"
 	
@@ -68,14 +78,6 @@ fi
 	# export _REPLACE_GRUB2_UEFI_MENU_CONFIG='0'
 	export _GRUB2_CREATE_ENTRY_UEFI_BOOTMGR='1'
 	
-	export _TARGET_UEFI_ARCH="${1}"
-	export _UEFI_SYSTEM_PART_MP="${2}"
-	export _GRUB2_UEFI_NAME="${3}"
-	export _GRUB2_UEFI_BACKUP_DIR="${4}"
-	export _GRUB2_UEFI_UTILS_BACKUP_DIR="${5}"
-	export _GRUB2_UEFI_PREFIX_DIR="${6}"
-	
-	## If not mentioned, _GRUB2_UEFI_PREFIX_DIR env variable will be set to /_grub_/grub_uefi_${_TARGET_UEFI_ARCH} dir
 	if [[ "${_GRUB2_UEFI_PREFIX_DIR}" == '' ]]; then
 		export _GRUB2_UEFI_PREFIX_DIR="/_grub_/grub_uefi_${_TARGET_UEFI_ARCH}"
 	fi
@@ -100,10 +102,10 @@ fi
 	export _GRUB2_UEFI_SYSTEM_PART_DIR="${_UEFI_SYSTEM_PART_MP}/${_GRUB2_UEFI_APP_PREFIX}"
 	
 	if [[ "${_TARGET_UEFI_ARCH}" == 'x86_64' ]]; then
-		export _OTHER_UEFI_ARCH_NAME='x64'
+		export _SPEC_UEFI_ARCH_NAME='x64'
 		
 	elif [[ "${_TARGET_UEFI_ARCH}" == 'i386' ]]; then
-		export _OTHER_UEFI_ARCH_NAME='ia32'
+		export _SPEC_UEFI_ARCH_NAME='ia32'
 		
 	fi
 	
@@ -119,9 +121,9 @@ fi
 	
 	export _GRUB2_EXTRAS_MODULES='lua.mod'
 	
-# }
+}
 
-# _GRUB2_UEFI_ECHO_CONFIG() {
+_GRUB2_UEFI_ECHO_CONFIG() {
 	
 	echo
 	echo TARGET_UEFI_ARCH="${_TARGET_UEFI_ARCH}"
@@ -137,7 +139,7 @@ fi
 	echo GRUB2_UEFI_PREFIX_DIR_FOLDER="${_GRUB2_UEFI_PREFIX_DIR}"
 	echo
 	
-# }
+}
 
 _GRUB2_UEFI_DOS2UNIX() {
 	
@@ -516,25 +518,25 @@ _GRUB2_UEFI_SETUP_BOOTX64_EFI_APP() {
 		echo
 	fi
 	
-	sudo rm -f --verbose "${_UEFI_SYSTEM_PART_MP}/efi/boot/boot${_OTHER_UEFI_ARCH_NAME}.efi" || true
+	sudo rm -f --verbose "${_UEFI_SYSTEM_PART_MP}/efi/boot/boot${_SPEC_UEFI_ARCH_NAME}.efi" || true
 	echo
 	
 	if [[ -e "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_NAME}_standalone.efi" ]]; then
-		sudo install -D -m0644 "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_NAME}_standalone.efi" "${_UEFI_SYSTEM_PART_MP}/efi/boot/boot${_OTHER_UEFI_ARCH_NAME}.efi"
+		sudo install -D -m0644 "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_NAME}_standalone.efi" "${_UEFI_SYSTEM_PART_MP}/efi/boot/boot${_SPEC_UEFI_ARCH_NAME}.efi"
 		echo
 	else
-		if [[ -e "${_GRUB2_UEFI_SYSTEM_PART_DIR}/grub${_OTHER_UEFI_ARCH_NAME}.efi" ]]; then
-			sudo install -D -m0644 "${_GRUB2_UEFI_SYSTEM_PART_DIR}/grub${_OTHER_UEFI_ARCH_NAME}.efi" "${_UEFI_SYSTEM_PART_MP}/efi/boot/boot${_OTHER_UEFI_ARCH_NAME}.efi"
+		if [[ -e "${_GRUB2_UEFI_SYSTEM_PART_DIR}/grub${_SPEC_UEFI_ARCH_NAME}.efi" ]]; then
+			sudo install -D -m0644 "${_GRUB2_UEFI_SYSTEM_PART_DIR}/grub${_SPEC_UEFI_ARCH_NAME}.efi" "${_UEFI_SYSTEM_PART_MP}/efi/boot/boot${_SPEC_UEFI_ARCH_NAME}.efi"
 			echo
 		elif [[ -e "${_UEFI_SYSTEM_PART_MP}/efi/grub/core.efi" ]]; then
-			sudo install -D -m0644 "${_UEFI_SYSTEM_PART_MP}/efi/grub/core.efi" "${_UEFI_SYSTEM_PART_MP}/efi/boot/boot${_OTHER_UEFI_ARCH_NAME}.efi"
+			sudo install -D -m0644 "${_UEFI_SYSTEM_PART_MP}/efi/grub/core.efi" "${_UEFI_SYSTEM_PART_MP}/efi/boot/boot${_SPEC_UEFI_ARCH_NAME}.efi"
 			echo
 		else
 			if [[ -e "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_NAME}.efi" ]]; then
-				sudo install -D -m0644 "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_NAME}.efi" "${_UEFI_SYSTEM_PART_MP}/efi/boot/boot${_OTHER_UEFI_ARCH_NAME}.efi"
+				sudo install -D -m0644 "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_GRUB2_UEFI_NAME}.efi" "${_UEFI_SYSTEM_PART_MP}/efi/boot/boot${_SPEC_UEFI_ARCH_NAME}.efi"
 				echo
 			elif [[ -e "${_UEFI_SYSTEM_PART_MP}/efi/grub/grub.efi" ]]; then
-				sudo install -D -m0644 "${_UEFI_SYSTEM_PART_MP}/efi/grub/grub.efi" "${_UEFI_SYSTEM_PART_MP}/efi/boot/boot${_OTHER_UEFI_ARCH_NAME}.efi"
+				sudo install -D -m0644 "${_UEFI_SYSTEM_PART_MP}/efi/grub/grub.efi" "${_UEFI_SYSTEM_PART_MP}/efi/boot/boot${_SPEC_UEFI_ARCH_NAME}.efi"
 				echo
 			fi
 		fi
@@ -571,11 +573,11 @@ if [[ "${_PROCESS_CONTINUE}" == 'TRUE' ]]; then
 	
 	echo
 	
-	# _GRUB2_UEFI_SET_ENV_VARS
+	_GRUB2_UEFI_SET_ENV_VARS
 	
 	echo
 	
-	# _GRUB2_UEFI_ECHO_CONFIG
+	_GRUB2_UEFI_ECHO_CONFIG
 	
 	echo
 	
@@ -666,7 +668,7 @@ if [[ "${_PROCESS_CONTINUE}" == 'TRUE' ]]; then
 	
 fi
 
-# _GRUB2_UEFI_UNSET_ENV_VARS() {
+_GRUB2_UEFI_UNSET_ENV_VARS() {
 	
 	unset _WD
 	unset GRUB_CONTRIB
@@ -690,7 +692,7 @@ fi
 	unset _GRUB2_UEFI_MAN_DIR
 	unset _GRUB2_UEFI_APP_PREFIX
 	unset _GRUB2_UEFI_SYSTEM_PART_DIR
-	unset _OTHER_UEFI_ARCH_NAME
+	unset _SPEC_UEFI_ARCH_NAME
 	unset _GRUB2_UEFI_MENU_CONFIG
 	unset _GRUB2_UEFI_CONFIGURE_OPTIONS
 	unset _GRUB2_UEFI_OTHER_CONFIGURE_OPTIONS
@@ -699,6 +701,6 @@ fi
 	unset _GRUB2_UEFI_LST_files
 	unset _GRUB2_UNIFONT_PATH
 	
-# }
+}
 
-# _GRUB2_UEFI_UNSET_ENV_VARS
+_GRUB2_UEFI_UNSET_ENV_VARS

@@ -38,12 +38,13 @@ _USAGE() {
 	echo
 	echo 'Please read this script fully and modify it to suite your requirements before actually running it'
 	echo
+	
 	export _PROCESS_CONTINUE='FALSE'
+	exit 0
 	
 }
 
-if [[ \
-	"${1}" == '' || \
+if [[ -z "${1}" || \
 	"${1}" == '-h' || \
 	"${1}" == '-u' || \
 	"${1}" == '-help' || \
@@ -53,11 +54,19 @@ if [[ \
 	]]
 then
 	_USAGE
-	export _PROCESS_CONTINUE='FALSE'
-	exit 0
 fi
 
-# _GRUB2_BIOS_SET_ENV_VARS() {
+
+export _GRUB2_INSTALL_DEVICE="${1}"
+export _GRUB2_BOOT_PART_MP="${2}"
+export _GRUB2_BIOS_NAME="${3}"
+export _GRUB2_BIOS_BACKUP_DIR="${4}"
+export _GRUB2_BIOS_UTILS_BACKUP_DIR="${5}"
+export _GRUB2_BIOS_PREFIX_DIR="${6}"
+## If not mentioned, _GRUB2_BIOS_PREFIX_DIR env variable will be set to "/_grub_/grub_bios" dir
+
+
+_GRUB2_BIOS_SET_ENV_VARS() {
 	
 	export _WD="${PWD}/"
 	
@@ -65,14 +74,6 @@ fi
 	export GRUB_CONTRIB="${_WD}/grub2_extras__GIT_BZR/"
 	
 	export _REPLACE_GRUB2_BIOS_MENU_CONFIG='0'
-	
-	export _GRUB2_INSTALL_DEVICE="${1}"
-	export _GRUB2_BOOT_PART_MP="${2}"
-	export _GRUB2_BIOS_NAME="${3}"
-	export _GRUB2_BIOS_BACKUP_DIR="${4}"
-	export _GRUB2_BIOS_UTILS_BACKUP_DIR="${5}"
-	export _GRUB2_BIOS_PREFIX_DIR="${6}"
-	## If not mentioned, _GRUB2_BIOS_PREFIX_DIR env variable will be set to /_grub_/grub_bios dir
 	
 	export _GRUB2_BIOS_MENU_CONFIG='grub'
 	
@@ -106,11 +107,11 @@ fi
 	export _GRUB2_BIOS_CORE_IMG_MODULES="part_gpt part_msdos fat ext2 ntfs ntfscomp"
 	export _GRUB2_EXTRAS_MODULES="lua.mod 915resolution.mod"
 	
-	## _GRUB2_BIOS_CORE_IMG_MODULES - Those modules that will be included in the core.img image generated for your system. Note the maximum permitted size of core.img image is 32 KB.
+	## _GRUB2_BIOS_CORE_IMG_MODULES - These modules will be included in the core.img generated for your system. Note the maximum permitted size of core.img image is 32 KiB.
 	
-# }
+}
 
-# _GRUB2_BIOS_ECHO_CONFIG() {
+_GRUB2_BIOS_ECHO_CONFIG() {
 	
 	echo
 	echo GRUB2_INSTALL_DEVICE="${_GRUB2_INSTALL_DEVICE}"
@@ -126,7 +127,7 @@ fi
 	echo GRUB2_BIOS_PREFIX_DIR_FOLDER="${_GRUB2_BIOS_PREFIX_DIR}"
 	echo
 	
-# }
+}
 
 _GRUB2_BIOS_DOS2UNIX() {
 	
@@ -340,11 +341,11 @@ if [[ "${_PROCESS_CONTINUE}" == 'TRUE' ]]; then
 	
 	echo
 	
-	# _GRUB2_BIOS_SET_ENV_VARS
+	_GRUB2_BIOS_SET_ENV_VARS
 	
 	echo
 	
-	# _GRUB2_BIOS_ECHO_CONFIG
+	_GRUB2_BIOS_ECHO_CONFIG
 	
 	echo
 	
@@ -401,7 +402,7 @@ if [[ "${_PROCESS_CONTINUE}" == 'TRUE' ]]; then
 	
 fi
 
-# _GRUB2_BIOS_UNSET_ENV_VARS() {
+_GRUB2_BIOS_UNSET_ENV_VARS() {
 	
 	unset _WD
 	unset GRUB_CONTRIB
@@ -431,6 +432,6 @@ fi
 	unset _GRUB2_EXTRAS_MODULES
 	unset _GRUB2_UNIFONT_PATH
 	
-# }
+}
 
-# _GRUB2_BIOS_UNSET_ENV_VARS
+_GRUB2_BIOS_UNSET_ENV_VARS
