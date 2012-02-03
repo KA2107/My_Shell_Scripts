@@ -257,9 +257,9 @@ _COPY_UEFI_BOOTLOADER_FILES() {
 	_LINK_FILE="grub-legacy.conf"
 	[[ -d "${_LINK_DIR}/" ]] && _SUDO_COPY_FILE
 	
-	_SOURCE_FILE="elilo.conf"
+	_SOURCE_FILE="elilo_uefi.conf"
 	_LINK_DIR="${_UEFI_SYS_PART_DIR}/elilo/"
-	_LINK_FILE="${_SOURCE_FILE}"
+	_LINK_FILE="elilo.conf"
 	[[ -d "${_LINK_DIR}/" ]] && _SUDO_COPY_FILE
 	
 	echo
