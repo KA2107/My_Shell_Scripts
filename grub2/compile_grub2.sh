@@ -140,7 +140,13 @@ if [[ "${_PROCESS_CONTINUE_UEFI}" == 'TRUE' ]]; then
 	patch -Np1 -i "${_WD_OUTER}/grub_prefix_platform_subdir_fixes.patch"
 	echo
 	
+	patch -Np1 -i "${_WD_OUTER}/mjg_grub2_update_linux_boot_protocol.patch"
+	echo
+	
 	patch -Np1 -i "${_WD_OUTER}/mjg_grub2_relocator_fixes.patch"
+	echo
+	
+	# patch -Np1 -i "${_WD_OUTER}/mjg_grub2_linux_loader_fixes.patch"
 	echo
 	
 	patch -Np1 -i "${_WD_OUTER}/archlinux_grub2_mkconfig_fixes.patch"
@@ -206,7 +212,13 @@ if [[ "${_PROCESS_CONTINUE_BIOS}" == 'TRUE' ]]; then
 	patch -Np1 -i "${_WD_OUTER}/grub_prefix_platform_subdir_fixes.patch"
 	echo
 	
+	patch -Np1 -i "${_WD_OUTER}/mjg_grub2_update_linux_boot_protocol.patch"
+	echo
+	
 	patch -Np1 -i "${_WD_OUTER}/mjg_grub2_relocator_fixes.patch"
+	echo
+	
+	# patch -Np1 -i "${_WD_OUTER}/mjg_grub2_linux_loader_fixes.patch"
 	echo
 	
 	patch -Np1 -i "${_WD_OUTER}/archlinux_grub2_mkconfig_fixes.patch"
