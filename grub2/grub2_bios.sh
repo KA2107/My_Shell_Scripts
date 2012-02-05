@@ -281,8 +281,6 @@ _GRUB2_BIOS_POSTCOMPILE_SETUP_PREFIX_DIR() {
 	
 	# sudo "${_GRUB2_BIOS_BIN_DIR}/${_GRUB2_BIOS_NAME}-mkfont" --verbose --output="${_GRUB2_BIOS_DATAROOT_DIR}/${_GRUB2_BIOS_NAME}/unicode.pf2" "${_GRUB2_UNIFONT_PATH}/unifont.bdf" || true
 	echo
-	# sudo "${_GRUB2_BIOS_BIN_DIR}/${_GRUB2_BIOS_NAME}-mkfont" --verbose --ascii-bitmaps --output=""${_GRUB2_BIOS_DATAROOT_DIR}/${_GRUB2_BIOS_NAME}/ascii.pf2" "${_GRUB2_UNIFONT_PATH}/unifont.bdf" || true
-	echo
 	
 }
 
@@ -307,13 +305,17 @@ _GRUB2_BIOS_SETUP_BOOT_PART_DIR() {
 	sudo "${_GRUB2_BIOS_SBIN_DIR}/${_GRUB2_BIOS_NAME}-install" --modules="${_GRUB2_BIOS_CORE_IMG_MODULES}" --boot-directory="${_GRUB2_BOOT_PART_MP}" --no-floppy --recheck --debug "${_GRUB2_INSTALL_DEVICE}" # Setup the GRUB2 folder in the /boot directory, create the core.img image and embed the image in the disk.
 	echo
 	
+	sudo cp --verbose "${_GRUB2_BIOS_LIB_DIR}/${_GRUB2_BIOS_NAME}/i386-pc"/*.{img,sh,h} "${_GRUB2_BOOT_PART_DIR}/i386-pc/" || true
+	echo
+	
 	if [[ -e "${_GRUB2_BIOS_DATA_DIR}/${_GRUB2_BIOS_NAME}/unicode.pf2" ]]; then
 		sudo install -d "${_GRUB2_BIOS_DATAROOT_DIR}/${_GRUB2_BIOS_NAME}" || true
 		sudo cp --verbose "${_GRUB2_BIOS_DATA_DIR}/${_GRUB2_BIOS_NAME}"/{{ascii,euro,unicode}.pf2,{ascii,widthspec}.h} "${_GRUB2_BIOS_DATAROOT_DIR}/${_GRUB2_BIOS_NAME}/" || true
 		echo
 	fi 
 	
-	sudo cp --verbose "${_GRUB2_BIOS_DATAROOT_DIR}/${_GRUB2_BIOS_NAME}"/{ascii,euro,unicode}.pf2 "${_GRUB2_BOOT_PART_DIR}/" || true
+	# sudo cp --verbose "${_GRUB2_BIOS_DATAROOT_DIR}/${_GRUB2_BIOS_NAME}"/{ascii,euro,unicode}.pf2 "${_GRUB2_BOOT_PART_DIR}/" || true
+	sudo cp --verbose "${_GRUB2_BIOS_DATAROOT_DIR}/${_GRUB2_BIOS_NAME}/unicode.pf2" "${_GRUB2_BOOT_PART_DIR}/unicode.pf2" || true
 	echo
 	
 	sudo install -D -m0644 "${_GRUB2_BIOS_BACKUP_DIR}/${_GRUB2_BIOS_MENU_CONFIG}.cfg" "${_GRUB2_BOOT_PART_DIR}/${_GRUB2_BIOS_MENU_CONFIG}_backup.cfg" || true
