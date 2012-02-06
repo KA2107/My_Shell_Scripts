@@ -215,7 +215,7 @@ if [[ "${_PROCESS_CONTINUE_BIOS}" == 'TRUE' ]]; then
 	patch -Np1 -i "${_WD_OUTER}/mjg_grub2_update_linux_boot_protocol.patch"
 	echo
 	
-	patch -Np1 -i "${_WD_OUTER}/mjg_grub2_relocator_fixes.patch"
+	# patch -Np1 -i "${_WD_OUTER}/mjg_grub2_relocator_fixes.patch"
 	echo
 	
 	# patch -Np1 -i "${_WD_OUTER}/mjg_grub2_linux_loader_fixes.patch"
