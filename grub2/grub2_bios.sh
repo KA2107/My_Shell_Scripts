@@ -19,6 +19,8 @@
 
 _SCRIPTNAME="$(basename "${0}")" 
 
+_UPDATE_LOCALES="0"
+
 export _PROCESS_CONTINUE='TRUE'
 
 _USAGE() {
@@ -173,7 +175,7 @@ _GRUB2_BIOS_PO_LINGUAS() {
 	
 	echo
 	
-	if [[ ! -e "${_WD}/po/LINGUAS" ]]; then
+	if [[ "${_UPDATE_LOCALES}" == "1" ]]; then
 		cd "${_WD}/"
 		rsync -Lrtvz translationproject.org::tp/latest/grub/ "${_WD}/po" || true
 		echo

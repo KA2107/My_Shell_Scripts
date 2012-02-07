@@ -21,6 +21,8 @@
 
 _SCRIPTNAME="$(basename "${0}")" 
 
+_UPDATE_LOCALES="0"
+
 export _PROCESS_CONTINUE='TRUE'
 
 _USAGE() {
@@ -147,7 +149,7 @@ _GRUB2_UEFI_DOS2UNIX() {
 	
 	## Convert the line endings of all the source files from DOS to UNIX mode
 	if [[ ! -e "${_WD}/xman_dos2unix.sh" ]]; then
-		curl --verbose --ipv4 -f -C - --ftp-pasv --retry 3 --retry-delay 3 -o "${_WD}/xman_dos2unix.sh" "https://raw.github.com/the-ridikulus-rat/My_Shell_Scripts/master/xmanutility/xman_dos2unix.sh"
+		curl --verbose --ipv4 -f -C - --ftp-pasv --retry 3 --retry-delay 3 -o "${_WD}/xman_dos2unix.sh" "https://raw.github.com/the-ridikulus-rat/My_Shell_Scripts/master/xmanutility/xman_dos2unix.sh" || true
 		echo
 	fi
 	
@@ -185,7 +187,7 @@ _GRUB2_UEFI_PO_LINGUAS() {
 	
 	echo
 	
-	if [[ ! -e "${_WD}/po/LINGUAS" ]]; then
+	if [[ "${_UPDATE_LOCALES}" == "1" ]]; then
 		cd "${_WD}/"
 		rsync -Lrtvz translationproject.org::tp/latest/grub/ "${_WD}/po" || true
 		echo
