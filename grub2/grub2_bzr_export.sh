@@ -63,7 +63,7 @@ _EXTRAS_SNAPSHOT() {
 	echo
 	
 	_REVNUM="$(bzr revno ${_GRUB2_EXTRAS_REPOS_DIR}/${_GRUB2_EXTRAS_NAME})"
-	bzr export --root="${_GRUB2_EXTRAS_NAME}" --format=tar "${_OUTPUT_DIR}/grub2_extras_${_GRUB2_EXTRAS_NAME}_r${_REVNUM}.tar"
+	bzr export --root="${_GRUB2_EXTRAS_NAME}" --format="tar" "${_OUTPUT_DIR}/grub2_extras_${_GRUB2_EXTRAS_NAME}_r${_REVNUM}.tar"
 	echo
 	
 	cd "${_OUTPUT_DIR}/"
