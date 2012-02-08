@@ -214,21 +214,22 @@ _COPY_BIOS_BOOTLOADER_FILES() {
 	
 	_BOOT_PART="/boot"
 	
-	_SOURCE_DIR="${_BOOTLOADER_CONFIG_FILES_DIR}/BIOS/"
+	_SOURCE_DIR="${_BOOTLOADER_CONFIG_FILES_DIR}/UEFI/"
 	
-	_SOURCE_FILE="syslinux_bios.cfg"
-	_LINK_DIR="${_BOOT_PART}/syslinux/"
-	_LINK_FILE="syslinux.cfg"
-	[[ -d "${_LINK_DIR}/" ]] && _SUDO_COPY_FILE
-	
-	_SOURCE_FILE="grub_bios.cfg"
+	_SOURCE_FILE="grub_uefi.cfg"
 	_LINK_DIR="${_BOOT_PART}/grub_bios/"
 	_LINK_FILE="grub.cfg"
 	[[ -d "${_LINK_DIR}/" ]] && _SUDO_COPY_FILE
 	
-	_SOURCE_FILE="grub_bios.cfg"
+	_SOURCE_FILE="grub_uefi.cfg"
 	_LINK_DIR="${_BOOT_PART}/grub/"
 	_LINK_FILE="grub.cfg"
+	[[ -d "${_LINK_DIR}/" ]] && _SUDO_COPY_FILE
+	
+	_SOURCE_DIR="${_BOOTLOADER_CONFIG_FILES_DIR}/BIOS/"
+	_SOURCE_FILE="syslinux_bios.cfg"
+	_LINK_DIR="${_BOOT_PART}/syslinux/"
+	_LINK_FILE="syslinux.cfg"
 	[[ -d "${_LINK_DIR}/" ]] && _SUDO_COPY_FILE
 	
 	echo
