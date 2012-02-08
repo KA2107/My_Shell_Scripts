@@ -149,6 +149,9 @@ if [[ "${_PROCESS_CONTINUE_UEFI}" == 'TRUE' ]]; then
 	patch -Np1 -i "${_WD_OUTER}/mjg_grub2_linux_loader_fixes.patch"
 	echo
 	
+	patch -Np1 -i "${_WD_OUTER}/mjg_missing_arg_fixes.patch"
+	echo
+	
 	patch -Np1 -i "${_WD_OUTER}/archlinux_grub2_mkconfig_fixes.patch"
 	echo
 	
@@ -192,7 +195,7 @@ if [[ "${_PROCESS_CONTINUE_BIOS}" == 'TRUE' ]]; then
 	echo
 	
 	rm -f "${_WD_OUTER}/${_GRUB2_BIOS_Source_DIR_Name}/grub.cfg" || true
-	cp --verbose "${_BOOTLOADER_CONFIG_FILES_DIR}/BIOS/grub_bios.cfg" "${_WD_OUTER}/${_GRUB2_BIOS_Source_DIR_Name}/grub.cfg" || true
+	cp --verbose "${_BOOTLOADER_CONFIG_FILES_DIR}/UEFI/grub_uefi.cfg" "${_WD_OUTER}/${_GRUB2_BIOS_Source_DIR_Name}/grub.cfg" || true
 	echo
 	
 	cd "${_WD_OUTER}/${_GRUB2_BIOS_Source_DIR_Name}/"
@@ -215,10 +218,13 @@ if [[ "${_PROCESS_CONTINUE_BIOS}" == 'TRUE' ]]; then
 	patch -Np1 -i "${_WD_OUTER}/mjg_grub2_update_linux_boot_protocol.patch"
 	echo
 	
-	# patch -Np1 -i "${_WD_OUTER}/mjg_grub2_relocator_fixes.patch"
+	patch -Np1 -i "${_WD_OUTER}/mjg_grub2_relocator_fixes.patch"
 	echo
 	
-	# patch -Np1 -i "${_WD_OUTER}/mjg_grub2_linux_loader_fixes.patch"
+	patch -Np1 -i "${_WD_OUTER}/mjg_grub2_linux_loader_fixes.patch"
+	echo
+	
+	patch -Np1 -i "${_WD_OUTER}/mjg_missing_arg_fixes.patch"
 	echo
 	
 	patch -Np1 -i "${_WD_OUTER}/archlinux_grub2_mkconfig_fixes.patch"
