@@ -134,6 +134,9 @@ if [[ "${_PROCESS_CONTINUE_UEFI}" == 'TRUE' ]]; then
 	git checkout master
 	echo
 	
+	patch -Np1 -i "${_WD_OUTER}/grub_bzr_r3857_fix_relocator_include.patch"
+	echo
+	
 	patch -Np1 -i "${_WD_OUTER}/grub-mkconfig-Use_outside_GRUB_PREFIX_if_defined.patch"
 	echo
 	
@@ -207,6 +210,9 @@ if [[ "${_PROCESS_CONTINUE_BIOS}" == 'TRUE' ]]; then
 	echo
 	
 	git checkout master
+	echo
+	
+	patch -Np1 -i "${_WD_OUTER}/grub_bzr_r3857_fix_relocator_include.patch"
 	echo
 	
 	patch -Np1 -i "${_WD_OUTER}/grub-mkconfig-Use_outside_GRUB_PREFIX_if_defined.patch"
