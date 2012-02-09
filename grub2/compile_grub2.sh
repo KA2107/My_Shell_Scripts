@@ -88,6 +88,31 @@ fi
 
 echo
 
+_APPLY_PATCHES() {
+	
+	patch -Np1 -i "${_WD_OUTER}/grub-mkconfig-Use_outside_GRUB_PREFIX_if_defined.patch"
+	echo
+	
+	patch -Np1 -i "${_WD_OUTER}/grub-mkconfig_header_platform_subdir_fixes.patch"
+	echo
+	
+	patch -Np1 -i "${_WD_OUTER}/archlinux_grub2_mkconfig_fixes.patch"
+	echo
+	
+	patch -Np1 -i "${_WD_OUTER}/mjg_grub2_update_linux_boot_protocol.patch"
+	echo
+	
+	patch -Np1 -i "${_WD_OUTER}/mjg_grub2_relocator_fixes.patch"
+	echo
+	
+	patch -Np1 -i "${_WD_OUTER}/mjg_grub2_linux_loader_fixes.patch"
+	echo
+	
+	# patch -Np0 -i "${_WD_OUTER}/grub-mactel.patch"
+	echo
+	
+}
+
 if [[ "${_PROCESS_CONTINUE_UEFI}" == 'TRUE' ]] && [[ "${_PROCESS_CONTINUE_BIOS}" == 'TRUE' ]]; then
 	if [[ "${_GRUB2_UEFI_Source_DIR_Name}" == "${_GRUB2_BIOS_Source_DIR_Name}" ]]; then
 		cd "${_WD_OUTER}/${_GRUB2_UEFI_Source_DIR_Name}/"
@@ -134,32 +159,7 @@ if [[ "${_PROCESS_CONTINUE_UEFI}" == 'TRUE' ]]; then
 	git checkout master
 	echo
 	
-	patch -Np1 -i "${_WD_OUTER}/grub_bzr_r3857_fix_relocator_include.patch"
-	echo
-	
-	patch -Np1 -i "${_WD_OUTER}/grub-mkconfig-Use_outside_GRUB_PREFIX_if_defined.patch"
-	echo
-	
-	patch -Np1 -i "${_WD_OUTER}/grub_prefix_platform_subdir_fixes.patch"
-	echo
-	
-	patch -Np1 -i "${_WD_OUTER}/mjg_grub2_update_linux_boot_protocol.patch"
-	echo
-	
-	patch -Np1 -i "${_WD_OUTER}/mjg_grub2_relocator_fixes.patch"
-	echo
-	
-	patch -Np1 -i "${_WD_OUTER}/mjg_grub2_linux_loader_fixes.patch"
-	echo
-	
-	patch -Np1 -i "${_WD_OUTER}/mjg_missing_arg_fixes.patch"
-	echo
-	
-	patch -Np1 -i "${_WD_OUTER}/archlinux_grub2_mkconfig_fixes.patch"
-	echo
-	
-	# patch -Np0 -i "${_WD_OUTER}/grub-mactel.patch"
-	echo
+	_APPLY_PATCHES
 	
 	"${PWD}/grub2_uefi_linux_my.sh"
 	echo
@@ -212,32 +212,7 @@ if [[ "${_PROCESS_CONTINUE_BIOS}" == 'TRUE' ]]; then
 	git checkout master
 	echo
 	
-	patch -Np1 -i "${_WD_OUTER}/grub_bzr_r3857_fix_relocator_include.patch"
-	echo
-	
-	patch -Np1 -i "${_WD_OUTER}/grub-mkconfig-Use_outside_GRUB_PREFIX_if_defined.patch"
-	echo
-	
-	patch -Np1 -i "${_WD_OUTER}/grub_prefix_platform_subdir_fixes.patch"
-	echo
-	
-	patch -Np1 -i "${_WD_OUTER}/mjg_grub2_update_linux_boot_protocol.patch"
-	echo
-	
-	patch -Np1 -i "${_WD_OUTER}/mjg_grub2_relocator_fixes.patch"
-	echo
-	
-	patch -Np1 -i "${_WD_OUTER}/mjg_grub2_linux_loader_fixes.patch"
-	echo
-	
-	patch -Np1 -i "${_WD_OUTER}/mjg_missing_arg_fixes.patch"
-	echo
-	
-	patch -Np1 -i "${_WD_OUTER}/archlinux_grub2_mkconfig_fixes.patch"
-	echo
-	
-	# patch -Np0 -i "${_WD_OUTER}/grub-mactel.patch"
-	echo
+	_APPLY_PATCHES
 	
 	## CHROOT into the arch32 system for compiling GRUB2 BIOS i386
 	# export _BCHROOT_DIR="${_WD_OUTER}"
