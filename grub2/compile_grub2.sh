@@ -90,9 +90,6 @@ echo
 
 _APPLY_PATCHES() {
 	
-	patch -Np0 -i "${_WD_OUTER}/grub2_fix_build_grub-mkconfig_lib.patch"
-	echo
-	
 	patch -Np1 -i "${_WD_OUTER}/grub-mkconfig-Use_outside_GRUB_PREFIX_if_defined.patch"
 	echo
 	
