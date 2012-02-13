@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+## git config --global tar.tar.xz.command "xz -c -9"
+
 ## For actual repos
 
 # bzr branch bzr://bzr.savannah.gnu.org/grub-extras/lua lua
@@ -29,12 +31,12 @@ _MAIN_SNAPSHOT() {
 	echo
 	
 	_REVNUM="$(bzr revno "${_GRUB2_GIT_BZR_REPO_DIR}/.git/bzr/repo/master/")"
-	git archive --prefix="grub-${_ACTUAL_PKGVER}/" --format="tar" --output="${_OUTPUT_DIR}/grub2_r${_REVNUM}.tar" "bzr/master" "${PWD}/"
+	git archive --prefix="grub-${_ACTUAL_PKGVER}/" --format="tar.xz" --output="${_OUTPUT_DIR}/grub2_r${_REVNUM}.tar.xz" "bzr/master" "${PWD}/"
 	echo
 	
 	cd "${_OUTPUT_DIR}/"
 	
-	xz -9 "${_OUTPUT_DIR}/grub2_r${_REVNUM}.tar"
+	# xz -9 "${_OUTPUT_DIR}/grub2_r${_REVNUM}.tar"
 	echo
 	
 }
@@ -45,12 +47,12 @@ _EXP_SNAPSHOT() {
 	echo
 	
 	_REVNUM="$(bzr revno "${_GRUB2_GIT_BZR_REPO_DIR}/.git/bzr/repo/master/")"
-	git archive --prefix="grub-exp-${_ACTUAL_PKGVER}/" --format="tar" --output="${_OUTPUT_DIR}/grub2_exp_r${_REVNUM}.tar" "bzr/master" "${PWD}/"
+	git archive --prefix="grub-exp-${_ACTUAL_PKGVER}/" --format="tar.xz" --output="${_OUTPUT_DIR}/grub2_exp_r${_REVNUM}.tar.xz" "bzr/master" "${PWD}/"
 	echo
 	
 	cd "${_OUTPUT_DIR}/"
 	
-	xz -9 "${_OUTPUT_DIR}/grub2_exp_r${_REVNUM}.tar"
+	# xz -9 "${_OUTPUT_DIR}/grub2_exp_r${_REVNUM}.tar"
 	echo
 	
 }
@@ -61,13 +63,13 @@ _EXTRAS_SNAPSHOT() {
 	echo
 	
 	_REVNUM="$(bzr revno "${_GRUB2_EXTRAS_REPOS_DIR}/${_GRUB2_EXTRAS_NAME}/.git/bzr/repo/master/")"
-	git archive --prefix="${_GRUB2_EXTRAS_NAME}/" --format="tar" --output="${_OUTPUT_DIR}/grub2_extras_${_GRUB2_EXTRAS_NAME}_r${_REVNUM}.tar" "bzr/master" "${PWD}/"
+	git archive --prefix="${_GRUB2_EXTRAS_NAME}/" --format="tar.xz" --output="${_OUTPUT_DIR}/grub2_extras_${_GRUB2_EXTRAS_NAME}_r${_REVNUM}.tar.xz" "bzr/master" "${PWD}/"
 	echo
 	
 	cd "${_OUTPUT_DIR}/"
 	echo
 	
-	xz -9 "${_OUTPUT_DIR}/grub2_extras_${_GRUB2_EXTRAS_NAME}_r${_REVNUM}.tar"
+	# xz -9 "${_OUTPUT_DIR}/grub2_extras_${_GRUB2_EXTRAS_NAME}_r${_REVNUM}.tar"
 	echo
 	
 }
