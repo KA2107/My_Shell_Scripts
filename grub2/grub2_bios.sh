@@ -265,7 +265,6 @@ _GRUB2_BIOS_POSTCOMPILE_SETUP_PREFIX_DIR() {
 	echo
 	
 	cd "${_WD}/GRUB2_BIOS_BUILD_DIR/grub-core/"
-	# sudo cp --verbose ${_GRUB2_EXTRAS_MODULES} "${_GRUB2_BIOS_LIB_DIR}/${_GRUB2_BIOS_NAME}/i386-pc/" || true
 	echo
 	
 	sudo install -d "${_GRUB2_BIOS_SYSCONF_DIR}/default"
@@ -280,6 +279,19 @@ _GRUB2_BIOS_POSTCOMPILE_SETUP_PREFIX_DIR() {
 	sudo install -D -m0755 "$(which gettext.sh)" "${_GRUB2_BIOS_BIN_DIR}/gettext.sh" || true
 	sudo chmod --verbose -x "${_GRUB2_BIOS_SYSCONF_DIR}/grub.d/README" || true
 	echo
+	
+	if [[ -e "${_GRUB2_BIOS_DATAROOT_DIR}/grub/grub-mkconfig_lib" ]]; then
+		sudo install -d "${_GRUB2_BIOS_DATAROOT_DIR}/${_GRUB2_BIOS_NAME}" || true
+		sudo mv --verbose "${_GRUB2_BIOS_DATAROOT_DIR}/grub/grub-mkconfig_lib" "${_GRUB2_BIOS_DATAROOT_DIR}/${_GRUB2_BIOS_NAME}/grub-mkconfig_lib" || true
+		# sudo rm -rf "${_GRUB2_BIOS_DATAROOT_DIR}/grub/" || true
+		echo
+	fi
+	
+	if [[ -e "${_GRUB2_BIOS_DATA_DIR}/${_GRUB2_BIOS_NAME}/unicode.pf2" ]]; then
+		sudo install -d "${_GRUB2_BIOS_DATAROOT_DIR}/${_GRUB2_BIOS_NAME}" || true
+		sudo mv --verbose "${_GRUB2_BIOS_DATA_DIR}/${_GRUB2_BIOS_NAME}"/{{ascii,euro,unicode}.pf2,{ascii,widthspec}.h} "${_GRUB2_BIOS_DATAROOT_DIR}/${_GRUB2_BIOS_NAME}/" || true
+		echo
+	fi 
 	
 	# sudo "${_GRUB2_BIOS_BIN_DIR}/${_GRUB2_BIOS_NAME}-mkfont" --verbose --output="${_GRUB2_BIOS_DATAROOT_DIR}/${_GRUB2_BIOS_NAME}/unicode.pf2" "${_GRUB2_UNIFONT_PATH}/unifont.bdf" || true
 	echo
@@ -309,12 +321,6 @@ _GRUB2_BIOS_SETUP_BOOT_PART_DIR() {
 	
 	sudo cp --verbose "${_GRUB2_BIOS_LIB_DIR}/${_GRUB2_BIOS_NAME}/i386-pc"/*.{img,sh,h} "${_GRUB2_BOOT_PART_DIR}/i386-pc/" || true
 	echo
-	
-	if [[ -e "${_GRUB2_BIOS_DATA_DIR}/${_GRUB2_BIOS_NAME}/unicode.pf2" ]]; then
-		sudo install -d "${_GRUB2_BIOS_DATAROOT_DIR}/${_GRUB2_BIOS_NAME}" || true
-		sudo cp --verbose "${_GRUB2_BIOS_DATA_DIR}/${_GRUB2_BIOS_NAME}"/{{ascii,euro,unicode}.pf2,{ascii,widthspec}.h} "${_GRUB2_BIOS_DATAROOT_DIR}/${_GRUB2_BIOS_NAME}/" || true
-		echo
-	fi 
 	
 	# sudo cp --verbose "${_GRUB2_BIOS_DATAROOT_DIR}/${_GRUB2_BIOS_NAME}"/{ascii,euro,unicode}.pf2 "${_GRUB2_BOOT_PART_DIR}/" || true
 	sudo cp --verbose "${_GRUB2_BIOS_DATAROOT_DIR}/${_GRUB2_BIOS_NAME}/unicode.pf2" "${_GRUB2_BOOT_PART_DIR}/unicode.pf2" || true

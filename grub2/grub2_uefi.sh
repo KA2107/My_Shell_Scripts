@@ -296,6 +296,19 @@ _GRUB2_UEFI_POSTCOMPILE_SETUP_PREFIX_DIR() {
 	sudo chmod --verbose -x "${_GRUB2_UEFI_SYSCONF_DIR}/grub.d/README" || true
 	echo
 	
+	if [[ -e "${_GRUB2_UEFI_DATAROOT_DIR}/grub/grub-mkconfig_lib" ]]; then
+		sudo install -d "${_GRUB2_UEFI_DATAROOT_DIR}/${_GRUB2_UEFI_NAME}" || true
+		sudo mv --verbose "${_GRUB2_UEFI_DATAROOT_DIR}/grub/grub-mkconfig_lib" "${_GRUB2_UEFI_DATAROOT_DIR}/${_GRUB2_UEFI_NAME}/grub-mkconfig_lib" || true
+		# sudo rm -rf "${_GRUB2_UEFI_DATAROOT_DIR}/grub/" || true
+		echo
+	fi
+	
+	if [[ -e "${_GRUB2_UEFI_DATA_DIR}/${_GRUB2_UEFI_NAME}/unicode.pf2" ]]; then
+		sudo install -d "${_GRUB2_UEFI_DATAROOT_DIR}/${_GRUB2_UEFI_NAME}" || true
+		sudo mv --verbose "${_GRUB2_UEFI_DATA_DIR}/${_GRUB2_UEFI_NAME}"/{{ascii,euro,unicode}.pf2,{ascii,widthspec}.h} "${_GRUB2_UEFI_DATAROOT_DIR}/${_GRUB2_UEFI_NAME}/" || true
+		echo
+	fi
+	
 	# sudo "${_GRUB2_UEFI_BIN_DIR}/${_GRUB2_UEFI_NAME}-mkfont" --verbose --output="${_GRUB2_UEFI_DATAROOT_DIR}/${_GRUB2_UEFI_NAME}/unicode.pf2" "${_GRUB2_UNIFONT_PATH}/unifont.bdf" || true
 	echo
 	
@@ -318,7 +331,6 @@ _GRUB2_UEFI_SETUP_STANDALONE_APP() {
 	echo
 	
 	cat << EOF > "${_WD}/${_GRUB2_UEFI_NAME}_standalone_memdisk_config.cfg"
-set _UEFI_ARCH="${_TARGET_UEFI_ARCH}"
 
 insmod usbms
 insmod usb_keyboard
@@ -337,8 +349,8 @@ insmod hfsplus
 
 search --file --no-floppy --set=grub2_uefi_root "/${_GRUB2_UEFI_APP_PREFIX}/${_GRUB2_UEFI_NAME}_standalone.efi"
 
-# set prefix=(\${grub2_uefi_root})/${_GRUB2_UEFI_APP_PREFIX}
-source (\${grub2_uefi_root})/${_GRUB2_UEFI_APP_PREFIX}/${_GRUB2_UEFI_MENU_CONFIG}.cfg
+# set prefix="(\${grub2_uefi_root})/${_GRUB2_UEFI_APP_PREFIX}"
+source "(\${grub2_uefi_root})/${_GRUB2_UEFI_APP_PREFIX}/${_GRUB2_UEFI_MENU_CONFIG}.cfg"
 
 EOF
 	
@@ -411,12 +423,6 @@ _GRUB2_UEFI_SETUP_UEFISYS_PART_DIR() {
 	sudo cp --verbose "${_GRUB2_UEFI_LIB_DIR}/${_GRUB2_UEFI_NAME}/${_TARGET_UEFI_ARCH}-efi"/*.{img,sh,h} "${_GRUB2_UEFI_SYSTEM_PART_DIR}/${_TARGET_UEFI_ARCH}-efi/" || true
 	echo
 	
-	if [[ -e "${_GRUB2_UEFI_DATA_DIR}/${_GRUB2_UEFI_NAME}/unicode.pf2" ]]; then
-		sudo install -d "${_GRUB2_UEFI_DATAROOT_DIR}/${_GRUB2_UEFI_NAME}" || true
-		sudo cp --verbose "${_GRUB2_UEFI_DATA_DIR}/${_GRUB2_UEFI_NAME}"/{{ascii,euro,unicode}.pf2,{ascii,widthspec}.h} "${_GRUB2_UEFI_DATAROOT_DIR}/${_GRUB2_UEFI_NAME}/" || true
-		echo
-	fi 
-	
 	# sudo cp --verbose "${_GRUB2_UEFI_DATAROOT_DIR}/${_GRUB2_UEFI_NAME}"/{ascii,euro,unicode}.pf2 "${_GRUB2_UEFI_SYSTEM_PART_DIR}/" || true
 	sudo cp --verbose "${_GRUB2_UEFI_DATAROOT_DIR}/${_GRUB2_UEFI_NAME}/unicode.pf2" "${_GRUB2_UEFI_SYSTEM_PART_DIR}/unicode.pf2" || true
 	echo
@@ -450,13 +456,13 @@ _GRUB2_UEFI_EFIBOOTMGR() {
 	
 	echo
 	
-	UEFISYS_PART_DEVICE="$(sudo "${_GRUB2_UEFI_SBIN_DIR}/${_GRUB2_UEFI_NAME}-probe" --target=device "${_GRUB2_UEFI_SYSTEM_PART_DIR}/")"
-	UEFISYS_PART_NUM="$(sudo blkid -p -o value -s PART_ENTRY_NUMBER "${UEFISYS_PART_DEVICE}")"
-	UEFISYS_PARENT_DEVICE="$(echo "${UEFISYS_PART_DEVICE}" | sed "s/${UEFISYS_PART_NUM}//g")"
+	_UEFISYS_PART_DEVICE="$(sudo "${_GRUB2_UEFI_SBIN_DIR}/${_GRUB2_UEFI_NAME}-probe" --target=device "${_GRUB2_UEFI_SYSTEM_PART_DIR}/")"
+	_UEFISYS_PART_NUM="$(sudo blkid -p -o value -s PART_ENTRY_NUMBER "${_UEFISYS_PART_DEVICE}")"
+	_UEFISYS_PARENT_DEVICE="$(echo "${_UEFISYS_PART_DEVICE}" | sed "s/${_UEFISYS_PART_NUM}//g")"
 	
 	## Run efibootmgr script in sh compatibility mode, does not work in bash mode in ubuntu for some unknown reason (maybe some dash vs bash issue?)
 	cat << EOF > "${_WD}/grub2_uefi_create_entry_efibootmgr.sh"
-#!/bin/sh
+#!/usr/bin/env bash
 
 set -x
 
@@ -465,12 +471,12 @@ modprobe -q efivars
 if [[ "\$(lsmod | grep ^efivars)" ]]; then
 	if [[ -d "/sys/firmware/efi/vars" ]]; then
 		# Delete old entries of grub2 - command to be checked
-		for bootnum in \$(efibootmgr | grep '^Boot[0-9]' | fgrep -i " ${_GRUB2_UEFI_NAME}" | cut -b5-8)
+		for _bootnum in \$(efibootmgr | grep '^Boot[0-9]' | fgrep -i " ${_GRUB2_UEFI_NAME}" | cut -b5-8)
 		do
-			efibootmgr --bootnum "${bootnum}" --delete-bootnum
+			efibootmgr --bootnum "${_bootnum}" --delete-bootnum
 		done
 		
-		efibootmgr --create --gpt --disk "${UEFISYS_PARENT_DEVICE}" --part "${UEFISYS_PART_NUM}" --write-signature --label "${_GRUB2_UEFI_NAME}" --loader "\\\\EFI\\\\${_GRUB2_UEFI_NAME}\\\\${_GRUB2_UEFI_NAME}.efi"
+		efibootmgr --create --gpt --disk "${_UEFISYS_PARENT_DEVICE}" --part "${_UEFISYS_PART_NUM}" --write-signature --label "${_GRUB2_UEFI_NAME}" --loader "\\\\EFI\\\\${_GRUB2_UEFI_NAME}\\\\${_GRUB2_UEFI_NAME}.efi"
 	else
 		echo '/sys/firmware/efi/vars/ directory not found. Check whether you have booted in UEFI boot mode, manually load efivars kernel module and create a boot entry for GRUB2 in UEFI Boot Manager.'
 	fi
@@ -547,8 +553,8 @@ _GRUB2_UEFI_SETUP_BOOTX64_EFI_APP() {
 	cat << EOF > "${_WD}/${_GRUB2_UEFI_NAME}_efi_boot_config.cfg"
 search --file --no-floppy --set=grub2_uefi_root "/${_GRUB2_UEFI_APP_PREFIX}/core.efi"
 
-set prefix=(\${grub2_uefi_root})/${_GRUB2_UEFI_APP_PREFIX}
-source \${prefix}/${_GRUB2_UEFI_MENU_CONFIG}.cfg
+set prefix="(\${grub2_uefi_root})/${_GRUB2_UEFI_APP_PREFIX}"
+source "\${prefix}/${_GRUB2_UEFI_MENU_CONFIG}.cfg"
 
 EOF
 	
