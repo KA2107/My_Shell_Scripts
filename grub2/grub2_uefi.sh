@@ -330,6 +330,8 @@ _GRUB2_UEFI_SETUP_STANDALONE_APP() {
 	
 	echo
 	
+	_UEFISYS_PART_HINTS_STRING="$(sudo "${_GRUB2_UEFI_SBIN_DIR}/${_GRUB2_UEFI_NAME}-probe" --target="hints_string" "${_GRUB2_UEFI_SYSTEM_PART_DIR}/")"
+	
 	cat << EOF > "${_WD}/${_GRUB2_UEFI_NAME}_standalone_memdisk_config.cfg"
 
 insmod usbms
@@ -347,7 +349,7 @@ insmod reiserfs
 insmod ntfs
 insmod hfsplus
 
-search --file --no-floppy --set=grub2_uefi_root "/${_GRUB2_UEFI_APP_PREFIX}/${_GRUB2_UEFI_NAME}_standalone.efi"
+search --file --no-floppy --set=grub2_uefi_root ${_UEFISYS_PART_HINTS_STRING} "/${_GRUB2_UEFI_APP_PREFIX}/${_GRUB2_UEFI_NAME}_standalone.efi"
 
 # set prefix="(\${grub2_uefi_root})/${_GRUB2_UEFI_APP_PREFIX}"
 source "(\${grub2_uefi_root})/${_GRUB2_UEFI_APP_PREFIX}/${_GRUB2_UEFI_MENU_CONFIG}.cfg"
@@ -456,9 +458,9 @@ _GRUB2_UEFI_EFIBOOTMGR() {
 	
 	echo
 	
-	_UEFISYS_PART_DEVICE="$(sudo "${_GRUB2_UEFI_SBIN_DIR}/${_GRUB2_UEFI_NAME}-probe" --target=device "${_GRUB2_UEFI_SYSTEM_PART_DIR}/")"
+	_UEFISYS_PART_DEVICE="$(sudo "${_GRUB2_UEFI_SBIN_DIR}/${_GRUB2_UEFI_NAME}-probe" --target="device" "${_GRUB2_UEFI_SYSTEM_PART_DIR}/")"
+	_UEFISYS_PARENT_DISK="$(sudo "${_GRUB2_UEFI_SBIN_DIR}/${_GRUB2_UEFI_NAME}-probe" --target="disk" "${_GRUB2_UEFI_SYSTEM_PART_DIR}/")"
 	_UEFISYS_PART_NUM="$(sudo blkid -p -o value -s PART_ENTRY_NUMBER "${_UEFISYS_PART_DEVICE}")"
-	_UEFISYS_PARENT_DEVICE="$(echo "${_UEFISYS_PART_DEVICE}" | sed "s/${_UEFISYS_PART_NUM}//g")"
 	
 	## Run efibootmgr script in sh compatibility mode, does not work in bash mode in ubuntu for some unknown reason (maybe some dash vs bash issue?)
 	cat << EOF > "${_WD}/grub2_uefi_create_entry_efibootmgr.sh"
@@ -476,7 +478,7 @@ if [[ "\$(lsmod | grep ^efivars)" ]]; then
 			efibootmgr --bootnum "${_bootnum}" --delete-bootnum
 		done
 		
-		efibootmgr --create --gpt --disk "${_UEFISYS_PARENT_DEVICE}" --part "${_UEFISYS_PART_NUM}" --write-signature --label "${_GRUB2_UEFI_NAME}" --loader "\\\\EFI\\\\${_GRUB2_UEFI_NAME}\\\\${_GRUB2_UEFI_NAME}.efi"
+		efibootmgr --create --gpt --disk "${_UEFISYS_PARENT_DISK}" --part "${_UEFISYS_PART_NUM}" --write-signature --label "${_GRUB2_UEFI_NAME}" --loader "\\\\EFI\\\\${_GRUB2_UEFI_NAME}\\\\grub${_SPEC_UEFI_ARCH_NAME}.efi"
 	else
 		echo '/sys/firmware/efi/vars/ directory not found. Check whether you have booted in UEFI boot mode, manually load efivars kernel module and create a boot entry for GRUB2 in UEFI Boot Manager.'
 	fi
@@ -550,8 +552,10 @@ _GRUB2_UEFI_SETUP_BOOTX64_EFI_APP() {
 	
 	echo
 	
+	_UEFISYS_PART_HINTS_STRING="$(sudo "${_GRUB2_UEFI_SBIN_DIR}/${_GRUB2_UEFI_NAME}-probe" --target="hints_string" "${_GRUB2_UEFI_SYSTEM_PART_DIR}/")"
+	
 	cat << EOF > "${_WD}/${_GRUB2_UEFI_NAME}_efi_boot_config.cfg"
-search --file --no-floppy --set=grub2_uefi_root "/${_GRUB2_UEFI_APP_PREFIX}/core.efi"
+search --file --no-floppy --set=grub2_uefi_root ${_UEFISYS_PART_HINTS_STRING} "/${_GRUB2_UEFI_APP_PREFIX}/core.efi"
 
 set prefix="(\${grub2_uefi_root})/${_GRUB2_UEFI_APP_PREFIX}"
 source "\${prefix}/${_GRUB2_UEFI_MENU_CONFIG}.cfg"
