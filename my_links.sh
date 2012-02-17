@@ -263,8 +263,8 @@ _COPY_UEFI_BOOTLOADER_FILES() {
 	[[ -d "${_LINK_DIR}/" ]] && _SUDO_COPY_FILE
 	
 	_SOURCE_FILE="grub-legacy_uefi.conf"
-	_LINK_DIR="${_UEFI_SYS_PART_DIR}/grub-legacy/"
-	_LINK_FILE="grub-legacy.conf"
+	_LINK_DIR="${_UEFI_SYS_PART_DIR}/arch_grub-legacy/"
+	_LINK_FILE="grub-legacy-x64.conf"
 	[[ -d "${_LINK_DIR}/" ]] && _SUDO_COPY_FILE
 	
 	_SOURCE_FILE="elilo_uefi.conf"
