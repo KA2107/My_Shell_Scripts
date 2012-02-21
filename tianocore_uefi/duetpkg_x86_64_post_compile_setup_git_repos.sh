@@ -89,7 +89,15 @@ _UEFI_DUET_INSTALLER_GIT() {
 	
 	rm -f "${_UEFI_DUET_INSTALLER_DIR}/Shell/UDK_X64/Shell_Full.efi" || true
 	rm -f "${_UEFI_DUET_INSTALLER_DIR}/Shell/UDK_X64/Shell_Full_old.efi" || true
-	install -D -m0644 "${_UDK_DIR}/ShellBinPkg/UefiShell/X64/Shell.efi" "${_UEFI_DUET_INSTALLER_DIR}/Shell/UDK_X64/Shell_Full.efi"
+	
+	echo
+	
+	if [[ -e "${_BACKUP_BUILDS_DIR}/SHELLPKG_BUILD/X64/Shell.efi" ]] && [[ "$(file "${_BACKUP_BUILDS_DIR}/SHELLPKG_BUILD/X64/Shell.efi" | grep 'executable')" ]]; then
+		install -D -m0644 "${_BACKUP_BUILDS_DIR}/SHELLPKG_BUILD/X64/Shell.efi" "${_UEFI_DUET_INSTALLER_DIR}/Shell/UDK_X64/Shell_Full.efi"
+	else
+		install -D -m0644 "${_UDK_DIR}/ShellBinPkg/UefiShell/X64/Shell.efi" "${_UEFI_DUET_INSTALLER_DIR}/Shell/UDK_X64/Shell_Full.efi"
+	fi
+	
 	install -D -m0644 "${_UDK_DIR}/EdkShellBinPkg/FullShell/X64/Shell_Full.efi" "${_UEFI_DUET_INSTALLER_DIR}/Shell/UDK_X64/Shell_Full_old.efi"
 	
 	echo
