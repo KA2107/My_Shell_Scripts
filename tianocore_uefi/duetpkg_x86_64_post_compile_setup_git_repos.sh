@@ -42,7 +42,7 @@ _ROD_SMITH_DUET_INSTALL() {
 	echo
 	
 	rm -f "${_UEFI_DUET_INSTALLER_DIR}/duet-install" || true
-	install -D -m0644 "${_ROD_SMITH_DUET_INSTALL_DIR}/duet-install" "${_UEFI_DUET_INSTALLER_DIR}/duet-install"
+	install -D -m0755 "${_ROD_SMITH_DUET_INSTALL_DIR}/duet-install" "${_UEFI_DUET_INSTALLER_DIR}/duet-install"
 	
 	echo
 	
