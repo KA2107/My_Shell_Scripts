@@ -8,10 +8,8 @@ _RUN()
 	_repo=''
 	ls --all -1 | while read -r _repo
 	do
-		if [[ -d "${PWD}/${_repo}" ]] && [[ "${_repo}" == '.git' ]]
-		then
-			if [[ -d "${PWD}/.git/hgcheckout" ]] && [[ -d "${PWD}/.git/hgremote" ]]
-			then
+		if [[ -d "${PWD}/${_repo}" ]] && [[ "${_repo}" == '.git' ]]; then
+			if [[ -d "${PWD}/.git/hgcheckout" ]] && [[ -d "${PWD}/.git/hgremote" ]]; then
 				echo
 				echo "GIT HG - ${PWD}"
 				echo
@@ -31,8 +29,7 @@ _RUN()
 				git reset --hard
 				echo
 				
-			elif [[ -d "${PWD}/.git/bzr" ]]
-			then
+			elif [[ -d "${PWD}/.git/bzr" ]]; then
 				echo
 				echo "GIT BZR - ${PWD}"
 				echo
@@ -52,8 +49,7 @@ _RUN()
 				git reset --hard
 				echo
 				
-			elif [[ -d "${PWD}/.git/svn" ]]
-			then
+			elif [[ -d "${PWD}/.git/svn" ]]; then
 				echo
 				echo "GIT SVN - ${PWD}"
 				echo
@@ -74,8 +70,7 @@ _RUN()
 				echo
 				
 			else
-				if [[ -d "${PWD}/.git/refs/remotes" ]]
-				then
+				if [[ -d "${PWD}/.git/refs/remotes" ]]; then
 					echo
 					echo "GIT - ${PWD}"
 					echo
@@ -85,8 +80,7 @@ _RUN()
 					
 					for check in ${_MILD_FETCH[@]}
 					do
-						if [[ "$(basename "${PWD}")" == "${check}" ]]
-						then
+						if [[ "$(basename "${PWD}")" == "${check}" ]]; then
 							# git fetch --depth=1
 							echo
 						else
@@ -101,8 +95,7 @@ _RUN()
 					
 					_GIT_REMOTE_BRANCH="$(git branch -a | grep '  remotes/origin/HEAD -> origin/' | sed 's:  remotes/origin/HEAD -> origin/::g')"
 					
-					if [[ "${_GIT_REMOTE_BRANCH}" == '' ]]
-					then
+					if [[ "${_GIT_REMOTE_BRANCH}" == '' ]]; then
 						_GIT_REMOTE_BRANCH='master'
 					fi
 					
@@ -117,9 +110,7 @@ _RUN()
 				fi
 			fi
 			echo
-			
-		elif [[ -d "${PWD}/${_repo}" ]] && [[ "${_repo}" != '.' ]] && [[ "${_repo}" != '..' ]] && [[ ! "$(file "${PWD}/${_repo}" | grep 'symbolic link to')" ]]
-		then
+		elif [[ -d "${PWD}/${_repo}" ]] && [[ "${_repo}" != '.' ]] && [[ "${_repo}" != '..' ]] && [[ "${_repo}" != 'lost+found' ]] && [[ ! "$(file "${PWD}/${_repo}" | grep 'symbolic link to')" ]]; then
 			pushd "${_repo}" > /dev/null
 			_RUN
 			popd > /dev/null

@@ -5,8 +5,7 @@ _RUN()
 	_source_repo=''
 	ls --all -1 | while read -r _source_repo
 	do
-		if [[ -d "${PWD}/${_source_repo}" ]] && [[ "${_source_repo}" != "." ]] && [[ "${_source_repo}" != ".." ]]
-		then
+		if [[ -d "${PWD}/${_source_repo}" ]] && [[ "${_source_repo}" != "." ]] && [[ "${_source_repo}" != ".." ]]; then
 			echo
 			rm -rf "${PWD}/${_source_repo}-build" || true
 			rm -rf "${PWD}/${_source_repo}_build" || true
@@ -17,8 +16,7 @@ _RUN()
 			echo
 		fi
 		
-		if [[ -d "${PWD}/${_source_repo}" ]] && [[ "${_source_repo}" != "." ]] && [[ "${_source_repo}" != ".." ]]
-		then
+		if [[ -d "${PWD}/${_source_repo}" ]] && [[ "${_source_repo}" != "." ]] && [[ "${_source_repo}" != ".." ]] && [[ "${_source_repo}" != 'lost+found' ]]; then
 			pushd "${_source_repo}" > /dev/null
 			_RUN
 			popd > /dev/null

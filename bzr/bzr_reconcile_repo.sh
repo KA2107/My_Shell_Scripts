@@ -5,10 +5,8 @@ _RUN()
 	_repo=''
 	ls --all -1 | while read -r _repo
 	do
-		if [[ -d "${PWD}/${_repo}" ]] && [[ "${_repo}" == '.bzr' ]]
-		then
-			if [[ "$(echo "${PWD}" | grep '.git/bzr')" ]]
-			then
+		if [[ -d "${PWD}/${_repo}" ]] && [[ "${_repo}" == '.bzr' ]]; then
+			if [[ "$(echo "${PWD}" | grep '.git/bzr')" ]]; then
 				true
 			else
 				echo
@@ -18,8 +16,7 @@ _RUN()
 				bzr reconcile
 				echo
 			fi
-		elif [[ -d "${PWD}/${_repo}" ]] && [[ "${_repo}" != '.' ]] && [[ "${_repo}" != '..' ]] && [[ ! "$(file "${PWD}/${_repo}" | grep 'symbolic link to')" ]]
-		then
+		elif [[ -d "${PWD}/${_repo}" ]] && [[ "${_repo}" != '.' ]] && [[ "${_repo}" != '..' ]] && [[ "${_repo}" != 'lost+found' ]] && [[ ! "$(file "${PWD}/${_repo}" | grep 'symbolic link to')" ]]; then
 			pushd "${_repo}" > /dev/null
 			_RUN
 			popd > /dev/null

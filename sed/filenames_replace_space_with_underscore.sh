@@ -10,8 +10,7 @@ _RUN()
 	do
 		echo
 		
-		if [[ "${_old_filename}" != '.' ]] && [[ "${_old_filename}" != '..' ]]
-		then
+		if [[ "${_old_filename}" != '.' ]] && [[ "${_old_filename}" != '..' ]] && [[ "${_old_filename}" != 'lost+found' ]]; then
 			
 			echo
 			
@@ -26,8 +25,7 @@ _RUN()
 			
 			echo
 			
-			if [[ -e "${PWD}/${_old_filename}" ]] && [[ ! -e "${PWD}/${_new_filename}" ]]
-			then
+			if [[ -e "${PWD}/${_old_filename}" ]] && [[ ! -e "${PWD}/${_new_filename}" ]]; then
 				echo
 				mv "${PWD}/${_old_filename}" "${PWD}/${_new_filename}"
 			fi
@@ -38,8 +36,7 @@ _RUN()
 		
 		echo
 		
-		if [[ -d "${PWD}/${_old_filename}" ]] && [[ "${_old_filename}" != '.' ]] && [[ "${_old_filename}" != '..' ]] && [[ ! "$(file "${PWD}/${_old_filename}" | grep 'symbolic link to')" ]]
-		then
+		if [[ -d "${PWD}/${_old_filename}" ]] && [[ "${_old_filename}" != '.' ]] && [[ "${_old_filename}" != '..' ]] && [[ "${_old_filename}" != 'lost+found' ]] && [[ ! "$(file "${PWD}/${_old_filename}" | grep 'symbolic link to')" ]]; then
 			pushd "${_old_filename}" > /dev/null
 			_RUN
 			popd > /dev/null

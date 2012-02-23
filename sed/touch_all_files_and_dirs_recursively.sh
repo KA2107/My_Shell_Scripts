@@ -9,8 +9,7 @@ _RUN()
 	do
 		echo
 		
-		if [[ ! -d "${PWD}/${_name}" ]] && [[ "${_name}" != '.' ]] && [[ "${_name}" != '..' ]]
-		then
+		if [[ ! -d "${PWD}/${_name}" ]] && [[ "${_name}" != '.' ]] && [[ "${_name}" != '..' ]] && [[ "${_name}" != 'lost+found' ]] && [[ ! "$(file "${PWD}/${_name}" | grep 'symbolic link to')" ]]; then
 			
 			echo
 			
@@ -26,8 +25,7 @@ _RUN()
 		
 		echo
 		
-		if [[ -d "${PWD}/${_name}" ]] && [[ "${_name}" != '.' ]] && [[ "${_name}" != '..' ]] && [[ ! "$(file "${PWD}/${_name}" | grep 'symbolic link to')" ]]
-		then
+		if [[ -d "${PWD}/${_name}" ]] && [[ "${_name}" != '.' ]] && [[ "${_name}" != '..' ]] && [[ "${_name}" != 'lost+found' ]] && [[ ! "$(file "${PWD}/${_name}" | grep 'symbolic link to')" ]]; then
 			pushd "${_name}" > /dev/null
 			_RUN
 			popd > /dev/null
