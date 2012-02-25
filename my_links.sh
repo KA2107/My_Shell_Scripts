@@ -57,7 +57,7 @@ _COPY_FILE() {
 	
 	if [[ ! -d "${_LINK_DIR}/${_LINK_FILE}" ]]; then
 		rm -f "${_LINK_DIR}/${_LINK_FILE}" || true
-		cp "${_SOURCE_DIR}/${_SOURCE_FILE}" "${_LINK_DIR}/${_LINK_FILE}"
+		install -D -m0644 "${_SOURCE_DIR}/${_SOURCE_FILE}" "${_LINK_DIR}/${_LINK_FILE}"
 	fi
 	
 	echo
@@ -70,7 +70,7 @@ _SUDO_COPY_FILE() {
 	
 	if [[ ! -d "${_LINK_DIR}/${_LINK_FILE}" ]]; then
 		sudo rm -f "${_LINK_DIR}/${_LINK_FILE}" || true
-		sudo cp "${_SOURCE_DIR}/${_SOURCE_FILE}" "${_LINK_DIR}/${_LINK_FILE}"
+		sudo install -D -m0644 "${_SOURCE_DIR}/${_SOURCE_FILE}" "${_LINK_DIR}/${_LINK_FILE}"
 	fi
 	
 	echo
@@ -377,6 +377,13 @@ _COPY_UEFI_SHELL_FILES
 echo
 
 _PACMAN
+
+echo
+
+sudo rm -f "/boot/efi/Kernels"/vmlinuz-linux* || true
+sudo rm -f "/boot/efi/Kernels"/initramfs-linux*.img || true
+sudo install -D -m0644 "/boot"/vmlinuz-linux* "/boot/efi/Kernels"/
+sudo install -D -m0644 "/boot"/initramfs-linux*.img "/boot/efi/Kernels"/
 
 echo
 
