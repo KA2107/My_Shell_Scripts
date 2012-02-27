@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 
-export _PROCESS_CONTINUE_UEFI='FALSE'
-export _PROCESS_CONTINUE_BIOS='FALSE'
+_PROCESS_CONTINUE_UEFI='FALSE'
+_PROCESS_CONTINUE_BIOS='FALSE'
 
-export _BOOTLOADER_CONFIG_FILES_DIR='/media/Source_Codes/Source_Codes/My_Files/Bootloader_Config_Files/'
-export _WD_OUTER="${PWD}/"
-export _X86_32_CHROOT='/opt/arch32'
+_GRUB2_SCRIPTS_DIR="/media/Source_Codes/Source_Codes/My_Shell_Scripts/grub2"
+_BOOTLOADER_CONFIG_FILES_DIR='/media/Source_Codes/Source_Codes/My_Files/Bootloader_Config_Files/'
+_WD_OUTER="${PWD}/"
+_X86_32_CHROOT='/opt/arch32'
 
 if [[ \
 	"${1}" == '' || \
@@ -90,22 +91,16 @@ echo
 
 _APPLY_PATCHES() {
 	
-	patch -Np1 -i "${_WD_OUTER}/grub-mkconfig-Use_outside_GRUB_PREFIX_if_defined.patch"
-	echo
-	
-	patch -Np1 -i "${_WD_OUTER}/grub-mkconfig_header_platform_subdir_fixes.patch"
-	echo
-	
 	patch -Np1 -i "${_WD_OUTER}/archlinux_grub2_mkconfig_fixes.patch"
 	echo
 	
 	patch -Np1 -i "${_WD_OUTER}/mjg_grub2_update_linux_boot_protocol.patch"
 	echo
 	
-	patch -Np1 -i "${_WD_OUTER}/mjg_grub2_relocator_fixes.patch"
+	# patch -Np1 -i "${_WD_OUTER}/mjg_grub2_relocator_fixes.patch"
 	echo
 	
-	patch -Np1 -i "${_WD_OUTER}/mjg_grub2_linux_loader_fixes.patch"
+	# patch -Np1 -i "${_WD_OUTER}/mjg_grub2_linux_loader_fixes.patch"
 	echo
 	
 	# patch -Np0 -i "${_WD_OUTER}/grub-mactel.patch"
@@ -140,7 +135,7 @@ if [[ "${_PROCESS_CONTINUE_UEFI}" == 'TRUE' ]]; then
 		echo
 	fi
 	
-	cp --verbose "${_WD_OUTER}/grub2_uefi_linux_scripts/grub2_uefi.sh" "${_WD_OUTER}/grub2_uefi_linux_scripts/grub2_uefi_linux_my.sh" "${_WD_OUTER}/${_GRUB2_UEFI_Source_DIR_Name}/"
+	cp --verbose "${_GRUB2_SCRIPTS_DIR}/grub2_uefi.sh" "${_GRUB2_SCRIPTS_DIR}/grub2_uefi_linux_my.sh" "${_WD_OUTER}/${_GRUB2_UEFI_Source_DIR_Name}/"
 	cp --verbose "${_WD_OUTER}/xman_dos2unix.sh" "${_WD_OUTER}/grub.default" "${_WD_OUTER}/${_GRUB2_UEFI_Source_DIR_Name}/" || true
 	echo
 	
@@ -185,15 +180,15 @@ if [[ "${_PROCESS_CONTINUE_BIOS}" == 'TRUE' ]]; then
 	
 	cp -r "${_WD_OUTER}/grub2_extras__GIT_BZR" "${_WD_OUTER}/${_GRUB2_BIOS_Source_DIR_Name}/grub2_extras__GIT_BZR" || true
 	rm -rf "${_WD_OUTER}/${_GRUB2_BIOS_Source_DIR_Name}/grub2_extras__GIT_BZR/zfs" || true
-	rm -rf "${_WD_OUTER}/${_GRUB2_BIOS_Source_DIR_Name}/grub2_extras__GIT_BZR/915resolution" || true
-	rm -rf "${_WD_OUTER}/${_GRUB2_BIOS_Source_DIR_Name}/grub2_extras__GIT_BZR/ntldr-img" || true
+	# rm -rf "${_WD_OUTER}/${_GRUB2_BIOS_Source_DIR_Name}/grub2_extras__GIT_BZR/915resolution" || true
+	# rm -rf "${_WD_OUTER}/${_GRUB2_BIOS_Source_DIR_Name}/grub2_extras__GIT_BZR/ntldr-img" || true
 	
 	if [[ "${_GRUB2_BIOS_Source_DIR_Name}" != "${_GRUB2_UEFI_Source_DIR_Name}" ]]; then
 		cd "${_WD_OUTER}/${_GRUB2_BIOS_Source_DIR_Name}/"
 		echo
 	fi
 	
-	cp --verbose "${_WD_OUTER}/grub2_bios_linux_scripts/grub2_bios.sh" "${_WD_OUTER}/grub2_bios_linux_scripts/grub2_bios_linux_my.sh" "${_WD_OUTER}/${_GRUB2_BIOS_Source_DIR_Name}/"
+	cp --verbose "${_GRUB2_SCRIPTS_DIR}/grub2_bios.sh" "${_GRUB2_SCRIPTS_DIR}/grub2_bios_linux_my.sh" "${_WD_OUTER}/${_GRUB2_BIOS_Source_DIR_Name}/"
 	cp --verbose "${_WD_OUTER}/xman_dos2unix.sh" "${_WD_OUTER}/grub.default" "${_WD_OUTER}/${_GRUB2_BIOS_Source_DIR_Name}/" || true
 	echo
 	
@@ -237,6 +232,7 @@ fi
 
 unset _PROCESS_CONTINUE_UEFI
 unset _PROCESS_CONTINUE_BIOS
+unset _GRUB2_SCRIPTS_DIR
 unset _BOOTLOADER_CONFIG_FILES_DIR
 unset _WD_OUTER
 unset _GRUB2_UEFI
