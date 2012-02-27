@@ -427,7 +427,7 @@ _GRUB2_UEFI_SETUP_UEFISYS_BOOTDIR() {
 	echo
 	
 	## Setup the GRUB2 folder in the UEFI System Partition and create the grub.efi application
-	sudo "${_GRUB2_UEFI_SBIN_DIR}/${_GRUB2_UEFI_NAME}-install" --root-directory="${_UEFI_SYSTEM_PART_MP}" --boot-directory="${_GRUB2_UEFI_BOOTDIR}" --bootloader-id="${_GRUB2_UEFI_NAME}" --no-floppy --recheck --debug
+	sudo "${_GRUB2_UEFI_SBIN_DIR}/${_GRUB2_UEFI_NAME}-install" --directory="${_GRUB2_UEFI_LIB_DIR}/${_GRUB2_UEFI_NAME}/${_TARGET_UEFI_ARCH}-efi" --root-directory="${_UEFI_SYSTEM_PART_MP}" --boot-directory="${_GRUB2_UEFI_BOOTDIR}" --bootloader-id="${_GRUB2_UEFI_NAME}" --no-floppy --recheck --debug
 	echo
 	
 	echo

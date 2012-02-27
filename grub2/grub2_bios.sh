@@ -303,7 +303,8 @@ _GRUB2_BIOS_SETUP_BOOT_PART_DIR() {
 	## Load device-mapper kernel module - needed by grub-probe
 	sudo modprobe -q dm-mod || true
 	
-	sudo "${_GRUB2_BIOS_SBIN_DIR}/${_GRUB2_BIOS_NAME}-install" --modules="${_GRUB2_BIOS_CORE_IMG_MODULES}" --boot-directory="${_GRUB2_BIOS_BOOTDIR_PATH}" --no-floppy --recheck --debug "${_GRUB2_BIOS_INSTALL_DEVICE}" # Setup the GRUB2 folder in the /boot directory, create the core.img image and embed the image in the disk.
+	## Setup the GRUB2 folder in the /boot directory, create the core.img image and embed the image in the disk.
+	sudo "${_GRUB2_BIOS_SBIN_DIR}/${_GRUB2_BIOS_NAME}-install" --directory="${_GRUB2_BIOS_LIB_DIR}/${_GRUB2_BIOS_NAME}/i386-pc" --modules="${_GRUB2_BIOS_CORE_IMG_MODULES}" --boot-directory="${_GRUB2_BIOS_BOOTDIR_PATH}" --no-floppy --recheck --debug "${_GRUB2_BIOS_INSTALL_DEVICE}"
 	echo
 	
 	sudo install -D -m0644 "${_GRUB2_BIOS_LIB_DIR}/${_GRUB2_BIOS_NAME}/i386-pc"/*.{img,sh,h} "${_GRUB2_BIOS_BOOTPART_DIR}/i386-pc/" || true
