@@ -117,7 +117,7 @@ _GRUB2_UEFI_SET_ENV_VARS() {
 	
 	export _GRUB2_UEFI_UNIFONT_PATH='/usr/share/fonts/misc'
 	
-	export _GRUB2_UEFI_CONFIGURE_OPTIONS="--with-platform="efi" --target="${_TARGET_UEFI_ARCH}" --program-prefix="" "
+	export _GRUB2_UEFI_CONFIGURE_OPTIONS="--with-platform="efi" --target="${_TARGET_UEFI_ARCH}" --program-prefix="" --program-transform-name="s,grub,${_GRUB2_UEFI_NAME}," --with-bootdir="${_GRUB2_UEFI_BOOTDIR}" --with-grubdir="${_GRUB2_UEFI_NAME}""
 	export _GRUB2_UEFI_OTHER_CONFIGURE_OPTIONS="--enable-mm-debug --enable-device-mapper --enable-cache-stats --enable-grub-mkfont --enable-grub-mount --enable-nls --disable-efiemu --disable-werror"
 	
 	export _GRUB2_UEFI_CONFIGURE_PATHS_1="--prefix="${_GRUB2_UEFI_PREFIX_DIR}" --bindir="${_GRUB2_UEFI_BIN_DIR}" --sbindir="${_GRUB2_UEFI_SBIN_DIR}" --sysconfdir="${_GRUB2_UEFI_SYSCONF_DIR}" --libdir="${_GRUB2_UEFI_LIB_DIR}""

@@ -98,7 +98,7 @@ _GRUB2_BIOS_SET_ENV_VARS() {
 	export _GRUB2_BIOS_MAN_DIR="${_GRUB2_BIOS_DATAROOT_DIR}/man"
 	
 	export _GRUB2_BIOS_BOOTPART_DIR="${_GRUB2_BIOS_BOOTDIR_PATH}/${_GRUB2_BIOS_NAME}"
-	export _GRUB2_BIOS_CONFIGURE_OPTIONS="--with-platform="pc" --target="i386" --program-prefix="" "
+	export _GRUB2_BIOS_CONFIGURE_OPTIONS="--with-platform="pc" --target="i386" --program-prefix="" --program-transform-name="s,grub,${_GRUB2_BIOS_NAME}," --with-bootdir="${_GRUB2_BIOS_BOOTDIR_PATH}" --with-grubdir="${_GRUB2_BIOS_NAME}""
 	export _GRUB2_BIOS_OTHER_CONFIGURE_OPTIONS="--enable-mm-debug --enable-device-mapper --enable-cache-stats --enable-grub-mkfont --enable-grub-mount --enable-nls --enable-efiemu --disable-werror"
 	
 	export _GRUB2_BIOS_CONFIGURE_PATHS_1="--prefix="${_GRUB2_BIOS_PREFIX_DIR}" --bindir="${_GRUB2_BIOS_BIN_DIR}" --sbindir="${_GRUB2_BIOS_SBIN_DIR}" --sysconfdir="${_GRUB2_BIOS_SYSCONF_DIR}" --libdir="${_GRUB2_BIOS_LIB_DIR}""

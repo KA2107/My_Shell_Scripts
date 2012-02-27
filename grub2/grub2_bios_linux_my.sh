@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 _GRUB2_BIOS_LINUX="${PWD}/grub2_bios.sh"
-_GRUB2_BIOS_LINUX_MY="${_GRUB2_BIOS_LINUX} /dev/sda /boot/grub_bios grub /media/Data_3/grub_bios_backup /media/Data_3/grub_bios_utils_backup /_grub_bios_/"
+_GRUB2_BIOS_LINUX_MY="${_GRUB2_BIOS_LINUX} /dev/sda /boot grub_Keshav /media/Data_3/grub_bios_backup /media/Data_3/grub_bios_utils_backup /_grub_Keshav_/bios/"
 
 echo
 
