@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-## This is a script to compile and install GRUB2 for UEFI systems. Just copy this script to the GRUB2 Source Root dir and run this script by passing the correct parameters. This script will be updated as and when the commands change in GRUB2 bzr repo and not just stick to any release version.
+## This is a script to compile and install GRUB for UEFI systems. Just copy this script to the GRUB Source Root dir and run this script by passing the correct parameters. This script will be updated as and when the commands change in GRUB bzr repo and not just stick to any release version.
 
-## This script uses efibootmgr to setup GRUB2 UEFI as the default boot option in UEFI NVRAM.
+## This script uses efibootmgr to setup GRUB UEFI as the default boot option in UEFI NVRAM.
 
 ## For example if you did 'bzr branch bzr://bzr.savannah.gnu.org/grub/trunk/grub /home/user/grub'
 ## Then copy this script to /home/user/grub and cd into /home/user/grub and the run this script.
@@ -11,7 +11,7 @@
 
 ## This script has configure options specific to my requirements and my system. Please read this script fully and modify it to suite your requirements.
 
-## The "GRUB_UEFI_NAME" parameter refers to the GRUB2 folder name in the UEFI SYSTEM PARTITION. The final GRUB2 UEFI files will be installed in <UEFI_SYSTEM_PARTITION>/efi/<GRUB_UEFI_NAME>/ folder. The final GRUB2 UEFI Application will be <UEFI_SYSTEM_PARTITION>/efi/<GRUB_UEFI_NAME>/<GRUB_UEFI_NAME>.efi where <GRUB_UEFI_NAME> refers to the "GRUB_UEFI_NAME" parameter passed to this script.
+## The "GRUB_UEFI_NAME" parameter refers to the GRUB folder name in the UEFI SYSTEM PARTITION. The final GRUB UEFI files will be installed in <UEFI_SYSTEM_PARTITION>/efi/<GRUB_UEFI_NAME>/ folder. The final GRUB UEFI Application will be <UEFI_SYSTEM_PARTITION>/efi/<GRUB_UEFI_NAME>/<GRUB_UEFI_NAME>.efi where <GRUB_UEFI_NAME> refers to the "GRUB_UEFI_NAME" parameter passed to this script.
 
 ## The "GRUB_UEFI_PREFIX_DIR" parameter is not compulsory.
 
@@ -223,7 +223,7 @@ _GRUB_UEFI_PRECOMPILE_STEPS() {
 	chmod --verbose +x "${_WD}/autogen.sh" || true
 	echo
 	
-	## GRUB2 UEFI Build Directory
+	## GRUB UEFI Build Directory
 	install -d "${_WD}/GRUB_UEFI_BUILD_DIR_${_TARGET_UEFI_ARCH}"
 	install -D -m0644 "${_WD}/grub.default" "${_WD}/GRUB_UEFI_BUILD_DIR_${_TARGET_UEFI_ARCH}/grub.default" || true
 	install -D -m0644 "${_WD}/grub.cfg" "${_WD}/GRUB_UEFI_BUILD_DIR_${_TARGET_UEFI_ARCH}/grub.cfg" || true
@@ -311,11 +311,11 @@ _GRUB_UEFI_POSTCOMPILE_SETUP_PREFIX_DIR() {
 
 _GRUB_UEFISYS_BACKUP_OLD_DIR() {
 	
-	## Backup the old GRUB2 folder in the UEFI System Partition
+	## Backup the old GRUB folder in the UEFI System Partition
 	sudo cp -r --verbose "${_GRUB_UEFISYS_PART_DIR}" "${_GRUB_UEFISYS_BACKUP_DIR}" || true
 	echo
 	
-	## Delete the old GRUB2 folder in the UEFI System Partition
+	## Delete the old GRUB folder in the UEFI System Partition
 	sudo rm -rf --verbose "${_GRUB_UEFISYS_PART_DIR}" || true
 	echo
 	
@@ -323,11 +323,11 @@ _GRUB_UEFISYS_BACKUP_OLD_DIR() {
 
 _GRUB_UEFI_BOOTDIR_BACKUP_OLD_DIR() {
 	
-	## Backup the old GRUB2 folder in BOOTDIR
+	## Backup the old GRUB folder in BOOTDIR
 	sudo cp -r --verbose "${_GRUB_UEFI_BOOTDIR_ACTUAL}" "${_GRUB_UEFI_BOOTDIR_BACKUP_DIR}" || true
 	echo
 	
-	## Delete the old GRUB2 folder in BOOTDIR
+	## Delete the old GRUB folder in BOOTDIR
 	sudo rm -rf --verbose "${_GRUB_UEFI_BOOTDIR_ACTUAL}" || true
 	echo
 	
@@ -426,7 +426,7 @@ _GRUB_UEFI_SETUP_UEFISYS_BOOTDIR() {
 	sudo modprobe -q dm-mod || true
 	echo
 	
-	## Setup the GRUB2 folder in the UEFI System Partition and create the grub.efi application
+	## Setup the GRUB folder in the UEFI System Partition and create the grub.efi application
 	sudo "${_GRUB_UEFI_SBIN_DIR}/${_GRUB_UEFI_NAME}-install" --directory="${_GRUB_UEFI_LIB_DIR}/${_GRUB_UEFI_NAME}/${_TARGET_UEFI_ARCH}-efi" --target="${_TARGET_UEFI_ARCH}-efi" --root-directory="${_UEFI_SYSTEM_PART_MP}" --boot-directory="${_GRUB_UEFI_BOOTDIR}" --bootloader-id="${_GRUB_UEFI_NAME}" --recheck --debug
 	echo
 	
@@ -492,10 +492,10 @@ if [[ "\$(lsmod | grep ^efivars)" ]]; then
 		
 		efibootmgr --create --gpt --disk "${_UEFISYS_PARENT_DISK}" --part "${_UEFISYS_PART_NUM}" --write-signature --label "${_GRUB_UEFI_NAME}" --loader "\\\\EFI\\\\${_GRUB_UEFI_NAME}\\\\grub${_SPEC_UEFI_ARCH_NAME}.efi"
 	else
-		echo '/sys/firmware/efi/vars/ directory not found. Check whether you have booted in UEFI boot mode, manually load efivars kernel module and create a boot entry for GRUB2 in UEFI Boot Manager.'
+		echo '/sys/firmware/efi/vars/ directory not found. Check whether you have booted in UEFI boot mode, manually load efivars kernel module and create a boot entry for GRUB in UEFI Boot Manager.'
 	fi
 else
-	echo 'efivars kernel module not loaded properly. Manually load it and create a boot entry for GRUB2 in UEFI Boot Manager.'
+	echo 'efivars kernel module not loaded properly. Manually load it and create a boot entry for GRUB in UEFI Boot Manager.'
 fi
 
 echo
@@ -615,7 +615,7 @@ if [[ "${_PROCESS_CONTINUE}" == 'TRUE' ]]; then
 	case "${ans}" in
 	y | Y | yes | YES | Yes)
 		echo
-		echo 'Ok. Proceeding with compile and installation of GRUB2 UEFI ${_TARGET_UEFI_ARCH}.'
+		echo 'Ok. Proceeding with compile and installation of GRUB UEFI ${_TARGET_UEFI_ARCH}.'
 		echo
 		
 		set -x -e
@@ -685,7 +685,7 @@ if [[ "${_PROCESS_CONTINUE}" == 'TRUE' ]]; then
 		set +x +e
 		
 		if [[ -e "${_GRUB_UEFISYS_PART_DIR}/core.efi" ]] && [[ -e "${_GRUB_UEFISYS_PART_DIR}/${_GRUB_UEFI_NAME}_standalone.efi" ]]; then
-			echo "GRUB2 UEFI ${_TARGET_UEFI_ARCH} Setup in ${_GRUB_UEFISYS_PART_DIR} successfully."
+			echo "GRUB UEFI ${_TARGET_UEFI_ARCH} Setup in ${_GRUB_UEFISYS_PART_DIR} successfully."
 		fi
 		
 		echo

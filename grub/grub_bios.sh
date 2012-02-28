@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-## This is a script to compile and install GRUB2 for BIOS systems. Just copy this script to the (GRUB2 Source Root dir) and run this script by passing the correct parameters. This script will be updated as and when the commands change in GRUB2 bzr repo and not just stick to any release version.
+## This is a script to compile and install GRUB for BIOS systems. Just copy this script to the (GRUB Source Root dir) and run this script by passing the correct parameters. This script will be updated as and when the commands change in GRUB bzr repo and not just stick to any release version.
 
 ## For example if you did 'bzr branch bzr://bzr.savannah.gnu.org/grub/trunk/grub /home/user/grub'
 ## Then copy this script to /home/user/grub and cd into /home/user/grub and the run this script.
@@ -11,7 +11,7 @@
 
 ## For MBR partitioned disks, make sure that there is at least 1 MiB gap after the 512-byte Master Boot Record region and before the 1st Partition in the install disk. For GPT partitioned disks, create a "BIOS Boot Partition" of about 2 MiB size before running this script.
 
-## The "GRUB_BIOS_NAME" parameter refers to the GRUB2 folder name in the your /boot partition or /boot directory. The final GRUB2 BIOS files including core.img will be installed in /boot/<_GRUB_BIOS_NAME>/ folder, where <_GRUB_BIOS_NAME> refers to the "_GRUB_BIOS_NAME" parameter you passed to this script.
+## The "GRUB_BIOS_NAME" parameter refers to the GRUB folder name in the your /boot partition or /boot directory. The final GRUB BIOS files including core.img will be installed in /boot/<_GRUB_BIOS_NAME>/ folder, where <_GRUB_BIOS_NAME> refers to the "_GRUB_BIOS_NAME" parameter you passed to this script.
 
 ## For xman_dos2unix.sh download https://raw.github.com/the-ridikulus-rat/My_Shell_Scripts/master/xmanutility/xman_dos2unix.sh
 
@@ -203,7 +203,7 @@ _GRUB_BIOS_PRECOMPILE_STEPS() {
 	chmod --verbose +x "${_WD}/autogen.sh" || true
 	echo
 	
-	## GRUB2 BIOS Build Directory
+	## GRUB BIOS Build Directory
 	install -d "${_WD}/GRUB_BIOS_BUILD_DIR"
 	install -D -m0644 "${_WD}/grub.default" "${_WD}/GRUB_BIOS_BUILD_DIR/grub.default" || true
 	install -D -m0644 "${_WD}/grub.cfg" "${_WD}/GRUB_BIOS_BUILD_DIR/grub.cfg" || true
@@ -288,11 +288,11 @@ _GRUB_BIOS_POSTCOMPILE_SETUP_PREFIX_DIR() {
 
 _GRUB_BIOS_BACKUP_OLD_DIR() {
 	
-	## Backup the old GRUB2 folder in the /boot folder.
+	## Backup the old GRUB folder in the /boot folder.
 	sudo cp -r --verbose "${_GRUB_BIOS_BOOTPART_DIR}" "${_GRUB_BIOS_BACKUP_DIR}" || true
 	echo
 	
-	## Delete the old GRUB2 folder in the /boot folder.
+	## Delete the old GRUB folder in the /boot folder.
 	sudo rm -rf --verbose "${_GRUB_BIOS_BOOTPART_DIR}" || true
 	echo
 	
@@ -303,7 +303,7 @@ _GRUB_BIOS_SETUP_BOOT_PART_DIR() {
 	## Load device-mapper kernel module - needed by grub-probe
 	sudo modprobe -q dm-mod || true
 	
-	## Setup the GRUB2 folder in the /boot directory, create the core.img image and embed the image in the disk.
+	## Setup the GRUB folder in the /boot directory, create the core.img image and embed the image in the disk.
 	sudo "${_GRUB_BIOS_SBIN_DIR}/${_GRUB_BIOS_NAME}-install" --directory="${_GRUB_BIOS_LIB_DIR}/${_GRUB_BIOS_NAME}/i386-pc" --target="i386-pc" --modules="${_GRUB_BIOS_CORE_IMG_MODULES}" --boot-directory="${_GRUB_BIOS_BOOTDIR_PATH}" --recheck --debug "${_GRUB_BIOS_INSTALL_DEVICE}"
 	echo
 	
@@ -354,7 +354,7 @@ if [[ "${_PROCESS_CONTINUE}" == 'TRUE' ]]; then
 	case "${ans}" in
 	y | Y | yes | YES | Yes)
 		echo
-		echo 'Ok. Proceeding with compile and installation of GRUB2 BIOS.'
+		echo 'Ok. Proceeding with compile and installation of GRUB BIOS.'
 		echo
 		
 		set -x -e
@@ -389,7 +389,7 @@ if [[ "${_PROCESS_CONTINUE}" == 'TRUE' ]]; then
 		
 		set +x +e
 		
-		echo "GRUB2 BIOS setup in ${_GRUB_BIOS_BOOTPART_DIR} successfully."
+		echo "GRUB BIOS setup in ${_GRUB_BIOS_BOOTPART_DIR} successfully."
 		
 		echo
 		
