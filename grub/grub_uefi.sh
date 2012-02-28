@@ -374,7 +374,7 @@ insmod hfsplus
 search --file --no-floppy --set=grub_uefi_prefix_root ${_GRUB_BOOT_PART_HINTS_STRING} "${_GRUB_BOOT_PART_RELATIVE_PREFIX}/${_TARGET_UEFI_ARCH}-efi/core.efi"
 
 # set prefix="(\${grub_uefi_prefix_root})/${_GRUB_BOOT_PART_RELATIVE_PREFIX}"
-source "\${prefix}/${_GRUB_UEFI_MENU_CONFIG}.cfg"
+source "(\${grub_uefi_prefix_root})/${_GRUB_BOOT_PART_RELATIVE_PREFIX}/${_GRUB_UEFI_MENU_CONFIG}.cfg"
 
 EOF
 	
@@ -552,25 +552,30 @@ _GRUB_UEFI_SETUP_UEFISYS_BOOT_EFI_APP() {
 	echo
 	
 	if [[ -e "${_GRUB_UEFISYS_PART_DIR}/${_GRUB_UEFI_NAME}_standalone.efi" ]]; then
-		sudo install -D -m0644 "${_GRUB_UEFISYS_PART_DIR}/${_GRUB_UEFI_NAME}_standalone.efi" "${_UEFI_SYSTEM_PART_MP}/efi/boot/boot${_SPEC_UEFI_ARCH_NAME}.efi"
+		_FILE_="${_GRUB_UEFISYS_PART_DIR}/${_GRUB_UEFI_NAME}_standalone.efi"
 		echo
 	else
 		if [[ -e "${_GRUB_UEFISYS_PART_DIR}/grub${_SPEC_UEFI_ARCH_NAME}.efi" ]]; then
-			sudo install -D -m0644 "${_GRUB_UEFISYS_PART_DIR}/grub${_SPEC_UEFI_ARCH_NAME}.efi" "${_UEFI_SYSTEM_PART_MP}/efi/boot/boot${_SPEC_UEFI_ARCH_NAME}.efi"
+			_FILE_="${_GRUB_UEFISYS_PART_DIR}/grub${_SPEC_UEFI_ARCH_NAME}.efi"
 			echo
 		elif [[ -e "${_UEFI_SYSTEM_PART_MP}/efi/grub/core.efi" ]]; then
-			sudo install -D -m0644 "${_UEFI_SYSTEM_PART_MP}/efi/grub/core.efi" "${_UEFI_SYSTEM_PART_MP}/efi/boot/boot${_SPEC_UEFI_ARCH_NAME}.efi"
+			_FILE_="${_UEFI_SYSTEM_PART_MP}/efi/grub/core.efi"
 			echo
 		else
 			if [[ -e "${_GRUB_UEFISYS_PART_DIR}/${_GRUB_UEFI_NAME}.efi" ]]; then
-				sudo install -D -m0644 "${_GRUB_UEFISYS_PART_DIR}/${_GRUB_UEFI_NAME}.efi" "${_UEFI_SYSTEM_PART_MP}/efi/boot/boot${_SPEC_UEFI_ARCH_NAME}.efi"
+				_FILE_="${_GRUB_UEFISYS_PART_DIR}/${_GRUB_UEFI_NAME}.efi"
 				echo
 			elif [[ -e "${_UEFI_SYSTEM_PART_MP}/efi/grub/grub.efi" ]]; then
-				sudo install -D -m0644 "${_UEFI_SYSTEM_PART_MP}/efi/grub/grub.efi" "${_UEFI_SYSTEM_PART_MP}/efi/boot/boot${_SPEC_UEFI_ARCH_NAME}.efi"
+				_FILE_="${_UEFI_SYSTEM_PART_MP}/efi/grub/grub.efi"
 				echo
 			fi
 		fi
 	fi
+	
+	echo
+	
+	sudo install -D -m0644 "${_FILE_}" "${_UEFI_SYSTEM_PART_MP}/efi/boot/boot${_SPEC_UEFI_ARCH_NAME}.efi"
+	unset _FILE_
 	
 	echo
 	

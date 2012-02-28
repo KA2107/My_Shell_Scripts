@@ -21,8 +21,6 @@ _GRUB_UEFI_SYSTEM_PART_DIR="${_UEFI_SYSTEM_PART_MP}/${_GRUB_UEFI_APP_PREFIX}"
 
 _GRUB_UEFI_BOOTDIR_ACTUAL="/boot/efi/efi/grub_uefi_${_TARGET_UEFI_ARCH}/"
 
-_GRUB_UNIFONT_PATH='/usr/share/fonts/misc'
-
 set -x -e
 
 echo
@@ -55,7 +53,7 @@ insmod hfsplus
 search --file --no-floppy --set=grub_uefi_prefix_root ${_GRUB_BOOT_PART_HINTS_STRING} "${_GRUB_BOOT_PART_RELATIVE_PREFIX}/${_TARGET_UEFI_ARCH}-efi/core.efi"
 
 # set prefix="(\${grub_uefi_prefix_root})/${_GRUB_BOOT_PART_RELATIVE_PREFIX}"
-source "\${prefix}/${_GRUB_UEFI_MENU_CONFIG}.cfg"
+source "(\${grub_uefi_prefix_root})/${_GRUB_BOOT_PART_RELATIVE_PREFIX}/${_GRUB_UEFI_MENU_CONFIG}.cfg"
 
 EOF
 
@@ -80,7 +78,7 @@ cd "${_WD}/"
 echo
 
 ## Create the grub standalone uefi application
-sudo "${_GRUB_UEFI_BIN_DIR}/${_GRUB_UEFI_NAME}-mkstandalone" --directory="${_GRUB_UEFI_LIB_DIR}/${_GRUB_UEFI_NAME}/${_TARGET_UEFI_ARCH}-efi" --format="${_TARGET_UEFI_ARCH}-efi" --compression="xz" --output="${_GRUB_UEFI_SYSTEM_PART_DIR}/${_GRUB_UEFI_NAME}_standalone.efi" "boot/grub/grub.cfg"
+sudo "${_GRUB_UEFI_BIN_DIR}/${_GRUB_UEFI_NAME}-mkstandalone" --directory="${_GRUB_UEFI_LIB_DIR}/grub/${_TARGET_UEFI_ARCH}-efi" --format="${_TARGET_UEFI_ARCH}-efi" --compression="xz" --output="${_GRUB_UEFI_SYSTEM_PART_DIR}/${_GRUB_UEFI_NAME}_standalone.efi" "boot/grub/grub.cfg"
 echo
 
 cd "${__WD}/"
@@ -107,21 +105,6 @@ echo
 sudo install -D -m0644 "${_GRUB_UEFI_SYSTEM_PART_DIR}/${_GRUB_UEFI_NAME}_standalone.efi" "${_UEFI_SYSTEM_PART_MP}/efi/boot/bootx64.efi"
 echo
 
-# sudo "${_GRUB_UEFI_BIN_DIR}/${_GRUB_UEFI_NAME}-mkfont" --verbose --output="${_GRUB_UEFI_SYSTEM_PART_DIR}/unicode.pf2" "${_GRUB_UNIFONT_PATH}/unifont.bdf" || true
-echo
-
-# sudo "${_GRUB_UEFI_BIN_DIR}/${_GRUB_UEFI_NAME}-mkfont" --verbose --ascii-bitmaps --output="${_GRUB_UEFI_SYSTEM_PART_DIR}/ascii.pf2" "${_GRUB_UNIFONT_PATH}/unifont.bdf" || true
-echo
-
-if [[ -e "${_GRUB_UEFI_DATA_DIR}/${_GRUB_UEFI_NAME}/unicode.pf2" ]]; then
-	mkdir -p "${_GRUB_UEFI_DATAROOT_DIR}/${_GRUB_UEFI_NAME}" || true
-	sudo cp --verbose "${_GRUB_UEFI_DATA_DIR}/${_GRUB_UEFI_NAME}"/{{ascii,euro,unicode}.pf2,{ascii,widthspec}.h} "${_GRUB_UEFI_DATAROOT_DIR}/${_GRUB_UEFI_NAME}/" || true
-	echo
-fi 
-
-sudo cp --verbose "${_GRUB_UEFI_DATAROOT_DIR}/${_GRUB_UEFI_NAME}"/{ascii,euro,unicode}.pf2 "${_GRUB_UEFI_SYSTEM_PART_DIR}/" || true
-echo
-
 set +x +e
 
 unset _WD
@@ -139,5 +122,4 @@ unset _GRUB_UEFI_MENU_CONFIG
 unset _GRUB_UEFI_APP_PREFIX
 unset _GRUB_UEFI_SYSTEM_PART_DIR
 unset _GRUB_UEFI_BOOTDIR_ACTUAL
-unset _GRUB_UNIFONT_PATH
 unset __WD
