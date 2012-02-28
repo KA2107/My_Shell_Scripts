@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 
 if [[ -z "${1}" ]]; then
-	exit 1
+	echo
+	echo "Option 1 : Falconindy"
+	echo "Option 2 : Setconf"
+	echo
+	exit 0
 fi
 
 _OPTION="${1}"
