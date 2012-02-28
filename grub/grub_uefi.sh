@@ -648,7 +648,7 @@ if [[ "${_PROCESS_CONTINUE}" == 'TRUE' ]]; then
 		
 		echo
 		
-		_GRUB_UEFI_SETUP_UEFISYS_BOOTDIR(
+		_GRUB_UEFI_SETUP_UEFISYS_BOOTDIR
 		
 		echo
 		
