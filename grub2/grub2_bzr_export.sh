@@ -19,7 +19,7 @@
 _WD="${PWD}/"
 _OUTPUT_DIR="${_WD}/"
 
-_ACTUAL_PKGVER="1.99"
+_ACTUAL_PKGVER="2.00~beta0"
 
 _GRUB2_BZR_REPO_DIR="${_WD}/grub2_BZR/"
 _GRUB2_BZR_EXP_REPO_DIR="${_WD}/grub2_experimental_BZR/"

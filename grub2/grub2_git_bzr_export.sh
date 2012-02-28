@@ -19,7 +19,7 @@
 _WD="/media/Source_Codes/Source_Codes/Boot_Managers/ALL/grub2/Source__GIT_BZR/"
 _OUTPUT_DIR="${_WD}/"
 
-_ACTUAL_PKGVER="1.99"
+_ACTUAL_PKGVER="2.00~beta0"
 
 _GRUB2_GIT_BZR_REPO_DIR="${_WD}/grub2__GIT_BZR/"
 _GRUB2_GIT_BZR_EXP_REPO_DIR="${_WD}/grub2_experimental__GIT_BZR/"
@@ -84,7 +84,7 @@ _MAIN_SNAPSHOT
 
 echo
 
-# _EXP_SNAPSHOT
+_EXP_SNAPSHOT
 
 echo
 
