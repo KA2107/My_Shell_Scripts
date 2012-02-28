@@ -14,7 +14,7 @@
 # bzr branch lp:~the-ridikulus-rat/grub/grub2-extras-ntldr-img ntldr-img
 # bzr branch lp:~the-ridikulus-rat/grub/grub2-extras-915resolution 915resolution
 
-## grub-extras zfs is integrated into grub2 bzr main repo and is no longer needed separately.
+## grub-extras zfs is integrated into grub bzr main repo and is no longer needed separately.
 
 _WD="${PWD}/"
 _OUTPUT_DIR="${_WD}/"
