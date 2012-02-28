@@ -21,16 +21,16 @@ _OUTPUT_DIR="${_WD}/"
 
 _ACTUAL_PKGVER="2.00~beta0"
 
-_GRUB2_GIT_BZR_REPO_DIR="${_WD}/grub2__GIT_BZR/"
-_GRUB2_GIT_BZR_EXP_REPO_DIR="${_WD}/grub2_experimental__GIT_BZR/"
-_GRUB2_EXTRAS_REPOS_DIR="${_WD}/grub2_extras__GIT_BZR/"
+_GRUB_GIT_BZR_REPO_DIR="${_WD}/grub2__GIT_BZR/"
+_GRUB_GIT_BZR_EXP_REPO_DIR="${_WD}/grub2_experimental__GIT_BZR/"
+_GRUB_EXTRAS_REPOS_DIR="${_WD}/grub2_extras__GIT_BZR/"
 
 _MAIN_SNAPSHOT() {
 	
-	cd "${_GRUB2_GIT_BZR_REPO_DIR}/"
+	cd "${_GRUB_GIT_BZR_REPO_DIR}/"
 	echo
 	
-	_REVNUM="$(bzr revno "${_GRUB2_GIT_BZR_REPO_DIR}/.git/bzr/repo/master/")"
+	_REVNUM="$(bzr revno "${_GRUB_GIT_BZR_REPO_DIR}/.git/bzr/repo/master/")"
 	git archive --prefix="grub-${_ACTUAL_PKGVER}/" --format="tar.xz" --output="${_OUTPUT_DIR}/grub2_r${_REVNUM}.tar.xz" "bzr/master" "${PWD}/"
 	echo
 	
@@ -43,10 +43,10 @@ _MAIN_SNAPSHOT() {
 
 _EXP_SNAPSHOT() {
 	
-	cd "${_GRUB2_GIT_BZR_EXP_REPO_DIR}/"
+	cd "${_GRUB_GIT_BZR_EXP_REPO_DIR}/"
 	echo
 	
-	_REVNUM="$(bzr revno "${_GRUB2_GIT_BZR_REPO_DIR}/.git/bzr/repo/master/")"
+	_REVNUM="$(bzr revno "${_GRUB_GIT_BZR_REPO_DIR}/.git/bzr/repo/master/")"
 	git archive --prefix="grub-exp-${_ACTUAL_PKGVER}/" --format="tar.xz" --output="${_OUTPUT_DIR}/grub2_exp_r${_REVNUM}.tar.xz" "bzr/master" "${PWD}/"
 	echo
 	
@@ -59,17 +59,17 @@ _EXP_SNAPSHOT() {
 
 _EXTRAS_SNAPSHOT() {
 	
-	cd "${_GRUB2_EXTRAS_REPOS_DIR}/${_GRUB2_EXTRAS_NAME}/"
+	cd "${_GRUB_EXTRAS_REPOS_DIR}/${_GRUB_EXTRAS_NAME}/"
 	echo
 	
-	_REVNUM="$(bzr revno "${_GRUB2_EXTRAS_REPOS_DIR}/${_GRUB2_EXTRAS_NAME}/.git/bzr/repo/master/")"
-	git archive --prefix="${_GRUB2_EXTRAS_NAME}/" --format="tar.xz" --output="${_OUTPUT_DIR}/grub2_extras_${_GRUB2_EXTRAS_NAME}_r${_REVNUM}.tar.xz" "bzr/master" "${PWD}/"
+	_REVNUM="$(bzr revno "${_GRUB_EXTRAS_REPOS_DIR}/${_GRUB_EXTRAS_NAME}/.git/bzr/repo/master/")"
+	git archive --prefix="${_GRUB_EXTRAS_NAME}/" --format="tar.xz" --output="${_OUTPUT_DIR}/grub2_extras_${_GRUB_EXTRAS_NAME}_r${_REVNUM}.tar.xz" "bzr/master" "${PWD}/"
 	echo
 	
 	cd "${_OUTPUT_DIR}/"
 	echo
 	
-	# xz -9 "${_OUTPUT_DIR}/grub2_extras_${_GRUB2_EXTRAS_NAME}_r${_REVNUM}.tar"
+	# xz -9 "${_OUTPUT_DIR}/grub2_extras_${_GRUB_EXTRAS_NAME}_r${_REVNUM}.tar"
 	echo
 	
 }
@@ -88,16 +88,16 @@ _EXP_SNAPSHOT
 
 echo
 
-_GRUB2_EXTRAS_NAME="lua"
+_GRUB_EXTRAS_NAME="lua"
 _EXTRAS_SNAPSHOT
 
-_GRUB2_EXTRAS_NAME="gpxe"
+_GRUB_EXTRAS_NAME="gpxe"
 _EXTRAS_SNAPSHOT
 
-# _GRUB2_EXTRAS_NAME="ntldr-img"
+# _GRUB_EXTRAS_NAME="ntldr-img"
 # _EXTRAS_SNAPSHOT
 
-_GRUB2_EXTRAS_NAME="915resolution"
+_GRUB_EXTRAS_NAME="915resolution"
 _EXTRAS_SNAPSHOT
 
 echo
@@ -108,6 +108,6 @@ echo
 
 unset _WD
 unset _OUTPUT_DIR
-unset _GRUB2_GIT_BZR_REPO_DIR
-unset _GRUB2_EXTRAS_REPOS_DIR
-unset _GRUB2_EXTRAS_NAME
+unset _GRUB_GIT_BZR_REPO_DIR
+unset _GRUB_EXTRAS_REPOS_DIR
+unset _GRUB_EXTRAS_NAME

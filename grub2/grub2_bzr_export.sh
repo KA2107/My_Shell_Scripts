@@ -21,55 +21,55 @@ _OUTPUT_DIR="${_WD}/"
 
 _ACTUAL_PKGVER="2.00~beta0"
 
-_GRUB2_BZR_REPO_DIR="${_WD}/grub2_BZR/"
-_GRUB2_BZR_EXP_REPO_DIR="${_WD}/grub2_experimental_BZR/"
-_GRUB2_EXTRAS_REPOS_DIR="${_WD}/grub2_extras_BZR/"
+_GRUB_BZR_REPO_DIR="${_WD}/grub2_BZR/"
+_GRUB_BZR_EXP_REPO_DIR="${_WD}/grub2_experimental_BZR/"
+_GRUB_EXTRAS_REPOS_DIR="${_WD}/grub2_extras_BZR/"
 
 _MAIN_SNAPSHOT() {
 	
-	cd "${_GRUB2_BZR_REPO_DIR}/"
+	cd "${_GRUB_BZR_REPO_DIR}/"
 	echo
 	
-	_REVNUM="$(bzr revno ${_GRUB2_BZR_REPO_DIR})"
-	bzr export --root="grub-${_ACTUAL_PKGVER}" --format="tar" "${_OUTPUT_DIR}/grub2_r${_REVNUM}.tar"
+	_REVNUM="$(bzr revno ${_GRUB_BZR_REPO_DIR})"
+	bzr export --root="grub-${_ACTUAL_PKGVER}" --format="tar" "${_OUTPUT_DIR}/grub_r${_REVNUM}.tar"
 	echo
 	
 	cd "${_OUTPUT_DIR}/"
 	
-	xz -9 "${_OUTPUT_DIR}/grub2_r${_REVNUM}.tar"
+	xz -9 "${_OUTPUT_DIR}/grub_r${_REVNUM}.tar"
 	echo
 	
 }
 
 _EXP_SNAPSHOT() {
 	
-	cd "${_GRUB2_BZR_EXP_REPO_DIR}/"
+	cd "${_GRUB_BZR_EXP_REPO_DIR}/"
 	echo
 	
-	_REVNUM="$(bzr revno ${_GRUB2_BZR_EXP_REPO_DIR})"
-	bzr export --root="grub-${_ACTUAL_PKGVER}" --format="tar" "${_OUTPUT_DIR}/grub2_exp_r${_REVNUM}.tar"
+	_REVNUM="$(bzr revno ${_GRUB_BZR_EXP_REPO_DIR})"
+	bzr export --root="grub-${_ACTUAL_PKGVER}" --format="tar" "${_OUTPUT_DIR}/grub_exp_r${_REVNUM}.tar"
 	echo
 	
 	cd "${_OUTPUT_DIR}/"
 	
-	xz -9 "${_OUTPUT_DIR}/grub2_exp_r${_REVNUM}.tar"
+	xz -9 "${_OUTPUT_DIR}/grub_exp_r${_REVNUM}.tar"
 	echo
 	
 }
 
 _EXTRAS_SNAPSHOT() {
 	
-	cd "${_GRUB2_EXTRAS_REPOS_DIR}/${_GRUB2_EXTRAS_NAME}/"
+	cd "${_GRUB_EXTRAS_REPOS_DIR}/${_GRUB_EXTRAS_NAME}/"
 	echo
 	
-	_REVNUM="$(bzr revno ${_GRUB2_EXTRAS_REPOS_DIR}/${_GRUB2_EXTRAS_NAME})"
-	bzr export --root="${_GRUB2_EXTRAS_NAME}" --format="tar" "${_OUTPUT_DIR}/grub2_extras_${_GRUB2_EXTRAS_NAME}_r${_REVNUM}.tar"
+	_REVNUM="$(bzr revno ${_GRUB_EXTRAS_REPOS_DIR}/${_GRUB_EXTRAS_NAME})"
+	bzr export --root="${_GRUB_EXTRAS_NAME}" --format="tar" "${_OUTPUT_DIR}/grub_extras_${_GRUB_EXTRAS_NAME}_r${_REVNUM}.tar"
 	echo
 	
 	cd "${_OUTPUT_DIR}/"
 	echo
 	
-	xz -9 "${_OUTPUT_DIR}/grub2_extras_${_GRUB2_EXTRAS_NAME}_r${_REVNUM}.tar"
+	xz -9 "${_OUTPUT_DIR}/grub_extras_${_GRUB_EXTRAS_NAME}_r${_REVNUM}.tar"
 	echo
 	
 }
@@ -88,16 +88,16 @@ echo
 
 echo
 
-_GRUB2_EXTRAS_NAME="lua"
+_GRUB_EXTRAS_NAME="lua"
 _EXTRAS_SNAPSHOT
 
-_GRUB2_EXTRAS_NAME="gpxe"
+_GRUB_EXTRAS_NAME="gpxe"
 _EXTRAS_SNAPSHOT
 
-_GRUB2_EXTRAS_NAME="ntldr-img"
+_GRUB_EXTRAS_NAME="ntldr-img"
 _EXTRAS_SNAPSHOT
 
-_GRUB2_EXTRAS_NAME="915resolution"
+_GRUB_EXTRAS_NAME="915resolution"
 _EXTRAS_SNAPSHOT
 
 echo
@@ -108,6 +108,6 @@ echo
 
 unset _WD
 unset _OUTPUT_DIR
-unset _GRUB2_BZR_REPO_DIR
-unset _GRUB2_EXTRAS_REPOS_DIR
-unset _GRUB2_EXTRAS_NAME
+unset _GRUB_BZR_REPO_DIR
+unset _GRUB_EXTRAS_REPOS_DIR
+unset _GRUB_EXTRAS_NAME

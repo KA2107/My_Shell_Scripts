@@ -11,7 +11,7 @@
 
 ## For MBR partitioned disks, make sure that there is at least 1 MiB gap after the 512-byte Master Boot Record region and before the 1st Partition in the install disk. For GPT partitioned disks, create a "BIOS Boot Partition" of about 2 MiB size before running this script.
 
-## The "GRUB2_BIOS_NAME" parameter refers to the GRUB2 folder name in the your /boot partition or /boot directory. The final GRUB2 BIOS files including core.img will be installed in /boot/<_GRUB2_BIOS_NAME>/ folder, where <_GRUB2_BIOS_NAME> refers to the "_GRUB2_BIOS_NAME" parameter you passed to this script.
+## The "GRUB2_BIOS_NAME" parameter refers to the GRUB2 folder name in the your /boot partition or /boot directory. The final GRUB2 BIOS files including core.img will be installed in /boot/<_GRUB_BIOS_NAME>/ folder, where <_GRUB_BIOS_NAME> refers to the "_GRUB_BIOS_NAME" parameter you passed to this script.
 
 ## For xman_dos2unix.sh download https://raw.github.com/the-ridikulus-rat/My_Shell_Scripts/master/xmanutility/xman_dos2unix.sh
 
@@ -59,79 +59,79 @@ then
 fi
 
 
-export _GRUB2_BIOS_INSTALL_DEVICE="${1}"
-export _GRUB2_BIOS_BOOTDIR_PATH="${2}"
-export _GRUB2_BIOS_NAME="${3}"
-export _GRUB2_BIOS_BACKUP_DIR="${4}"
-export _GRUB2_BIOS_UTILS_BACKUP_DIR="${5}"
-export _GRUB2_BIOS_PREFIX_DIR="${6}"
-## If not mentioned, _GRUB2_BIOS_PREFIX_DIR env variable will be set to "/_grub_bios_/" dir
+export _GRUB_BIOS_INSTALL_DEVICE="${1}"
+export _GRUB_BIOS_BOOTDIR_PATH="${2}"
+export _GRUB_BIOS_NAME="${3}"
+export _GRUB_BIOS_BACKUP_DIR="${4}"
+export _GRUB_BIOS_UTILS_BACKUP_DIR="${5}"
+export _GRUB_BIOS_PREFIX_DIR="${6}"
+## If not mentioned, _GRUB_BIOS_PREFIX_DIR env variable will be set to "/_grub_bios_/" dir
 
 
-_GRUB2_BIOS_SET_ENV_VARS() {
+_GRUB_BIOS_SET_ENV_VARS() {
 	
 	export _WD="${PWD}/"
 	
 	## The location of grub-extras source folder if you have.
 	export GRUB_CONTRIB="${_WD}/grub2_extras__GIT_BZR/"
 	
-	export _REPLACE_GRUB2_BIOS_MENU_CONFIG='0'
+	export _REPLACE_GRUB_BIOS_MENU_CONFIG='0'
 	
-	export _GRUB2_BIOS_MENU_CONFIG='grub'
+	export _GRUB_BIOS_MENU_CONFIG='grub'
 	
-	if [[ "${_REPLACE_GRUB2_BIOS_MENU_CONFIG}" == '1' ]]; then
-		export _GRUB2_BIOS_MENU_CONFIG="${_GRUB2_BIOS_NAME}"
+	if [[ "${_REPLACE_GRUB_BIOS_MENU_CONFIG}" == '1' ]]; then
+		export _GRUB_BIOS_MENU_CONFIG="${_GRUB_BIOS_NAME}"
 	fi
 	
-	if [[ "${_GRUB2_BIOS_PREFIX_DIR}" == '' ]]; then
-		export _GRUB2_BIOS_PREFIX_DIR='/_grub_bios_/'
+	if [[ "${_GRUB_BIOS_PREFIX_DIR}" == '' ]]; then
+		export _GRUB_BIOS_PREFIX_DIR='/_grub_bios_/'
 	fi
 	
-	export _GRUB2_BIOS_BIN_DIR="${_GRUB2_BIOS_PREFIX_DIR}/bin"
-	export _GRUB2_BIOS_SBIN_DIR="${_GRUB2_BIOS_PREFIX_DIR}/sbin"
-	export _GRUB2_BIOS_SYSCONF_DIR="${_GRUB2_BIOS_PREFIX_DIR}/etc"
-	export _GRUB2_BIOS_LIB_DIR="${_GRUB2_BIOS_PREFIX_DIR}/lib"
-	export _GRUB2_BIOS_DATA_DIR="${_GRUB2_BIOS_LIB_DIR}"
-	export _GRUB2_BIOS_DATAROOT_DIR="${_GRUB2_BIOS_PREFIX_DIR}/share"
-	export _GRUB2_BIOS_INFO_DIR="${_GRUB2_BIOS_DATAROOT_DIR}/info"
-	export _GRUB2_BIOS_LOCALE_DIR="${_GRUB2_BIOS_DATAROOT_DIR}/locale"
-	export _GRUB2_BIOS_MAN_DIR="${_GRUB2_BIOS_DATAROOT_DIR}/man"
+	export _GRUB_BIOS_BIN_DIR="${_GRUB_BIOS_PREFIX_DIR}/bin"
+	export _GRUB_BIOS_SBIN_DIR="${_GRUB_BIOS_PREFIX_DIR}/sbin"
+	export _GRUB_BIOS_SYSCONF_DIR="${_GRUB_BIOS_PREFIX_DIR}/etc"
+	export _GRUB_BIOS_LIB_DIR="${_GRUB_BIOS_PREFIX_DIR}/lib"
+	export _GRUB_BIOS_DATA_DIR="${_GRUB_BIOS_LIB_DIR}"
+	export _GRUB_BIOS_DATAROOT_DIR="${_GRUB_BIOS_PREFIX_DIR}/share"
+	export _GRUB_BIOS_INFO_DIR="${_GRUB_BIOS_DATAROOT_DIR}/info"
+	export _GRUB_BIOS_LOCALE_DIR="${_GRUB_BIOS_DATAROOT_DIR}/locale"
+	export _GRUB_BIOS_MAN_DIR="${_GRUB_BIOS_DATAROOT_DIR}/man"
 	
-	export _GRUB2_BIOS_BOOTPART_DIR="${_GRUB2_BIOS_BOOTDIR_PATH}/${_GRUB2_BIOS_NAME}"
-	export _GRUB2_BIOS_CONFIGURE_OPTIONS="--with-platform="pc" --target="i386" --program-prefix="" --program-transform-name="s,grub,${_GRUB2_BIOS_NAME}," --with-bootdir="${_GRUB2_BIOS_BOOTDIR_PATH}" --with-grubdir="${_GRUB2_BIOS_NAME}""
-	export _GRUB2_BIOS_OTHER_CONFIGURE_OPTIONS="--enable-mm-debug --enable-device-mapper --enable-cache-stats --enable-grub-mkfont --enable-grub-mount --enable-nls --enable-efiemu --disable-werror"
+	export _GRUB_BIOS_BOOTPART_DIR="${_GRUB_BIOS_BOOTDIR_PATH}/${_GRUB_BIOS_NAME}"
+	export _GRUB_BIOS_CONFIGURE_OPTIONS="--with-platform="pc" --target="i386" --program-prefix="" --program-transform-name="s,grub,${_GRUB_BIOS_NAME}," --with-bootdir="${_GRUB_BIOS_BOOTDIR_PATH}" --with-grubdir="${_GRUB_BIOS_NAME}""
+	export _GRUB_BIOS_OTHER_CONFIGURE_OPTIONS="--enable-mm-debug --enable-device-mapper --enable-cache-stats --enable-grub-mkfont --enable-grub-mount --enable-nls --enable-efiemu --disable-werror"
 	
-	export _GRUB2_BIOS_CONFIGURE_PATHS_1="--prefix="${_GRUB2_BIOS_PREFIX_DIR}" --bindir="${_GRUB2_BIOS_BIN_DIR}" --sbindir="${_GRUB2_BIOS_SBIN_DIR}" --sysconfdir="${_GRUB2_BIOS_SYSCONF_DIR}" --libdir="${_GRUB2_BIOS_LIB_DIR}""
-	export _GRUB2_BIOS_CONFIGURE_PATHS_2="--datarootdir="${_GRUB2_BIOS_DATAROOT_DIR}" --infodir="${_GRUB2_BIOS_INFO_DIR}" --localedir="${_GRUB2_BIOS_LOCALE_DIR}" --mandir="${_GRUB2_BIOS_MAN_DIR}""
+	export _GRUB_BIOS_CONFIGURE_PATHS_1="--prefix="${_GRUB_BIOS_PREFIX_DIR}" --bindir="${_GRUB_BIOS_BIN_DIR}" --sbindir="${_GRUB_BIOS_SBIN_DIR}" --sysconfdir="${_GRUB_BIOS_SYSCONF_DIR}" --libdir="${_GRUB_BIOS_LIB_DIR}""
+	export _GRUB_BIOS_CONFIGURE_PATHS_2="--datarootdir="${_GRUB_BIOS_DATAROOT_DIR}" --infodir="${_GRUB_BIOS_INFO_DIR}" --localedir="${_GRUB_BIOS_LOCALE_DIR}" --mandir="${_GRUB_BIOS_MAN_DIR}""
 	
-	export _GRUB2_BIOS_UNIFONT_PATH='/usr/share/fonts/misc'
+	export _GRUB_BIOS_UNIFONT_PATH='/usr/share/fonts/misc'
 	
-	export _GRUB2_BIOS_CORE_IMG_MODULES="part_gpt part_msdos fat ext2 ntfs ntfscomp"
-	export _GRUB2_BIOS_EXTRAS_MODULES="lua.mod 915resolution.mod"
+	export _GRUB_BIOS_CORE_IMG_MODULES="part_gpt part_msdos fat ext2 ntfs ntfscomp"
+	export _GRUB_BIOS_EXTRAS_MODULES="lua.mod 915resolution.mod"
 	
-	## _GRUB2_BIOS_CORE_IMG_MODULES - These modules will be included in the core.img generated for your system. Note the maximum permitted size of core.img image is 32 KiB.
+	## _GRUB_BIOS_CORE_IMG_MODULES - These modules will be included in the core.img generated for your system. Note the maximum permitted size of core.img image is 32 KiB.
 	
 }
 
-_GRUB2_BIOS_ECHO_CONFIG() {
+_GRUB_BIOS_ECHO_CONFIG() {
 	
 	echo
-	echo GRUB2_INSTALL_DEVICE="${_GRUB2_BIOS_INSTALL_DEVICE}"
+	echo GRUB2_INSTALL_DEVICE="${_GRUB_BIOS_INSTALL_DEVICE}"
 	echo
-	echo GRUB2_Boot_Partition_MountPoint="${_GRUB2_BIOS_BOOTDIR_PATH}"
+	echo GRUB2_Boot_Partition_MountPoint="${_GRUB_BIOS_BOOTDIR_PATH}"
 	echo
-	echo GRUB2_BIOS_Install_Dir_Name="${_GRUB2_BIOS_BOOTPART_DIR}"
+	echo GRUB2_BIOS_Install_Dir_Name="${_GRUB_BIOS_BOOTPART_DIR}"
 	echo
-	echo GRUB2_BIOS_BACKUP_DIR_Path="${_GRUB2_BIOS_BACKUP_DIR}"
+	echo GRUB2_BIOS_BACKUP_DIR_Path="${_GRUB_BIOS_BACKUP_DIR}"
 	echo
-	echo GRUB2_BIOS_Tools_Backup_Path="${_GRUB2_BIOS_UTILS_BACKUP_DIR}"
+	echo GRUB2_BIOS_Tools_Backup_Path="${_GRUB_BIOS_UTILS_BACKUP_DIR}"
 	echo
-	echo GRUB2_BIOS_PREFIX_DIR_FOLDER="${_GRUB2_BIOS_PREFIX_DIR}"
+	echo GRUB2_BIOS_PREFIX_DIR_FOLDER="${_GRUB_BIOS_PREFIX_DIR}"
 	echo
 	
 }
 
-_GRUB2_BIOS_DOS2UNIX() {
+_GRUB_BIOS_DOS2UNIX() {
 	
 	echo
 	
@@ -150,7 +150,7 @@ _GRUB2_BIOS_DOS2UNIX() {
 	
 }
 
-_GRUB2_BIOS_PYTHON_TO_PYTHON2() {
+_GRUB_BIOS_PYTHON_TO_PYTHON2() {
 	
 	echo
 	
@@ -171,7 +171,7 @@ _GRUB2_BIOS_PYTHON_TO_PYTHON2() {
 	
 }
 
-_GRUB2_BIOS_PO_LINGUAS() {
+_GRUB_BIOS_PO_LINGUAS() {
 	
 	echo
 	
@@ -189,16 +189,16 @@ _GRUB2_BIOS_PO_LINGUAS() {
 	
 }
 
-_GRUB2_BIOS_PRECOMPILE_STEPS() {
+_GRUB_BIOS_PRECOMPILE_STEPS() {
 	
 	cd "${_WD}/"
 	echo
 	
-	_GRUB2_BIOS_DOS2UNIX
+	_GRUB_BIOS_DOS2UNIX
 	
-	_GRUB2_BIOS_PYTHON_TO_PYTHON2
+	_GRUB_BIOS_PYTHON_TO_PYTHON2
 	
-	_GRUB2_BIOS_PO_LINGUAS
+	_GRUB_BIOS_PO_LINGUAS
 	
 	chmod --verbose +x "${_WD}/autogen.sh" || true
 	echo
@@ -210,11 +210,11 @@ _GRUB2_BIOS_PRECOMPILE_STEPS() {
 	
 }
 
-_GRUB2_BIOS_COMPILE_STEPS() {
+_GRUB_BIOS_COMPILE_STEPS() {
 	
 	echo
 	
-	## sed "s|grub.cfg|${_GRUB2_BIOS_MENU_CONFIG}.cfg|g" -i "${_WD}/grub-core/normal/main.c" || true
+	## sed "s|grub.cfg|${_GRUB_BIOS_MENU_CONFIG}.cfg|g" -i "${_WD}/grub-core/normal/main.c" || true
 	echo
 	
 	"${_WD}/autogen.sh"
@@ -224,40 +224,40 @@ _GRUB2_BIOS_COMPILE_STEPS() {
 	echo
 	
 	## fix unifont.bdf location
-	sed "s|/usr/share/fonts/unifont|${_GRUB2_BIOS_UNIFONT_PATH}|g" -i "${_WD}/configure"
+	sed "s|/usr/share/fonts/unifont|${_GRUB_BIOS_UNIFONT_PATH}|g" -i "${_WD}/configure"
 	
-	"${_WD}/configure" ${_GRUB2_BIOS_CONFIGURE_OPTIONS} ${_GRUB2_BIOS_OTHER_CONFIGURE_OPTIONS} ${_GRUB2_BIOS_CONFIGURE_PATHS_1} ${_GRUB2_BIOS_CONFIGURE_PATHS_2}
+	"${_WD}/configure" ${_GRUB_BIOS_CONFIGURE_OPTIONS} ${_GRUB_BIOS_OTHER_CONFIGURE_OPTIONS} ${_GRUB_BIOS_CONFIGURE_PATHS_1} ${_GRUB_BIOS_CONFIGURE_PATHS_2}
 	echo
 	
 	make
 	echo
 	
-	sed "s|${_GRUB2_BIOS_MENU_CONFIG}.cfg|grub.cfg|g" -i "${_WD}/grub-core/normal/main.c" || true
+	sed "s|${_GRUB_BIOS_MENU_CONFIG}.cfg|grub.cfg|g" -i "${_WD}/grub-core/normal/main.c" || true
 	
 }
 
-_GRUB2_BIOS_POSTCOMPILE_SETUP_PREFIX_DIR() {
+_GRUB_BIOS_POSTCOMPILE_SETUP_PREFIX_DIR() {
 	
 	if [[ \
-		"${_GRUB2_BIOS_PREFIX_DIR}" != '/' || \
-		"${_GRUB2_BIOS_PREFIX_DIR}" != '/usr' || \
-		"${_GRUB2_BIOS_PREFIX_DIR}" != '/usr/local' || \
-		"${_GRUB2_BIOS_PREFIX_DIR}" != '/media' || \
-		"${_GRUB2_BIOS_PREFIX_DIR}" != '/mnt' || \
-		"${_GRUB2_BIOS_PREFIX_DIR}" != '/home' || \
-		"${_GRUB2_BIOS_PREFIX_DIR}" != '/lib' || \
-		"${_GRUB2_BIOS_PREFIX_DIR}" != '/lib64' || \
-		"${_GRUB2_BIOS_PREFIX_DIR}" != '/lib32' || \
-		"${_GRUB2_BIOS_PREFIX_DIR}" != '/tmp' || \
-		"${_GRUB2_BIOS_PREFIX_DIR}" != '/var' || \
-		"${_GRUB2_BIOS_PREFIX_DIR}" != '/run' || \
-		"${_GRUB2_BIOS_PREFIX_DIR}" != '/etc' || \
-		"${_GRUB2_BIOS_PREFIX_DIR}" != '/opt' \
+		"${_GRUB_BIOS_PREFIX_DIR}" != '/' || \
+		"${_GRUB_BIOS_PREFIX_DIR}" != '/usr' || \
+		"${_GRUB_BIOS_PREFIX_DIR}" != '/usr/local' || \
+		"${_GRUB_BIOS_PREFIX_DIR}" != '/media' || \
+		"${_GRUB_BIOS_PREFIX_DIR}" != '/mnt' || \
+		"${_GRUB_BIOS_PREFIX_DIR}" != '/home' || \
+		"${_GRUB_BIOS_PREFIX_DIR}" != '/lib' || \
+		"${_GRUB_BIOS_PREFIX_DIR}" != '/lib64' || \
+		"${_GRUB_BIOS_PREFIX_DIR}" != '/lib32' || \
+		"${_GRUB_BIOS_PREFIX_DIR}" != '/tmp' || \
+		"${_GRUB_BIOS_PREFIX_DIR}" != '/var' || \
+		"${_GRUB_BIOS_PREFIX_DIR}" != '/run' || \
+		"${_GRUB_BIOS_PREFIX_DIR}" != '/etc' || \
+		"${_GRUB_BIOS_PREFIX_DIR}" != '/opt' \
 		]]
 	then
-		sudo cp -r --verbose "${_GRUB2_BIOS_PREFIX_DIR}" "${_GRUB2_BIOS_UTILS_BACKUP_DIR}" || true
+		sudo cp -r --verbose "${_GRUB_BIOS_PREFIX_DIR}" "${_GRUB_BIOS_UTILS_BACKUP_DIR}" || true
 		echo
-		sudo rm -rf --verbose "${_GRUB2_BIOS_PREFIX_DIR}" || true
+		sudo rm -rf --verbose "${_GRUB_BIOS_PREFIX_DIR}" || true
 		echo
 	fi
 	
@@ -267,72 +267,72 @@ _GRUB2_BIOS_POSTCOMPILE_SETUP_PREFIX_DIR() {
 	cd "${_WD}/GRUB2_BIOS_BUILD_DIR/grub-core/"
 	echo
 	
-	sudo install -d "${_GRUB2_BIOS_SYSCONF_DIR}/default"
+	sudo install -d "${_GRUB_BIOS_SYSCONF_DIR}/default"
 	
 	if [[ -e "${_WD}/grub.default" ]]; then
-		sudo install -D -m0644 "${_WD}/grub.default" "${_GRUB2_BIOS_SYSCONF_DIR}/default/grub" || true
+		sudo install -D -m0644 "${_WD}/grub.default" "${_GRUB_BIOS_SYSCONF_DIR}/default/grub" || true
 	fi
 	
-	sudo chmod --verbose -x "${_GRUB2_BIOS_SYSCONF_DIR}/default/grub" || true
+	sudo chmod --verbose -x "${_GRUB_BIOS_SYSCONF_DIR}/default/grub" || true
 	echo
 	
-	sudo install -D -m0755 "$(which gettext.sh)" "${_GRUB2_BIOS_BIN_DIR}/gettext.sh" || true
-	sudo chmod --verbose -x "${_GRUB2_BIOS_SYSCONF_DIR}/grub.d/README" || true
+	sudo install -D -m0755 "$(which gettext.sh)" "${_GRUB_BIOS_BIN_DIR}/gettext.sh" || true
+	sudo chmod --verbose -x "${_GRUB_BIOS_SYSCONF_DIR}/grub.d/README" || true
 	echo
 	
-	# sudo "${_GRUB2_BIOS_BIN_DIR}/${_GRUB2_BIOS_NAME}-mkfont" --verbose --output="${_GRUB2_BIOS_DATAROOT_DIR}/${_GRUB2_BIOS_NAME}/unicode.pf2" "${_GRUB2_BIOS_UNIFONT_PATH}/unifont.bdf" || true
+	# sudo "${_GRUB_BIOS_BIN_DIR}/${_GRUB_BIOS_NAME}-mkfont" --verbose --output="${_GRUB_BIOS_DATAROOT_DIR}/${_GRUB_BIOS_NAME}/unicode.pf2" "${_GRUB_BIOS_UNIFONT_PATH}/unifont.bdf" || true
 	echo
 	
 }
 
 
-_GRUB2_BIOS_BACKUP_OLD_DIR() {
+_GRUB_BIOS_BACKUP_OLD_DIR() {
 	
 	## Backup the old GRUB2 folder in the /boot folder.
-	sudo cp -r --verbose "${_GRUB2_BIOS_BOOTPART_DIR}" "${_GRUB2_BIOS_BACKUP_DIR}" || true
+	sudo cp -r --verbose "${_GRUB_BIOS_BOOTPART_DIR}" "${_GRUB_BIOS_BACKUP_DIR}" || true
 	echo
 	
 	## Delete the old GRUB2 folder in the /boot folder.
-	sudo rm -rf --verbose "${_GRUB2_BIOS_BOOTPART_DIR}" || true
+	sudo rm -rf --verbose "${_GRUB_BIOS_BOOTPART_DIR}" || true
 	echo
 	
 }
 
-_GRUB2_BIOS_SETUP_BOOT_PART_DIR() {
+_GRUB_BIOS_SETUP_BOOT_PART_DIR() {
 	
 	## Load device-mapper kernel module - needed by grub-probe
 	sudo modprobe -q dm-mod || true
 	
 	## Setup the GRUB2 folder in the /boot directory, create the core.img image and embed the image in the disk.
-	sudo "${_GRUB2_BIOS_SBIN_DIR}/${_GRUB2_BIOS_NAME}-install" --directory="${_GRUB2_BIOS_LIB_DIR}/${_GRUB2_BIOS_NAME}/i386-pc" --target="i386-pc" --modules="${_GRUB2_BIOS_CORE_IMG_MODULES}" --boot-directory="${_GRUB2_BIOS_BOOTDIR_PATH}" --no-floppy --recheck --debug "${_GRUB2_BIOS_INSTALL_DEVICE}"
+	sudo "${_GRUB_BIOS_SBIN_DIR}/${_GRUB_BIOS_NAME}-install" --directory="${_GRUB_BIOS_LIB_DIR}/${_GRUB_BIOS_NAME}/i386-pc" --target="i386-pc" --modules="${_GRUB_BIOS_CORE_IMG_MODULES}" --boot-directory="${_GRUB_BIOS_BOOTDIR_PATH}" --no-floppy --recheck --debug "${_GRUB_BIOS_INSTALL_DEVICE}"
 	echo
 	
-	sudo install -D -m0644 "${_GRUB2_BIOS_LIB_DIR}/${_GRUB2_BIOS_NAME}/i386-pc"/*.{img,sh,h} "${_GRUB2_BIOS_BOOTPART_DIR}/i386-pc/" || true
+	sudo install -D -m0644 "${_GRUB_BIOS_LIB_DIR}/${_GRUB_BIOS_NAME}/i386-pc"/*.{img,sh,h} "${_GRUB_BIOS_BOOTPART_DIR}/i386-pc/" || true
 	echo
 	
-	sudo install -d "${_GRUB2_BIOS_BOOTPART_DIR}/fonts"
-	sudo install -D -m0644 "${_GRUB2_BIOS_DATAROOT_DIR}/${_GRUB2_BIOS_NAME}"/*.pf2 "${_GRUB2_BIOS_BOOTPART_DIR}/fonts/" || true
+	sudo install -d "${_GRUB_BIOS_BOOTPART_DIR}/fonts"
+	sudo install -D -m0644 "${_GRUB_BIOS_DATAROOT_DIR}/${_GRUB_BIOS_NAME}"/*.pf2 "${_GRUB_BIOS_BOOTPART_DIR}/fonts/" || true
 	echo
 	
-	sudo install -D -m0644 "${_GRUB2_BIOS_BACKUP_DIR}/${_GRUB2_BIOS_MENU_CONFIG}.cfg" "${_GRUB2_BIOS_BOOTPART_DIR}/${_GRUB2_BIOS_MENU_CONFIG}_backup.cfg" || true
-	# sudo install -D -m0644 "${_GRUB2_BIOS_BACKUP_DIR}/${_GRUB2_BIOS_MENU_CONFIG}.cfg" "${_GRUB2_BIOS_BOOTPART_DIR}/${_GRUB2_BIOS_MENU_CONFIG}.cfg" || true
+	sudo install -D -m0644 "${_GRUB_BIOS_BACKUP_DIR}/${_GRUB_BIOS_MENU_CONFIG}.cfg" "${_GRUB_BIOS_BOOTPART_DIR}/${_GRUB_BIOS_MENU_CONFIG}_backup.cfg" || true
+	# sudo install -D -m0644 "${_GRUB_BIOS_BACKUP_DIR}/${_GRUB_BIOS_MENU_CONFIG}.cfg" "${_GRUB_BIOS_BOOTPART_DIR}/${_GRUB_BIOS_MENU_CONFIG}.cfg" || true
 	
 	if [[ -e "${_WD}/grub.cfg" ]]; then
-		sudo install -D -m0644 "${_WD}/grub.cfg" "${_GRUB2_BIOS_BOOTPART_DIR}/${_GRUB2_BIOS_MENU_CONFIG}.cfg" || true
+		sudo install -D -m0644 "${_WD}/grub.cfg" "${_GRUB_BIOS_BOOTPART_DIR}/${_GRUB_BIOS_MENU_CONFIG}.cfg" || true
 	fi
 	
-	# sudo "${_GRUB2_BIOS_SBIN_DIR}/${_GRUB2_BIOS_NAME}-mkconfig" --output="${_GRUB2_BIOS_BOOTPART_DIR}/${_GRUB2_BIOS_MENU_CONFIG}.cfg" || true
-	# sudo chmod 644 "${_GRUB2_BIOS_BOOTPART_DIR}/${_GRUB2_BIOS_MENU_CONFIG}.cfg" || true
+	# sudo "${_GRUB_BIOS_SBIN_DIR}/${_GRUB_BIOS_NAME}-mkconfig" --output="${_GRUB_BIOS_BOOTPART_DIR}/${_GRUB_BIOS_MENU_CONFIG}.cfg" || true
+	# sudo chmod 644 "${_GRUB_BIOS_BOOTPART_DIR}/${_GRUB_BIOS_MENU_CONFIG}.cfg" || true
 	echo
 	
-	sudo dos2unix -ascii --keepdate --safe --skip-symlink --oldfile "${_GRUB2_BIOS_BOOTPART_DIR}"/*.cfg || true
+	sudo dos2unix -ascii --keepdate --safe --skip-symlink --oldfile "${_GRUB_BIOS_BOOTPART_DIR}"/*.cfg || true
 	echo
 	
-	sudo chmod 644 "${_GRUB2_BIOS_BOOTPART_DIR}"/*.cfg || true
+	sudo chmod 644 "${_GRUB_BIOS_BOOTPART_DIR}"/*.cfg || true
 	echo
 	
-	sudo install -d "${_GRUB2_BIOS_BOOTPART_DIR}/images"
-	sudo install -D -m0644 "${_GRUB2_BIOS_BACKUP_DIR}"/*.{png,jpg,tga} "${_GRUB2_BIOS_BOOTPART_DIR}/images/" || true
+	sudo install -d "${_GRUB_BIOS_BOOTPART_DIR}/images"
+	sudo install -D -m0644 "${_GRUB_BIOS_BACKUP_DIR}"/*.{png,jpg,tga} "${_GRUB_BIOS_BOOTPART_DIR}/images/" || true
 	echo
 	
 }
@@ -341,11 +341,11 @@ if [[ "${_PROCESS_CONTINUE}" == 'TRUE' ]]; then
 	
 	echo
 	
-	_GRUB2_BIOS_SET_ENV_VARS
+	_GRUB_BIOS_SET_ENV_VARS
 	
 	echo
 	
-	_GRUB2_BIOS_ECHO_CONFIG
+	_GRUB_BIOS_ECHO_CONFIG
 	
 	echo
 	
@@ -361,35 +361,35 @@ if [[ "${_PROCESS_CONTINUE}" == 'TRUE' ]]; then
 		
 		echo
 		
-		if [[ ! -d "${_GRUB2_BIOS_BOOTDIR_PATH}" ]]; then
-			sudo install -d "${_GRUB2_BIOS_BOOTDIR_PATH}" || true
+		if [[ ! -d "${_GRUB_BIOS_BOOTDIR_PATH}" ]]; then
+			sudo install -d "${_GRUB_BIOS_BOOTDIR_PATH}" || true
 		fi
 		
 		echo
 		
-		_GRUB2_BIOS_PRECOMPILE_STEPS
+		_GRUB_BIOS_PRECOMPILE_STEPS
 		
 		echo
 		
-		_GRUB2_BIOS_COMPILE_STEPS
+		_GRUB_BIOS_COMPILE_STEPS
 		
 		echo
 		
-		_GRUB2_BIOS_POSTCOMPILE_SETUP_PREFIX_DIR
+		_GRUB_BIOS_POSTCOMPILE_SETUP_PREFIX_DIR
 		
 		echo
 		
-		_GRUB2_BIOS_BACKUP_OLD_DIR
+		_GRUB_BIOS_BACKUP_OLD_DIR
 		
 		echo
 		
-		_GRUB2_BIOS_SETUP_BOOT_PART_DIR
+		_GRUB_BIOS_SETUP_BOOT_PART_DIR
 		
 		echo
 		
 		set +x +e
 		
-		echo "GRUB2 BIOS setup in ${_GRUB2_BIOS_BOOTPART_DIR} successfully."
+		echo "GRUB2 BIOS setup in ${_GRUB_BIOS_BOOTPART_DIR} successfully."
 		
 		echo
 		
@@ -410,36 +410,36 @@ if [[ "${_PROCESS_CONTINUE}" == 'TRUE' ]]; then
 	
 fi
 
-_GRUB2_BIOS_UNSET_ENV_VARS() {
+_GRUB_BIOS_UNSET_ENV_VARS() {
 	
 	unset _WD
 	unset GRUB_CONTRIB
 	unset _PROCESS_CONTINUE
-	unset _GRUB2_BIOS_INSTALL_DEVICE
-	unset _GRUB2_BIOS_BOOTDIR_PATH
-	unset _GRUB2_BIOS_NAME
-	unset _GRUB2_BIOS_BACKUP_DIR
-	unset _GRUB2_BIOS_UTILS_BACKUP_DIR
-	unset _GRUB2_BIOS_PREFIX_DIR
-	unset _GRUB2_BIOS_BIN_DIR
-	unset _GRUB2_BIOS_SBIN_DIR
-	unset _GRUB2_BIOS_SYSCONF_DIR
-	unset _GRUB2_BIOS_LIB_DIR
-	unset _GRUB2_BIOS_DATA_DIR
-	unset _GRUB2_BIOS_DATAROOT_DIR
-	unset _GRUB2_BIOS_INFO_DIR
-	unset _GRUB2_BIOS_LOCALE_DIR
-	unset _GRUB2_BIOS_MAN_DIR
-	unset _GRUB2_BIOS_MENU_CONFIG
-	unset _GRUB2_BIOS_BOOTPART_DIR
-	unset _GRUB2_BIOS_CONFIGURE_OPTIONS
-	unset _GRUB2_BIOS_OTHER_CONFIGURE_OPTIONS
-	unset _GRUB2_BIOS_CONFIGURE_PATHS_1
-	unset _GRUB2_BIOS_CONFIGURE_PATHS_2
-	unset _GRUB2_BIOS_CORE_IMG_MODULES
-	unset _GRUB2_BIOS_EXTRAS_MODULES
-	unset _GRUB2_BIOS_UNIFONT_PATH
+	unset _GRUB_BIOS_INSTALL_DEVICE
+	unset _GRUB_BIOS_BOOTDIR_PATH
+	unset _GRUB_BIOS_NAME
+	unset _GRUB_BIOS_BACKUP_DIR
+	unset _GRUB_BIOS_UTILS_BACKUP_DIR
+	unset _GRUB_BIOS_PREFIX_DIR
+	unset _GRUB_BIOS_BIN_DIR
+	unset _GRUB_BIOS_SBIN_DIR
+	unset _GRUB_BIOS_SYSCONF_DIR
+	unset _GRUB_BIOS_LIB_DIR
+	unset _GRUB_BIOS_DATA_DIR
+	unset _GRUB_BIOS_DATAROOT_DIR
+	unset _GRUB_BIOS_INFO_DIR
+	unset _GRUB_BIOS_LOCALE_DIR
+	unset _GRUB_BIOS_MAN_DIR
+	unset _GRUB_BIOS_MENU_CONFIG
+	unset _GRUB_BIOS_BOOTPART_DIR
+	unset _GRUB_BIOS_CONFIGURE_OPTIONS
+	unset _GRUB_BIOS_OTHER_CONFIGURE_OPTIONS
+	unset _GRUB_BIOS_CONFIGURE_PATHS_1
+	unset _GRUB_BIOS_CONFIGURE_PATHS_2
+	unset _GRUB_BIOS_CORE_IMG_MODULES
+	unset _GRUB_BIOS_EXTRAS_MODULES
+	unset _GRUB_BIOS_UNIFONT_PATH
 	
 }
 
-_GRUB2_BIOS_UNSET_ENV_VARS
+_GRUB_BIOS_UNSET_ENV_VARS
