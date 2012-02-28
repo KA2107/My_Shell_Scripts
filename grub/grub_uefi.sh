@@ -326,7 +326,7 @@ _GRUB_UEFI_BOOTDIR_BACKUP_OLD_DIR() {
 	echo
 	
 	if [[ "${_GRUB_UEFI_BOOTDIR_ACTUAL}" == "${_GRUB_UEFISYS_PART_DIR}" ]]; then
-		ln -s "${_GRUB_UEFISYS_BACKUP_DIR}" "${_GRUB_UEFI_BOOTDIR_BACKUP_DIR}"
+		ln -s "${_GRUB_UEFISYS_BACKUP_DIR}" "${_GRUB_UEFI_BOOTDIR_BACKUP_DIR}" || true
 		echo
 	else
 		## Backup the old GRUB folder in BOOTDIR
