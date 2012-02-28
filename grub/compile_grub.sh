@@ -68,21 +68,21 @@ elif [[ "${1}" == '8' ]]; then
 fi
 
 if [[ "${_GRUB_UEFI}" == '-efi-exp' ]]; then
-	export _GRUB_UEFI_Source_DIR_Name='grub2_experimental__GIT_BZR'
+	export _GRUB_UEFI_Source_DIR_Name='grub_experimental__GIT_BZR'
 	export _PROCESS_CONTINUE_UEFI='TRUE'
 	
 elif [[ "${_GRUB_UEFI}" == '-efi-main' ]]; then
-	export _GRUB_UEFI_Source_DIR_Name='grub2__GIT_BZR'
+	export _GRUB_UEFI_Source_DIR_Name='grub__GIT_BZR'
 	export _PROCESS_CONTINUE_UEFI='TRUE'
 	
 fi
 
 if [[ "${_GRUB_BIOS}" == '-bios-exp' ]]; then
-	export _GRUB_BIOS_Source_DIR_Name='grub2_experimental__GIT_BZR'
+	export _GRUB_BIOS_Source_DIR_Name='grub_experimental__GIT_BZR'
 	export _PROCESS_CONTINUE_BIOS='TRUE'
 	
 elif [[ "${_GRUB_BIOS}" == '-bios-main' ]]; then
-	export _GRUB_BIOS_Source_DIR_Name='grub2__GIT_BZR'
+	export _GRUB_BIOS_Source_DIR_Name='grub__GIT_BZR'
 	export _PROCESS_CONTINUE_BIOS='TRUE'
 	
 fi
@@ -91,16 +91,16 @@ echo
 
 _APPLY_PATCHES() {
 	
-	patch -Np1 -i "${_WD_OUTER}/archlinux_grub2_mkconfig_fixes.patch"
+	patch -Np1 -i "${_WD_OUTER}/archlinux_grub_mkconfig_fixes.patch"
 	echo
 	
-	patch -Np1 -i "${_WD_OUTER}/mjg_grub2_update_linux_boot_protocol.patch"
+	patch -Np1 -i "${_WD_OUTER}/mjg_grub_update_linux_boot_protocol.patch"
 	echo
 	
-	# patch -Np1 -i "${_WD_OUTER}/mjg_grub2_relocator_fixes.patch"
+	# patch -Np1 -i "${_WD_OUTER}/mjg_grub_relocator_fixes.patch"
 	echo
 	
-	# patch -Np1 -i "${_WD_OUTER}/mjg_grub2_linux_loader_fixes.patch"
+	# patch -Np1 -i "${_WD_OUTER}/mjg_grub_linux_loader_fixes.patch"
 	echo
 	
 	# patch -Np0 -i "${_WD_OUTER}/grub-mactel.patch"
@@ -121,21 +121,21 @@ if [[ "${_PROCESS_CONTINUE_UEFI}" == 'TRUE' ]]; then
 	
 	# "${_WD_OUTER}/xman_dos2unix.sh" * || true
 	
-	## First compile GRUB2 for UEFI x86_64
+	## First compile GRUB for UEFI x86_64
 	
-	rm -rf "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/grub2_extras__GIT_BZR" || true
+	rm -rf "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/grub_extras__GIT_BZR" || true
 	
-	cp -r "${_WD_OUTER}/grub2_extras__GIT_BZR" "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/grub2_extras__GIT_BZR" || true
-	rm -rf "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/grub2_extras__GIT_BZR/zfs" || true
-	rm -rf "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/grub2_extras__GIT_BZR/915resolution" || true
-	rm -rf "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/grub2_extras__GIT_BZR/ntldr-img" || true
+	cp -r "${_WD_OUTER}/grub_extras__GIT_BZR" "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/grub_extras__GIT_BZR" || true
+	rm -rf "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/grub_extras__GIT_BZR/zfs" || true
+	rm -rf "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/grub_extras__GIT_BZR/915resolution" || true
+	rm -rf "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/grub_extras__GIT_BZR/ntldr-img" || true
 	
 	if [[ "${_GRUB_UEFI_Source_DIR_Name}" != "${_GRUB_BIOS_Source_DIR_Name}" ]]; then
 		cd "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/"
 		echo
 	fi
 	
-	cp --verbose "${_GRUB_SCRIPTS_DIR}/grub2_uefi.sh" "${_GRUB_SCRIPTS_DIR}/grub2_uefi_linux_my.sh" "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/"
+	cp --verbose "${_GRUB_SCRIPTS_DIR}/grub_uefi.sh" "${_GRUB_SCRIPTS_DIR}/grub_uefi_linux_my.sh" "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/"
 	cp --verbose "${_WD_OUTER}/xman_dos2unix.sh" "${_WD_OUTER}/grub.default" "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/" || true
 	echo
 	
@@ -156,12 +156,12 @@ if [[ "${_PROCESS_CONTINUE_UEFI}" == 'TRUE' ]]; then
 	
 	_APPLY_PATCHES
 	
-	"${PWD}/grub2_uefi_linux_my.sh"
+	"${PWD}/grub_uefi_linux_my.sh"
 	echo
 	cd ..
 	
-	cp -r "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/GRUB2_UEFI_BUILD_DIR_x86_64" "${_WD_OUTER}/GRUB2_UEFI_BUILD_DIR_x86_64" || true
-	sudo rm -rf "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/GRUB2_UEFI_BUILD_DIR_x86_64" || true
+	cp -r "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/GRUB_UEFI_BUILD_DIR_x86_64" "${_WD_OUTER}/GRUB_UEFI_BUILD_DIR_x86_64" || true
+	sudo rm -rf "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/GRUB_UEFI_BUILD_DIR_x86_64" || true
 	echo
 	
 	set +x +e
@@ -174,21 +174,21 @@ if [[ "${_PROCESS_CONTINUE_BIOS}" == 'TRUE' ]]; then
 	
 	# "${_WD_OUTER}/xman_dos2unix.sh" * || true
 	
-	## Second compile GRUB2 for BIOS
+	## Second compile GRUB for BIOS
 	
-	rm -rf "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/grub2_extras__GIT_BZR" || true
+	rm -rf "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/grub_extras__GIT_BZR" || true
 	
-	cp -r "${_WD_OUTER}/grub2_extras__GIT_BZR" "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/grub2_extras__GIT_BZR" || true
-	rm -rf "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/grub2_extras__GIT_BZR/zfs" || true
-	# rm -rf "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/grub2_extras__GIT_BZR/915resolution" || true
-	# rm -rf "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/grub2_extras__GIT_BZR/ntldr-img" || true
+	cp -r "${_WD_OUTER}/grub_extras__GIT_BZR" "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/grub_extras__GIT_BZR" || true
+	rm -rf "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/grub_extras__GIT_BZR/zfs" || true
+	# rm -rf "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/grub_extras__GIT_BZR/915resolution" || true
+	# rm -rf "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/grub_extras__GIT_BZR/ntldr-img" || true
 	
 	if [[ "${_GRUB_BIOS_Source_DIR_Name}" != "${_GRUB_UEFI_Source_DIR_Name}" ]]; then
 		cd "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/"
 		echo
 	fi
 	
-	cp --verbose "${_GRUB_SCRIPTS_DIR}/grub2_bios.sh" "${_GRUB_SCRIPTS_DIR}/grub2_bios_linux_my.sh" "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/"
+	cp --verbose "${_GRUB_SCRIPTS_DIR}/grub_bios.sh" "${_GRUB_SCRIPTS_DIR}/grub_bios_linux_my.sh" "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/"
 	cp --verbose "${_WD_OUTER}/xman_dos2unix.sh" "${_WD_OUTER}/grub.default" "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/" || true
 	echo
 	
@@ -209,7 +209,7 @@ if [[ "${_PROCESS_CONTINUE_BIOS}" == 'TRUE' ]]; then
 	
 	_APPLY_PATCHES
 	
-	## CHROOT into the arch32 system for compiling GRUB2 BIOS i386
+	## CHROOT into the arch32 system for compiling GRUB BIOS i386
 	# export _BCHROOT_DIR="${_WD_OUTER}"
 	# sudo chroot "${_X86_32_CHROOT}" || exit 1
 	# cd "${_BCHROOT_DIR}"
@@ -218,12 +218,12 @@ if [[ "${_PROCESS_CONTINUE_BIOS}" == 'TRUE' ]]; then
 	# schroot --automatic-session --preserve-environment --directory ${_WD_OUTER}
 	echo
 	
-	"${PWD}/grub2_bios_linux_my.sh"
+	"${PWD}/grub_bios_linux_my.sh"
 	echo
 	cd ..
 	
-	cp -r "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/GRUB2_BIOS_BUILD_DIR" "${_WD_OUTER}/GRUB2_BIOS_BUILD_DIR" || true
-	sudo rm -rf "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/GRUB2_BIOS_BUILD_DIR" || true
+	cp -r "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/GRUB_BIOS_BUILD_DIR" "${_WD_OUTER}/GRUB_BIOS_BUILD_DIR" || true
+	sudo rm -rf "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/GRUB_BIOS_BUILD_DIR" || true
 	echo
 	
 	set +x +e
