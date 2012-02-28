@@ -558,15 +558,15 @@ _GRUB_UEFI_SETUP_UEFISYS_BOOT_EFI_APP() {
 		if [[ -e "${_GRUB_UEFISYS_PART_DIR}/grub${_SPEC_UEFI_ARCH_NAME}.efi" ]]; then
 			_FILE_="${_GRUB_UEFISYS_PART_DIR}/grub${_SPEC_UEFI_ARCH_NAME}.efi"
 			echo
-		elif [[ -e "${_UEFI_SYSTEM_PART_MP}/efi/grub/core.efi" ]]; then
-			_FILE_="${_UEFI_SYSTEM_PART_MP}/efi/grub/core.efi"
+		elif [[ -e "${_GRUB_UEFI_BOOTDIR_ACTUAL}/${_TARGET_UEFI_ARCH}-efi/core.efi" ]]; then
+			_FILE_="${_GRUB_UEFI_BOOTDIR_ACTUAL}/${_TARGET_UEFI_ARCH}-efi/core.efi"
 			echo
 		else
-			if [[ -e "${_GRUB_UEFISYS_PART_DIR}/${_GRUB_UEFI_NAME}.efi" ]]; then
-				_FILE_="${_GRUB_UEFISYS_PART_DIR}/${_GRUB_UEFI_NAME}.efi"
+			if [[ -e "${_GRUB_UEFI_BOOTDIR_ACTUAL}/${_TARGET_UEFI_ARCH}-efi/grub.efi" ]]; then
+				_FILE_="${_GRUB_UEFI_BOOTDIR_ACTUAL}/${_TARGET_UEFI_ARCH}-efi/grub.efi"
 				echo
-			elif [[ -e "${_UEFI_SYSTEM_PART_MP}/efi/grub/grub.efi" ]]; then
-				_FILE_="${_UEFI_SYSTEM_PART_MP}/efi/grub/grub.efi"
+			elif [[ -e "${_GRUB_UEFI_BOOTDIR}/grub/${_TARGET_UEFI_ARCH}-efi/grub.efi" ]]; then
+				_FILE_="${_GRUB_UEFI_BOOTDIR}/grub/${_TARGET_UEFI_ARCH}-efi/grub.efi"
 				echo
 			fi
 		fi
