@@ -63,7 +63,7 @@ _EXTRAS_SNAPSHOT() {
 	echo
 	
 	_REVNUM="$(bzr revno "${_GRUB_EXTRAS_REPOS_DIR}/${_GRUB_EXTRAS_NAME}/.git/bzr/repo/master/")"
-	git archive --prefix="${_GRUB_EXTRAS_NAME}/" --format="tar.xz" --output="${_OUTPUT_DIR}/grub_extras_${_GRUB_EXTRAS_NAME}_r${_REVNUM}.tar.xz" "bzr/master" "${PWD}/"
+	git archive --prefix="${_GRUB_EXTRAS_NAME}/" --format="tar.xz" --output="${_OUTPUT_DIR}/grub2_extras_${_GRUB_EXTRAS_NAME}_r${_REVNUM}.tar.xz" "bzr/master" "${PWD}/"
 	echo
 	
 	cd "${_OUTPUT_DIR}/"
