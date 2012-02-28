@@ -280,7 +280,7 @@ _GRUB_BIOS_POSTCOMPILE_SETUP_PREFIX_DIR() {
 	sudo chmod --verbose -x "${_GRUB_BIOS_SYSCONF_DIR}/grub.d/README" || true
 	echo
 	
-	# sudo "${_GRUB_BIOS_BIN_DIR}/${_GRUB_BIOS_NAME}-mkfont" --verbose --output="${_GRUB_BIOS_DATAROOT_DIR}/${_GRUB_BIOS_NAME}/unicode.pf2" "${_GRUB_BIOS_UNIFONT_PATH}/unifont.bdf" || true
+	# sudo "${_GRUB_BIOS_BIN_DIR}/${_GRUB_BIOS_NAME}-mkfont" --verbose --output="${_GRUB_BIOS_DATAROOT_DIR}/grub/unicode.pf2" "${_GRUB_BIOS_UNIFONT_PATH}/unifont.bdf" || true
 	echo
 	
 }
@@ -304,14 +304,14 @@ _GRUB_BIOS_SETUP_BOOT_PART_DIR() {
 	sudo modprobe -q dm-mod || true
 	
 	## Setup the GRUB folder in the /boot directory, create the core.img image and embed the image in the disk.
-	sudo "${_GRUB_BIOS_SBIN_DIR}/${_GRUB_BIOS_NAME}-install" --directory="${_GRUB_BIOS_LIB_DIR}/${_GRUB_BIOS_NAME}/i386-pc" --target="i386-pc" --modules="${_GRUB_BIOS_CORE_IMG_MODULES}" --boot-directory="${_GRUB_BIOS_BOOTDIR_PATH}" --recheck --debug "${_GRUB_BIOS_INSTALL_DEVICE}"
+	sudo "${_GRUB_BIOS_SBIN_DIR}/${_GRUB_BIOS_NAME}-install" --directory="${_GRUB_BIOS_LIB_DIR}/grub/i386-pc" --target="i386-pc" --modules="${_GRUB_BIOS_CORE_IMG_MODULES}" --boot-directory="${_GRUB_BIOS_BOOTDIR_PATH}" --recheck --debug "${_GRUB_BIOS_INSTALL_DEVICE}"
 	echo
 	
-	sudo install -D -m0644 "${_GRUB_BIOS_LIB_DIR}/${_GRUB_BIOS_NAME}/i386-pc"/*.{img,sh,h} "${_GRUB_BIOS_BOOTPART_DIR}/i386-pc/" || true
+	sudo install -D -m0644 "${_GRUB_BIOS_LIB_DIR}/grub/i386-pc"/*.{img,sh,h} "${_GRUB_BIOS_BOOTPART_DIR}/i386-pc/" || true
 	echo
 	
 	sudo install -d "${_GRUB_BIOS_BOOTPART_DIR}/fonts"
-	sudo install -D -m0644 "${_GRUB_BIOS_DATAROOT_DIR}/${_GRUB_BIOS_NAME}"/*.pf2 "${_GRUB_BIOS_BOOTPART_DIR}/fonts/" || true
+	sudo install -D -m0644 "${_GRUB_BIOS_DATAROOT_DIR}/grub"/*.pf2 "${_GRUB_BIOS_BOOTPART_DIR}/fonts/" || true
 	echo
 	
 	sudo install -D -m0644 "${_GRUB_BIOS_BACKUP_DIR}/${_GRUB_BIOS_MENU_CONFIG}.cfg" "${_GRUB_BIOS_BOOTPART_DIR}/${_GRUB_BIOS_MENU_CONFIG}_backup.cfg" || true

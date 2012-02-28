@@ -304,7 +304,7 @@ _GRUB_UEFI_POSTCOMPILE_SETUP_PREFIX_DIR() {
 	sudo chmod --verbose -x "${_GRUB_UEFI_SYSCONF_DIR}/grub.d/README" || true
 	echo
 	
-	# sudo "${_GRUB_UEFI_BIN_DIR}/${_GRUB_UEFI_NAME}-mkfont" --verbose --output="${_GRUB_UEFI_DATAROOT_DIR}/${_GRUB_UEFI_NAME}/unicode.pf2" "${_GRUB_UEFI_UNIFONT_PATH}/unifont.bdf" || true
+	# sudo "${_GRUB_UEFI_BIN_DIR}/${_GRUB_UEFI_NAME}-mkfont" --verbose --output="${_GRUB_UEFI_DATAROOT_DIR}/grub/unicode.pf2" "${_GRUB_UEFI_UNIFONT_PATH}/unifont.bdf" || true
 	echo
 	
 }
@@ -401,7 +401,7 @@ EOF
 	echo
 	
 	## Create the grub standalone uefi application
-	sudo "${_GRUB_UEFI_BIN_DIR}/${_GRUB_UEFI_NAME}-mkstandalone" --directory="${_GRUB_UEFI_LIB_DIR}/${_GRUB_UEFI_NAME}/${_TARGET_UEFI_ARCH}-efi" --format="${_TARGET_UEFI_ARCH}-efi" --compression="xz" --output="${_GRUB_UEFISYS_PART_DIR}/${_GRUB_UEFI_NAME}_standalone.efi" "boot/grub/grub.cfg"
+	sudo "${_GRUB_UEFI_BIN_DIR}/${_GRUB_UEFI_NAME}-mkstandalone" --directory="${_GRUB_UEFI_LIB_DIR}/grub/${_TARGET_UEFI_ARCH}-efi" --format="${_TARGET_UEFI_ARCH}-efi" --compression="xz" --output="${_GRUB_UEFISYS_PART_DIR}/${_GRUB_UEFI_NAME}_standalone.efi" "boot/grub/grub.cfg"
 	echo
 	
 	cd "${__WD}/"
@@ -436,7 +436,7 @@ _GRUB_UEFI_SETUP_UEFISYS_BOOTDIR() {
 	echo
 	
 	## Setup the GRUB folder in the UEFI System Partition and create the grub.efi application
-	sudo "${_GRUB_UEFI_SBIN_DIR}/${_GRUB_UEFI_NAME}-install" --directory="${_GRUB_UEFI_LIB_DIR}/${_GRUB_UEFI_NAME}/${_TARGET_UEFI_ARCH}-efi" --target="${_TARGET_UEFI_ARCH}-efi" --root-directory="${_UEFI_SYSTEM_PART_MP}" --boot-directory="${_GRUB_UEFI_BOOTDIR}" --bootloader-id="${_GRUB_UEFI_NAME}" --recheck --debug
+	sudo "${_GRUB_UEFI_SBIN_DIR}/${_GRUB_UEFI_NAME}-install" --directory="${_GRUB_UEFI_LIB_DIR}/grub/${_TARGET_UEFI_ARCH}-efi" --target="${_TARGET_UEFI_ARCH}-efi" --root-directory="${_UEFI_SYSTEM_PART_MP}" --boot-directory="${_GRUB_UEFI_BOOTDIR}" --bootloader-id="${_GRUB_UEFI_NAME}" --recheck --debug
 	echo
 	
 	echo
@@ -444,11 +444,11 @@ _GRUB_UEFI_SETUP_UEFISYS_BOOTDIR() {
 	_GRUB_UEFI_SETUP_STANDALONE_APP
 	echo
 	
-	sudo install -D -m0644 "${_GRUB_UEFI_LIB_DIR}/${_GRUB_UEFI_NAME}/${_TARGET_UEFI_ARCH}-efi"/*.{img,sh,h} "${_GRUB_UEFI_BOOTDIR_ACTUAL}/${_TARGET_UEFI_ARCH}-efi/" || true
+	sudo install -D -m0644 "${_GRUB_UEFI_LIB_DIR}/grub/${_TARGET_UEFI_ARCH}-efi"/*.{img,sh,h} "${_GRUB_UEFI_BOOTDIR_ACTUAL}/${_TARGET_UEFI_ARCH}-efi/" || true
 	echo
 	
 	sudo install -d "${_GRUB_UEFI_BOOTDIR_ACTUAL}/fonts" || true
-	sudo install -D -m0644 "${_GRUB_UEFI_DATAROOT_DIR}/${_GRUB_UEFI_NAME}"/*.pf2 "${_GRUB_UEFI_BOOTDIR_ACTUAL}/fonts/" || true
+	sudo install -D -m0644 "${_GRUB_UEFI_DATAROOT_DIR}/grub"/*.pf2 "${_GRUB_UEFI_BOOTDIR_ACTUAL}/fonts/" || true
 	echo
 	
 	## Copy the old config file as ${_GRUB_UEFI_MENU_CONFIG}_backup.cfg
