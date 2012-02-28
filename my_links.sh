@@ -7,12 +7,9 @@ _WD="${PWD}/"
 export _SOURCE_CODES_DIR="/media/Source_Codes/Source_Codes/"
 export _SCRIPTS_DIR="${_SOURCE_CODES_DIR}/My_Shell_Scripts/"
 
-export _GRUB2_SCRIPTS_DIR="${_SCRIPTS_DIR}/grub2/"
-export _GRUB2_DIR="${_SOURCE_CODES_DIR}/Boot_Managers/ALL/grub2/"
-export _GRUB2_SOURCE_DIR="${_GRUB2_DIR}/Source__GIT_BZR/"
-
-export _GRUB2_BIOS_SCRIPTS_DIR="${_GRUB2_SOURCE_DIR}/grub2_bios_linux_scripts/"
-export _GRUB2_UEFI_SCRIPTS_DIR="${_GRUB2_SOURCE_DIR}/grub2_uefi_linux_scripts/"
+export _GRUB_SCRIPTS_DIR="${_SCRIPTS_DIR}/grub/"
+export _GRUB_DIR="${_SOURCE_CODES_DIR}/Boot_Managers/ALL/grub/"
+export _GRUB_SOURCE_DIR="${_GRUB_DIR}/Source__GIT_BZR/"
 
 export _BOOTLOADER_CONFIG_FILES_DIR="${_SOURCE_CODES_DIR}/My_Files/Bootloader_Config_Files/"
 
@@ -81,57 +78,33 @@ _GRUB2() {
 	
 	echo
 	
-	_SOURCE_DIR="${_GRUB2_SCRIPTS_DIR}/"
-	_SOURCE_FILE="compile_grub2.sh"
-	_LINK_DIR="${_GRUB2_SOURCE_DIR}/"
+	_SOURCE_DIR="${_GRUB_SCRIPTS_DIR}/"
+	_SOURCE_FILE="compile_grub.sh"
+	_LINK_DIR="${_GRUB_SOURCE_DIR}/"
 	_LINK_FILE="${_SOURCE_FILE}"
 	_CREATE_SYMLINK
 	
 	echo
 	
-	_SOURCE_DIR="${_GRUB2_SCRIPTS_DIR}/"
-	_SOURCE_FILE="grub2_git_bzr_export.sh"
-	_LINK_DIR="${_GRUB2_SOURCE_DIR}/"
+	_SOURCE_DIR="${_GRUB_SCRIPTS_DIR}/"
+	_SOURCE_FILE="grub_git_bzr_export.sh"
+	_LINK_DIR="${_GRUB_SOURCE_DIR}/"
 	_LINK_FILE="${_SOURCE_FILE}"
 	_CREATE_SYMLINK
 	
 	echo
 	
-	_SOURCE_DIR="${_GRUB2_SCRIPTS_DIR}/"
+	_SOURCE_DIR="${_GRUB_SCRIPTS_DIR}/"
 	_SOURCE_FILE="grub.default"
-	_LINK_DIR="${_GRUB2_SOURCE_DIR}/"
+	_LINK_DIR="${_GRUB_SOURCE_DIR}/"
 	_LINK_FILE="${_SOURCE_FILE}"
 	_COPY_FILE
 	
 	echo
 	
-	_SOURCE_DIR="${_GRUB2_SCRIPTS_DIR}/"
-	_SOURCE_FILE="grub2_uefi.sh"
-	_LINK_DIR="${_GRUB2_UEFI_SCRIPTS_DIR}/"
-	_LINK_FILE="${_SOURCE_FILE}"
-	_CREATE_SYMLINK
-	
-	echo
-	
-	_SOURCE_DIR="${_GRUB2_SCRIPTS_DIR}/"
-	_SOURCE_FILE="grub2_uefi_mkimage_x64_linux.sh"
-	_LINK_DIR="${_GRUB2_UEFI_SCRIPTS_DIR}/"
-	_LINK_FILE="${_SOURCE_FILE}"
-	_CREATE_SYMLINK
-	
-	echo
-	
-	_SOURCE_DIR="${_GRUB2_SCRIPTS_DIR}/"
-	_SOURCE_FILE="grub2_bios.sh"
-	_LINK_DIR="${_GRUB2_BIOS_SCRIPTS_DIR}/"
-	_LINK_FILE="${_SOURCE_FILE}"
-	_CREATE_SYMLINK
-	
-	echo
-	
-	_SOURCE_DIR="${_GRUB2_SCRIPTS_DIR}/"
-	_SOURCE_FILE="grub2_bzr_export.sh"
-	_LINK_DIR="${_GRUB2_DIR}/Source_BZR/"
+	_SOURCE_DIR="${_GRUB_SCRIPTS_DIR}/"
+	_SOURCE_FILE="grub_bzr_export.sh"
+	_LINK_DIR="${_GRUB_DIR}/Source_BZR/"
 	_LINK_FILE="${_SOURCE_FILE}"
 	_CREATE_SYMLINK
 	
@@ -139,7 +112,7 @@ _GRUB2() {
 	
 	_SOURCE_DIR="${_SCRIPTS_DIR}/xmanutility/"
 	_SOURCE_FILE="xman_dos2unix.sh"
-	_LINK_DIR="${_GRUB2_SOURCE_DIR}/"
+	_LINK_DIR="${_GRUB_SOURCE_DIR}/"
 	_LINK_FILE="${_SOURCE_FILE}"
 	_CREATE_SYMLINK
 	
@@ -390,15 +363,13 @@ echo
 unset _WD
 unset _SOURCE_CODES_DIR
 unset _SCRIPTS_DIR
-unset _GRUB2_SCRIPTS_DIR
+unset _GRUB_SCRIPTS_DIR
 unset _TIANOCORE_UEFI_SCRIPTS_DIR
-unset _GRUB2_DIR
-unset _GRUB2_SOURCE_DIR
+unset _GRUB_DIR
+unset _GRUB_SOURCE_DIR
 unset _TIANOCORE_UEFI_SOURCE_CODES_DIR
 unset _TIANOCORE_UEFI_SHELL_2_PATH_COMPILED
 unset _TIANOCORE_UEFI_SHELL_2_PATH
 unset _TIANOCORE_UEFI_SHELL_1_PATH
-unset _GRUB2_BIOS_SCRIPTS_DIR
-unset _GRUB2_UEFI_SCRIPTS_DIR
 
 set +x +e
