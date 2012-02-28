@@ -323,12 +323,21 @@ _GRUB_UEFISYS_BACKUP_OLD_DIR() {
 
 _GRUB_UEFI_BOOTDIR_BACKUP_OLD_DIR() {
 	
-	## Backup the old GRUB folder in BOOTDIR
-	sudo cp -r --verbose "${_GRUB_UEFI_BOOTDIR_ACTUAL}" "${_GRUB_UEFI_BOOTDIR_BACKUP_DIR}" || true
 	echo
 	
-	## Delete the old GRUB folder in BOOTDIR
-	sudo rm -rf --verbose "${_GRUB_UEFI_BOOTDIR_ACTUAL}" || true
+	if [[ "${_GRUB_UEFI_BOOTDIR_ACTUAL}" == "${_GRUB_UEFISYS_PART_DIR}" ]]; then
+		ln -s "${_GRUB_UEFISYS_BACKUP_DIR}" "${_GRUB_UEFI_BOOTDIR_BACKUP_DIR}"
+		echo
+	else
+		## Backup the old GRUB folder in BOOTDIR
+		sudo cp -r --verbose "${_GRUB_UEFI_BOOTDIR_ACTUAL}" "${_GRUB_UEFI_BOOTDIR_BACKUP_DIR}" || true
+		echo
+		
+		## Delete the old GRUB folder in BOOTDIR
+		sudo rm -rf --verbose "${_GRUB_UEFI_BOOTDIR_ACTUAL}" || true
+		echo
+	fi
+	
 	echo
 	
 }
@@ -644,9 +653,7 @@ if [[ "${_PROCESS_CONTINUE}" == 'TRUE' ]]; then
 		
 		echo
 		
-		if [[ "${_GRUB_UEFISYS_PART_DIR}" != "${_GRUB_UEFI_BOOTDIR_ACTUAL}" ]]; then
-			_GRUB_UEFI_BOOTDIR_BACKUP_OLD_DIR
-		fi
+		_GRUB_UEFI_BOOTDIR_BACKUP_OLD_DIR
 		
 		echo
 		
