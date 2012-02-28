@@ -11,7 +11,7 @@
 
 ## For MBR partitioned disks, make sure that there is at least 1 MiB gap after the 512-byte Master Boot Record region and before the 1st Partition in the install disk. For GPT partitioned disks, create a "BIOS Boot Partition" of about 2 MiB size before running this script.
 
-## The "GRUB2_BIOS_NAME" parameter refers to the GRUB2 folder name in the your /boot partition or /boot directory. The final GRUB2 BIOS files including core.img will be installed in /boot/<_GRUB_BIOS_NAME>/ folder, where <_GRUB_BIOS_NAME> refers to the "_GRUB_BIOS_NAME" parameter you passed to this script.
+## The "GRUB_BIOS_NAME" parameter refers to the GRUB2 folder name in the your /boot partition or /boot directory. The final GRUB2 BIOS files including core.img will be installed in /boot/<_GRUB_BIOS_NAME>/ folder, where <_GRUB_BIOS_NAME> refers to the "_GRUB_BIOS_NAME" parameter you passed to this script.
 
 ## For xman_dos2unix.sh download https://raw.github.com/the-ridikulus-rat/My_Shell_Scripts/master/xmanutility/xman_dos2unix.sh
 
@@ -26,9 +26,9 @@ export _PROCESS_CONTINUE='TRUE'
 _USAGE() {
 	
 	echo
-	echo "Usage : ${_SCRIPTNAME} [GRUB2_INSTALL_DEVICE] [GRUB2_BOOT_PARTITION_MOUNTPOINT] [GRUB2_BIOS_INSTALL_DIR_NAME] [GRUB2_BIOS_BACKUP_DIR_PATH] [GRUB2_BIOS_UTILS_BACKUP_DIR_PATH] [GRUB2_BIOS_PREFIX_DIR_PATH]"
+	echo "Usage : ${_SCRIPTNAME} [GRUB_INSTALL_DEVICE] [GRUB_BOOT_PARTITION_MOUNTPOINT] [GRUB_BIOS_INSTALL_DIR_NAME] [GRUB_BIOS_BACKUP_DIR_PATH] [GRUB_BIOS_UTILS_BACKUP_DIR_PATH] [GRUB_BIOS_PREFIX_DIR_PATH]"
 	echo
-	echo "Example : ${_SCRIPTNAME} /dev/sda /boot grub /media/Data_3/grub_bios_backup /media/Data_3/grub_bios_utils_backup /_grub_bios_/"
+	echo "Example : ${_SCRIPTNAME} /dev/sda /boot grub /media/Data_3/grub_bios_backup /media/Data_3/grub_bios_utils_backup /_grub_/bios/"
 	echo
 	echo 'For example if you did'
 	echo
@@ -65,7 +65,7 @@ export _GRUB_BIOS_NAME="${3}"
 export _GRUB_BIOS_BACKUP_DIR="${4}"
 export _GRUB_BIOS_UTILS_BACKUP_DIR="${5}"
 export _GRUB_BIOS_PREFIX_DIR="${6}"
-## If not mentioned, _GRUB_BIOS_PREFIX_DIR env variable will be set to "/_grub_bios_/" dir
+## If not mentioned, _GRUB_BIOS_PREFIX_DIR env variable will be set to "/_grub_/bios/" dir
 
 
 _GRUB_BIOS_SET_ENV_VARS() {
@@ -73,7 +73,7 @@ _GRUB_BIOS_SET_ENV_VARS() {
 	export _WD="${PWD}/"
 	
 	## The location of grub-extras source folder if you have.
-	export GRUB_CONTRIB="${_WD}/grub2_extras__GIT_BZR/"
+	export GRUB_CONTRIB="${_WD}/grub_extras__GIT_BZR/"
 	
 	export _REPLACE_GRUB_BIOS_MENU_CONFIG='0'
 	
@@ -84,7 +84,7 @@ _GRUB_BIOS_SET_ENV_VARS() {
 	fi
 	
 	if [[ "${_GRUB_BIOS_PREFIX_DIR}" == '' ]]; then
-		export _GRUB_BIOS_PREFIX_DIR='/_grub_bios_/'
+		export _GRUB_BIOS_PREFIX_DIR='/_grub_/bios/'
 	fi
 	
 	export _GRUB_BIOS_BIN_DIR="${_GRUB_BIOS_PREFIX_DIR}/bin"
@@ -116,17 +116,17 @@ _GRUB_BIOS_SET_ENV_VARS() {
 _GRUB_BIOS_ECHO_CONFIG() {
 	
 	echo
-	echo GRUB2_INSTALL_DEVICE="${_GRUB_BIOS_INSTALL_DEVICE}"
+	echo GRUB_INSTALL_DEVICE="${_GRUB_BIOS_INSTALL_DEVICE}"
 	echo
-	echo GRUB2_Boot_Partition_MountPoint="${_GRUB_BIOS_BOOTDIR_PATH}"
+	echo GRUB_Boot_Partition_MountPoint="${_GRUB_BIOS_BOOTDIR_PATH}"
 	echo
-	echo GRUB2_BIOS_Install_Dir_Name="${_GRUB_BIOS_BOOTPART_DIR}"
+	echo GRUB_BIOS_Install_Dir_Name="${_GRUB_BIOS_BOOTPART_DIR}"
 	echo
-	echo GRUB2_BIOS_BACKUP_DIR_Path="${_GRUB_BIOS_BACKUP_DIR}"
+	echo GRUB_BIOS_BACKUP_DIR_Path="${_GRUB_BIOS_BACKUP_DIR}"
 	echo
-	echo GRUB2_BIOS_Tools_Backup_Path="${_GRUB_BIOS_UTILS_BACKUP_DIR}"
+	echo GRUB_BIOS_Tools_Backup_Path="${_GRUB_BIOS_UTILS_BACKUP_DIR}"
 	echo
-	echo GRUB2_BIOS_PREFIX_DIR_FOLDER="${_GRUB_BIOS_PREFIX_DIR}"
+	echo GRUB_BIOS_PREFIX_DIR_FOLDER="${_GRUB_BIOS_PREFIX_DIR}"
 	echo
 	
 }
@@ -204,9 +204,9 @@ _GRUB_BIOS_PRECOMPILE_STEPS() {
 	echo
 	
 	## GRUB2 BIOS Build Directory
-	install -d "${_WD}/GRUB2_BIOS_BUILD_DIR"
-	install -D -m0644 "${_WD}/grub.default" "${_WD}/GRUB2_BIOS_BUILD_DIR/grub.default" || true
-	install -D -m0644 "${_WD}/grub.cfg" "${_WD}/GRUB2_BIOS_BUILD_DIR/grub.cfg" || true
+	install -d "${_WD}/GRUB_BIOS_BUILD_DIR"
+	install -D -m0644 "${_WD}/grub.default" "${_WD}/GRUB_BIOS_BUILD_DIR/grub.default" || true
+	install -D -m0644 "${_WD}/grub.cfg" "${_WD}/GRUB_BIOS_BUILD_DIR/grub.cfg" || true
 	
 }
 
@@ -220,7 +220,7 @@ _GRUB_BIOS_COMPILE_STEPS() {
 	"${_WD}/autogen.sh"
 	echo
 	
-	cd "${_WD}/GRUB2_BIOS_BUILD_DIR"
+	cd "${_WD}/GRUB_BIOS_BUILD_DIR"
 	echo
 	
 	## fix unifont.bdf location
@@ -264,7 +264,7 @@ _GRUB_BIOS_POSTCOMPILE_SETUP_PREFIX_DIR() {
 	sudo make install
 	echo
 	
-	cd "${_WD}/GRUB2_BIOS_BUILD_DIR/grub-core/"
+	cd "${_WD}/GRUB_BIOS_BUILD_DIR/grub-core/"
 	echo
 	
 	sudo install -d "${_GRUB_BIOS_SYSCONF_DIR}/default"

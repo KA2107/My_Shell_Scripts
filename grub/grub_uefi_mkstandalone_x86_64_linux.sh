@@ -1,32 +1,41 @@
 #!/usr/bin/env bash
 
-export _WD="${PWD}/"
+_WD="${PWD}/"
 
-export _TARGET_UEFI_ARCH='x86_64'
-export _UEFI_SYSTEM_PART_MP="/boot/efi"
+_TARGET_UEFI_ARCH='x86_64'
+_UEFI_SYSTEM_PART_MP="/boot/efi"
 
-export _GRUB_UEFI_PREFIX_DIR="/_grub_/grub_uefi_${_TARGET_UEFI_ARCH}"
-export _GRUB_UEFI_BIN_DIR="${_GRUB_UEFI_PREFIX_DIR}/bin"
-export _GRUB_UEFI_SBIN_DIR="${_GRUB_UEFI_PREFIX_DIR}/sbin"
-export _GRUB_UEFI_SYSCONF_DIR="${_GRUB_UEFI_PREFIX_DIR}/etc"
-export _GRUB_UEFI_LIB_DIR="${_GRUB_UEFI_PREFIX_DIR}/lib"
-export _GRUB_UEFI_DATA_DIR="${_GRUB_UEFI_LIB_DIR}"
-export _GRUB_UEFI_DATAROOT_DIR="${_GRUB_UEFI_PREFIX_DIR}/share"
+_GRUB_UEFI_PREFIX_DIR="/_grub_/grub_uefi_${_TARGET_UEFI_ARCH}"
+_GRUB_UEFI_BIN_DIR="${_GRUB_UEFI_PREFIX_DIR}/bin"
+_GRUB_UEFI_SBIN_DIR="${_GRUB_UEFI_PREFIX_DIR}/sbin"
+_GRUB_UEFI_SYSCONF_DIR="${_GRUB_UEFI_PREFIX_DIR}/etc"
+_GRUB_UEFI_LIB_DIR="${_GRUB_UEFI_PREFIX_DIR}/lib"
+_GRUB_UEFI_DATA_DIR="${_GRUB_UEFI_LIB_DIR}"
+_GRUB_UEFI_DATAROOT_DIR="${_GRUB_UEFI_PREFIX_DIR}/share"
 
-export _GRUB_UEFI_NAME='grub_uefi_x86_64'
-export _GRUB_UEFI_MENU_CONFIG='grub'
+_GRUB_UEFI_NAME='grub_uefi_x86_64'
+_GRUB_UEFI_MENU_CONFIG='grub'
 
-export _GRUB_UEFI_APP_PREFIX="efi/${_GRUB_UEFI_NAME}"
-export _GRUB_UEFI_SYSTEM_PART_DIR="${_UEFI_SYSTEM_PART_MP}/${_GRUB_UEFI_APP_PREFIX}"
+_GRUB_UEFI_APP_PREFIX="efi/${_GRUB_UEFI_NAME}"
+_GRUB_UEFI_SYSTEM_PART_DIR="${_UEFI_SYSTEM_PART_MP}/${_GRUB_UEFI_APP_PREFIX}"
 
-export _GRUB_UNIFONT_PATH='/usr/share/fonts/misc'
+_GRUB_UEFI_BOOTDIR_ACTUAL="/boot/efi/efi/grub_uefi_${_TARGET_UEFI_ARCH}/"
+
+_GRUB_UNIFONT_PATH='/usr/share/fonts/misc'
 
 set -x -e
 
 echo
 
+_GRUB_BOOT_PART_HINTS_STRING="$(sudo "${_GRUB_UEFI_SBIN_DIR}/${_GRUB_UEFI_NAME}-probe" --target="hints_string" "${_GRUB_UEFI_BOOTDIR_ACTUAL}/${_TARGET_UEFI_ARCH}-efi/core.efi")"
+
+echo
+
+_GRUB_BOOT_PART_RELATIVE_PREFIX="$(sudo "${_GRUB_UEFI_BIN_DIR}/${_GRUB_UEFI_NAME}-mkrelpath" "${_GRUB_UEFI_BOOTDIR_ACTUAL}")"
+
+echo
+
 cat << EOF > "${_WD}/${_GRUB_UEFI_NAME}_standalone_memdisk_config.cfg"
-set _UEFI_ARCH="${_TARGET_UEFI_ARCH}"
 
 insmod usbms
 insmod usb_keyboard
@@ -43,10 +52,10 @@ insmod reiserfs
 insmod ntfs
 insmod hfsplus
 
-search --file --no-floppy --set=grub2_uefi_root "/${_GRUB_UEFI_APP_PREFIX}/${_GRUB_UEFI_NAME}_standalone.efi"
+search --file --no-floppy --set=grub_uefi_prefix_root ${_GRUB_BOOT_PART_HINTS_STRING} "${_GRUB_BOOT_PART_RELATIVE_PREFIX}/${_TARGET_UEFI_ARCH}-efi/core.efi"
 
-# set prefix=(\${grub2_uefi_root})/${_GRUB_UEFI_APP_PREFIX}
-source (\${grub2_uefi_root})/${_GRUB_UEFI_APP_PREFIX}/${_GRUB_UEFI_MENU_CONFIG}.cfg
+# set prefix="(\${grub_uefi_prefix_root})/${_GRUB_BOOT_PART_RELATIVE_PREFIX}"
+source "\${prefix}/${_GRUB_UEFI_MENU_CONFIG}.cfg"
 
 EOF
 
@@ -70,7 +79,7 @@ echo
 cd "${_WD}/"
 echo
 
-## Create the grub2 standalone uefi application
+## Create the grub standalone uefi application
 sudo "${_GRUB_UEFI_BIN_DIR}/${_GRUB_UEFI_NAME}-mkstandalone" --directory="${_GRUB_UEFI_LIB_DIR}/${_GRUB_UEFI_NAME}/${_TARGET_UEFI_ARCH}-efi" --format="${_TARGET_UEFI_ARCH}-efi" --compression="xz" --output="${_GRUB_UEFI_SYSTEM_PART_DIR}/${_GRUB_UEFI_NAME}_standalone.efi" "boot/grub/grub.cfg"
 echo
 
@@ -129,5 +138,6 @@ unset _GRUB_UEFI_NAME
 unset _GRUB_UEFI_MENU_CONFIG
 unset _GRUB_UEFI_APP_PREFIX
 unset _GRUB_UEFI_SYSTEM_PART_DIR
+unset _GRUB_UEFI_BOOTDIR_ACTUAL
 unset _GRUB_UNIFONT_PATH
 unset __WD

@@ -11,9 +11,9 @@
 
 ## This script has configure options specific to my requirements and my system. Please read this script fully and modify it to suite your requirements.
 
-## The "GRUB2_UEFI_NAME" parameter refers to the GRUB2 folder name in the UEFI SYSTEM PARTITION. The final GRUB2 UEFI files will be installed in <UEFI_SYSTEM_PARTITION>/efi/<GRUB2_UEFI_NAME>/ folder. The final GRUB2 UEFI Application will be <UEFI_SYSTEM_PARTITION>/efi/<GRUB2_UEFI_NAME>/<GRUB2_UEFI_NAME>.efi where <GRUB2_UEFI_NAME> refers to the "GRUB2_UEFI_NAME" parameter passed to this script.
+## The "GRUB_UEFI_NAME" parameter refers to the GRUB2 folder name in the UEFI SYSTEM PARTITION. The final GRUB2 UEFI files will be installed in <UEFI_SYSTEM_PARTITION>/efi/<GRUB_UEFI_NAME>/ folder. The final GRUB2 UEFI Application will be <UEFI_SYSTEM_PARTITION>/efi/<GRUB_UEFI_NAME>/<GRUB_UEFI_NAME>.efi where <GRUB_UEFI_NAME> refers to the "GRUB_UEFI_NAME" parameter passed to this script.
 
-## The "GRUB2_UEFI_PREFIX_DIR" parameter is not compulsory.
+## The "GRUB_UEFI_PREFIX_DIR" parameter is not compulsory.
 
 ## For xman_dos2unix.sh download https://raw.github.com/the-ridikulus-rat/My_Shell_Scripts/master/xmanutility/xman_dos2unix.sh
 
@@ -28,9 +28,9 @@ export _PROCESS_CONTINUE='TRUE'
 _USAGE() {
 	
 	echo
-	echo "Usage : ${_SCRIPTNAME} [TARGET_UEFI_ARCH] [UEFI_SYSTEM_PART_MOUNTPOINT] [GRUB2_UEFI_BOOTDIR] [GRUB2_UEFI_INSTALL_DIR_NAME] [GRUB2_UEFISYS_BACKUP_DIR_PATH] [GRUB2_UEFI_BOOTDIR_BACKUP_DIR_PATH] [GRUB2_UEFI_UTILS_BACKUP_DIR_PATH] [GRUB2_UEFI_PREFIX_DIR_PATH]"
+	echo "Usage : ${_SCRIPTNAME} [TARGET_UEFI_ARCH] [UEFI_SYSTEM_PART_MOUNTPOINT] [GRUB_UEFI_BOOTDIR] [GRUB_UEFI_INSTALL_DIR_NAME] [GRUB_UEFISYS_BACKUP_DIR_PATH] [GRUB_UEFI_BOOTDIR_BACKUP_DIR_PATH] [GRUB_UEFI_UTILS_BACKUP_DIR_PATH] [GRUB_UEFI_PREFIX_DIR_PATH]"
 	echo
-	echo "Example : ${_SCRIPTNAME} x86_64 /boot/efi /boot/efi grub /media/Data_3/grub_uefisys_x86_64_backup /media/Data_3/grub_uefi_x86_64_bootdir_backup /media/Data_3/grub_uefi_x86_64_utils_Backup /_grub_uefi_x86_64_/"
+	echo "Example : ${_SCRIPTNAME} x86_64 /boot/efi /boot grub /media/Data_3/grub_uefisys_x86_64_backup /media/Data_3/grub_uefi_x86_64_bootdir_backup /media/Data_3/grub_uefi_x86_64_utils_Backup /_grub_/uefi_x86_64/"
 	echo
 	echo 'For example if you did'
 	echo
@@ -69,7 +69,7 @@ export _GRUB_UEFISYS_BACKUP_DIR="${5}"
 export _GRUB_UEFI_BOOTDIR_BACKUP_DIR="${6}"
 export _GRUB_UEFI_UTILS_BACKUP_DIR="${7}"
 export _GRUB_UEFI_PREFIX_DIR="${8}"
-## If not mentioned, _GRUB_UEFI_PREFIX_DIR env variable will be set to "/_grub_uefi_${_TARGET_UEFI_ARCH}_/" dir
+## If not mentioned, _GRUB_UEFI_PREFIX_DIR env variable will be set to "/_grub_/uefi_${_TARGET_UEFI_ARCH}/" dir
 
 
 _GRUB_UEFI_SET_ENV_VARS() {
@@ -77,13 +77,13 @@ _GRUB_UEFI_SET_ENV_VARS() {
 	export _WD="${PWD}/"
 	
 	## The location of grub-extras source folder if you have.
-	export GRUB_CONTRIB="${_WD}/grub2_extras__GIT_BZR/"
+	export GRUB_CONTRIB="${_WD}/grub_extras__GIT_BZR/"
 	
 	# export _REPLACE_GRUB_UEFI_MENU_CONFIG='0'
 	export _GRUB_UEFI_CREATE_ENTRY_FIRMWARE_BOOTMGR='1'
 	
 	if [[ "${_GRUB_UEFI_PREFIX_DIR}" == '' ]]; then
-		export _GRUB_UEFI_PREFIX_DIR="/_grub_uefi_${_TARGET_UEFI_ARCH}_/"
+		export _GRUB_UEFI_PREFIX_DIR="/_grub_/uefi_${_TARGET_UEFI_ARCH}/"
 	fi
 	
 	export _GRUB_UEFI_MENU_CONFIG='grub'
@@ -136,17 +136,17 @@ _GRUB_UEFI_ECHO_CONFIG() {
 	echo
 	echo UEFI_SYS_PART_MOUNTPOINT="${_UEFI_SYSTEM_PART_MP}"
 	echo
-	echo GRUB2_UEFI_BOOTDIR="${_GRUB_UEFI_BOOTDIR}"
+	echo GRUB_UEFI_BOOTDIR="${_GRUB_UEFI_BOOTDIR}"
 	echo
-	echo GRUB2_UEFI_Final_Installation_Directory="${_GRUB_UEFISYS_PART_DIR}"
+	echo GRUB_UEFI_Final_Installation_Directory="${_GRUB_UEFISYS_PART_DIR}"
 	echo
-	echo GRUB2_UEFISYS_BACKUP_DIR_Path="${_GRUB_UEFISYS_BACKUP_DIR}"
+	echo GRUB_UEFISYS_BACKUP_DIR_Path="${_GRUB_UEFISYS_BACKUP_DIR}"
 	echo
-	echo GRUB2_UEFI_BOOTDIR_BACKUP_DIR_Path="${_GRUB_UEFI_BOOTDIR_BACKUP_DIR}"
+	echo GRUB_UEFI_BOOTDIR_BACKUP_DIR_Path="${_GRUB_UEFI_BOOTDIR_BACKUP_DIR}"
 	echo
-	echo GRUB2_UEFI_Tools_Backup_Path="${_GRUB_UEFI_UTILS_BACKUP_DIR}"
+	echo GRUB_UEFI_Tools_Backup_Path="${_GRUB_UEFI_UTILS_BACKUP_DIR}"
 	echo
-	echo GRUB2_UEFI_PREFIX_DIR_FOLDER="${_GRUB_UEFI_PREFIX_DIR}"
+	echo GRUB_UEFI_PREFIX_DIR_FOLDER="${_GRUB_UEFI_PREFIX_DIR}"
 	echo
 	
 }
@@ -224,9 +224,9 @@ _GRUB_UEFI_PRECOMPILE_STEPS() {
 	echo
 	
 	## GRUB2 UEFI Build Directory
-	install -d "${_WD}/GRUB2_UEFI_BUILD_DIR_${_TARGET_UEFI_ARCH}"
-	install -D -m0644 "${_WD}/grub.default" "${_WD}/GRUB2_UEFI_BUILD_DIR_${_TARGET_UEFI_ARCH}/grub.default" || true
-	install -D -m0644 "${_WD}/grub.cfg" "${_WD}/GRUB2_UEFI_BUILD_DIR_${_TARGET_UEFI_ARCH}/grub.cfg" || true
+	install -d "${_WD}/GRUB_UEFI_BUILD_DIR_${_TARGET_UEFI_ARCH}"
+	install -D -m0644 "${_WD}/grub.default" "${_WD}/GRUB_UEFI_BUILD_DIR_${_TARGET_UEFI_ARCH}/grub.default" || true
+	install -D -m0644 "${_WD}/grub.cfg" "${_WD}/GRUB_UEFI_BUILD_DIR_${_TARGET_UEFI_ARCH}/grub.cfg" || true
 	echo
 	
 }
@@ -241,7 +241,7 @@ _GRUB_UEFI_COMPILE_STEPS() {
 	"${_WD}/autogen.sh"
 	echo
 	
-	cd "${_WD}/GRUB2_UEFI_BUILD_DIR_${_TARGET_UEFI_ARCH}"
+	cd "${_WD}/GRUB_UEFI_BUILD_DIR_${_TARGET_UEFI_ARCH}"
 	echo
 	
 	## fix unifont.bdf location
@@ -362,9 +362,9 @@ insmod reiserfs
 insmod ntfs
 insmod hfsplus
 
-search --file --no-floppy --set=grub2_uefi_prefix_root ${_GRUB_BOOT_PART_HINTS_STRING} "${_GRUB_BOOT_PART_RELATIVE_PREFIX}/${_TARGET_UEFI_ARCH}-efi/core.efi"
+search --file --no-floppy --set=grub_uefi_prefix_root ${_GRUB_BOOT_PART_HINTS_STRING} "${_GRUB_BOOT_PART_RELATIVE_PREFIX}/${_TARGET_UEFI_ARCH}-efi/core.efi"
 
-# set prefix="(\${grub2_uefi_prefix_root})/${_GRUB_BOOT_PART_RELATIVE_PREFIX}"
+# set prefix="(\${grub_uefi_prefix_root})/${_GRUB_BOOT_PART_RELATIVE_PREFIX}"
 source "\${prefix}/${_GRUB_UEFI_MENU_CONFIG}.cfg"
 
 EOF
@@ -391,7 +391,7 @@ EOF
 	cd "${_WD}/"
 	echo
 	
-	## Create the grub2 standalone uefi application
+	## Create the grub standalone uefi application
 	sudo "${_GRUB_UEFI_BIN_DIR}/${_GRUB_UEFI_NAME}-mkstandalone" --directory="${_GRUB_UEFI_LIB_DIR}/${_GRUB_UEFI_NAME}/${_TARGET_UEFI_ARCH}-efi" --format="${_TARGET_UEFI_ARCH}-efi" --compression="xz" --output="${_GRUB_UEFISYS_PART_DIR}/${_GRUB_UEFI_NAME}_standalone.efi" "boot/grub/grub.cfg"
 	echo
 	
@@ -475,7 +475,7 @@ _GRUB_UEFI_EFIBOOTMGR() {
 	_UEFISYS_PART_NUM="$(sudo blkid -p -o value -s PART_ENTRY_NUMBER "${_UEFISYS_PART_DEVICE}")"
 	
 	## Run efibootmgr script in sh compatibility mode, does not work in bash mode in ubuntu for some unknown reason (maybe some dash vs bash issue?)
-	cat << EOF > "${_WD}/grub2_uefi_create_entry_efibootmgr.sh"
+	cat << EOF > "${_WD}/grub_uefi_create_entry_efibootmgr.sh"
 #!/usr/bin/env bash
 
 set -x
@@ -484,7 +484,7 @@ modprobe -q efivars
 
 if [[ "\$(lsmod | grep ^efivars)" ]]; then
 	if [[ -d "/sys/firmware/efi/vars" ]]; then
-		# Delete old entries of grub2 - command to be checked
+		# Delete old entries of grub - command to be checked
 		for _bootnum in \$(efibootmgr | grep '^Boot[0-9]' | fgrep -i " ${_GRUB_UEFI_NAME}" | cut -b5-8)
 		do
 			efibootmgr --bootnum "${_bootnum}" --delete-bootnum
@@ -506,13 +506,13 @@ echo
 
 EOF
 	
-	chmod --verbose +x "${_WD}/grub2_uefi_create_entry_efibootmgr.sh" || true
+	chmod --verbose +x "${_WD}/grub_uefi_create_entry_efibootmgr.sh" || true
 	
-	sudo "${_WD}/grub2_uefi_create_entry_efibootmgr.sh"
+	sudo "${_WD}/grub_uefi_create_entry_efibootmgr.sh"
 	
 	set -x -e
 	
-	# rm -f --verbose "${_WD}/grub2_uefi_create_entry_efibootmgr.sh"
+	# rm -f --verbose "${_WD}/grub_uefi_create_entry_efibootmgr.sh"
 	
 	echo
 	
@@ -574,9 +574,9 @@ _GRUB_UEFI_SETUP_UEFISYS_BOOT_EFI_APP() {
 	
 	cat << EOF > "${_WD}/${_GRUB_UEFI_NAME}_efi_boot_config.cfg"
 
-search --file --no-floppy --set=grub2_uefi_prefix_root ${_GRUB_BOOT_PART_HINTS_STRING} "${_GRUB_BOOT_PART_RELATIVE_PREFIX}/${_TARGET_UEFI_ARCH}-efi/core.efi"
+search --file --no-floppy --set=grub_uefi_prefix_root ${_GRUB_BOOT_PART_HINTS_STRING} "${_GRUB_BOOT_PART_RELATIVE_PREFIX}/${_TARGET_UEFI_ARCH}-efi/core.efi"
 
-set prefix="(\${grub2_uefi_prefix_root})/${_GRUB_BOOT_PART_RELATIVE_PREFIX}"
+set prefix="(\${grub_uefi_prefix_root})/${_GRUB_BOOT_PART_RELATIVE_PREFIX}"
 source "\${prefix}/${_GRUB_UEFI_MENU_CONFIG}.cfg"
 
 EOF

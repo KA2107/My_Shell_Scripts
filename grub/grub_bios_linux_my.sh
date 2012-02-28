@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
-_GRUB_BIOS_LINUX="${PWD}/grub2_bios.sh"
-_GRUB_BIOS_LINUX_MY="${_GRUB_BIOS_LINUX} /dev/sda /boot/grub_Keshav grub /media/Data_3/grub_bios_backup /media/Data_3/grub_bios_utils_backup /_grub_Keshav_/bios/"
+_GRUB_BIOS_LINUX="${PWD}/grub_bios.sh"
+_GRUB_BIOS_LINUX_MY="${_GRUB_BIOS_LINUX} /dev/sda /boot grub_bios /media/Data_3/grub_bios_backup /media/Data_3/grub_bios_utils_backup /_grub_/grub_bios/"
 
 echo
 
-echo "${_GRUB_BIOS_LINUX} [GRUB2_INSTALL_DEVICE] [GRUB2_BOOT_PARTITION_MOUNTPOINT] [GRUB2_BIOS_INSTALL_DIR_NAME] [GRUB2_BIOS_BACKUP_DIR_PATH] [GRUB2_BIOS_UTILS_BACKUP_DIR_PATH] [GRUB2_BIOS_PREFIX_DIR_PATH]"
+echo "${_GRUB_BIOS_LINUX} [GRUB_INSTALL_DEVICE] [GRUB_BOOT_PARTITION_MOUNTPOINT] [GRUB_BIOS_INSTALL_DIR_NAME] [GRUB_BIOS_BACKUP_DIR_PATH] [GRUB_BIOS_UTILS_BACKUP_DIR_PATH] [GRUB_BIOS_PREFIX_DIR_PATH]"
 
 echo
 
