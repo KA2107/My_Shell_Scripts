@@ -364,7 +364,7 @@ insmod hfsplus
 
 search --file --no-floppy --set=grub2_uefi_prefix_root ${_GRUB2_BOOT_PART_HINTS_STRING} "${_GRUB2_BOOT_PART_RELATIVE_PREFIX}/${_TARGET_UEFI_ARCH}-efi/core.efi"
 
-set prefix="(\${grub2_uefi_prefix_root})/${_GRUB2_BOOT_PART_RELATIVE_PREFIX}"
+# set prefix="(\${grub2_uefi_prefix_root})/${_GRUB2_BOOT_PART_RELATIVE_PREFIX}"
 source "\${prefix}/${_GRUB2_UEFI_MENU_CONFIG}.cfg"
 
 EOF
