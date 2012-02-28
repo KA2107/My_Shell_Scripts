@@ -471,6 +471,7 @@ _GRUB_UEFI_SETUP_UEFISYS_BOOTDIR() {
 	
 	sudo install -d "${_GRUB_UEFI_BOOTDIR_ACTUAL}/images" || true
 	sudo install -D -m0644 "${_GRUB_UEFI_BOOTDIR_BACKUP_DIR}"/*.{png,jpg,tga} "${_GRUB_UEFI_BOOTDIR_ACTUAL}/images/" || true
+	sudo install -D -m0644 "${_GRUB_UEFI_BOOTDIR_BACKUP_DIR}/images"/*.{png,jpg,tga} "${_GRUB_UEFI_BOOTDIR_ACTUAL}/images/" || true
 	echo
 	
 }

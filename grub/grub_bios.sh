@@ -333,6 +333,7 @@ _GRUB_BIOS_SETUP_BOOT_PART_DIR() {
 	
 	sudo install -d "${_GRUB_BIOS_BOOTPART_DIR}/images"
 	sudo install -D -m0644 "${_GRUB_BIOS_BACKUP_DIR}"/*.{png,jpg,tga} "${_GRUB_BIOS_BOOTPART_DIR}/images/" || true
+	sudo install -D -m0644 "${_GRUB_BIOS_BACKUP_DIR}/images"/*.{png,jpg,tga} "${_GRUB_BIOS_BOOTPART_DIR}/images/" || true
 	echo
 	
 }
