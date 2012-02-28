@@ -644,7 +644,9 @@ if [[ "${_PROCESS_CONTINUE}" == 'TRUE' ]]; then
 		
 		echo
 		
-		_GRUB_UEFI_BOOTDIR_BACKUP_OLD_DIR
+		if [[ "${_GRUB_UEFISYS_PART_DIR}" != "${_GRUB_UEFI_BOOTDIR_ACTUAL}" ]]; then
+			_GRUB_UEFI_BOOTDIR_BACKUP_OLD_DIR
+		fi
 		
 		echo
 		
