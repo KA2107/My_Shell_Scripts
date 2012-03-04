@@ -94,6 +94,9 @@ _APPLY_PATCHES() {
 	patch -Np1 -i "${_WD_OUTER}/archlinux_grub_mkconfig_fixes.patch"
 	echo
 	
+	patch -Np1 -i "${_WD_OUTER}/grub_extras_lua_args_fix.patch"
+	echo
+	
 	# patch -Np0 -i "${_WD_OUTER}/grub-mactel.patch"
 	echo
 	
