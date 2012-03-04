@@ -94,15 +94,6 @@ _APPLY_PATCHES() {
 	patch -Np1 -i "${_WD_OUTER}/archlinux_grub_mkconfig_fixes.patch"
 	echo
 	
-	patch -Np1 -i "${_WD_OUTER}/mjg_grub_update_linux_boot_protocol.patch"
-	echo
-	
-	# patch -Np1 -i "${_WD_OUTER}/mjg_grub_relocator_fixes.patch"
-	echo
-	
-	# patch -Np1 -i "${_WD_OUTER}/mjg_grub_linux_loader_fixes.patch"
-	echo
-	
 	# patch -Np0 -i "${_WD_OUTER}/grub-mactel.patch"
 	echo
 	
