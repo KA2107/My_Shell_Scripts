@@ -1,8 +1,8 @@
 diff --git a/util/grub-mkconfig.in b/util/grub-mkconfig.in
-index 0dcc483..35c088a 100644
+index 8ff9f74..a469abd 100644
 --- a/util/grub-mkconfig.in
 +++ b/util/grub-mkconfig.in
-@@ -203,6 +203,8 @@ export GRUB_DEFAULT \
+@@ -206,6 +206,8 @@ export GRUB_DEFAULT \
    GRUB_THEME \
    GRUB_GFXPAYLOAD_LINUX \
    GRUB_DISABLE_OS_PROBER \
@@ -12,10 +12,10 @@ index 0dcc483..35c088a 100644
    GRUB_SAVEDEFAULT \
    GRUB_ENABLE_CRYPTODISK \
 diff --git a/util/grub.d/00_header.in b/util/grub.d/00_header.in
-index b738a02..a497023 100644
+index 217067c..94cf5fe 100644
 --- a/util/grub.d/00_header.in
 +++ b/util/grub.d/00_header.in
-@@ -103,6 +103,14 @@ cat <<EOF
+@@ -106,6 +106,14 @@ cat <<EOF
  
  EOF
  
