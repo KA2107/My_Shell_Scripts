@@ -28,8 +28,8 @@ GRUB_DISABLE_LINUX_RECOVERY=true
 
 # Uncomment and set to the desired menu colors.  Used by normal and wallpaper 
 # modes only.  Entries specified as foreground/background.
-GRUB_COLOR_NORMAL="light-blue/black"
-GRUB_COLOR_HIGHLIGHT="light-cyan/blue"
+#GRUB_COLOR_NORMAL="light-blue/black"
+#GRUB_COLOR_HIGHLIGHT="light-cyan/blue"
 
 ## Uncomment one of them for the gfx desired, a image background or a gfxtheme
 # GRUB_BACKGROUND="/path/to/wallpaper"
