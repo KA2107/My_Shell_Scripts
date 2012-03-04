@@ -46,7 +46,7 @@ _EXP_SNAPSHOT() {
 	cd "${_GRUB_GIT_BZR_EXP_REPO_DIR}/"
 	echo
 	
-	_REVNUM="$(bzr revno "${_GRUB_GIT_BZR_REPO_DIR}/.git/bzr/repo/master/")"
+	_REVNUM="$(bzr revno "${_GRUB_GIT_BZR_EXP_REPO_DIR}/.git/bzr/repo/master/")"
 	git archive --prefix="grub-exp-${_ACTUAL_PKGVER}/" --format="tar.xz" --output="${_OUTPUT_DIR}/grub_exp_r${_REVNUM}.tar.xz" "bzr/master" "${PWD}/"
 	echo
 	
