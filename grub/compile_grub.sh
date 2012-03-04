@@ -118,8 +118,8 @@ if [[ "${_PROCESS_CONTINUE_UEFI}" == 'TRUE' ]]; then
 	
 	cp -r "${_WD_OUTER}/grub_extras__GIT_BZR" "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/grub_extras__GIT_BZR" || true
 	rm -rf "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/grub_extras__GIT_BZR/zfs" || true
-	rm -rf "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/grub_extras__GIT_BZR/lua" || true
-	rm -rf "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/grub_extras__GIT_BZR/gpxe" || true
+	# rm -rf "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/grub_extras__GIT_BZR/lua" || true
+	# rm -rf "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/grub_extras__GIT_BZR/gpxe" || true
 	rm -rf "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/grub_extras__GIT_BZR/915resolution" || true
 	rm -rf "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/grub_extras__GIT_BZR/ntldr-img" || true
 	
@@ -173,10 +173,10 @@ if [[ "${_PROCESS_CONTINUE_BIOS}" == 'TRUE' ]]; then
 	
 	cp -r "${_WD_OUTER}/grub_extras__GIT_BZR" "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/grub_extras__GIT_BZR" || true
 	rm -rf "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/grub_extras__GIT_BZR/zfs" || true
-	rm -rf "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/grub_extras__GIT_BZR/lua" || true
-	rm -rf "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/grub_extras__GIT_BZR/gpxe" || true
-	rm -rf "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/grub_extras__GIT_BZR/915resolution" || true
-	rm -rf "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/grub_extras__GIT_BZR/ntldr-img" || true
+	# rm -rf "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/grub_extras__GIT_BZR/lua" || true
+	# rm -rf "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/grub_extras__GIT_BZR/gpxe" || true
+	# rm -rf "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/grub_extras__GIT_BZR/915resolution" || true
+	# rm -rf "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/grub_extras__GIT_BZR/ntldr-img" || true
 	
 	if [[ "${_GRUB_BIOS_Source_DIR_Name}" != "${_GRUB_UEFI_Source_DIR_Name}" ]]; then
 		cd "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/"
