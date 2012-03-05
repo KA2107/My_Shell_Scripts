@@ -12,7 +12,7 @@ _RUN()
 			
 		elif [[ -d "${PWD}/${_name}" ]] && [[ "${_name}" != '.' ]] && [[ "${_name}" != '..' ]] && [[ "${_name}" != 'lost+found' ]] && [[ ! "$(file "${PWD}/${_name}" | grep 'symbolic link to')" ]]; then
 			pushd "${_name}" > /dev/null
-			RUN
+			_RUN
 			popd > /dev/null
 		fi
 	done
