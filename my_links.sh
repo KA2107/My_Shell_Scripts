@@ -245,6 +245,11 @@ _COPY_UEFI_BOOTLOADER_FILES() {
 	_LINK_FILE="elilo.conf"
 	[[ -d "${_LINK_DIR}/" ]] && _SUDO_COPY_FILE
 	
+	_SOURCE_FILE="efilinux_uefi.cfg"
+	_LINK_DIR="${_UEFI_SYS_PART_DIR}/arch_efilinux/"
+	_LINK_FILE="efilinux.cfg"
+	[[ -d "${_LINK_DIR}/" ]] && _SUDO_COPY_FILE
+	
 	echo
 	
 	unset _UEFI_SYS_PART_DIR
