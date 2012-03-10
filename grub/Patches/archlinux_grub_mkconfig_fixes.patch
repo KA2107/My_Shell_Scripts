@@ -1,5 +1,5 @@
 diff --git a/util/grub-mkconfig.in b/util/grub-mkconfig.in
-index 45aa916..e847d96 100644
+index df3b733..65a7fff 100644
 --- a/util/grub-mkconfig.in
 +++ b/util/grub-mkconfig.in
 @@ -213,6 +213,8 @@ export GRUB_DEFAULT \

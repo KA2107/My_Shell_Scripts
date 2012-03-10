@@ -154,16 +154,16 @@ _APPLY_CHANGES() {
 	
 	echo
 	
-	## Remove GCC -g debug option
-	sed 's|^DEFINE GCC_ALL_CC_FLAGS            = -g |^DEFINE GCC_ALL_CC_FLAGS            = |g' -i "${EDK_TOOLS_PATH}/Conf/tools_def.template" || true
-	sed 's|^DEFINE GCC44_ALL_CC_FLAGS            = -g |^DEFINE GCC44_ALL_CC_FLAGS            = -Os |g' -i "${EDK_TOOLS_PATH}/Conf/tools_def.template" || true
+	## Remove GCC -g debug option and add -0s -mabi=ms
+	sed 's|^DEFINE GCC_ALL_CC_FLAGS            = -g |^DEFINE GCC_ALL_CC_FLAGS            = -Os -mabi=ms |g' -i "${EDK_TOOLS_PATH}/Conf/tools_def.template" || true
+	sed 's|^DEFINE GCC44_ALL_CC_FLAGS            = -g |^DEFINE GCC44_ALL_CC_FLAGS            = -Os -mabi=ms |g' -i "${EDK_TOOLS_PATH}/Conf/tools_def.template" || true
 	
 	## DuetPkg
 	# sed 's|#define EFI_PAGE_BASE_OFFSET_IN_LDR 0x70000|#define EFI_PAGE_BASE_OFFSET_IN_LDR 0x80000|g' -i "${EDK_TOOLS_PATH}/Source/C/GenPage/GenPage.c" || true
 	
 	## EmulatorPkg
-	sed 's|export LIB_ARCH_SFX=64|export LIB_ARCH_SFX=""|g' -i "${_UDK_DIR}/EmulatorPkg/build.sh"
-	# sed 's|UNIXPKG_TOOLS=GCC44|UNIXPKG_TOOLS=GCC46|g' -i "${_UDK_DIR}/EmulatorPkg/build.sh"
+	sed 's|export LIB_ARCH_SFX=64|export LIB_ARCH_SFX=""|g' -i "${_UDK_DIR}/EmulatorPkg/build.sh" || true
+	sed 's|UNIXPKG_TOOLS=GCC44|UNIXPKG_TOOLS=GCC46|g' -i "${_UDK_DIR}/EmulatorPkg/build.sh" || true
 	
 	echo
 	
