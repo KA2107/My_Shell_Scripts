@@ -268,6 +268,8 @@ _COPY_UEFI_SHELL_FILES() {
 	
 	_UEFI_SYS_PART_DIR="/boot/efi/efi"
 	
+	#######
+	
 	if [[ -e "${_TIANOCORE_UEFI_SHELL_2_PATH_COMPILED}/Shell.efi" ]]; then
 		_SOURCE_DIR="${_TIANOCORE_UEFI_SHELL_2_PATH_COMPILED}"
 	else
@@ -275,9 +277,15 @@ _COPY_UEFI_SHELL_FILES() {
 	fi
 	
 	_SOURCE_FILE="Shell.efi"
-	_LINK_DIR="${_UEFI_SYS_PART_DIR}/shell/"
 	_LINK_FILE="shellx64.efi"
+	
+	_LINK_DIR="${_UEFI_SYS_PART_DIR}/shell/"
 	[[ -d "${_LINK_DIR}/" ]] && _SUDO_COPY_FILE
+	
+	_LINK_DIR="/media/Data_3/Operating_Systems/Unix_Based/Linux/Archlinux/Archboot/"
+	[[ -d "${_LINK_DIR}/" ]] && _COPY_FILE
+	
+	#######
 	
 	_SOURCE_DIR="${_TIANOCORE_UEFI_SHELL_1_PATH}"
 	_SOURCE_FILE="Shell_Full.efi"
