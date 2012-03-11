@@ -19,70 +19,31 @@ if [[ \
 	]]
 then
 	echo
-	echo '1 for EFI-MAIN and BIOS-MAIN'
-	echo '2 for EFI-EXP and BIOS-MAIN'
-	echo '3 for EFI-MAIN and BIOS-EXP'
-	echo '4 for EFI-EXP and BIOS-EXP'
-	echo
-	echo '5 for EFI-MAIN alone'
-	echo '6 for EFI-EXP alone'
-	echo '7 for BIOS-MAIN alone'
-	echo '8 for BIOS-EXP alone'
+	echo '1 for EFI-MAIN alone'
+	echo '2 for EFI-EXP alone'
+	echo '3 for BIOS-MAIN alone'
+	echo '4 for BIOS-EXP alone'
 	echo
 	export _PROCESS_CONTINUE_UEFI='FALSE'
 	export _PROCESS_CONTINUE_BIOS='FALSE'
 fi
 
-if [[ "${1}" == '1' ]]; then
-	export _GRUB_UEFI='-efi-main'
-	export _GRUB_BIOS='-bios-main'
-	
-elif [[ "${1}" == '2' ]]; then
-	export _GRUB_UEFI='-efi-exp'
-	export _GRUB_BIOS='-bios-main'
-	
-elif [[ "${1}" == '3' ]]; then
-	export _GRUB_UEFI='-efi-main'
-	export _GRUB_BIOS='-bios-exp'
-	
-elif [[ "${1}" == '4' ]]; then
-	export _GRUB_UEFI='-efi-exp'
-	export _GRUB_BIOS='-bios-exp'
-	
-elif [[ "${1}" == '5' ]]; then
-	export _GRUB_UEFI='-efi-main'
-	export _GRUB_BIOS='NULL'
-	
-elif [[ "${1}" == '6' ]]; then
-	export _GRUB_UEFI='-efi-exp'
-	export _GRUB_BIOS='NULL'
-	
-elif [[ "${1}" == '7' ]]; then
-	export _GRUB_UEFI='NULL'
-	export _GRUB_BIOS='-bios-main'
-	
-elif [[ "${1}" == '8' ]]; then
-	export _GRUB_UEFI='NULL'
-	export _GRUB_BIOS='-bios-exp'
-	
-fi
+_DO="${1}"
 
-if [[ "${_GRUB_UEFI}" == '-efi-exp' ]]; then
-	export _GRUB_UEFI_Source_DIR_Name='grub_experimental__GIT_BZR'
+if [[ "${_DO}" == '1' ]]; then
+	export _GRUB_UEFI_SRCDIR='grub__GIT_BZR'
 	export _PROCESS_CONTINUE_UEFI='TRUE'
 	
-elif [[ "${_GRUB_UEFI}" == '-efi-main' ]]; then
-	export _GRUB_UEFI_Source_DIR_Name='grub__GIT_BZR'
+elif [[ "${_DO}" == '2' ]]; then
+	export _GRUB_UEFI_SRCDIR='grub_experimental__GIT_BZR'
 	export _PROCESS_CONTINUE_UEFI='TRUE'
 	
-fi
-
-if [[ "${_GRUB_BIOS}" == '-bios-exp' ]]; then
-	export _GRUB_BIOS_Source_DIR_Name='grub_experimental__GIT_BZR'
+elif [[ "${_DO}" == '3' ]]; then
+	export _GRUB_BIOS_SRCDIR='grub__GIT_BZR'
 	export _PROCESS_CONTINUE_BIOS='TRUE'
 	
-elif [[ "${_GRUB_BIOS}" == '-bios-main' ]]; then
-	export _GRUB_BIOS_Source_DIR_Name='grub__GIT_BZR'
+elif [[ "${_DO}" == '4' ]]; then
+	export _GRUB_BIOS_SRCDIR='grub_experimental__GIT_BZR'
 	export _PROCESS_CONTINUE_BIOS='TRUE'
 	
 fi
@@ -102,128 +63,33 @@ _APPLY_PATCHES() {
 	
 }
 
-if [[ "${_PROCESS_CONTINUE_UEFI}" == 'TRUE' ]] && [[ "${_PROCESS_CONTINUE_BIOS}" == 'TRUE' ]]; then
-	if [[ "${_GRUB_UEFI_Source_DIR_Name}" == "${_GRUB_BIOS_Source_DIR_Name}" ]]; then
-		cd "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/"
-		echo
+_CLEAN_GRUB_SRCDIR() {
+	
+	echo
+	
+	cp -r "${_WD_OUTER}/${_GRUB_SRCDIR}/.git" "${_WD_OUTER}/.git_grub_src"
+	rm -rf "${_WD_OUTER}/${_GRUB_SRCDIR}"/* || true
+	rm -rf "${_WD_OUTER}/${_GRUB_SRCDIR}"/.* || true
+	echo
+	
+	if [[ ! -d "${_WD_OUTER}/${_GRUB_SRCDIR}/.git" ]]; then
+		cp -r "${_WD_OUTER}/.git_grub_src" "${_WD_OUTER}/${_GRUB_SRCDIR}/.git"
 	fi
-fi
+	echo
+	
+	rm -rf "${_WD_OUTER}/.git_grub_src" || true
+	echo
+	
+	cd "${_WD_OUTER}/${_GRUB_SRCDIR}/"
+	git reset --hard
+	echo
+	
+	git checkout master
+	echo
+	
+}
 
-if [[ "${_PROCESS_CONTINUE_UEFI}" == 'TRUE' ]]; then
-	
-	set -x -e
-	
-	# "${_WD_OUTER}/xman_dos2unix.sh" * || true
-	
-	## First compile GRUB for UEFI x86_64
-	
-	rm -rf "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/grub_extras__GIT_BZR" || true
-	
-	cp -r "${_WD_OUTER}/grub_extras__GIT_BZR" "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/grub_extras__GIT_BZR" || true
-	rm -rf "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/grub_extras__GIT_BZR/zfs" || true
-	# rm -rf "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/grub_extras__GIT_BZR/lua" || true
-	rm -rf "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/grub_extras__GIT_BZR/gpxe" || true
-	rm -rf "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/grub_extras__GIT_BZR/915resolution" || true
-	rm -rf "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/grub_extras__GIT_BZR/ntldr-img" || true
-	
-	if [[ "${_GRUB_UEFI_Source_DIR_Name}" != "${_GRUB_BIOS_Source_DIR_Name}" ]]; then
-		cd "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/"
-		echo
-	fi
-	
-	cp --verbose "${_GRUB_SCRIPTS_DIR}/grub_uefi.sh" "${_GRUB_SCRIPTS_DIR}/grub_uefi_linux_my.sh" "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/"
-	cp --verbose "${_WD_OUTER}/xman_dos2unix.sh" "${_WD_OUTER}/grub.default" "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/" || true
-	echo
-	
-	rm -f "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/grub.cfg" || true
-	cp --verbose "${_BOOTLOADER_CONFIG_FILES_DIR}/UEFI/grub_uefi.cfg" "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/grub.cfg" || true
-	echo
-	
-	rm -f "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/ChangeLog_Keshav" || true
-	echo
-	
-	cd "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/"
-	git reset --hard
-	echo
-	
-	git checkout master
-	echo
-	
-	_APPLY_PATCHES
-	
-	"${PWD}/grub_uefi_linux_my.sh"
-	echo
-	cd ..
-	
-	cp -r "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/GRUB_UEFI_BUILD_DIR_x86_64" "${_WD_OUTER}/GRUB_UEFI_BUILD_DIR_x86_64" || true
-	rm -rf "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/GRUB_UEFI_BUILD_DIR_x86_64" || true
-	echo
-	
-	cp -r "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/.git" "${_WD_OUTER}/.git_grub_uefi"
-	rm -rf "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}"/* || true
-	rm -rf "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}"/.* || true
-	echo
-	
-	if [[ ! -d "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/.git" ]]; then
-		cp -r "${_WD_OUTER}/.git_grub_uefi" "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/.git"
-	fi
-	echo
-	
-	rm -rf "${_WD_OUTER}/.git_grub_uefi" || true
-	echo
-	
-	cd "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/"
-	git reset --hard
-	echo
-	
-	git checkout master
-	echo
-	
-	set +x +e
-	
-fi
-
-if [[ "${_PROCESS_CONTINUE_BIOS}" == 'TRUE' ]]; then
-	
-	set -x -e
-	
-	# "${_WD_OUTER}/xman_dos2unix.sh" * || true
-	
-	## Second compile GRUB for BIOS
-	
-	rm -rf "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/grub_extras__GIT_BZR" || true
-	
-	cp -r "${_WD_OUTER}/grub_extras__GIT_BZR" "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/grub_extras__GIT_BZR" || true
-	rm -rf "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/grub_extras__GIT_BZR/zfs" || true
-	# rm -rf "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/grub_extras__GIT_BZR/lua" || true
-	rm -rf "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/grub_extras__GIT_BZR/gpxe" || true
-	# rm -rf "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/grub_extras__GIT_BZR/915resolution" || true
-	# rm -rf "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/grub_extras__GIT_BZR/ntldr-img" || true
-	
-	if [[ "${_GRUB_BIOS_Source_DIR_Name}" != "${_GRUB_UEFI_Source_DIR_Name}" ]]; then
-		cd "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/"
-		echo
-	fi
-	
-	cp --verbose "${_GRUB_SCRIPTS_DIR}/grub_bios.sh" "${_GRUB_SCRIPTS_DIR}/grub_bios_linux_my.sh" "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/"
-	cp --verbose "${_WD_OUTER}/xman_dos2unix.sh" "${_WD_OUTER}/grub.default" "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/" || true
-	echo
-	
-	rm -f "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/grub.cfg" || true
-	cp --verbose "${_BOOTLOADER_CONFIG_FILES_DIR}/UEFI/grub_uefi.cfg" "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/grub.cfg" || true
-	echo
-	
-	rm -f "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/ChangeLog_Keshav" || true
-	echo
-	
-	cd "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/"
-	git reset --hard
-	echo
-	
-	git checkout master
-	echo
-	
-	_APPLY_PATCHES
+_SCHROOT() {
 	
 	## CHROOT into the arch32 system for compiling GRUB BIOS i386
 	# export _BCHROOT_DIR="${_WD_OUTER}"
@@ -234,32 +100,89 @@ if [[ "${_PROCESS_CONTINUE_BIOS}" == 'TRUE' ]]; then
 	# schroot --automatic-session --preserve-environment --directory ${_WD_OUTER}
 	echo
 	
-	"${PWD}/grub_bios_linux_my.sh"
-	echo
-	cd ..
+}
+
+_COMPILE_GRUB() {
 	
-	cp -r "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/GRUB_BIOS_BUILD_DIR" "${_WD_OUTER}/GRUB_BIOS_BUILD_DIR" || true
-	rm -rf "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/GRUB_BIOS_BUILD_DIR" || true
-	echo
-	
-	cp -r "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/.git" "${_WD_OUTER}/.git_grub_bios"
-	rm -rf "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}"/* || true
-	rm -rf "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}"/.* || true
+	_CLEAN_GRUB_SRCDIR
 	echo
 	
-	if [[ ! -d "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/.git" ]]; then
-		cp -r "${_WD_OUTER}/.git_grub_bios" "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/.git"
+	_APPLY_PATCHES
+	echo
+	
+	cp -r "${_WD_OUTER}/grub_extras__GIT_BZR" "${_WD_OUTER}/${_GRUB_SRCDIR}/grub_extras__GIT_BZR" || true
+	# rm -rf "${_WD_OUTER}/${_GRUB_SRCDIR}/grub_extras__GIT_BZR/lua" || true
+	rm -rf "${_WD_OUTER}/${_GRUB_SRCDIR}/grub_extras__GIT_BZR/gpxe" || true
+	echo
+	
+	if [[ "${_GRUB_PLATFORM}" == "uefi" ]]; then
+		rm -rf "${_WD_OUTER}/${_GRUB_SRCDIR}/grub_extras__GIT_BZR/ntldr-img" || true
+		rm -rf "${_WD_OUTER}/${_GRUB_SRCDIR}/grub_extras__GIT_BZR/915resolution" || true
+		echo
 	fi
+	
+	if [[ "${_GRUB_PLATFORM}" == "bios" ]]; then
+		# rm -rf "${_WD_OUTER}/${_GRUB_SRCDIR}/grub_extras__GIT_BZR/ntldr-img" || true
+		# rm -rf "${_WD_OUTER}/${_GRUB_SRCDIR}/grub_extras__GIT_BZR/915resolution" || true
+		echo
+	fi
+	
+	cp --verbose "${_GRUB_SCRIPTS_DIR}/grub_${_GRUB_PLATFORM}.sh" "${_GRUB_SCRIPTS_DIR}/grub_${_GRUB_PLATFORM}_linux_my.sh" "${_WD_OUTER}/${_GRUB_SRCDIR}/"
+	cp --verbose "${_WD_OUTER}/xman_dos2unix.sh" "${_WD_OUTER}/grub.default" "${_WD_OUTER}/${_GRUB_SRCDIR}/" || true
+	cp --verbose "${_BOOTLOADER_CONFIG_FILES_DIR}/UEFI/grub_uefi.cfg" "${_WD_OUTER}/${_GRUB_SRCDIR}/grub.cfg" || true
 	echo
 	
-	rm -rf "${_WD_OUTER}/.git_grub_bios" || true
+	# "${_WD_OUTER}/xman_dos2unix.sh" * || true
+	
+	"${PWD}/grub_${_GRUB_PLATFORM}_linux_my.sh"
 	echo
 	
-	cd "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/"
-	git reset --hard
+}
+
+if [[ "${_PROCESS_CONTINUE_UEFI}" == 'TRUE' ]]; then
+	
+	set -x -e
+	
 	echo
 	
-	git checkout master
+	_GRUB_PLATFORM="uefi"
+	_GRUB_SRCDIR="${_GRUB_UEFI_SRCDIR}"
+	_COMPILE_GRUB
+	
+	echo
+	
+	cp -r "${_WD_OUTER}/${_GRUB_SRCDIR}/GRUB_UEFI_BUILD_DIR_x86_64" "${_WD_OUTER}/GRUB_UEFI_BUILD_DIR_x86_64" || true
+	rm -rf "${_WD_OUTER}/${_GRUB_SRCDIR}/GRUB_UEFI_BUILD_DIR_x86_64" || true
+	
+	echo
+	
+	_CLEAN_GRUB_SRCDIR
+	
+	echo
+	
+	set +x +e
+	
+fi
+
+if [[ "${_PROCESS_CONTINUE_BIOS}" == 'TRUE' ]]; then
+	
+	set -x -e
+	
+	echo
+	
+	_GRUB_PLATFORM="bios"
+	_GRUB_SRCDIR="${_GRUB_BIOS_SRCDIR}"
+	_COMPILE_GRUB
+	
+	echo
+	
+	cp -r "${_WD_OUTER}/${_GRUB_BIOS_SRCDIR}/GRUB_BIOS_BUILD_DIR" "${_WD_OUTER}/GRUB_BIOS_BUILD_DIR" || true
+	rm -rf "${_WD_OUTER}/${_GRUB_BIOS_SRCDIR}/GRUB_BIOS_BUILD_DIR" || true
+	
+	echo
+	
+	_CLEAN_GRUB_SRCDIR
+	
 	echo
 	
 	set +x +e
@@ -273,6 +196,7 @@ unset _BOOTLOADER_CONFIG_FILES_DIR
 unset _WD_OUTER
 unset _GRUB_UEFI
 unset _GRUB_BIOS
-unset _GRUB_UEFI_Source_DIR_Name
-unset _GRUB_BIOS_Source_DIR_Name
+unset _GRUB_SRCDIR
+unset _GRUB_UEFI_SRCDIR
+unset _GRUB_BIOS_SRCDIR
 unset _X86_32_CHROOT
