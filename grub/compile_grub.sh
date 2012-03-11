@@ -139,11 +139,10 @@ if [[ "${_PROCESS_CONTINUE_UEFI}" == 'TRUE' ]]; then
 	cp --verbose "${_BOOTLOADER_CONFIG_FILES_DIR}/UEFI/grub_uefi.cfg" "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/grub.cfg" || true
 	echo
 	
-	cd "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/"
-	
 	rm -f "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/ChangeLog_Keshav" || true
 	echo
 	
+	cd "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/"
 	git reset --hard
 	echo
 	
@@ -157,7 +156,27 @@ if [[ "${_PROCESS_CONTINUE_UEFI}" == 'TRUE' ]]; then
 	cd ..
 	
 	cp -r "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/GRUB_UEFI_BUILD_DIR_x86_64" "${_WD_OUTER}/GRUB_UEFI_BUILD_DIR_x86_64" || true
-	sudo rm -rf "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/GRUB_UEFI_BUILD_DIR_x86_64" || true
+	rm -rf "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/GRUB_UEFI_BUILD_DIR_x86_64" || true
+	echo
+	
+	cp -r "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/.git" "${_WD_OUTER}/.git_grub_uefi"
+	rm -rf "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}"/* || true
+	rm -rf "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}"/.* || true
+	echo
+	
+	if [[ ! -d "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/.git" ]]; then
+		cp -r "${_WD_OUTER}/.git_grub_uefi" "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/.git"
+	fi
+	echo
+	
+	rm -rf "${_WD_OUTER}/.git_grub_uefi" || true
+	echo
+	
+	cd "${_WD_OUTER}/${_GRUB_UEFI_Source_DIR_Name}/"
+	git reset --hard
+	echo
+	
+	git checkout master
 	echo
 	
 	set +x +e
@@ -194,11 +213,10 @@ if [[ "${_PROCESS_CONTINUE_BIOS}" == 'TRUE' ]]; then
 	cp --verbose "${_BOOTLOADER_CONFIG_FILES_DIR}/UEFI/grub_uefi.cfg" "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/grub.cfg" || true
 	echo
 	
-	cd "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/"
-	
 	rm -f "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/ChangeLog_Keshav" || true
 	echo
 	
+	cd "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/"
 	git reset --hard
 	echo
 	
@@ -221,7 +239,27 @@ if [[ "${_PROCESS_CONTINUE_BIOS}" == 'TRUE' ]]; then
 	cd ..
 	
 	cp -r "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/GRUB_BIOS_BUILD_DIR" "${_WD_OUTER}/GRUB_BIOS_BUILD_DIR" || true
-	sudo rm -rf "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/GRUB_BIOS_BUILD_DIR" || true
+	rm -rf "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/GRUB_BIOS_BUILD_DIR" || true
+	echo
+	
+	cp -r "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/.git" "${_WD_OUTER}/.git_grub_bios"
+	rm -rf "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}"/* || true
+	rm -rf "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}"/.* || true
+	echo
+	
+	if [[ ! -d "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/.git" ]]; then
+		cp -r "${_WD_OUTER}/.git_grub_bios" "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/.git"
+	fi
+	echo
+	
+	rm -rf "${_WD_OUTER}/.git_grub_bios" || true
+	echo
+	
+	cd "${_WD_OUTER}/${_GRUB_BIOS_Source_DIR_Name}/"
+	git reset --hard
+	echo
+	
+	git checkout master
 	echo
 	
 	set +x +e
