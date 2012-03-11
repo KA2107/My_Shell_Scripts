@@ -107,9 +107,6 @@ _COMPILE_GRUB() {
 	_CLEAN_GRUB_SRCDIR
 	echo
 	
-	_APPLY_PATCHES
-	echo
-	
 	cp -r "${_WD_OUTER}/grub_extras__GIT_BZR" "${_WD_OUTER}/${_GRUB_SRCDIR}/grub_extras__GIT_BZR" || true
 	# rm -rf "${_WD_OUTER}/${_GRUB_SRCDIR}/grub_extras__GIT_BZR/lua" || true
 	rm -rf "${_WD_OUTER}/${_GRUB_SRCDIR}/grub_extras__GIT_BZR/gpxe" || true
@@ -126,6 +123,9 @@ _COMPILE_GRUB() {
 		# rm -rf "${_WD_OUTER}/${_GRUB_SRCDIR}/grub_extras__GIT_BZR/915resolution" || true
 		echo
 	fi
+	
+	_APPLY_PATCHES
+	echo
 	
 	cp --verbose "${_GRUB_SCRIPTS_DIR}/grub_${_GRUB_PLATFORM}.sh" "${_GRUB_SCRIPTS_DIR}/grub_${_GRUB_PLATFORM}_linux_my.sh" "${_WD_OUTER}/${_GRUB_SRCDIR}/"
 	cp --verbose "${_WD_OUTER}/xman_dos2unix.sh" "${_WD_OUTER}/grub.default" "${_WD_OUTER}/${_GRUB_SRCDIR}/" || true
