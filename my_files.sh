@@ -26,9 +26,9 @@ _CREATE_SYMLINK() {
 	
 	echo
 	
-	if [[ ! -d "${_LINK_DIR}/${_LINK_FILE}" ]]; then
-		rm -f "${_LINK_DIR}/${_LINK_FILE}" || true
-		ln -s "${_SOURCE_DIR}/${_SOURCE_FILE}" "${_LINK_DIR}/${_LINK_FILE}"
+	if [[ ! -d "${_DEST_DIR}/${_DEST_FILE}" ]]; then
+		rm -f "${_DEST_DIR}/${_DEST_FILE}" || true
+		ln -s "${_SOURCE_DIR}/${_SOURCE_FILE}" "${_DEST_DIR}/${_DEST_FILE}"
 	fi
 	
 	echo
@@ -39,9 +39,9 @@ _SUDO_CREATE_SYMLINK() {
 	
 	echo
 	
-	if [[ ! -d "${_LINK_DIR}/${_LINK_FILE}" ]]; then
-		sudo rm -f "${_LINK_DIR}/${_LINK_FILE}" || true
-		sudo ln -s "${_SOURCE_DIR}/${_SOURCE_FILE}" "${_LINK_DIR}/${_LINK_FILE}"
+	if [[ ! -d "${_DEST_DIR}/${_DEST_FILE}" ]]; then
+		sudo rm -f "${_DEST_DIR}/${_DEST_FILE}" || true
+		sudo ln -s "${_SOURCE_DIR}/${_SOURCE_FILE}" "${_DEST_DIR}/${_DEST_FILE}"
 	fi
 	
 	echo
@@ -52,9 +52,9 @@ _COPY_FILE() {
 	
 	echo
 	
-	if [[ ! -d "${_LINK_DIR}/${_LINK_FILE}" ]]; then
-		rm -f "${_LINK_DIR}/${_LINK_FILE}" || true
-		install -D -m0644 "${_SOURCE_DIR}/${_SOURCE_FILE}" "${_LINK_DIR}/${_LINK_FILE}"
+	if [[ ! -d "${_DEST_DIR}/${_DEST_FILE}" ]]; then
+		rm -f "${_DEST_DIR}/${_DEST_FILE}" || true
+		install -D -m0644 "${_SOURCE_DIR}/${_SOURCE_FILE}" "${_DEST_DIR}/${_DEST_FILE}"
 	fi
 	
 	echo
@@ -65,9 +65,9 @@ _SUDO_COPY_FILE() {
 	
 	echo
 	
-	if [[ ! -d "${_LINK_DIR}/${_LINK_FILE}" ]]; then
-		sudo rm -f "${_LINK_DIR}/${_LINK_FILE}" || true
-		sudo install -D -m0644 "${_SOURCE_DIR}/${_SOURCE_FILE}" "${_LINK_DIR}/${_LINK_FILE}"
+	if [[ ! -d "${_DEST_DIR}/${_DEST_FILE}" ]]; then
+		sudo rm -f "${_DEST_DIR}/${_DEST_FILE}" || true
+		sudo install -D -m0644 "${_SOURCE_DIR}/${_SOURCE_FILE}" "${_DEST_DIR}/${_DEST_FILE}"
 	fi
 	
 	echo
@@ -80,48 +80,48 @@ _GRUB2() {
 	
 	_SOURCE_DIR="${_GRUB_SCRIPTS_DIR}/"
 	_SOURCE_FILE="compile_grub.sh"
-	_LINK_DIR="${_GRUB_SOURCE_DIR}/"
-	_LINK_FILE="${_SOURCE_FILE}"
+	_DEST_DIR="${_GRUB_SOURCE_DIR}/"
+	_DEST_FILE="${_SOURCE_FILE}"
 	_CREATE_SYMLINK
 	
 	echo
 	
 	_SOURCE_DIR="${_GRUB_SCRIPTS_DIR}/"
 	_SOURCE_FILE="grub_git_bzr_export.sh"
-	_LINK_DIR="${_GRUB_SOURCE_DIR}/"
-	_LINK_FILE="${_SOURCE_FILE}"
+	_DEST_DIR="${_GRUB_SOURCE_DIR}/"
+	_DEST_FILE="${_SOURCE_FILE}"
 	_CREATE_SYMLINK
 	
 	echo
 	
 	_SOURCE_DIR="${_GRUB_SCRIPTS_DIR}/"
 	_SOURCE_FILE="grub.default"
-	_LINK_DIR="${_GRUB_SOURCE_DIR}/"
-	_LINK_FILE="${_SOURCE_FILE}"
+	_DEST_DIR="${_GRUB_SOURCE_DIR}/"
+	_DEST_FILE="${_SOURCE_FILE}"
 	_COPY_FILE
 	
 	echo
 	
 	_SOURCE_DIR="${_GRUB_SCRIPTS_DIR}/"
 	_SOURCE_FILE="grub_bzr_export.sh"
-	_LINK_DIR="${_GRUB_DIR}/Source_BZR/"
-	_LINK_FILE="${_SOURCE_FILE}"
+	_DEST_DIR="${_GRUB_DIR}/Source_BZR/"
+	_DEST_FILE="${_SOURCE_FILE}"
 	_CREATE_SYMLINK
 	
 	echo
 	
 	_SOURCE_DIR="${_SCRIPTS_DIR}/xmanutility/"
 	_SOURCE_FILE="xman_dos2unix.sh"
-	_LINK_DIR="${_GRUB_SOURCE_DIR}/"
-	_LINK_FILE="${_SOURCE_FILE}"
+	_DEST_DIR="${_GRUB_SOURCE_DIR}/"
+	_DEST_FILE="${_SOURCE_FILE}"
 	_CREATE_SYMLINK
 	
 	echo
 	
 	unset _SOURCE_DIR
 	unset _SOURCE_FILE
-	unset _LINK_DIR
-	unset _LINK_FILE
+	unset _DEST_DIR
+	unset _DEST_FILE
 	
 	echo
 	
@@ -132,50 +132,50 @@ _TIANOCORE_UEFI() {
 	echo
 	
 	_SOURCE_DIR="${_TIANOCORE_UEFI_SCRIPTS_DIR}/"
-	_LINK_DIR="${_TIANOCORE_UEFI_SOURCE_CODES_DIR}/"
+	_DEST_DIR="${_TIANOCORE_UEFI_SOURCE_CODES_DIR}/"
 	
 	_SOURCE_FILE="tianocore_uefi_common.sh"
-	_LINK_FILE="${_SOURCE_FILE}"
+	_DEST_FILE="${_SOURCE_FILE}"
 	_CREATE_SYMLINK
 	
 	_SOURCE_FILE="tianocore_uefi_duetpkg_common.sh"
-	_LINK_FILE="${_SOURCE_FILE}"
+	_DEST_FILE="${_SOURCE_FILE}"
 	_CREATE_SYMLINK
 	
 	_SOURCE_FILE="duetpkg_x86_64_udk_linux_compile.sh"
-	_LINK_FILE="${_SOURCE_FILE}"
+	_DEST_FILE="${_SOURCE_FILE}"
 	_CREATE_SYMLINK
 	
 	_SOURCE_FILE="duetpkg_x86_64_post_compile_setup_duet_part.sh"
-	_LINK_FILE="${_SOURCE_FILE}"
+	_DEST_FILE="${_SOURCE_FILE}"
 	_CREATE_SYMLINK
 	
 	_SOURCE_FILE="duetpkg_x86_64_post_compile_setup_git_repos.sh"
-	_LINK_FILE="${_SOURCE_FILE}"
+	_DEST_FILE="${_SOURCE_FILE}"
 	_CREATE_SYMLINK
 	
 	_SOURCE_FILE="duetpkg_x86_64_create_memdisk_old.sh"
-	_LINK_FILE="${_SOURCE_FILE}"
+	_DEST_FILE="${_SOURCE_FILE}"
 	_CREATE_SYMLINK
 	
 	_SOURCE_FILE="ovmfpkg_x86_64_udk_linux_compile.sh"
-	_LINK_FILE="${_SOURCE_FILE}"
+	_DEST_FILE="${_SOURCE_FILE}"
 	_CREATE_SYMLINK
 	
 	_SOURCE_FILE="emulatorpkg_unix_x86_64_udk_linux_compile.sh"
-	_LINK_FILE="${_SOURCE_FILE}"
+	_DEST_FILE="${_SOURCE_FILE}"
 	_CREATE_SYMLINK
 	
 	_SOURCE_FILE="shellpkg_x86_64_udk_linux_compile.sh"
-	_LINK_FILE="${_SOURCE_FILE}"
+	_DEST_FILE="${_SOURCE_FILE}"
 	_CREATE_SYMLINK
 	
 	echo
 	
 	unset _SOURCE_DIR
 	unset _SOURCE_FILE
-	unset _LINK_DIR
-	unset _LINK_FILE
+	unset _DEST_DIR
+	unset _DEST_FILE
 	
 	echo
 	
@@ -190,28 +190,28 @@ _COPY_BIOS_BOOTLOADER_FILES() {
 	_SOURCE_DIR="${_BOOTLOADER_CONFIG_FILES_DIR}/UEFI/"
 	
 	_SOURCE_FILE="grub_uefi.cfg"
-	_LINK_DIR="${_BOOT_PART}/grub_bios/"
-	_LINK_FILE="grub.cfg"
-	[[ -d "${_LINK_DIR}/" ]] && _SUDO_COPY_FILE
+	_DEST_DIR="${_BOOT_PART}/grub_bios/"
+	_DEST_FILE="grub.cfg"
+	[[ -d "${_DEST_DIR}/" ]] && _SUDO_COPY_FILE
 	
 	_SOURCE_FILE="grub_uefi.cfg"
-	_LINK_DIR="${_BOOT_PART}/grub/"
-	_LINK_FILE="grub.cfg"
-	[[ -d "${_LINK_DIR}/" ]] && _SUDO_COPY_FILE
+	_DEST_DIR="${_BOOT_PART}/grub/"
+	_DEST_FILE="grub.cfg"
+	[[ -d "${_DEST_DIR}/" ]] && _SUDO_COPY_FILE
 	
 	_SOURCE_DIR="${_BOOTLOADER_CONFIG_FILES_DIR}/BIOS/"
 	_SOURCE_FILE="syslinux_bios.cfg"
-	_LINK_DIR="${_BOOT_PART}/syslinux/"
-	_LINK_FILE="syslinux.cfg"
-	[[ -d "${_LINK_DIR}/" ]] && _SUDO_COPY_FILE
+	_DEST_DIR="${_BOOT_PART}/syslinux/"
+	_DEST_FILE="syslinux.cfg"
+	[[ -d "${_DEST_DIR}/" ]] && _SUDO_COPY_FILE
 	
 	echo
 	
 	unset _BOOT_PART
 	unset _SOURCE_DIR
 	unset _SOURCE_FILE
-	unset _LINK_DIR
-	unset _LINK_FILE
+	unset _DEST_DIR
+	unset _DEST_FILE
 	
 	echo
 	
@@ -226,37 +226,42 @@ _COPY_UEFI_BOOTLOADER_FILES() {
 	_SOURCE_DIR="${_BOOTLOADER_CONFIG_FILES_DIR}/UEFI/"
 	
 	_SOURCE_FILE="grub_uefi.cfg"
-	_LINK_DIR="${_UEFI_SYS_PART_DIR}/grub_uefi_x86_64/"
-	_LINK_FILE="grub.cfg"
-	[[ -d "${_LINK_DIR}/" ]] && _SUDO_COPY_FILE
+	_DEST_DIR="${_UEFI_SYS_PART_DIR}/grub_uefi_x86_64/"
+	_DEST_FILE="grub.cfg"
+	[[ -d "${_DEST_DIR}/" ]] && _SUDO_COPY_FILE
 	
 	_SOURCE_FILE="grub_uefi.cfg"
-	_LINK_DIR="${_UEFI_SYS_PART_DIR}/grub/"
-	_LINK_FILE="grub.cfg"
-	[[ -d "${_LINK_DIR}/" ]] && _SUDO_COPY_FILE
+	_DEST_DIR="${_UEFI_SYS_PART_DIR}/grub/"
+	_DEST_FILE="grub.cfg"
+	[[ -d "${_DEST_DIR}/" ]] && _SUDO_COPY_FILE
 	
 	_SOURCE_FILE="grub-legacy_uefi.conf"
-	_LINK_DIR="${_UEFI_SYS_PART_DIR}/arch_grub-legacy/"
-	_LINK_FILE="grub-legacy-x64.conf"
-	[[ -d "${_LINK_DIR}/" ]] && _SUDO_COPY_FILE
+	_DEST_DIR="${_UEFI_SYS_PART_DIR}/arch_grub-legacy/"
+	_DEST_FILE="grub-legacy-x64.conf"
+	[[ -d "${_DEST_DIR}/" ]] && _SUDO_COPY_FILE
 	
 	_SOURCE_FILE="elilo_uefi.conf"
-	_LINK_DIR="${_UEFI_SYS_PART_DIR}/arch_elilo/"
-	_LINK_FILE="elilo.conf"
-	[[ -d "${_LINK_DIR}/" ]] && _SUDO_COPY_FILE
+	_DEST_DIR="${_UEFI_SYS_PART_DIR}/arch_elilo/"
+	_DEST_FILE="elilo.conf"
+	[[ -d "${_DEST_DIR}/" ]] && _SUDO_COPY_FILE
 	
 	_SOURCE_FILE="efilinux_uefi.cfg"
-	_LINK_DIR="${_UEFI_SYS_PART_DIR}/arch_efilinux/"
-	_LINK_FILE="efilinux.cfg"
-	[[ -d "${_LINK_DIR}/" ]] && _SUDO_COPY_FILE
+	_DEST_DIR="${_UEFI_SYS_PART_DIR}/arch_efilinux/"
+	_DEST_FILE="efilinux.cfg"
+	[[ -d "${_DEST_DIR}/" ]] && _SUDO_COPY_FILE
+	
+	_SOURCE_FILE="refind_uefi.conf"
+	_DEST_DIR="${_UEFI_SYS_PART_DIR}/arch_refind/"
+	_DEST_FILE="refind.conf"
+	[[ -d "${_DEST_DIR}/" ]] && _SUDO_COPY_FILE
 	
 	echo
 	
 	unset _UEFI_SYS_PART_DIR
 	unset _SOURCE_DIR
 	unset _SOURCE_FILE
-	unset _LINK_DIR
-	unset _LINK_FILE
+	unset _DEST_DIR
+	unset _DEST_FILE
 	
 	echo
 	
@@ -277,29 +282,29 @@ _COPY_UEFI_SHELL_FILES() {
 	fi
 	
 	_SOURCE_FILE="Shell.efi"
-	_LINK_FILE="shellx64.efi"
+	_DEST_FILE="shellx64.efi"
 	
-	_LINK_DIR="${_UEFI_SYS_PART_DIR}/shell/"
-	[[ -d "${_LINK_DIR}/" ]] && _SUDO_COPY_FILE
+	_DEST_DIR="${_UEFI_SYS_PART_DIR}/shell/"
+	[[ -d "${_DEST_DIR}/" ]] && _SUDO_COPY_FILE
 	
-	_LINK_DIR="/media/Data_3/Operating_Systems/Unix_Based/Linux/Archlinux/Archboot/"
-	[[ -d "${_LINK_DIR}/" ]] && _COPY_FILE
+	_DEST_DIR="/media/Data_3/Operating_Systems/Unix_Based/Linux/Archlinux/Archboot/"
+	[[ -d "${_DEST_DIR}/" ]] && _COPY_FILE
 	
 	#######
 	
 	_SOURCE_DIR="${_TIANOCORE_UEFI_SHELL_1_PATH}"
 	_SOURCE_FILE="Shell_Full.efi"
-	_LINK_DIR="${_UEFI_SYS_PART_DIR}/shell/"
-	_LINK_FILE="shellx64_old.efi"
-	[[ -d "${_LINK_DIR}/" ]] && _SUDO_COPY_FILE
+	_DEST_DIR="${_UEFI_SYS_PART_DIR}/shell/"
+	_DEST_FILE="shellx64_old.efi"
+	[[ -d "${_DEST_DIR}/" ]] && _SUDO_COPY_FILE
 	
 	echo
 	
 	unset _UEFI_SYS_PART_DIR
 	unset _SOURCE_DIR
 	unset _SOURCE_FILE
-	unset _LINK_DIR
-	unset _LINK_FILE
+	unset _DEST_DIR
+	unset _DEST_FILE
 	
 	echo
 	
@@ -320,24 +325,24 @@ echo
 
 _SOURCE_DIR="${_SCRIPTS_DIR}/git/"
 _SOURCE_FILE="git_update.sh"
-_LINK_DIR="${_SOURCE_CODES_DIR}/"
-_LINK_FILE="${_SOURCE_FILE}"
+_DEST_DIR="${_SOURCE_CODES_DIR}/"
+_DEST_FILE="${_SOURCE_FILE}"
 _CREATE_SYMLINK
 
 echo
 
 _SOURCE_DIR="${_SCRIPTS_DIR}/hg/"
 _SOURCE_FILE="hg_update.sh"
-_LINK_DIR="${_SOURCE_CODES_DIR}/"
-_LINK_FILE="${_SOURCE_FILE}"
+_DEST_DIR="${_SOURCE_CODES_DIR}/"
+_DEST_FILE="${_SOURCE_FILE}"
 _CREATE_SYMLINK
 
 echo
 
 _SOURCE_DIR="${_SCRIPTS_DIR}/bzr/"
 _SOURCE_FILE="bzr_update.sh"
-_LINK_DIR="${_SOURCE_CODES_DIR}/"
-_LINK_FILE="${_SOURCE_FILE}"
+_DEST_DIR="${_SOURCE_CODES_DIR}/"
+_DEST_FILE="${_SOURCE_FILE}"
 _CREATE_SYMLINK
 
 echo
@@ -366,10 +371,12 @@ _PACMAN
 
 echo
 
-sudo rm -f "/boot/efi/Kernels"/vmlinuz-linux* || true
-sudo rm -f "/boot/efi/Kernels"/initramfs-linux*.img || true
-sudo install -D -m0644 "/boot"/vmlinuz-linux* "/boot/efi/Kernels"/
-sudo install -D -m0644 "/boot"/initramfs-linux*.img "/boot/efi/Kernels"/
+sudo rm -f "/boot/efi/Kernels"/vmlinuz* || true
+sudo rm -f "/boot/efi/Kernels"/bz{I,i}mage* || true
+sudo rm -f "/boot/efi/Kernels"/init{ramfs,rd}*.img || true
+sudo install -D -m0644 "/boot"/vmlinuz* "/boot/efi/Kernels"/ || true
+sudo install -D -m0644 "/boot"/bz{I,i}mage* "/boot/efi/Kernels"/ || true
+sudo install -D -m0644 "/boot"/init{ramfs,rd}*.img "/boot/efi/Kernels"/ || true
 
 echo
 
