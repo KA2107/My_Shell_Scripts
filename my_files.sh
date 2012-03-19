@@ -255,6 +255,18 @@ _COPY_UEFI_BOOTLOADER_FILES() {
 	_DEST_FILE="refind.conf"
 	[[ -d "${_DEST_DIR}/" ]] && _SUDO_COPY_FILE
 	
+	_SOURCE_DIR="${_BOOTLOADER_CONFIG_FILES_DIR}/UEFI/refind_uefi"
+	
+	_SOURCE_FILE="refind_uefi.conf"
+	_DEST_DIR="${_UEFI_SYS_PART_DIR}/arch_refind/"
+	_DEST_FILE="refind.conf"
+	[[ -d "${_DEST_DIR}/" ]] && _SUDO_COPY_FILE
+	
+	_SOURCE_FILE="refind_uefi_linux.conf"
+	_DEST_DIR="${_UEFI_SYS_PART_DIR}/arch_refind/"
+	_DEST_FILE="linux.conf"
+	[[ -d "${_DEST_DIR}/" ]] && _SUDO_COPY_FILE
+	
 	echo
 	
 	unset _UEFI_SYS_PART_DIR
@@ -305,6 +317,32 @@ _COPY_UEFI_SHELL_FILES() {
 	unset _SOURCE_FILE
 	unset _DEST_DIR
 	unset _DEST_FILE
+	
+	echo
+	
+}
+
+_COPY_EFISTUB_KERNELS_UEFISYS_PART() {
+	
+	echo
+	
+	sudo rm -f "/boot/efi/Kernels"/vmlinuz* || true
+	sudo rm -f "/boot/efi/Kernels"/bz{I,i}mage* || true
+	sudo rm -f "/boot/efi/Kernels"/init{ramfs,rd}*.img || true
+	
+	echo
+	
+	for _FILE_ in "/boot"/vmlinuz* "/boot"/bz{I,i}mage* ; do
+		if [[ "$(basename "${_FILE_}" | grep '\.efi')" ]]; then
+			sudo install -D -m0644 "/boot/$(basename "${_FILE_}")" "/boot/efi/Kernels/$(basename "${_FILE_}")" || true
+		elif [[ "$(file "${_FILE_}" | grep 'DOS executable')" ]]; then
+			sudo install -D -m0644 "/boot/$(basename "${_FILE_}")" "/boot/efi/Kernels/$(basename "${_FILE_}").efi" || true
+		else
+			sudo install -D -m0644 "/boot/$(basename "${_FILE_}")" "/boot/efi/Kernels/$(basename "${_FILE_}")" || true
+		fi
+	done
+	
+	sudo install -D -m0644 "/boot"/init{ramfs,rd}*.img "/boot/efi/Kernels"/ || true
 	
 	echo
 	
@@ -371,12 +409,7 @@ _PACMAN
 
 echo
 
-sudo rm -f "/boot/efi/Kernels"/vmlinuz* || true
-sudo rm -f "/boot/efi/Kernels"/bz{I,i}mage* || true
-sudo rm -f "/boot/efi/Kernels"/init{ramfs,rd}*.img || true
-sudo install -D -m0644 "/boot"/vmlinuz* "/boot/efi/Kernels"/ || true
-sudo install -D -m0644 "/boot"/bz{I,i}mage* "/boot/efi/Kernels"/ || true
-sudo install -D -m0644 "/boot"/init{ramfs,rd}*.img "/boot/efi/Kernels"/ || true
+_COPY_EFISTUB_KERNELS_UEFISYS_PART
 
 echo
 
