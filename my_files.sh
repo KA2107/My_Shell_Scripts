@@ -250,11 +250,6 @@ _COPY_UEFI_BOOTLOADER_FILES() {
 	_DEST_FILE="efilinux.cfg"
 	[[ -d "${_DEST_DIR}/" ]] && _SUDO_COPY_FILE
 	
-	_SOURCE_FILE="refind_uefi.conf"
-	_DEST_DIR="${_UEFI_SYS_PART_DIR}/arch_refind/"
-	_DEST_FILE="refind.conf"
-	[[ -d "${_DEST_DIR}/" ]] && _SUDO_COPY_FILE
-	
 	_SOURCE_DIR="${_BOOTLOADER_CONFIG_FILES_DIR}/UEFI/refind_uefi"
 	
 	_SOURCE_FILE="refind_uefi.conf"
@@ -326,19 +321,26 @@ _COPY_EFISTUB_KERNELS_UEFISYS_PART() {
 	
 	echo
 	
-	sudo rm -f "/boot/efi/Kernels"/vmlinuz* || true
-	sudo rm -f "/boot/efi/Kernels"/bz{I,i}mage* || true
-	sudo rm -f "/boot/efi/Kernels"/init{ramfs,rd}*.img || true
+	sudo rm -f "/boot/efi/Kernels"/* || true
+	sudo rm -rf "/boot/efi/Kernels/no_efistub"/ || true
 	
 	echo
 	
 	for _FILE_ in "/boot"/vmlinuz* "/boot"/bz{I,i}mage* ; do
-		if [[ "$(basename "${_FILE_}" | grep '\.efi')" ]]; then
-			sudo install -D -m0644 "/boot/$(basename "${_FILE_}")" "/boot/efi/Kernels/$(basename "${_FILE_}")" || true
-		elif [[ "$(file "${_FILE_}" | grep 'DOS executable')" ]]; then
-			sudo install -D -m0644 "/boot/$(basename "${_FILE_}")" "/boot/efi/Kernels/$(basename "${_FILE_}").efi" || true
-		else
-			sudo install -D -m0644 "/boot/$(basename "${_FILE_}")" "/boot/efi/Kernels/$(basename "${_FILE_}")" || true
+		if [[ -f "${_FILE_}" ]]; then
+			_BASENAME="$(basename "${_FILE_}")"
+			
+			dd if="/boot/${_BASENAME}" of="/tmp/${_BASENAME}_check.bin" bs=512 count=1
+			
+			if [[ "$(file "/tmp/${_BASENAME}_check.bin" | grep 'PE32+ executable (EFI application) x86-64')" ]]; then
+				if [[ ! "$(grep '\.efi' "${_BASENAME}")" ]]; then
+					sudo install -D -m0644 "/boot/${_BASENAME}" "/boot/efi/Kernels/${_BASENAME}.efi" || true
+				fi
+			else
+				sudo install -D -m0644 "/boot/${_BASENAME}" "/boot/efi/Kernels/${_BASENAME}" || true
+			fi
+			
+			sudo rm -f "/tmp/${_BASENAME}_check.bin" || true
 		fi
 	done
 	
