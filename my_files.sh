@@ -258,7 +258,7 @@ _COPY_UEFI_BOOTLOADER_FILES() {
 	[[ -d "${_DEST_DIR}/" ]] && _SUDO_COPY_FILE
 	
 	_SOURCE_FILE="refind_uefi_linux.conf"
-	_DEST_DIR="${_UEFI_SYS_PART_DIR}/arch_refind/"
+	_DEST_DIR="${_UEFI_SYS_PART_DIR}/linux_kernels/"
 	_DEST_FILE="linux.conf"
 	[[ -d "${_DEST_DIR}/" ]] && _SUDO_COPY_FILE
 	
@@ -321,11 +321,12 @@ _COPY_EFISTUB_KERNELS_UEFISYS_PART() {
 	
 	echo
 	
-	sudo rm -f "/boot/efi/efi/linux_kernels"/* || true
-	sudo rm -rf "/boot/efi/efi/linux_kernels/no_efistub"/ || true
-	sudo rm -rf "/boot/efi/Kernels"/ || true
+	_UEFI_SYS_PART_DIR="/boot/efi/efi"
 	
-	mkdir -p "/boot/efi/efi/linux_kernels"/ || true
+	echo
+	
+	sudo rm -rf "${_UEFI_SYS_PART_DIR}/linux_kernels"/ || true
+	sudo install -d "${_UEFI_SYS_PART_DIR}/linux_kernels"/ || true
 	
 	echo
 	
@@ -337,17 +338,17 @@ _COPY_EFISTUB_KERNELS_UEFISYS_PART() {
 			
 			if [[ "$(file "/tmp/${_BASENAME}_check.bin" | grep 'PE32+ executable (EFI application) x86-64')" ]]; then
 				if [[ ! "$(grep '\.efi' "${_BASENAME}")" ]]; then
-					sudo install -D -m0644 "/boot/${_BASENAME}" "/boot/efi/efi/linux_kernels/${_BASENAME}.efi" || true
+					sudo install -D -m0644 "/boot/${_BASENAME}" "${_UEFI_SYS_PART_DIR}/linux_kernels/${_BASENAME}.efi" || true
 				fi
 			else
-				sudo install -D -m0644 "/boot/${_BASENAME}" "/boot/efi/efi/linux_kernels/${_BASENAME}" || true
+				sudo install -D -m0644 "/boot/${_BASENAME}" "${_UEFI_SYS_PART_DIR}/linux_kernels/${_BASENAME}" || true
 			fi
 			
 			sudo rm -f "/tmp/${_BASENAME}_check.bin" || true
 		fi
 	done
 	
-	sudo install -D -m0644 "/boot"/init{ramfs,rd}*.img "/boot/efi/efi/linux_kernels"/ || true
+	sudo install -D -m0644 "/boot"/init{ramfs,rd}*.img "${_UEFI_SYS_PART_DIR}/linux_kernels"/ || true
 	
 	echo
 	
