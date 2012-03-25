@@ -321,11 +321,11 @@ _COPY_EFISTUB_KERNELS_UEFISYS_PART() {
 	
 	echo
 	
-	sudo rm -f "/boot/efi/efi/linux"/* || true
-	sudo rm -rf "/boot/efi/efi/linux/no_efistub"/ || true
+	sudo rm -f "/boot/efi/efi/linux_kernels"/* || true
+	sudo rm -rf "/boot/efi/efi/linux_kernels/no_efistub"/ || true
 	sudo rm -rf "/boot/efi/Kernels"/ || true
 	
-	mkdir -p "/boot/efi/efi/linux"/ || true
+	mkdir -p "/boot/efi/efi/linux_kernels"/ || true
 	
 	echo
 	
@@ -337,17 +337,17 @@ _COPY_EFISTUB_KERNELS_UEFISYS_PART() {
 			
 			if [[ "$(file "/tmp/${_BASENAME}_check.bin" | grep 'PE32+ executable (EFI application) x86-64')" ]]; then
 				if [[ ! "$(grep '\.efi' "${_BASENAME}")" ]]; then
-					sudo install -D -m0644 "/boot/${_BASENAME}" "/boot/efi/efi/linux/${_BASENAME}.efi" || true
+					sudo install -D -m0644 "/boot/${_BASENAME}" "/boot/efi/efi/linux_kernels/${_BASENAME}.efi" || true
 				fi
 			else
-				sudo install -D -m0644 "/boot/${_BASENAME}" "/boot/efi/efi/linux/${_BASENAME}" || true
+				sudo install -D -m0644 "/boot/${_BASENAME}" "/boot/efi/efi/linux_kernels/${_BASENAME}" || true
 			fi
 			
 			sudo rm -f "/tmp/${_BASENAME}_check.bin" || true
 		fi
 	done
 	
-	sudo install -D -m0644 "/boot"/init{ramfs,rd}*.img "/boot/efi/efi/linux"/ || true
+	sudo install -D -m0644 "/boot"/init{ramfs,rd}*.img "/boot/efi/efi/linux_kernels"/ || true
 	
 	echo
 	
