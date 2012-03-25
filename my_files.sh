@@ -336,12 +336,16 @@ _COPY_EFISTUB_KERNELS_UEFISYS_PART() {
 			
 			dd if="/boot/${_BASENAME}" of="/tmp/${_BASENAME}_check.bin" bs=512 count=1
 			
+			echo
+			
 			if [[ "$(file "/tmp/${_BASENAME}_check.bin" | grep 'PE32+ executable (EFI application) x86-64')" ]]; then
 				if [[ ! "$(grep '\.efi' "${_BASENAME}")" ]]; then
 					sudo install -D -m0644 "/boot/${_BASENAME}" "${_UEFI_SYS_PART_DIR}/linux_kernels/${_BASENAME}.efi" || true
+					echo
 				fi
 			else
 				sudo install -D -m0644 "/boot/${_BASENAME}" "${_UEFI_SYS_PART_DIR}/linux_kernels/${_BASENAME}" || true
+				echo
 			fi
 			
 			sudo rm -f "/tmp/${_BASENAME}_check.bin" || true
