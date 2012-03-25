@@ -259,7 +259,7 @@ _COPY_UEFI_BOOTLOADER_FILES() {
 	
 	_SOURCE_FILE="refind_uefi_linux.conf"
 	_DEST_DIR="${_UEFI_SYS_PART_DIR}/linux_kernels/"
-	_DEST_FILE="linux.conf"
+	_DEST_FILE="refind_linux.conf"
 	[[ -d "${_DEST_DIR}/" ]] && _SUDO_COPY_FILE
 	
 	echo
@@ -407,7 +407,7 @@ _COPY_BIOS_BOOTLOADER_FILES
 
 echo
 
-_COPY_UEFI_BOOTLOADER_FILES
+_COPY_EFISTUB_KERNELS_UEFISYS_PART
 
 echo
 
@@ -415,11 +415,11 @@ _COPY_UEFI_SHELL_FILES
 
 echo
 
-_PACMAN
+_COPY_UEFI_BOOTLOADER_FILES
 
 echo
 
-_COPY_EFISTUB_KERNELS_UEFISYS_PART
+_PACMAN
 
 echo
 
