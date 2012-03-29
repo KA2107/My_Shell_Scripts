@@ -154,6 +154,10 @@ _APPLY_CHANGES() {
 	
 	echo
 	
+	## Fix GCC 4.7 error - gcc: error: unrecognized command line option ‘-melf_x86_64’ 
+	## Fix from https://lists.gnu.org/archive/html/grub-devel/2012-03/msg00165.html
+	sed 's|-melf_x86_64 |-Wl,-melf_x86_64 |g' -i "${EDK_TOOLS_PATH}/Conf/tools_def.template" || true
+	
 	## Remove GCC -g debug option and add -0s -mabi=ms
 	sed 's|DEFINE GCC_ALL_CC_FLAGS            = -g |DEFINE GCC_ALL_CC_FLAGS            = -Os -mabi=ms |g' -i "${EDK_TOOLS_PATH}/Conf/tools_def.template" || true
 	sed 's|DEFINE GCC44_ALL_CC_FLAGS            = -g |DEFINE GCC44_ALL_CC_FLAGS            = -Os -mabi=ms |g' -i "${EDK_TOOLS_PATH}/Conf/tools_def.template" || true
