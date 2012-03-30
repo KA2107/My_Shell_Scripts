@@ -60,6 +60,13 @@ _COMPILE_ISO9660() {
 	
 	echo
 	
+	rm -f "${_UDK_DIR}/VBoxPkg/Include/VBox" || true
+	rm -f "${_UDK_DIR}/VBoxPkg/Include/iprt" || true
+	ln -s "${_SOURCE_CODES_DIR}/Virtual_Machines/VirtualBox_SVN_Mirror_GIT/include/VBox" "${_UDK_DIR}/VBoxPkg/Include/VBox" || true
+	ln -s "${_SOURCE_CODES_DIR}/Virtual_Machines/VirtualBox_SVN_Mirror_GIT/include/iprt" "${_UDK_DIR}/VBoxPkg/Include/iprt" || true
+	
+	echo
+	
 	touch "${_UDK_DIR}/VBoxPkg/VBoxOSELogo/ose_logo.bmp" || true
 	sed 's|VBoxPkg/VBoxPUELLogo/puel_logo.bmp|VBoxPkg/VBoxOSELogo/ose_logo.bmp|g' -i "${_UDK_DIR}/VBoxPkg/VBoxPkg.fdf" || true
 	
