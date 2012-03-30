@@ -4,7 +4,7 @@ set -x -e
 
 _WD="${PWD}/"
 
-export _SOURCE_CODES_DIR="/media/Source_Codes/Source_Codes/"
+export _SOURCE_CODES_DIR="/media/Source_Codes_Partition/Source_Codes/"
 export _SCRIPTS_DIR="${_SOURCE_CODES_DIR}/My_Shell_Scripts/"
 
 export _GRUB_SCRIPTS_DIR="${_SCRIPTS_DIR}/grub/"
