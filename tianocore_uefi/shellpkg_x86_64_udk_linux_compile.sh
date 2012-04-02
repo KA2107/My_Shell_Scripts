@@ -34,10 +34,6 @@ _COMPILE_SHELLPKG() {
 	
 	echo
 	
-	_CORRECT_WERROR
-	
-	echo
-	
 	_APPLY_PATCHES
 	
 	echo

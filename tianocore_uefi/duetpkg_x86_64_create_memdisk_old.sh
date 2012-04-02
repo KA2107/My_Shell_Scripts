@@ -29,10 +29,6 @@ _CREATE_FLOPPY_MEMDISK_EMUVARIABLE() {
 	
 	echo
 	
-	_CORRECT_WERROR
-	
-	echo
-	
 	export WORKSPACE="${_UDK_DIR}/"
 	
 	echo

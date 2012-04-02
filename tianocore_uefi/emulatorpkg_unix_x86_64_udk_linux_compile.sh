@@ -34,10 +34,6 @@ _COMPILE_EMULATORPKG_UNIX_X86_64() {
 	
 	echo
 	
-	_CORRECT_WERROR
-	
-	echo
-	
 	_APPLY_PATCHES
 	
 	echo

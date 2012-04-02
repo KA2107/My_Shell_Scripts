@@ -34,10 +34,6 @@ _COMPILE_ISO9660() {
 	
 	echo
 	
-	_CORRECT_WERROR
-	
-	echo
-	
 	_APPLY_PATCHES
 	
 	echo

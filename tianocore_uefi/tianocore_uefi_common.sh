@@ -92,18 +92,6 @@ _COMPILE_BASETOOLS_MANUAL() {
 	
 }
 
-_CORRECT_WERROR() {
-	
-	echo
-	
-	# sed 's|-Werror |-Wno-error -Wno-unused-but-set-variable |g' -i "${EDK_TOOLS_PATH}/Source/C/Makefiles/header.makefile"
-	# sed 's|-Werror |-Wno-error -Wno-unused-but-set-variable |g' -i "${EDK_TOOLS_PATH}/Conf/tools_def.template"
-	# sed 's|--64 | |g' -i "${EDK_TOOLS_PATH}/Conf/tools_def.template"
-	
-	echo
-	
-}
-
 _SET_PYTHON2() {
 	
 	echo
@@ -117,9 +105,11 @@ _SET_PYTHON2() {
 	
 	echo
 	
-	sed 's|python |python2 |g' -i "${EDK_TOOLS_PATH}/BinWrappers/PosixLike/RunToolFromSource"
-	sed 's|python |python2 |g' -i "${EDK_TOOLS_PATH}/BinWrappers/PosixLike/RunBinToolFromBuildDir"
-	sed 's|python |python2 |g' -i "${EDK_TOOLS_PATH}/BinWrappers/PosixLike/GenDepex"
+	sed 's|python |python2 |g' -i "${EDK_TOOLS_PATH}/BinWrappers/PosixLike"/* || true
+	
+	# sed 's|python |python2 |g' -i "${EDK_TOOLS_PATH}/BinWrappers/PosixLike/RunToolFromSource"
+	# sed 's|python |python2 |g' -i "${EDK_TOOLS_PATH}/BinWrappers/PosixLike/RunBinToolFromBuildDir"
+	# sed 's|python |python2 |g' -i "${EDK_TOOLS_PATH}/BinWrappers/PosixLike/GenDepex"
 	
 	echo
 	
@@ -154,14 +144,26 @@ _APPLY_CHANGES() {
 	
 	echo
 	
+	sed 's|-Werror |-Wno-error -Wno-unused-but-set-variable |g' -i "${EDK_TOOLS_PATH}/Source/C/Makefiles/header.makefile" || true
+	sed 's|-Werror |-Wno-error -Wno-unused-but-set-variable |g' -i "${EDK_TOOLS_PATH}/Conf/tools_def.template" || true
+	
+	echo
+	
 	## Fix GCC 4.7 error - gcc: error: unrecognized command line option ‘-melf_x86_64’ 
 	## Fix from https://lists.gnu.org/archive/html/grub-devel/2012-03/msg00165.html
-	sed 's| -melf_x86_64| -Wl,-melf_x86_64|g' -i "${EDK_TOOLS_PATH}/Conf/tools_def.template" || true
-	sed 's| -melf_x86_64 | -Wl,-melf_x86_64 |g' -i "${EDK_TOOLS_PATH}/Conf/tools_def.template" || true
+	# sed 's| -m elf_x86_64| -melf_x86_64|g' -i "${EDK_TOOLS_PATH}/Conf/tools_def.template" || true
+	sed 's| -m64 --64 -melf_x86_64| -m64|g' -i "${EDK_TOOLS_PATH}/Conf/tools_def.template" || true
+	sed 's|--64 | |g' -i "${EDK_TOOLS_PATH}/Conf/tools_def.template" || true
+	sed 's| -m64 -melf_x86_64| -m64|g' -i "${EDK_TOOLS_PATH}/Conf/tools_def.template" || true
+	# sed 's| -melf_x86_64| -Wl,-melf_x86_64|g' -i "${EDK_TOOLS_PATH}/Conf/tools_def.template" || true
+	
+	echo
 	
 	## Remove GCC -g debug option and add -0s -mabi=ms
 	sed 's|DEFINE GCC_ALL_CC_FLAGS            = -g |DEFINE GCC_ALL_CC_FLAGS            = -Os -mabi=ms |g' -i "${EDK_TOOLS_PATH}/Conf/tools_def.template" || true
 	sed 's|DEFINE GCC44_ALL_CC_FLAGS            = -g |DEFINE GCC44_ALL_CC_FLAGS            = -Os -mabi=ms |g' -i "${EDK_TOOLS_PATH}/Conf/tools_def.template" || true
+	
+	echo
 	
 	## DuetPkg
 	# sed 's|#define EFI_PAGE_BASE_OFFSET_IN_LDR 0x70000|#define EFI_PAGE_BASE_OFFSET_IN_LDR 0x80000|g' -i "${EDK_TOOLS_PATH}/Source/C/GenPage/GenPage.c" || true
