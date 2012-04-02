@@ -52,6 +52,9 @@ echo
 
 _APPLY_PATCHES() {
 	
+	patch -Np0 -i "${_WD_OUTER}/grub_gcc_4.7_fix_compile.patch"
+	echo
+	
 	patch -Np1 -i "${_WD_OUTER}/archlinux_grub_mkconfig_fixes.patch"
 	echo
 	
