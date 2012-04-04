@@ -381,6 +381,27 @@ _COPY_EFISTUB_KERNELS_UEFISYS_PART() {
 	
 }
 
+_REFIND_UEFI() {
+	
+	echo
+	
+	_UEFI_SYS_PART_DIR="/boot/efi/efi"
+	
+	echo
+	
+	sudo rm -f "${_UEFI_SYS_PART_DIR}/boot/bootx64.efi" || true
+	sudo rm -f "${_UEFI_SYS_PART_DIR}/boot/refind.conf" || true
+	sudo rm -f "${_UEFI_SYS_PART_DIR}/boot/grub.cfg" || true
+	
+	echo
+	
+	sudo install -D -m0644 "${_UEFI_SYS_PART_DIR}/arch_refind/refindx64.efi" "${_UEFI_SYS_PART_DIR}/boot/bootx64.efi"
+	sudo install -D -m0644 "${_UEFI_SYS_PART_DIR}/arch_refind/refind.conf" "${_UEFI_SYS_PART_DIR}/boot/refind.conf"
+	
+	echo
+	
+}
+
 _PACMAN() {
 	
 	echo
@@ -439,6 +460,10 @@ _COPY_UEFI_SHELL_FILES
 echo
 
 _COPY_UEFI_BOOTLOADER_FILES
+
+echo
+
+_REFIND_UEFI
 
 echo
 
