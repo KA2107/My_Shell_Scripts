@@ -39,6 +39,9 @@ _RUN()
 				git reset --hard
 				echo
 				
+				bzr lp-login "${_LAUNCHPAD_USER}"
+				echo
+				
 				git bzr sync bzr/master
 				echo
 				

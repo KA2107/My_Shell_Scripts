@@ -16,6 +16,9 @@ _RUN()
 					echo "BZR - ${PWD}"
 					echo
 					
+					bzr lp-login "${_LAUNCHPAD_USER}"
+					echo
+					
 					bzr pull
 					echo
 				fi
