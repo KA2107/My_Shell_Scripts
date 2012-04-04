@@ -325,8 +325,8 @@ _COPY_EFISTUB_KERNELS_UEFISYS_PART() {
 	
 	echo
 	
-	sudo rm -rf "${_UEFI_SYS_PART_DIR}/linux_kernels"/ || true
-	sudo install -d "${_UEFI_SYS_PART_DIR}/linux_kernels"/ || true
+	sudo rm -rf "${_UEFI_SYS_PART_DIR}/arch_linux_core"/ || true
+	sudo install -d "${_UEFI_SYS_PART_DIR}/arch_linux_core"/ || true
 	
 	echo
 	
@@ -340,11 +340,11 @@ _COPY_EFISTUB_KERNELS_UEFISYS_PART() {
 			
 			if [[ "$(file "/tmp/${_BASENAME}_check.bin" | grep 'PE32+ executable (EFI application) x86-64')" ]]; then
 				if [[ ! "$(grep '\.efi' "${_BASENAME}")" ]]; then
-					sudo install -D -m0644 "/boot/${_BASENAME}" "${_UEFI_SYS_PART_DIR}/linux_kernels/${_BASENAME}.efi" || true
+					sudo install -D -m0644 "/boot/${_BASENAME}" "${_UEFI_SYS_PART_DIR}/arch_linux_core/${_BASENAME}.efi" || true
 					echo
 				fi
 			else
-				sudo install -D -m0644 "/boot/${_BASENAME}" "${_UEFI_SYS_PART_DIR}/linux_kernels/${_BASENAME}" || true
+				sudo install -D -m0644 "/boot/${_BASENAME}" "${_UEFI_SYS_PART_DIR}/arch_linux_core/${_BASENAME}" || true
 				echo
 			fi
 			
@@ -352,9 +352,32 @@ _COPY_EFISTUB_KERNELS_UEFISYS_PART() {
 		fi
 	done
 	
-	sudo install -D -m0644 "/boot"/init{ramfs,rd}*.img "${_UEFI_SYS_PART_DIR}/linux_kernels"/ || true
+	sudo install -D -m0644 "/boot"/init{ramfs,rd}*.img "${_UEFI_SYS_PART_DIR}/arch_linux_core"/ || true
 	
 	echo
+	
+	sudo install -D -m0644 "${_UEFI_SYS_PART_DIR}/arch_linux_core"/vmlinuz-{linux,ARCH-core}.efi
+	sudo install -D -m0644 "${_UEFI_SYS_PART_DIR}/arch_linux_core"/initramfs-{linux,ARCH-core}.img
+	sudo install -D -m0644 "${_UEFI_SYS_PART_DIR}/arch_linux_core"/initramfs-{linux,ARCH-core}-fallback.img
+	sudo rm -f "${_UEFI_SYS_PART_DIR}/arch_linux_core"/vmlinuz-linux.efi
+	sudo rm -f "${_UEFI_SYS_PART_DIR}/arch_linux_core"/initramfs-linux{,-fallback}.img
+	
+	echo
+	
+	sudo rm -rf "${_UEFI_SYS_PART_DIR}/arch_linux_mainline"/ || true
+	sudo install -d "${_UEFI_SYS_PART_DIR}/arch_linux_mainline"/ || true
+	
+	echo
+	
+	sudo install -D -m0644 "${_UEFI_SYS_PART_DIR}/arch_linux_core"/vmlinuz-linux-mainline.efi "${_UEFI_SYS_PART_DIR}/arch_linux_mainline"/vmlinuz-arch-mainline.efi
+	sudo install -D -m0644 "${_UEFI_SYS_PART_DIR}/arch_linux_core"/initramfs-linux-mainline.img "${_UEFI_SYS_PART_DIR}/arch_linux_mainline"/initramfs-arch-mainline.img
+	sudo install -D -m0644 "${_UEFI_SYS_PART_DIR}/arch_linux_core"/initramfs-linux-mainline-fallback.img "${_UEFI_SYS_PART_DIR}/arch_linux_mainline"/initramfs-arch-mainline-fallback.img
+	sudo rm -f "${_UEFI_SYS_PART_DIR}/arch_linux_core"/vmlinuz-linux-mainline.efi
+	sudo rm -f "${_UEFI_SYS_PART_DIR}/arch_linux_core"/initramfs-linux-mainline{,-fallback}.img
+	
+	echo
+	
+	# $(sudo pacman -Qi linux | grep 'Version' | awk '{print $3}')
 	
 }
 
