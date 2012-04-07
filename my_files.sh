@@ -296,7 +296,7 @@ _COPY_UEFI_SHELL_FILES() {
 	_SOURCE_FILE="Shell.efi"
 	_DEST_FILE="shellx64.efi"
 	
-	_DEST_DIR="${_UEFI_SYS_PART_DIR}/shell/"
+	_DEST_DIR="${_UEFI_SYS_PART_DIR}/tools/"
 	[[ -d "${_DEST_DIR}/" ]] && _SUDO_COPY_FILE
 	
 	_DEST_DIR="/media/Data_3/Operating_Systems/Unix_Based/Linux/Archlinux/Archboot/"
@@ -306,7 +306,7 @@ _COPY_UEFI_SHELL_FILES() {
 	
 	_SOURCE_DIR="${_TIANOCORE_UEFI_SHELL_1_PATH}"
 	_SOURCE_FILE="Shell_Full.efi"
-	_DEST_DIR="${_UEFI_SYS_PART_DIR}/shell/"
+	_DEST_DIR="${_UEFI_SYS_PART_DIR}/tools/"
 	_DEST_FILE="shellx64_old.efi"
 	[[ -d "${_DEST_DIR}/" ]] && _SUDO_COPY_FILE
 	
