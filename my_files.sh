@@ -236,24 +236,24 @@ _COPY_UEFI_BOOTLOADER_FILES() {
 	[[ -d "${_DEST_DIR}/" ]] && _SUDO_COPY_FILE
 	
 	_SOURCE_FILE="grub-legacy_uefi.conf"
-	_DEST_DIR="${_UEFI_SYS_PART_DIR}/arch_grub-legacy/"
+	_DEST_DIR="${_UEFI_SYS_PART_DIR}/arch/grub-legacy/"
 	_DEST_FILE="grub-legacy-x64.conf"
 	[[ -d "${_DEST_DIR}/" ]] && _SUDO_COPY_FILE
 	
 	_SOURCE_FILE="elilo_uefi.conf"
-	_DEST_DIR="${_UEFI_SYS_PART_DIR}/arch_elilo/"
+	_DEST_DIR="${_UEFI_SYS_PART_DIR}/arch/elilo/"
 	_DEST_FILE="elilo.conf"
 	[[ -d "${_DEST_DIR}/" ]] && _SUDO_COPY_FILE
 	
 	_SOURCE_FILE="efilinux_uefi.cfg"
-	_DEST_DIR="${_UEFI_SYS_PART_DIR}/arch_efilinux/"
+	_DEST_DIR="${_UEFI_SYS_PART_DIR}/arch/efilinux/"
 	_DEST_FILE="efilinux.cfg"
 	[[ -d "${_DEST_DIR}/" ]] && _SUDO_COPY_FILE
 	
 	_SOURCE_DIR="${_BOOTLOADER_CONFIG_FILES_DIR}/UEFI/refind_uefi"
 	
 	_SOURCE_FILE="refind_uefi.conf"
-	_DEST_DIR="${_UEFI_SYS_PART_DIR}/arch_refind/"
+	_DEST_DIR="${_UEFI_SYS_PART_DIR}/arch/refind/"
 	_DEST_FILE="refind.conf"
 	[[ -d "${_DEST_DIR}/" ]] && _SUDO_COPY_FILE
 	
@@ -401,9 +401,9 @@ _REFIND_UEFI() {
 	
 	echo
 	
-	sudo install -D -m0644 "${_UEFI_SYS_PART_DIR}/arch_refind/refindx64.efi" "${_UEFI_SYS_PART_DIR}/boot/bootx64.efi"
-	sudo install -D -m0644 "${_UEFI_SYS_PART_DIR}/arch_refind/refind.conf" "${_UEFI_SYS_PART_DIR}/boot/refind.conf"
-	sudo cp -r "${_UEFI_SYS_PART_DIR}/arch_refind/icons" "${_UEFI_SYS_PART_DIR}/boot/icons"
+	sudo install -D -m0644 "${_UEFI_SYS_PART_DIR}/arch/refind/refindx64.efi" "${_UEFI_SYS_PART_DIR}/boot/bootx64.efi"
+	sudo install -D -m0644 "${_UEFI_SYS_PART_DIR}/arch/refind/refind.conf" "${_UEFI_SYS_PART_DIR}/boot/refind.conf"
+	sudo cp -r "${_UEFI_SYS_PART_DIR}/arch/refind/icons" "${_UEFI_SYS_PART_DIR}/boot/icons"
 	
 	echo
 	
