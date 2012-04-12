@@ -8,7 +8,7 @@ _WD="${_SOURCE_CODES_DIR}/Firmware/UEFI/TianoCore_Sourceforge"
 
 source "${_WD}/tianocore_uefi_duetpkg_common.sh"
 
-_UDK_BUILD_OUTER_DIR="${_UDK_DIR}/Build/DuetPkgX64/"
+_UDK_BUILD_OUTER_DIR="${_UDK_DIR}/Build/OvmfX64/"
 _UDK_BUILD_DIR="${_UDK_BUILD_OUTER_DIR}/RELEASE_GCC46/"
 
 _ISO9660_BUILD_DIR="${_BACKUP_BUILDS_DIR}/ISO9660_BUILD"
@@ -47,11 +47,11 @@ _COMPILE_ISO9660() {
 	echo
 	
 	sed 's|TARGET_ARCH           = IA32|TARGET_ARCH           = X64|g' -i "${_UDK_DIR}/Conf/target.txt" || true
-	sed 's|ACTIVE_PLATFORM       = Nt32Pkg/Nt32Pkg.dsc|ACTIVE_PLATFORM       = DuetPkg/DuetPkgX64.dsc|g' -i "${_UDK_DIR}/Conf/target.txt" || true
+	sed 's|ACTIVE_PLATFORM       = Nt32Pkg/Nt32Pkg.dsc|ACTIVE_PLATFORM       = OvmfPkg/OvmfPkgX64.dsc|g' -i "${_UDK_DIR}/Conf/target.txt" || true
 	
 	echo
 	
-	sed 's|^  # VBoxPkg/VBoxFsDxe/VBoxIso9660.inf|  VBoxPkg/VBoxFsDxe/VBoxIso9660.inf|g' -i "${_UDK_DIR}/DuetPkg/DuetPkgX64.dsc" || true
+	sed 's|^  # VBoxPkg/VBoxFsDxe/VBoxIso9660.inf|  VBoxPkg/VBoxFsDxe/VBoxIso9660.inf|g' -i "${_UDK_DIR}/OvmfPkg/OvmfPkgX64.dsc" || true
 	sed 's|DSC_ SPECIFICATION|DSC_SPECIFICATION|g' -i "${_UDK_DIR}/VBoxPkg/VBoxPkgX64.dsc" || true
 	
 	echo
@@ -68,7 +68,7 @@ _COMPILE_ISO9660() {
 	
 	echo
 	
-	build -p "${_UDK_DIR}/DuetPkg/DuetPkgX64.dsc" -m "${_UDK_DIR}/VBoxPkg/VBoxFsDxe/VBoxIso9660.inf" -a X64 -b RELEASE -t GCC46
+	build -p "${_UDK_DIR}/OvmfPkg/OvmfPkgX64.dsc" -m "${_UDK_DIR}/VBoxPkg/VBoxFsDxe/VBoxIso9660.inf" -a X64 -b RELEASE -t GCC46
 	
 	echo
 	
