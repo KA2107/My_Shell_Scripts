@@ -52,6 +52,7 @@ _COMPILE_ISO9660() {
 	echo
 	
 	sed 's|^  # VBoxPkg/VBoxFsDxe/VBoxIso9660.inf|  VBoxPkg/VBoxFsDxe/VBoxIso9660.inf|g' -i "${_UDK_DIR}/OvmfPkg/OvmfPkgX64.dsc" || true
+	sed 's| -mno-mmx -mno-sse| -mno-mmx -mno-sse -DHOST_EFI|g' -i "${_UDK_DIR}/OvmfPkg/OvmfPkgX64.dsc" || true
 	sed 's|DSC_ SPECIFICATION|DSC_SPECIFICATION|g' -i "${_UDK_DIR}/VBoxPkg/VBoxPkgX64.dsc" || true
 	
 	echo
