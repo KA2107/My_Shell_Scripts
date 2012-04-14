@@ -401,6 +401,13 @@ _REFIND_UEFI() {
 	
 	echo
 	
+	sudo rm -f "${_UEFI_SYS_PART_DIR}/arch/refind/icons/os_arch_linux_core.icns" || true
+	sudo rm -f "${_UEFI_SYS_PART_DIR}/arch/refind/icons/os_arch_linux_mainline.icns" || true
+	sudo install -D -m0644 "${_UEFI_SYS_PART_DIR}/arch/refind/icons/os_arch.icns" "${_UEFI_SYS_PART_DIR}/arch/refind/icons/os_arch_linux_core.icns"
+	sudo install -D -m0644 "${_UEFI_SYS_PART_DIR}/arch/refind/icons/os_arch.icns" "${_UEFI_SYS_PART_DIR}/arch/refind/icons/os_arch_linux_mainline.icns"
+	
+	echo
+	
 	sudo install -D -m0644 "${_UEFI_SYS_PART_DIR}/arch/refind/refindx64.efi" "${_UEFI_SYS_PART_DIR}/boot/bootx64.efi"
 	sudo install -D -m0644 "${_UEFI_SYS_PART_DIR}/arch/refind/refind.conf" "${_UEFI_SYS_PART_DIR}/boot/refind.conf"
 	sudo cp -r "${_UEFI_SYS_PART_DIR}/arch/refind/icons" "${_UEFI_SYS_PART_DIR}/boot/icons"
