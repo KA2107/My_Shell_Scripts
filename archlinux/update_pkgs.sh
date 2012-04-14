@@ -6,7 +6,7 @@ yaourt -Sy
 
 echo
 
-"${PWD}/unofficial_repos_pacman_git.sh"
+unofficial_repos_pacman_git.sh
 
 echo
 

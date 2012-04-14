@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 
-package="${1}"
-libname="${2}"
+_package="${1}"
+_libname="${2}"
 
 echo
 
 set -x
 
-for check in $(pacman -Ql ${package} | sed "s|${package} ||g" | grep '\.so') ; do
-    echo && ldd "${check}" | grep -i "${libname}"
+for _check in $(pacman -Ql ${_package} | sed "s|${_package} ||g" | grep '\.so') ; do
+    echo && ldd "${_check}" | grep -i "${_libname}"
 done
 
 echo

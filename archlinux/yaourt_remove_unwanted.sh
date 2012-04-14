@@ -14,6 +14,16 @@ _RUN()
 			rm -rf "${PWD}/pkg" || true
 			rm "${PWD}/${_source_repo}/${_source_repo}"*.tar.* || true
 			echo
+			
+			rm -f "${PWD}"/CMakeLists.txt.user* || true
+			
+			for _CMAKE_ in cmake_install.cmake cmake_uninstall.cmake Makefile CMakeFiles CMakeCache.txt CPackConfig.cmake CPackSourceConfig.cmake ; do
+				echo
+				rm -f "${PWD}/${_CMAKE_}" || true
+				echo
+			done
+			
+			echo
 		fi
 		
 		if [[ -d "${PWD}/${_source_repo}" ]] && [[ "${_source_repo}" != "." ]] && [[ "${_source_repo}" != ".." ]] && [[ "${_source_repo}" != 'lost+found' ]]; then

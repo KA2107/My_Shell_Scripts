@@ -14,7 +14,7 @@ echo
 
 echo
 
-sudo aria2c --dir="/var/lib/pacman/sync/" --out="nightly.db" "http://files.shadowice.org/nightly/x86_64/nightly.db.tar.gz" || true
+# sudo aria2c --dir="/var/lib/pacman/sync/" --out="nightly.db" "http://files.shadowice.org/nightly/x86_64/nightly.db.tar.gz" || true
 
 echo
 

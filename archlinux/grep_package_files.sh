@@ -7,13 +7,11 @@ echo
 _pattern="${1}"
 _package="${2}"
 
-if [[ "${_pattern}" == '' ]]
-then
+if [[ "${_pattern}" == '' ]]; then
 	exit 1
 fi
 
-if [[ "${_package}" == '' ]]
-then
+if [[ "${_package}" == '' ]]; then
 	exit 2
 fi
 
