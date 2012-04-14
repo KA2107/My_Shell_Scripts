@@ -35,18 +35,18 @@ _COPY_UEFI_SHELL_UEFI_SYS_PART() {
 	
 	echo
 	
-	sudo rm -f "${_UEFI_SYS_PART}/efi/shell/shellx64.efi" || true
-	sudo rm -f "${_UEFI_SYS_PART}/efi/shell/shellx64_old.efi" || true
+	sudo rm -f "${_UEFI_SYS_PART}/efi/tools/shellx64.efi" || true
+	sudo rm -f "${_UEFI_SYS_PART}/efi/tools/shellx64_old.efi" || true
 	
 	echo
 	
 	if [[ -e "${_BACKUP_BUILDS_DIR}/SHELLPKG_BUILD/X64/Shell.efi" ]] && [[ "$(file "${_BACKUP_BUILDS_DIR}/SHELLPKG_BUILD/X64/Shell.efi" | grep 'executable')" ]]; then
-		sudo install -D -m0644 "${_BACKUP_BUILDS_DIR}/SHELLPKG_BUILD/X64/Shell.efi" "${_UEFI_SYS_PART}/efi/shell/shellx64.efi"
+		sudo install -D -m0644 "${_BACKUP_BUILDS_DIR}/SHELLPKG_BUILD/X64/Shell.efi" "${_UEFI_SYS_PART}/efi/tools/shellx64.efi"
 	else
-		sudo install -D -m0644 "${_UDK_DIR}/ShellBinPkg/UefiShell/X64/Shell.efi" "${_UEFI_SYS_PART}/efi/shell/shellx64.efi"
+		sudo install -D -m0644 "${_UDK_DIR}/ShellBinPkg/UefiShell/X64/Shell.efi" "${_UEFI_SYS_PART}/efi/tools/shellx64.efi"
 	fi
 	
-	sudo install -D -m0644 "${_UDK_DIR}/EdkShellBinPkg/FullShell/X64/Shell_Full.efi" "${_UEFI_SYS_PART}/efi/shell/shellx64_old.efi"
+	sudo install -D -m0644 "${_UDK_DIR}/EdkShellBinPkg/FullShell/X64/Shell_Full.efi" "${_UEFI_SYS_PART}/efi/tools/shellx64_old.efi"
 	
 	echo
 	
