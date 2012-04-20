@@ -19,10 +19,10 @@ if [[ \
 	]]
 then
 	echo
-	echo '1 for EFI-MAIN alone'
-	echo '2 for EFI-EXP alone'
-	echo '3 for BIOS-MAIN alone'
-	echo '4 for BIOS-EXP alone'
+	echo '1 for UEFI-MAINLINE'
+	echo '2 for UEFI-EXPERIMENTAL'
+	echo '3 for BIOS-MAINLINE'
+	echo '4 for BIOS-EXPERIMENTAL'
 	echo
 	export _PROCESS_CONTINUE_UEFI='FALSE'
 	export _PROCESS_CONTINUE_BIOS='FALSE'
