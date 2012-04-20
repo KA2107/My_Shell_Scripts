@@ -436,7 +436,7 @@ _GRUB_UEFI_SETUP_UEFISYS_BOOTDIR() {
 	echo
 	
 	## Setup the GRUB folder in the UEFI System Partition and create the grub.efi application
-	sudo "${_GRUB_UEFI_SBIN_DIR}/${_GRUB_UEFI_NAME}-install" --directory="${_GRUB_UEFI_LIB_DIR}/grub/${_TARGET_UEFI_ARCH}-efi" --target="${_TARGET_UEFI_ARCH}-efi" --root-directory="${_UEFI_SYSTEM_PART_MP}" --boot-directory="${_GRUB_UEFI_BOOTDIR}" --bootloader-id="${_GRUB_UEFI_NAME}" --recheck --debug
+	sudo "${_GRUB_UEFI_SBIN_DIR}/${_GRUB_UEFI_NAME}-install" --directory="${_GRUB_UEFI_LIB_DIR}/grub/${_TARGET_UEFI_ARCH}-efi" --target="${_TARGET_UEFI_ARCH}-efi" --efi-directory="${_UEFI_SYSTEM_PART_MP}" --boot-directory="${_GRUB_UEFI_BOOTDIR}" --bootloader-id="${_GRUB_UEFI_NAME}" --recheck --debug
 	echo
 	
 	echo
