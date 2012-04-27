@@ -47,7 +47,7 @@ _COMPILE_EMULATORPKG_UNIX_X86_64() {
 	
 	echo
 	
-	cp -r "${_UDK_BUILD_DIR}" "${_EMULATORPKG_UNIX_X86_64_DIR}"
+	cp -rf "${_UDK_BUILD_DIR}" "${_EMULATORPKG_UNIX_X86_64_DIR}"
 	
 	echo
 	

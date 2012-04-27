@@ -47,7 +47,7 @@ _COMPILE_UNIXPKG() {
 	
 	echo
 	
-	cp -r "${_UDK_BUILD_DIR}" "${_UNIXPKG_BUILD_DIR}"
+	cp -rf "${_UDK_BUILD_DIR}" "${_UNIXPKG_BUILD_DIR}"
 	
 	echo
 	

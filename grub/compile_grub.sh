@@ -64,13 +64,13 @@ _CLEAN_GRUB_SRCDIR() {
 	
 	echo
 	
-	cp -r "${_WD_OUTER}/${_GRUB_SRCDIR}/.git" "${_WD_OUTER}/.git_grub_src"
+	cp -rf "${_WD_OUTER}/${_GRUB_SRCDIR}/.git" "${_WD_OUTER}/.git_grub_src"
 	rm -rf "${_WD_OUTER}/${_GRUB_SRCDIR}"/* || true
 	rm -rf "${_WD_OUTER}/${_GRUB_SRCDIR}"/.* || true
 	echo
 	
 	if [[ ! -d "${_WD_OUTER}/${_GRUB_SRCDIR}/.git" ]]; then
-		cp -r "${_WD_OUTER}/.git_grub_src" "${_WD_OUTER}/${_GRUB_SRCDIR}/.git"
+		cp -rf "${_WD_OUTER}/.git_grub_src" "${_WD_OUTER}/${_GRUB_SRCDIR}/.git"
 	fi
 	echo
 	
@@ -104,7 +104,7 @@ _COMPILE_GRUB() {
 	_CLEAN_GRUB_SRCDIR
 	echo
 	
-	cp -r "${_WD_OUTER}/grub_extras__GIT_BZR" "${_WD_OUTER}/${_GRUB_SRCDIR}/grub_extras__GIT_BZR" || true
+	cp -rf "${_WD_OUTER}/grub_extras__GIT_BZR" "${_WD_OUTER}/${_GRUB_SRCDIR}/grub_extras__GIT_BZR" || true
 	# rm -rf "${_WD_OUTER}/${_GRUB_SRCDIR}/grub_extras__GIT_BZR/lua" || true
 	rm -rf "${_WD_OUTER}/${_GRUB_SRCDIR}/grub_extras__GIT_BZR/gpxe" || true
 	echo
@@ -148,7 +148,7 @@ if [[ "${_PROCESS_CONTINUE_UEFI}" == 'TRUE' ]]; then
 	
 	echo
 	
-	cp -r "${_WD_OUTER}/${_GRUB_SRCDIR}/GRUB_UEFI_BUILD_DIR_x86_64" "${_WD_OUTER}/GRUB_UEFI_BUILD_DIR_x86_64" || true
+	cp -rf "${_WD_OUTER}/${_GRUB_SRCDIR}/GRUB_UEFI_BUILD_DIR_x86_64" "${_WD_OUTER}/GRUB_UEFI_BUILD_DIR_x86_64" || true
 	rm -rf "${_WD_OUTER}/${_GRUB_SRCDIR}/GRUB_UEFI_BUILD_DIR_x86_64" || true
 	
 	echo
@@ -173,7 +173,7 @@ if [[ "${_PROCESS_CONTINUE_BIOS}" == 'TRUE' ]]; then
 	
 	echo
 	
-	cp -r "${_WD_OUTER}/${_GRUB_BIOS_SRCDIR}/GRUB_BIOS_BUILD_DIR" "${_WD_OUTER}/GRUB_BIOS_BUILD_DIR" || true
+	cp -rf "${_WD_OUTER}/${_GRUB_BIOS_SRCDIR}/GRUB_BIOS_BUILD_DIR" "${_WD_OUTER}/GRUB_BIOS_BUILD_DIR" || true
 	rm -rf "${_WD_OUTER}/${_GRUB_BIOS_SRCDIR}/GRUB_BIOS_BUILD_DIR" || true
 	
 	echo

@@ -410,7 +410,7 @@ _REFIND_UEFI() {
 	
 	sudo install -D -m0644 "${_UEFI_SYS_PART_DIR}/arch/refind/refindx64.efi" "${_UEFI_SYS_PART_DIR}/boot/bootx64.efi"
 	sudo install -D -m0644 "${_UEFI_SYS_PART_DIR}/arch/refind/refind.conf" "${_UEFI_SYS_PART_DIR}/boot/refind.conf"
-	sudo cp -r "${_UEFI_SYS_PART_DIR}/arch/refind/icons" "${_UEFI_SYS_PART_DIR}/boot/icons"
+	sudo cp -rf "${_UEFI_SYS_PART_DIR}/arch/refind/icons" "${_UEFI_SYS_PART_DIR}/boot/icons"
 	
 	echo
 	

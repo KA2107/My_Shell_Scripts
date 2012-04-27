@@ -47,7 +47,7 @@ _COMPILE_OVMFPKG() {
 	
 	echo
 	
-	cp -r "${_UDK_BUILD_DIR}" "${_OVMFPKG_BUILD_DIR}"
+	cp -rf "${_UDK_BUILD_DIR}" "${_OVMFPKG_BUILD_DIR}"
 	
 	echo
 	

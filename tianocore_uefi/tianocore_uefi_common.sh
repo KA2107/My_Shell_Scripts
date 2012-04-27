@@ -70,7 +70,7 @@ _COPY_BUILDTOOLS_BASETOOLS() {
 	
 	echo
 	
-	cp -r "${_UDK_BUILD_TOOLS_DIR}" "${EDK_TOOLS_PATH}"
+	cp -rf "${_UDK_BUILD_TOOLS_DIR}" "${EDK_TOOLS_PATH}"
 	
 	echo
 	

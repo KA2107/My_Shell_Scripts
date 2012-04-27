@@ -117,7 +117,7 @@ _UEFI_DUET_INSTALLER_GIT() {
 	
 	rm -rf "${_UEFI_DUET_INSTALLER_DIR}/Linux_Source" || true
 	mkdir -p "${_UEFI_DUET_INSTALLER_DIR}/Linux_Source"
-	cp -r "${_UDK_C_SOURCE_DIR}" "${_UEFI_DUET_INSTALLER_DIR}/Linux_Source/C"
+	cp -rf "${_UDK_C_SOURCE_DIR}" "${_UEFI_DUET_INSTALLER_DIR}/Linux_Source/C"
 	# chmod -R -x "${_UEFI_DUET_INSTALLER_DIR}/Linux_Source/C" || true
 	
 	echo
@@ -190,7 +190,7 @@ _DUET_MEMDISK_TOOLS_GIT() {
 	
 	rm -rf "${_DUET_MEMDISK_TOOLS_DIR}/Linux_Source" || true
 	mkdir -p "${_DUET_MEMDISK_TOOLS_DIR}/Linux_Source"
-	cp -r "${_UDK_C_SOURCE_DIR}" "${_DUET_MEMDISK_TOOLS_DIR}/Linux_Source/C"
+	cp -rf "${_UDK_C_SOURCE_DIR}" "${_DUET_MEMDISK_TOOLS_DIR}/Linux_Source/C"
 	# chmod -R -x "${_DUET_MEMDISK_TOOLS_DIR}/Linux_Source/C" || true
 	
 	echo

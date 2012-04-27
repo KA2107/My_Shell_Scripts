@@ -50,7 +50,7 @@ _COMPILE_MDEPKG() {
 	
 	echo
 	
-	cp -r "${_UDK_BUILD_DIR}" "${_MDEPKG_BUILD_DIR}"
+	cp -rf "${_UDK_BUILD_DIR}" "${_MDEPKG_BUILD_DIR}"
 	
 	echo
 	
