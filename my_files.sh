@@ -4,6 +4,8 @@ set -x -e
 
 _WD="${PWD}/"
 
+_UEFISYS_PART_DIR_="/boot/efi/EFI"
+
 export _SOURCE_CODES_DIR="/media/Source_Codes_Partition/Source_Codes/"
 export _SCRIPTS_DIR="${_SOURCE_CODES_DIR}/My_Shell_Scripts/"
 
@@ -221,7 +223,7 @@ _COPY_UEFI_BOOTLOADER_FILES() {
 	
 	echo
 	
-	_UEFI_SYS_PART_DIR="/boot/efi/efi"
+	_UEFI_SYS_PART_DIR="${_UEFISYS_PART_DIR_}"
 	
 	_SOURCE_DIR="${_BOOTLOADER_CONFIG_FILES_DIR}/UEFI/"
 	
@@ -283,7 +285,7 @@ _COPY_UEFI_SHELL_FILES() {
 	
 	echo
 	
-	_UEFI_SYS_PART_DIR="/boot/efi/efi"
+	_UEFI_SYS_PART_DIR="${_UEFISYS_PART_DIR_}"
 	
 	#######
 	
@@ -326,7 +328,7 @@ _COPY_EFISTUB_KERNELS_UEFISYS_PART() {
 	
 	echo
 	
-	_UEFI_SYS_PART_DIR="/boot/efi/efi"
+	_UEFI_SYS_PART_DIR="${_UEFISYS_PART_DIR_}"
 	
 	echo
 	
@@ -390,7 +392,7 @@ _REFIND_UEFI() {
 	
 	echo
 	
-	_UEFI_SYS_PART_DIR="/boot/efi/efi"
+	_UEFI_SYS_PART_DIR="${_UEFISYS_PART_DIR_}"
 	
 	echo
 	
@@ -486,6 +488,7 @@ _PACMAN
 echo
 
 unset _WD
+unset _UEFISYS_PART_DIR_
 unset _SOURCE_CODES_DIR
 unset _SCRIPTS_DIR
 unset _GRUB_SCRIPTS_DIR

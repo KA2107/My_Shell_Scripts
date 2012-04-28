@@ -19,7 +19,7 @@
 _WD="/media/Source_Codes_Partition/Source_Codes/Boot_Managers/ALL/grub/Source__GIT_BZR/"
 _OUTPUT_DIR="${_WD}/"
 
-_ACTUAL_PKGVER="2.00~beta2"
+_ACTUAL_PKGVER="2.00~beta4"
 
 _GRUB_GIT_BZR_REPO_DIR="${_WD}/grub__GIT_BZR/"
 _GRUB_GIT_BZR_EXP_REPO_DIR="${_WD}/grub_experimental__GIT_BZR/"

@@ -13,13 +13,13 @@ _GRUB_UEFI_LIB_DIR="${_GRUB_UEFI_PREFIX_DIR}/lib"
 _GRUB_UEFI_DATA_DIR="${_GRUB_UEFI_LIB_DIR}"
 _GRUB_UEFI_DATAROOT_DIR="${_GRUB_UEFI_PREFIX_DIR}/share"
 
-_GRUB_UEFI_NAME='grub_uefi_x86_64'
+_GRUB_UEFI_NAME='grub_uefi_${_TARGET_UEFI_ARCH}'
 _GRUB_UEFI_MENU_CONFIG='grub'
 
-_GRUB_UEFI_APP_PREFIX="efi/${_GRUB_UEFI_NAME}"
+_GRUB_UEFI_APP_PREFIX="EFI/${_GRUB_UEFI_NAME}"
 _GRUB_UEFI_SYSTEM_PART_DIR="${_UEFI_SYSTEM_PART_MP}/${_GRUB_UEFI_APP_PREFIX}"
 
-_GRUB_UEFI_BOOTDIR_ACTUAL="/boot/efi/efi/grub_uefi_${_TARGET_UEFI_ARCH}/"
+_GRUB_UEFI_BOOTDIR_ACTUAL="${_GRUB_UEFI_SYSTEM_PART_DIR}"
 
 set -x -e
 
@@ -99,10 +99,10 @@ if [[ -e "${_WD}/${_GRUB_UEFI_NAME}_standalone_memdisk_config.cfg" ]]; then
 fi
 echo
 
-sudo rm -f --verbose "${_UEFI_SYSTEM_PART_MP}/efi/boot/bootx64.efi"
+# sudo rm -f --verbose "${_UEFI_SYSTEM_PART_MP}/EFI/boot/bootx64.efi"
 echo
 
-sudo install -D -m0644 "${_GRUB_UEFI_SYSTEM_PART_DIR}/${_GRUB_UEFI_NAME}_standalone.efi" "${_UEFI_SYSTEM_PART_MP}/efi/boot/bootx64.efi"
+# sudo install -D -m0644 "${_GRUB_UEFI_SYSTEM_PART_DIR}/${_GRUB_UEFI_NAME}_standalone.efi" "${_UEFI_SYSTEM_PART_MP}/EFI/boot/bootx64.efi"
 echo
 
 set +x +e

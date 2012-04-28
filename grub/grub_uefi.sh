@@ -11,7 +11,7 @@
 
 ## This script has configure options specific to my requirements and my system. Please read this script fully and modify it to suite your requirements.
 
-## The "GRUB_UEFI_NAME" parameter refers to the GRUB folder name in the UEFI SYSTEM PARTITION. The final GRUB UEFI files will be installed in <UEFI_SYSTEM_PARTITION>/efi/<GRUB_UEFI_NAME>/ folder. The final GRUB UEFI Application will be <UEFI_SYSTEM_PARTITION>/efi/<GRUB_UEFI_NAME>/<GRUB_UEFI_NAME>.efi where <GRUB_UEFI_NAME> refers to the "GRUB_UEFI_NAME" parameter passed to this script.
+## The "GRUB_UEFI_NAME" parameter refers to the GRUB folder name in the UEFI SYSTEM PARTITION. The final GRUB UEFI files will be installed in <UEFI_SYSTEM_PARTITION>/EFI/<GRUB_UEFI_NAME>/ folder. The final GRUB UEFI Application will be <UEFI_SYSTEM_PARTITION>/EFI/<GRUB_UEFI_NAME>/<GRUB_UEFI_NAME>.efi where <GRUB_UEFI_NAME> refers to the "GRUB_UEFI_NAME" parameter passed to this script.
 
 ## The "GRUB_UEFI_PREFIX_DIR" parameter is not compulsory.
 
@@ -543,12 +543,12 @@ _GRUB_APPLE_EFI_HFS_BLESS() {
 
 _GRUB_UEFI_SETUP_UEFISYS_BOOT_EFI_APP() {
 	
-	if [[ ! -d "${_UEFI_SYSTEM_PART_MP}/efi/boot" ]]; then
-		sudo install -d "${_UEFI_SYSTEM_PART_MP}/efi/boot/" || true
+	if [[ ! -d "${_UEFI_SYSTEM_PART_MP}/EFI/boot" ]]; then
+		sudo install -d "${_UEFI_SYSTEM_PART_MP}/EFI/boot/" || true
 		echo
 	fi
 	
-	sudo rm -f --verbose "${_UEFI_SYSTEM_PART_MP}/efi/boot/boot${_SPEC_UEFI_ARCH_NAME}.efi" || true
+	sudo rm -f --verbose "${_UEFI_SYSTEM_PART_MP}/EFI/boot/boot${_SPEC_UEFI_ARCH_NAME}.efi" || true
 	echo
 	
 	if [[ -e "${_GRUB_UEFISYS_PART_DIR}/${_GRUB_UEFI_NAME}_standalone.efi" ]]; then
@@ -574,7 +574,7 @@ _GRUB_UEFI_SETUP_UEFISYS_BOOT_EFI_APP() {
 	
 	echo
 	
-	sudo install -D -m0644 "${_FILE_}" "${_UEFI_SYSTEM_PART_MP}/efi/boot/boot${_SPEC_UEFI_ARCH_NAME}.efi"
+	sudo install -D -m0644 "${_FILE_}" "${_UEFI_SYSTEM_PART_MP}/EFI/boot/boot${_SPEC_UEFI_ARCH_NAME}.efi"
 	unset _FILE_
 	
 	echo
@@ -598,14 +598,14 @@ EOF
 	
 	echo
 	
-	sudo rm -f --verbose "${_UEFI_SYSTEM_PART_MP}/efi/boot/${_GRUB_UEFI_MENU_CONFIG}.cfg" || true
+	sudo rm -f --verbose "${_UEFI_SYSTEM_PART_MP}/EFI/boot/${_GRUB_UEFI_MENU_CONFIG}.cfg" || true
 	echo
 	
 	if [[ -e "${_WD}/${_GRUB_UEFI_NAME}_efi_boot_config.cfg" ]]; then
-		sudo install -D -m0644 "${_WD}/${_GRUB_UEFI_NAME}_efi_boot_config.cfg" "${_UEFI_SYSTEM_PART_MP}/efi/boot/${_GRUB_UEFI_MENU_CONFIG}.cfg"
+		sudo install -D -m0644 "${_WD}/${_GRUB_UEFI_NAME}_efi_boot_config.cfg" "${_UEFI_SYSTEM_PART_MP}/EFI/boot/${_GRUB_UEFI_MENU_CONFIG}.cfg"
 		echo
 	else
-		sudo install -D -m0644 "${_GRUB_UEFISYS_PART_DIR}/${_GRUB_UEFI_MENU_CONFIG}.cfg" "${_UEFI_SYSTEM_PART_MP}/efi/boot/${_GRUB_UEFI_MENU_CONFIG}.cfg"
+		sudo install -D -m0644 "${_GRUB_UEFISYS_PART_DIR}/${_GRUB_UEFI_MENU_CONFIG}.cfg" "${_UEFI_SYSTEM_PART_MP}/EFI/boot/${_GRUB_UEFI_MENU_CONFIG}.cfg"
 		echo
 	fi
 	
@@ -689,11 +689,11 @@ if [[ "${_PROCESS_CONTINUE}" == 'TRUE' ]]; then
 		
 		echo
 		
-		sudo dos2unix -ascii --keepdate --safe --skip-symlink --oldfile "${_GRUB_UEFISYS_PART_DIR}"/*.cfg "${_UEFI_SYSTEM_PART_MP}/efi/boot"/*.cfg || true
+		sudo dos2unix -ascii --keepdate --safe --skip-symlink --oldfile "${_GRUB_UEFISYS_PART_DIR}"/*.cfg "${_UEFI_SYSTEM_PART_MP}/EFI/boot"/*.cfg || true
 		
 		echo
 		
-		sudo chmod 644 "${_GRUB_UEFISYS_PART_DIR}"/*.cfg "${_UEFI_SYSTEM_PART_MP}/efi/boot"/*.cfg || true
+		sudo chmod 644 "${_GRUB_UEFISYS_PART_DIR}"/*.cfg "${_UEFI_SYSTEM_PART_MP}/EFI/boot"/*.cfg || true
 		
 		echo
 		

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 _GRUB_UEFI_LINUX="${PWD}/grub_uefi.sh"
-_GRUB_UEFI_LINUX_MY="${_GRUB_UEFI_LINUX} x86_64 /boot/efi /boot/efi/efi grub_uefi_x86_64 /media/Data_3/grub_uefisys_x86_64_backup /media/Data_3/grub_uefi_x86_64_bootdir_backup /media/Data_3/grub_uefi_x86_64_utils_Backup /_grub_/grub_uefi_x86_64/"
+_GRUB_UEFI_LINUX_MY="${_GRUB_UEFI_LINUX} x86_64 /boot/efi /boot/efi/EFI grub_uefi_x86_64 /media/Data_3/grub_uefisys_x86_64_backup /media/Data_3/grub_uefi_x86_64_bootdir_backup /media/Data_3/grub_uefi_x86_64_utils_Backup /_grub_/grub_uefi_x86_64/"
 
 echo
 
