@@ -235,7 +235,7 @@ _GRUB_UEFI_COMPILE_STEPS() {
 	
 	echo
 	
-	## sed "s|grub.cfg|${_GRUB_UEFI_MENU_CONFIG}.cfg|g" -i "${_WD}/grub-core/normal/main.c" || true
+	# sed "s|grub.cfg|${_GRUB_UEFI_MENU_CONFIG}.cfg|g" -i "${_WD}/grub-core/normal/main.c" || true
 	echo
 	
 	"${_WD}/autogen.sh"
@@ -254,7 +254,7 @@ _GRUB_UEFI_COMPILE_STEPS() {
 	make
 	echo
 	
-	## sed "s|${_GRUB_UEFI_MENU_CONFIG}.cfg|grub.cfg|g" -i "${_WD}/grub-core/normal/main.c" || true
+	# sed "s|${_GRUB_UEFI_MENU_CONFIG}.cfg|grub.cfg|g" -i "${_WD}/grub-core/normal/main.c" || true
 	echo
 	
 }
@@ -705,20 +705,20 @@ if [[ "${_PROCESS_CONTINUE}" == 'TRUE' ]]; then
 		
 		echo
 		
-	;; # End of "y" option in the case list
+	;; ## End of "y" option in the case list
 	
 	n | N | no | NO | No)
 		echo
 		echo 'You said no. Exiting to shell.'
 		echo
-	;; # End of "n" option in the case list
+	;; ## End of "n" option in the case list
 	
-	*) # Any other input
+	*) ## Any other input
 		echo
 		echo 'Invalid answer. Exiting to shell.'
 		ehco
 	;;
-	esac # ends the case list
+	esac ## ends the case list
 	
 fi
 

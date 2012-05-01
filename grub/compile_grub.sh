@@ -126,7 +126,7 @@ _COMPILE_GRUB() {
 	
 	cp --verbose "${_GRUB_SCRIPTS_DIR}/grub_${_GRUB_PLATFORM}.sh" "${_GRUB_SCRIPTS_DIR}/grub_${_GRUB_PLATFORM}_linux_my.sh" "${_WD_OUTER}/${_GRUB_SRCDIR}/"
 	cp --verbose "${_WD_OUTER}/xman_dos2unix.sh" "${_WD_OUTER}/grub.default" "${_WD_OUTER}/${_GRUB_SRCDIR}/" || true
-	cp --verbose "${_BOOTLOADER_CONFIG_FILES_DIR}/UEFI/grub_uefi.cfg" "${_WD_OUTER}/${_GRUB_SRCDIR}/grub.cfg" || true
+	cp --verbose "${_BOOTLOADER_CONFIG_FILES_DIR}/grub_uefi.cfg" "${_WD_OUTER}/${_GRUB_SRCDIR}/grub.cfg" || true
 	echo
 	
 	# "${_WD_OUTER}/xman_dos2unix.sh" * || true
