@@ -113,7 +113,7 @@ _RUN()
 					git reset --hard
 					echo
 					
-					git checkout "remotes/origin/${_GIT_REMOTE_BRANCH}"
+					git checkout --quiet "remotes/origin/${_GIT_REMOTE_BRANCH}"
 					echo
 					
 					git branch -D "${_GIT_REMOTE_BRANCH}"
