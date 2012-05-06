@@ -104,14 +104,23 @@ _RUN()
 						_GIT_REMOTE_BRANCH='master'
 					fi
 					
+					git checkout "${_GIT_REMOTE_BRANCH}"
+					echo
+					
+					git merge "remotes/origin/${_GIT_REMOTE_BRANCH}"
+					echo
+					
+					git reset --hard
+					echo
+					
+					git checkout "remotes/origin/${_GIT_REMOTE_BRANCH}"
+					echo
+					
 					git branch -D "${_GIT_REMOTE_BRANCH}"
 					echo
 					
 					git checkout "${_GIT_REMOTE_BRANCH}"
 					echo
-					
-					# git merge "remotes/origin/${_GIT_REMOTE_BRANCH}"
-					# echo
 					
 					git reset --hard
 					echo
