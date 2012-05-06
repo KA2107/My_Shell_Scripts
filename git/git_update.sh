@@ -13,6 +13,7 @@ _RUN()
 		if [[ -d "${PWD}/${_repo}" ]] && [[ "${_repo}" == '.git' ]]; then
 			if [[ -d "${PWD}/.git/hgcheckout" ]] && [[ -d "${PWD}/.git/hgremote" ]]; then
 				echo
+				echo
 				echo "GIT HG - ${PWD}"
 				echo
 				
@@ -31,7 +32,9 @@ _RUN()
 				git reset --hard
 				echo
 				
+				echo
 			elif [[ -d "${PWD}/.git/bzr" ]]; then
+				echo
 				echo
 				echo "GIT BZR - ${PWD}"
 				echo
@@ -54,7 +57,9 @@ _RUN()
 				git reset --hard
 				echo
 				
+				echo
 			elif [[ -d "${PWD}/.git/svn" ]]; then
+				echo
 				echo
 				echo "GIT SVN - ${PWD}"
 				echo
@@ -74,8 +79,10 @@ _RUN()
 				git reset --hard
 				echo
 				
+				echo
 			else
 				if [[ -d "${PWD}/.git/refs/remotes" ]]; then
+					echo
 					echo
 					echo "GIT - ${PWD}"
 					echo
@@ -139,6 +146,8 @@ NOEXEC
 					echo
 					
 					#################
+					
+					echo
 				fi
 			fi
 			echo
