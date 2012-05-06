@@ -80,8 +80,17 @@ _RUN()
 					echo "GIT - ${PWD}"
 					echo
 					
-					git reset --hard
-					echo
+					#################
+					
+					_GIT_REMOTE_BRANCH="$(git branch -a | grep '  remotes/origin/HEAD -> origin/' | sed 's:  remotes/origin/HEAD -> origin/::g')"
+					
+					if [[ "${_GIT_REMOTE_BRANCH}" == '' ]]; then
+						_GIT_REMOTE_BRANCH='master'
+					fi
+					
+					#################
+					
+					cat << NOEXEC > /dev/null
 					
 					for check in ${_MILD_FETCH[@]}
 					do
@@ -95,14 +104,14 @@ _RUN()
 					echo
 					done
 					
+NOEXEC
 					git fetch
 					echo
 					
-					_GIT_REMOTE_BRANCH="$(git branch -a | grep '  remotes/origin/HEAD -> origin/' | sed 's:  remotes/origin/HEAD -> origin/::g')"
+					#################
 					
-					if [[ "${_GIT_REMOTE_BRANCH}" == '' ]]; then
-						_GIT_REMOTE_BRANCH='master'
-					fi
+					git reset --hard
+					echo
 					
 					git checkout "${_GIT_REMOTE_BRANCH}"
 					echo
@@ -113,17 +122,23 @@ _RUN()
 					git reset --hard
 					echo
 					
+					#################
+					
 					git checkout --quiet "remotes/origin/${_GIT_REMOTE_BRANCH}"
 					echo
 					
 					git branch -D "${_GIT_REMOTE_BRANCH}"
 					echo
 					
+					git branch --set-upstream "${_GIT_REMOTE_BRANCH}" "remotes/origin/${_GIT_REMOTE_BRANCH}"
+					echo
+					
+					#################
+					
 					git checkout "${_GIT_REMOTE_BRANCH}"
 					echo
 					
-					git reset --hard
-					echo
+					#################
 				fi
 			fi
 			echo
