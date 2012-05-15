@@ -21,7 +21,7 @@ _OUTPUT_DIR="${_WD}/"
 
 _ACTUAL_PKGVER="2.00~beta4"
 
-_GRUB_BZR_REPO_DIR="${_WD}/grub_BZR/"
+_GRUB_BZR_REPO_DIR="${_WD}/grub_mainline_BZR/"
 _GRUB_BZR_EXP_REPO_DIR="${_WD}/grub_experimental_BZR/"
 _GRUB_EXTRAS_REPOS_DIR="${_WD}/grub_extras_BZR/"
 

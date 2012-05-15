@@ -31,7 +31,7 @@ fi
 _DO="${1}"
 
 if [[ "${_DO}" == '1' ]]; then
-	export _GRUB_UEFI_SRCDIR='grub__GIT_BZR'
+	export _GRUB_UEFI_SRCDIR='grub_mainline__GIT_BZR'
 	export _PROCESS_CONTINUE_UEFI='TRUE'
 	
 elif [[ "${_DO}" == '2' ]]; then
@@ -39,7 +39,7 @@ elif [[ "${_DO}" == '2' ]]; then
 	export _PROCESS_CONTINUE_UEFI='TRUE'
 	
 elif [[ "${_DO}" == '3' ]]; then
-	export _GRUB_BIOS_SRCDIR='grub__GIT_BZR'
+	export _GRUB_BIOS_SRCDIR='grub_mainline__GIT_BZR'
 	export _PROCESS_CONTINUE_BIOS='TRUE'
 	
 elif [[ "${_DO}" == '4' ]]; then
