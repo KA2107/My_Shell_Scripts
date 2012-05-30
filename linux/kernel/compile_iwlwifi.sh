@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-__WD="/media/Source_Codes_Partition/Source_Codes/Operating_Systems/Linux"
+__WD="/media/Source_Codes_WD/Source_Codes/Operating_Systems/Linux"
 _WD="${__WD}/Linux_Kernel_Mainline_GIT/"
 
 echo
