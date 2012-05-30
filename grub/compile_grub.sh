@@ -3,8 +3,10 @@
 _PROCESS_CONTINUE_UEFI='FALSE'
 _PROCESS_CONTINUE_BIOS='FALSE'
 
-_GRUB_SCRIPTS_DIR="/media/Source_Codes_WD/Source_Codes/My_Shell_Scripts/grub"
-_BOOTLOADER_CONFIG_FILES_DIR='/media/Source_Codes_WD/Source_Codes/My_Files/Bootloader_Config_Files/'
+_SOURCE_CODES_DIR='/media/Source_Codes_WD/Source_Codes/'
+
+_GRUB_SCRIPTS_DIR="${_SOURCE_CODES_DIR}/My_Shell_Scripts/grub/"
+_BOOTLOADER_CONFIG_FILES_DIR="${_SOURCE_CODES_DIR}/My_Files/Bootloader_Config_Files/"
 _WD_OUTER="${PWD}/"
 _X86_32_CHROOT='/opt/arch32'
 
