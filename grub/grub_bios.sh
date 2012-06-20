@@ -310,8 +310,12 @@ _GRUB_BIOS_SETUP_BOOT_PART_DIR() {
 	sudo install -D -m0644 "${_GRUB_BIOS_LIB_DIR}/grub/i386-pc"/*.{img,sh,h} "${_GRUB_BIOS_BOOTPART_DIR}/i386-pc/" || true
 	echo
 	
-	sudo install -d "${_GRUB_BIOS_BOOTPART_DIR}/fonts"
+	sudo install -d "${_GRUB_BIOS_BOOTPART_DIR}/fonts" || true
 	sudo install -D -m0644 "${_GRUB_BIOS_DATAROOT_DIR}/grub"/*.pf2 "${_GRUB_BIOS_BOOTPART_DIR}/fonts/" || true
+	echo
+	
+	sudo install -d "${_GRUB_BIOS_BOOTPART_DIR}/locale" || true
+	sudo install -D -m0644 "${_GRUB_BIOS_LOCALE_DIR}/en@quot/LC_MESSAGES/grub.mo" "${_GRUB_BIOS_BOOTPART_DIR}/locale/en.mo" || true
 	echo
 	
 	sudo install -D -m0644 "${_GRUB_BIOS_BACKUP_DIR}/${_GRUB_BIOS_MENU_CONFIG}.cfg" "${_GRUB_BIOS_BOOTPART_DIR}/${_GRUB_BIOS_MENU_CONFIG}_backup.cfg" || true

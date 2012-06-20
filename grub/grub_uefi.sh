@@ -451,6 +451,10 @@ _GRUB_UEFI_SETUP_UEFISYS_BOOTDIR() {
 	sudo install -D -m0644 "${_GRUB_UEFI_DATAROOT_DIR}/grub"/*.pf2 "${_GRUB_UEFI_BOOTDIR_ACTUAL}/fonts/" || true
 	echo
 	
+	sudo install -d "${_GRUB_UEFI_BOOTDIR_ACTUAL}/locale" || true
+	sudo install -D -m0644 "${_GRUB_UEFI_LOCALE_DIR}/en@quot/LC_MESSAGES/grub.mo" "${_GRUB_UEFI_BOOTDIR_ACTUAL}/locale/en.mo" || true
+	echo
+	
 	## Copy the old config file as ${_GRUB_UEFI_MENU_CONFIG}_backup.cfg
 	sudo install -D -m0644 "${_GRUB_UEFI_BOOTDIR_BACKUP_DIR}/${_GRUB_UEFI_MENU_CONFIG}.cfg" "${_GRUB_UEFI_BOOTDIR_ACTUAL}/${_GRUB_UEFI_MENU_CONFIG}_backup.cfg" || true
 	echo
