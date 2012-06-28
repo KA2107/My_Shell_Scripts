@@ -9,17 +9,17 @@
 
 ## For launchpad mirror
 
-# bzr branch lp:~the-ridikulus-rat/grub/grub2-extras-lua lua
-# bzr branch lp:~the-ridikulus-rat/grub/grub2-extras-gpxe gpxe
-# bzr branch lp:~the-ridikulus-rat/grub/grub2-extras-ntldr-img ntldr-img
-# bzr branch lp:~the-ridikulus-rat/grub/grub2-extras-915resolution 915resolution
+# bzr branch lp:~the-ridikulus-rat/grub/grub-extras-lua lua
+# bzr branch lp:~the-ridikulus-rat/grub/grub-extras-gpxe gpxe
+# bzr branch lp:~the-ridikulus-rat/grub/grub-extras-ntldr-img ntldr-img
+# bzr branch lp:~the-ridikulus-rat/grub/grub-extras-915resolution 915resolution
 
 ## grub-extras zfs is integrated into grub bzr main repo and is no longer needed separately.
 
 _WD="${PWD}/"
 _OUTPUT_DIR="${_WD}/"
 
-_ACTUAL_PKGVER="2.00~beta4"
+_ACTUAL_PKGVER="2.00"
 
 _GRUB_BZR_REPO_DIR="${_WD}/grub_mainline_BZR/"
 _GRUB_BZR_EXP_REPO_DIR="${_WD}/grub_experimental_BZR/"
@@ -91,8 +91,8 @@ echo
 _GRUB_EXTRAS_NAME="lua"
 _EXTRAS_SNAPSHOT
 
-_GRUB_EXTRAS_NAME="gpxe"
-_EXTRAS_SNAPSHOT
+# _GRUB_EXTRAS_NAME="gpxe"
+# _EXTRAS_SNAPSHOT
 
 _GRUB_EXTRAS_NAME="ntldr-img"
 _EXTRAS_SNAPSHOT

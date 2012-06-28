@@ -11,15 +11,15 @@
 
 ## For launchpad mirror
 
-# bzr branch lp:~the-ridikulus-rat/grub/grub2-extras-lua lua
-# bzr branch lp:~the-ridikulus-rat/grub/grub2-extras-gpxe gpxe
-# bzr branch lp:~the-ridikulus-rat/grub/grub2-extras-ntldr-img ntldr-img
-# bzr branch lp:~the-ridikulus-rat/grub/grub2-extras-915resolution 915resolution
+# bzr branch lp:~the-ridikulus-rat/grub/grub-extras-lua lua
+# bzr branch lp:~the-ridikulus-rat/grub/grub-extras-gpxe gpxe
+# bzr branch lp:~the-ridikulus-rat/grub/grub-extras-ntldr-img ntldr-img
+# bzr branch lp:~the-ridikulus-rat/grub/grub-extras-915resolution 915resolution
 
 _WD="/media/Source_Codes_WD/Source_Codes/Boot_Managers/ALL/grub/Source__GIT_BZR/"
 _OUTPUT_DIR="${_WD}/"
 
-_ACTUAL_PKGVER="2.00~beta4"
+_ACTUAL_PKGVER="2.00"
 
 _GRUB_GIT_BZR_REPO_DIR="${_WD}/grub_mainline__GIT_BZR/"
 _GRUB_GIT_BZR_EXP_REPO_DIR="${_WD}/grub_experimental__GIT_BZR/"
@@ -91,8 +91,8 @@ echo
 _GRUB_EXTRAS_NAME="lua"
 _EXTRAS_SNAPSHOT
 
-_GRUB_EXTRAS_NAME="gpxe"
-_EXTRAS_SNAPSHOT
+# _GRUB_EXTRAS_NAME="gpxe"
+# _EXTRAS_SNAPSHOT
 
 _GRUB_EXTRAS_NAME="ntldr-img"
 _EXTRAS_SNAPSHOT
