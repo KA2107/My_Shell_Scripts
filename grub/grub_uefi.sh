@@ -284,10 +284,14 @@ _GRUB_UEFI_POSTCOMPILE_SETUP_PREFIX_DIR() {
 		"${_GRUB_UEFI_PREFIX_DIR}" != '/opt' \
 		]]
 	then
-		sudo cp -r --verbose "${_GRUB_UEFI_PREFIX_DIR}" "${_GRUB_UEFI_UTILS_BACKUP_DIR}" || true
-		echo
+		if [[ -d "${_GRUB_UEFI_PREFIX_DIR}" ]]; then
+			sudo cp -r --verbose "${_GRUB_UEFI_PREFIX_DIR}" "${_GRUB_UEFI_UTILS_BACKUP_DIR}" || true
+			echo
+			
+			sudo rm -rf --verbose "${_GRUB_UEFI_PREFIX_DIR}" || true
+			echo
+		fi
 		
-		sudo rm -rf --verbose "${_GRUB_UEFI_PREFIX_DIR}" || true
 		echo
 	fi
 	
@@ -315,12 +319,16 @@ _GRUB_UEFI_POSTCOMPILE_SETUP_PREFIX_DIR() {
 
 _GRUB_UEFISYS_BACKUP_OLD_DIR() {
 	
-	## Backup the old GRUB folder in the UEFI System Partition
-	sudo cp -r --verbose "${_GRUB_UEFISYS_PART_DIR}" "${_GRUB_UEFISYS_BACKUP_DIR}" || true
-	echo
+	if [[ -d "${_GRUB_UEFISYS_PART_DIR}" ]]; then
+		## Backup the old GRUB folder in the UEFI System Partition
+		sudo cp -r --verbose "${_GRUB_UEFISYS_PART_DIR}" "${_GRUB_UEFISYS_BACKUP_DIR}" || true
+		echo
+		
+		## Delete the old GRUB folder in the UEFI System Partition
+		sudo rm -rf --verbose "${_GRUB_UEFISYS_PART_DIR}" || true
+		echo
+	fi
 	
-	## Delete the old GRUB folder in the UEFI System Partition
-	sudo rm -rf --verbose "${_GRUB_UEFISYS_PART_DIR}" || true
 	echo
 	
 }
@@ -333,12 +341,16 @@ _GRUB_UEFI_BOOTDIR_BACKUP_OLD_DIR() {
 		ln -s "${_GRUB_UEFISYS_BACKUP_DIR}" "${_GRUB_UEFI_BOOTDIR_BACKUP_DIR}" || true
 		echo
 	else
-		## Backup the old GRUB folder in BOOTDIR
-		sudo cp -r --verbose "${_GRUB_UEFI_BOOTDIR_ACTUAL}" "${_GRUB_UEFI_BOOTDIR_BACKUP_DIR}" || true
-		echo
+		if [[ -d "${_GRUB_UEFI_BOOTDIR_ACTUAL}" ]]; then
+			## Backup the old GRUB folder in BOOTDIR
+			sudo cp -r --verbose "${_GRUB_UEFI_BOOTDIR_ACTUAL}" "${_GRUB_UEFI_BOOTDIR_BACKUP_DIR}" || true
+			echo
+			
+			## Delete the old GRUB folder in BOOTDIR
+			sudo rm -rf --verbose "${_GRUB_UEFI_BOOTDIR_ACTUAL}" || true
+			echo
+		fi
 		
-		## Delete the old GRUB folder in BOOTDIR
-		sudo rm -rf --verbose "${_GRUB_UEFI_BOOTDIR_ACTUAL}" || true
 		echo
 	fi
 	

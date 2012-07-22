@@ -260,11 +260,17 @@ _GRUB_BIOS_POSTCOMPILE_SETUP_PREFIX_DIR() {
 		"${_GRUB_BIOS_PREFIX_DIR}" != '/opt' \
 		]]
 	then
-		sudo cp -r --verbose "${_GRUB_BIOS_PREFIX_DIR}" "${_GRUB_BIOS_UTILS_BACKUP_DIR}" || true
-		echo
-		sudo rm -rf --verbose "${_GRUB_BIOS_PREFIX_DIR}" || true
+		if [[ -d "${_GRUB_BIOS_PREFIX_DIR}" ]]; then
+			sudo cp -r --verbose "${_GRUB_BIOS_PREFIX_DIR}" "${_GRUB_BIOS_UTILS_BACKUP_DIR}" || true
+			echo
+			
+			sudo rm -rf --verbose "${_GRUB_BIOS_PREFIX_DIR}" || true
+			echo
+		fi
+		
 		echo
 	fi
+	echo
 	
 	sudo make install
 	echo
@@ -293,12 +299,16 @@ _GRUB_BIOS_POSTCOMPILE_SETUP_PREFIX_DIR() {
 
 _GRUB_BIOS_BACKUP_OLD_DIR() {
 	
-	## Backup the old GRUB folder in the /boot folder.
-	sudo cp -r --verbose "${_GRUB_BIOS_BOOTPART_DIR}" "${_GRUB_BIOS_BACKUP_DIR}" || true
-	echo
+	if [[ -d "${_GRUB_BIOS_BOOTPART_DIR}" ]]; then
+		## Backup the old GRUB folder in the /boot folder.
+		sudo cp -r --verbose "${_GRUB_BIOS_BOOTPART_DIR}" "${_GRUB_BIOS_BACKUP_DIR}" || true
+		echo
+		
+		## Delete the old GRUB folder in the /boot folder.
+		sudo rm -rf --verbose "${_GRUB_BIOS_BOOTPART_DIR}" || true
+		echo
+	fi
 	
-	## Delete the old GRUB folder in the /boot folder.
-	sudo rm -rf --verbose "${_GRUB_BIOS_BOOTPART_DIR}" || true
 	echo
 	
 }
