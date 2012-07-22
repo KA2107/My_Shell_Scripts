@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 _GRUB_BIOS_LINUX="${PWD}/grub_bios.sh"
-_GRUB_BIOS_LINUX_MY="${_GRUB_BIOS_LINUX} /dev/sda /boot grub_bios /media/Data_3/grub_bios_backup /media/Data_3/grub_bios_utils_backup /_grub_/grub_bios/"
+_GRUB_BIOS_LINUX_MY="${_GRUB_BIOS_LINUX} /dev/sda /boot grub_bios /media/Data_2/grub_bios_backup /media/Data_2/grub_bios_utils_backup /_grub_/grub_bios/"
 
 echo
 
