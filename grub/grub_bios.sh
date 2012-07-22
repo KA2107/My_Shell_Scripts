@@ -223,8 +223,13 @@ _GRUB_BIOS_COMPILE_STEPS() {
 	cd "${_WD}/GRUB_BIOS_BUILD_DIR"
 	echo
 	
-	## fix unifont.bdf location
+	## Fix unifont.bdf location
 	sed "s|/usr/share/fonts/unifont|${_GRUB_BIOS_UNIFONT_PATH}|g" -i "${_WD}/configure"
+	echo
+	
+	## Fix gnulib issue - https://lists.gnu.org/archive/html/grub-devel/2012-07/msg00051.html
+	sed -e '/gets is a security/d' -i "${_WD}/grub-core/gnulib/stdio.in.h" || true
+	echo
 	
 	"${_WD}/configure" ${_GRUB_BIOS_CONFIGURE_OPTIONS} ${_GRUB_BIOS_OTHER_CONFIGURE_OPTIONS} ${_GRUB_BIOS_CONFIGURE_PATHS_1} ${_GRUB_BIOS_CONFIGURE_PATHS_2}
 	echo
