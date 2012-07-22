@@ -177,14 +177,17 @@ _GRUB_BIOS_PO_LINGUAS() {
 	
 	if [[ "${_UPDATE_LOCALES}" == "1" ]]; then
 		cd "${_WD}/"
-		rsync -Lrtvz translationproject.org::tp/latest/grub/ "${_WD}/po" || true
-		echo
-		
-		(cd "${_WD}/po" && ls *.po | cut -d. -f1 | xargs) > "${_WD}/po/LINGUAS" || true
-		chmod --verbose -x "${_WD}/po/LINGUAS" || true
+		"${_WD}/linguas.sh"
 		echo
 	fi
 	
+	rm -f "${_WD}/po/POTFILES.in" || true
+	rm -f "${_WD}/po/POTFILES-shell.in" || true
+	echo
+	
+	cd "${_WD}/"
+	find ./build-aux ./grub-core ./include ./tests ./util | grep '\.h$\|\.c$' > "${_WD}/po/POTFILES.in"
+	find ./util | grep '\.in$' | sed '/bash-completion.d/d' > "${_WD}/po/POTFILES-shell.in"
 	echo
 	
 }
