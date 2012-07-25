@@ -472,6 +472,12 @@ _GRUB_UEFI_SETUP_UEFISYS_BOOTDIR() {
 	
 	sudo install -d "${_GRUB_UEFI_BOOTDIR_ACTUAL}/locale" || true
 	sudo install -D -m0644 "${_GRUB_UEFI_LOCALE_DIR}/en@quot/LC_MESSAGES/grub.mo" "${_GRUB_UEFI_BOOTDIR_ACTUAL}/locale/en.mo" || true
+	
+	if [[ ! -e "${_GRUB_UEFI_BOOTDIR_ACTUAL}/locale/en.mo" ]]; then
+		sudo install -D -m0644 "/usr/share/locale/en@quot/LC_MESSAGES/grub.mo" "${_GRUB_UEFI_BOOTDIR_ACTUAL}/locale/en.mo" || true
+		echo
+	fi
+	
 	echo
 	
 	## Copy the old config file as ${_GRUB_UEFI_MENU_CONFIG}_backup.cfg

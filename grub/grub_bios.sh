@@ -334,6 +334,12 @@ _GRUB_BIOS_SETUP_BOOT_PART_DIR() {
 	
 	sudo install -d "${_GRUB_BIOS_BOOTPART_DIR}/locale" || true
 	sudo install -D -m0644 "${_GRUB_BIOS_LOCALE_DIR}/en@quot/LC_MESSAGES/grub.mo" "${_GRUB_BIOS_BOOTPART_DIR}/locale/en.mo" || true
+	
+	if [[ ! -e "${_GRUB_BIOS_BOOTPART_DIR}/locale/en.mo" ]]; then
+		sudo install -D -m0644 "/usr/share/locale/en@quot/LC_MESSAGES/grub.mo" "${_GRUB_BIOS_BOOTPART_DIR}/locale/en.mo" || true
+		echo
+	fi
+	
 	echo
 	
 	sudo install -D -m0644 "${_GRUB_BIOS_BACKUP_DIR}/${_GRUB_BIOS_MENU_CONFIG}.cfg" "${_GRUB_BIOS_BOOTPART_DIR}/${_GRUB_BIOS_MENU_CONFIG}_backup.cfg" || true
