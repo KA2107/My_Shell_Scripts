@@ -193,6 +193,8 @@ _GRUB_UEFI_PYTHON_TO_PYTHON2() {
 
 _GRUB_UEFI_PO_LINGUAS() {
 	
+	## http://bzr.savannah.gnu.org/lh/grub/trunk/grub/revision/4561
+	
 	echo
 	
 	if [[ "${_UPDATE_LOCALES}" == "1" ]]; then
@@ -205,9 +207,17 @@ _GRUB_UEFI_PO_LINGUAS() {
 	rm -f "${_WD}/po/POTFILES-shell.in" || true
 	echo
 	
+	export _LC_ALL_="${LC_ALL}"
+	export LC_ALL="en_US.UTF-8"
+	echo
+	
 	cd "${_WD}/"
-	find ./build-aux ./grub-core ./include ./tests ./util | grep '\.h$\|\.c$' > "${_WD}/po/POTFILES.in"
-	find ./util | grep '\.in$' | sed '/bash-completion.d/d' > "${_WD}/po/POTFILES-shell.in"
+	find . -iname '*.[ch]' | sort > "${_WD}/po/POTFILES.in"
+	find ./util -iname '*.in' | sort | sed '/bash-completion.d/d' > "${_WD}/po/POTFILES-shell.in"
+	echo
+	
+	export LC_ALL="${_LC_ALL_}"
+	unset _LC_ALL_
 	echo
 	
 }
