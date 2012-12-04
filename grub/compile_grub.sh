@@ -3,7 +3,7 @@
 _PROCESS_CONTINUE_UEFI='FALSE'
 _PROCESS_CONTINUE_BIOS='FALSE'
 
-_SOURCE_CODES_DIR='/media/Source_Codes_WD/Source_Codes/'
+_SOURCE_CODES_DIR="${__SOURCE_CODES_PART__}/Source_Codes/"
 
 _GRUB_SCRIPTS_DIR="${_SOURCE_CODES_DIR}/My_Shell_Scripts/grub/"
 _BOOTLOADER_CONFIG_FILES_DIR="${_SOURCE_CODES_DIR}/My_Files/Bootloader_Config_Files/"

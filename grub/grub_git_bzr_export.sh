@@ -16,7 +16,7 @@
 # bzr branch lp:~the-ridikulus-rat/grub/grub-extras-ntldr-img ntldr-img
 # bzr branch lp:~the-ridikulus-rat/grub/grub-extras-915resolution 915resolution
 
-_WD="/media/Source_Codes_WD/Source_Codes/Boot_Managers/ALL/grub/Source__GIT_BZR/"
+_WD="${__SOURCE_CODES_PART__}/Source_Codes/Boot_Managers/ALL/grub/Source__GIT_BZR/"
 _OUTPUT_DIR="${_WD}/"
 
 _ACTUAL_PKGVER="2.00"

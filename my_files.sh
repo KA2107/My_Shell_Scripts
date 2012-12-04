@@ -6,7 +6,7 @@ _WD="${PWD}/"
 
 _UEFISYS_PART_DIR_="/boot/efi/EFI"
 
-export _SOURCE_CODES_DIR="/media/Source_Codes_WD/Source_Codes/"
+export _SOURCE_CODES_DIR="${__SOURCE_CODES_PART__}/Source_Codes/"
 export _SCRIPTS_DIR="${_SOURCE_CODES_DIR}/My_Shell_Scripts/"
 
 export _GRUB_SCRIPTS_DIR="${_SCRIPTS_DIR}/grub/"
