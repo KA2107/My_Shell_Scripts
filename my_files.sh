@@ -183,79 +183,16 @@ _TIANOCORE_UEFI() {
 	
 }
 
-_COPY_BIOS_BOOTLOADER_FILES() {
-	
-	echo
-	
-	_BOOT_PART="/boot"
-	
-	_SOURCE_DIR="${_BOOTLOADER_CONFIG_FILES_DIR}/"
-	
-	_SOURCE_FILE="grub_uefi.cfg"
-	_DEST_DIR="${_BOOT_PART}/grub_bios/"
-	_DEST_FILE="grub.cfg"
-	[[ -d "${_DEST_DIR}/" ]] && _SUDO_COPY_FILE
-	
-	_SOURCE_FILE="grub_uefi.cfg"
-	_DEST_DIR="${_BOOT_PART}/grub/"
-	_DEST_FILE="grub.cfg"
-	[[ -d "${_DEST_DIR}/" ]] && _SUDO_COPY_FILE
-	
-	_SOURCE_DIR="${_BOOTLOADER_CONFIG_FILES_DIR}/"
-	_SOURCE_FILE="syslinux_bios.cfg"
-	_DEST_DIR="${_BOOT_PART}/syslinux/"
-	_DEST_FILE="syslinux.cfg"
-	[[ -d "${_DEST_DIR}/" ]] && _SUDO_COPY_FILE
-	
-	echo
-	
-	unset _BOOT_PART
-	unset _SOURCE_DIR
-	unset _SOURCE_FILE
-	unset _DEST_DIR
-	unset _DEST_FILE
-	
-	echo
-	
-}
-
 _COPY_UEFI_BOOTLOADER_FILES() {
 	
 	echo
 	
 	_UEFI_SYS_PART_DIR="${_UEFISYS_PART_DIR_}"
 	
-	_SOURCE_DIR="${_BOOTLOADER_CONFIG_FILES_DIR}/"
-	
-	_SOURCE_FILE="grub_uefi.cfg"
-	_DEST_DIR="${_UEFI_SYS_PART_DIR}/grub_uefi_x86_64/"
-	_DEST_FILE="grub.cfg"
-	[[ -d "${_DEST_DIR}/" ]] && _SUDO_COPY_FILE
-	
-	_SOURCE_FILE="grub_uefi.cfg"
-	_DEST_DIR="${_UEFI_SYS_PART_DIR}/grub/"
-	_DEST_FILE="grub.cfg"
-	[[ -d "${_DEST_DIR}/" ]] && _SUDO_COPY_FILE
-	
-	_SOURCE_FILE="grub-legacy_uefi.conf"
-	_DEST_DIR="${_UEFI_SYS_PART_DIR}/arch/grub-legacy/"
-	_DEST_FILE="grub-legacy-x64.conf"
-	[[ -d "${_DEST_DIR}/" ]] && _SUDO_COPY_FILE
-	
-	_SOURCE_FILE="elilo_uefi.conf"
-	_DEST_DIR="${_UEFI_SYS_PART_DIR}/arch/elilo/"
-	_DEST_FILE="elilo.conf"
-	[[ -d "${_DEST_DIR}/" ]] && _SUDO_COPY_FILE
-	
-	_SOURCE_FILE="efilinux_uefi.cfg"
-	_DEST_DIR="${_UEFI_SYS_PART_DIR}/arch/efilinux/"
-	_DEST_FILE="efilinux.cfg"
-	[[ -d "${_DEST_DIR}/" ]] && _SUDO_COPY_FILE
-	
 	_SOURCE_DIR="${_BOOTLOADER_CONFIG_FILES_DIR}/refind_uefi"
 	
 	_SOURCE_FILE="refind_uefi.conf"
-	_DEST_DIR="${_UEFI_SYS_PART_DIR}/arch/refind/"
+	_DEST_DIR="${_UEFI_SYS_PART_DIR}/refind/"
 	_DEST_FILE="refind.conf"
 	[[ -d "${_DEST_DIR}/" ]] && _SUDO_COPY_FILE
 	
@@ -267,6 +204,23 @@ _COPY_UEFI_BOOTLOADER_FILES() {
 	_SOURCE_FILE="refind_uefi_linux.conf"
 	_DEST_DIR="${_UEFI_SYS_PART_DIR}/arch/arch_linux_mainline/"
 	_DEST_FILE="refind_linux.conf"
+	[[ -d "${_DEST_DIR}/" ]] && _SUDO_COPY_FILE
+	
+	echo
+	
+	_BOOT_PART="/boot"
+	
+	_SOURCE_DIR="${_BOOTLOADER_CONFIG_FILES_DIR}/"
+	
+	_SOURCE_FILE="grub_uefi.cfg"
+	_DEST_DIR="${_BOOT_PART}/grub/"
+	_DEST_FILE="grub.cfg"
+	[[ -d "${_DEST_DIR}/" ]] && _SUDO_COPY_FILE
+	
+	_SOURCE_DIR="${_BOOTLOADER_CONFIG_FILES_DIR}/"
+	_SOURCE_FILE="syslinux_uefi.cfg"
+	_DEST_DIR="${_UEFI_SYS_PART_DIR}/syslinux/"
+	_DEST_FILE="syslinux.cfg"
 	[[ -d "${_DEST_DIR}/" ]] && _SUDO_COPY_FILE
 	
 	echo
@@ -300,9 +254,6 @@ _COPY_UEFI_SHELL_FILES() {
 	
 	_DEST_DIR="${_UEFI_SYS_PART_DIR}/tools/"
 	[[ -d "${_DEST_DIR}/" ]] && _SUDO_COPY_FILE
-	
-	_DEST_DIR="/media/Data_3/Operating_Systems/Unix_Based/Linux/Archlinux/Archboot/"
-	[[ -d "${_DEST_DIR}/" ]] && _COPY_FILE
 	
 	#######
 	
@@ -399,20 +350,12 @@ _REFIND_UEFI() {
 	sudo rm -f "${_UEFI_SYS_PART_DIR}/boot/bootx64.efi" || true
 	sudo rm -rf "${_UEFI_SYS_PART_DIR}/boot/icons"/ || true
 	sudo rm -f "${_UEFI_SYS_PART_DIR}/boot/refind.conf" || true
-	sudo rm -f "${_UEFI_SYS_PART_DIR}/boot/grub.cfg" || true
 	
 	echo
 	
-	sudo rm -f "${_UEFI_SYS_PART_DIR}/arch/refind/icons/os_arch_linux_core.icns" || true
-	sudo rm -f "${_UEFI_SYS_PART_DIR}/arch/refind/icons/os_arch_linux_mainline.icns" || true
-	sudo install -D -m0644 "${_UEFI_SYS_PART_DIR}/arch/refind/icons/os_arch.icns" "${_UEFI_SYS_PART_DIR}/arch/refind/icons/os_arch_linux_core.icns"
-	sudo install -D -m0644 "${_UEFI_SYS_PART_DIR}/arch/refind/icons/os_arch.icns" "${_UEFI_SYS_PART_DIR}/arch/refind/icons/os_arch_linux_mainline.icns"
-	
-	echo
-	
-	sudo install -D -m0644 "${_UEFI_SYS_PART_DIR}/arch/refind/refindx64.efi" "${_UEFI_SYS_PART_DIR}/boot/bootx64.efi"
-	sudo install -D -m0644 "${_UEFI_SYS_PART_DIR}/arch/refind/refind.conf" "${_UEFI_SYS_PART_DIR}/boot/refind.conf"
-	sudo cp -rf "${_UEFI_SYS_PART_DIR}/arch/refind/icons" "${_UEFI_SYS_PART_DIR}/boot/icons"
+	sudo install -D -m0644 "${_UEFI_SYS_PART_DIR}/refind/refindx64.efi" "${_UEFI_SYS_PART_DIR}/boot/bootx64.efi"
+	sudo install -D -m0644 "${_UEFI_SYS_PART_DIR}/refind/refind.conf" "${_UEFI_SYS_PART_DIR}/boot/refind.conf"
+	# sudo cp -rf "${_UEFI_SYS_PART_DIR}/refind/icons" "${_UEFI_SYS_PART_DIR}/boot/icons"
 	
 	echo
 	
@@ -455,15 +398,11 @@ _CREATE_SYMLINK
 
 echo
 
-# _TIANOCORE_UEFI
+_TIANOCORE_UEFI
 
 echo
 
 _GRUB2
-
-echo
-
-_COPY_BIOS_BOOTLOADER_FILES
 
 echo
 
