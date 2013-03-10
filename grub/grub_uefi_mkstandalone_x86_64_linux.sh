@@ -3,7 +3,7 @@
 _WD="${PWD}/"
 
 _TARGET_UEFI_ARCH='x86_64'
-_UEFI_SYSTEM_PART_MP="/boot/efi"
+_UEFI_SYSTEM_PART_MP="/efisys"
 
 _GRUB_UEFI_PREFIX_DIR="/_grub_/grub_uefi_${_TARGET_UEFI_ARCH}"
 _GRUB_UEFI_BIN_DIR="${_GRUB_UEFI_PREFIX_DIR}/bin"

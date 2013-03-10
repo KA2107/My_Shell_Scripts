@@ -30,7 +30,7 @@ _USAGE() {
 	echo
 	echo "Usage : ${_SCRIPTNAME} [TARGET_UEFI_ARCH] [UEFI_SYSTEM_PART_MOUNTPOINT] [GRUB_UEFI_BOOTDIR] [GRUB_UEFI_INSTALL_DIR_NAME] [GRUB_UEFISYS_BACKUP_DIR_PATH] [GRUB_UEFI_BOOTDIR_BACKUP_DIR_PATH] [GRUB_UEFI_UTILS_BACKUP_DIR_PATH] [GRUB_UEFI_PREFIX_DIR_PATH]"
 	echo
-	echo "Example : ${_SCRIPTNAME} x86_64 /boot/efi /boot grub /media/Data_3/grub_uefisys_x86_64_backup /media/Data_3/grub_uefi_x86_64_bootdir_backup /media/Data_3/grub_uefi_x86_64_utils_Backup /_grub_/uefi_x86_64/"
+	echo "Example : ${_SCRIPTNAME} x86_64 /boot/efi /boot grub /boot/grub_uefi_x86_64_backup /boot/grub_uefi_x86_64_bootdir_backup /boot/grub_uefi_x86_64_utils_Backup /_grub_/uefi_x86_64/"
 	echo
 	echo 'For example if you did'
 	echo

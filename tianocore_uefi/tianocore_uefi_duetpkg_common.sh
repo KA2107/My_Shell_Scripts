@@ -24,7 +24,7 @@ _MIGLE_BOOTDUET_COMPILE_DIR="${_SOURCE_CODES_DIR}/Firmware/UEFI/Tianocore_UEFI_D
 _ROD_SMITH_DUET_INSTALL_DIR="${_SOURCE_CODES_DIR}/Firmware/UEFI/Tianocore_UEFI_DUET_3rd_Party_Projects/Rod_Smith_duet-install_my_GIT"
 
 _BOOTPART="/boot/"
-_UEFI_SYS_PART="/boot/efi/"
+_UEFI_SYS_PART="/efisys/"
 _SYSLINUX_LIB_DIR="/usr/lib/syslinux/"
 
 _DUET_PART_FS_UUID="5FA3-2472"

@@ -28,7 +28,7 @@ _USAGE() {
 	echo
 	echo "Usage : ${_SCRIPTNAME} [GRUB_INSTALL_DEVICE] [GRUB_BOOT_PARTITION_MOUNTPOINT] [GRUB_BIOS_INSTALL_DIR_NAME] [GRUB_BIOS_BACKUP_DIR_PATH] [GRUB_BIOS_UTILS_BACKUP_DIR_PATH] [GRUB_BIOS_PREFIX_DIR_PATH]"
 	echo
-	echo "Example : ${_SCRIPTNAME} /dev/sda /boot grub /media/Data_3/grub_bios_backup /media/Data_3/grub_bios_utils_backup /_grub_/bios/"
+	echo "Example : ${_SCRIPTNAME} /dev/sda /boot grub /boot/grub_bios_backup /boot/grub_bios_utils_backup /_grub_/bios/"
 	echo
 	echo 'For example if you did'
 	echo

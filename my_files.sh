@@ -4,7 +4,7 @@ set -x -e
 
 _WD="${PWD}/"
 
-_UEFISYS_PART_DIR_="/boot/efi/EFI"
+_UEFISYS_PART_DIR_="/efisys/EFI"
 
 export _SOURCE_CODES_DIR="${__SOURCE_CODES_PART__}/Source_Codes/"
 export _SCRIPTS_DIR="${_SOURCE_CODES_DIR}/My_Shell_Scripts/"
