@@ -28,7 +28,12 @@ git clean -f
 
 echo
 
+git_update.sh
+
+echo
+
 git checkout "v${_KERNEL_VER_ACTUAL}"
+
 echo
 
 install -D -m0644 "/usr/lib/modules/${_KERNEL_VER_PATH}/build/Module.symvers" "${_WD}/Module.symvers"
@@ -39,8 +44,6 @@ zcat /proc/config.gz > "${_WD}/.config"
 echo
 
 # make xconfig
-
-echo
 
 echo
 
@@ -67,11 +70,13 @@ sudo install -D -m0644 "${_WD}/${_KERNEL_SUBDIR}/${_KERNEL_MODULE_FILENAME}.ko.g
 
 echo
 
-make clean
+git clean -f
 
-rm -f "${_WD}/${_KERNEL_SUBDIR}/Module.symvers"
-rm -f "${_WD}/Module.symvers"
-rm -f "${_WD}/.config"
+echo
+
+# rm -f "${_WD}/${_KERNEL_SUBDIR}/Module.symvers"
+# rm -f "${_WD}/Module.symvers"
+# rm -f "${_WD}/.config"
 
 echo
 
@@ -87,7 +92,13 @@ sudo depmod -Ae
 
 echo
 
-sudo modprobe ${_KERNEL_MODULE_FILENAME}
+sudo depmod ${_KERNEL_VER_PATH}
+
+echo
+
+if [[ "$(uname -r)" == "${_KERNEL_VER_PATH}" ]]; then
+	sudo modprobe ${_KERNEL_MODULE_FILENAME}
+fi
 
 echo
 
