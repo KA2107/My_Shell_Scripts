@@ -3,7 +3,7 @@
 __WD="${__SOURCE_CODES_PART__}/Source_Codes/Operating_Systems/Linux"
 _WD="${__WD}/Linux_Kernel_Mainline_GIT/"
 
-_KERNEL_VER_ACTUAL="3.10-rc1"
+_KERNEL_VER_ACTUAL="3.10-rc2"
 _KERNEL_VER_PATH="3.10.0-1-mainline"
 
 _KERNEL_CONFIG_OPTIONS="CONFIG_EFIVAR_FS=m"
@@ -36,10 +36,10 @@ git checkout "v${_KERNEL_VER_ACTUAL}"
 
 echo
 
-install -D -m0644 "/usr/lib/modules/${_KERNEL_VER_PATH}/build/Module.symvers" "${_WD}/Module.symvers"
+install -D -m0644 "/usr/src/linux-${_KERNEL_VER_PATH}/Module.symvers" "${_WD}/Module.symvers"
 
 zcat /proc/config.gz > "${_WD}/.config"
-# install -D -m0644 "/usr/src/${_KERNEL_VER_PATH}/.config" "${_WD}/.config"
+# install -D -m0644 "/usr/src/linux-${_KERNEL_VER_PATH}/.config" "${_WD}/.config"
 
 echo
 
