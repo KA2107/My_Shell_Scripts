@@ -3,7 +3,7 @@
 __WD="${__SOURCE_CODES_PART__}/Source_Codes/Operating_Systems/Linux"
 _WD="${__WD}/Linux_Kernel_Mainline_GIT/"
 
-_KERNEL_VER_ACTUAL="3.10-rc2"
+_KERNEL_VER_ACTUAL="3.10-rc3"
 _KERNEL_VER_PATH="3.10.0-1-mainline"
 
 _KERNEL_CONFIG_OPTIONS="CONFIG_EFIVAR_FS=m"
@@ -24,7 +24,7 @@ git reset --hard
 
 echo
 
-git clean -f
+git clean -f -d -x
 
 echo
 
@@ -70,7 +70,7 @@ sudo install -D -m0644 "${_WD}/${_KERNEL_SUBDIR}/${_KERNEL_MODULE_FILENAME}.ko.g
 
 echo
 
-git clean -f
+git clean -f -d -x
 
 echo
 
@@ -88,16 +88,12 @@ git checkout master
 
 echo
 
-sudo depmod -Ae
-
-echo
-
-sudo depmod ${_KERNEL_VER_PATH}
+sudo depmod -Ae -E "/usr/src/linux-${_KERNEL_VER_PATH}/Module.symvers" "${_KERNEL_VER_PATH}"
 
 echo
 
 if [[ "$(uname -r)" == "${_KERNEL_VER_PATH}" ]]; then
-	sudo modprobe ${_KERNEL_MODULE_FILENAME}
+	sudo modprobe "${_KERNEL_MODULE_FILENAME}"
 fi
 
 echo
