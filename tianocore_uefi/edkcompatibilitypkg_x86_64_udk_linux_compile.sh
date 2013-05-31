@@ -26,7 +26,7 @@ _COMPILE_EDKCOMPATIBILITYPKG() {
 	
 	echo
 	
-	_COPY_BUILDTOOLS_BASETOOLS
+	# _COPY_BUILDTOOLS_BASETOOLS
 	
 	echo
 	
@@ -46,7 +46,7 @@ _COMPILE_EDKCOMPATIBILITYPKG() {
 	
 	echo
 	
-	build -p "${_UDK_DIR}/EdkCompatibilityPkg/EdkCompatibilityPkg.dsc" -a X64 -b DEBUG -t GCC46
+	"${EDK_TOOLS_PATH}/BinWrappers/PosixLike/build" -p "${_UDK_DIR}/EdkCompatibilityPkg/EdkCompatibilityPkg.dsc" -a X64 -b DEBUG -t GCC46
 	
 	echo
 	

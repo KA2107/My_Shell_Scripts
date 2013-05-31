@@ -26,7 +26,7 @@ _COMPILE_ISO9660() {
 	
 	echo
 	
-	_COPY_BUILDTOOLS_BASETOOLS
+	# _COPY_BUILDTOOLS_BASETOOLS
 	
 	echo
 	
@@ -69,7 +69,7 @@ _COMPILE_ISO9660() {
 	
 	echo
 	
-	build -p "${_UDK_DIR}/Clover/CloverX64.dsc" -m "${_UDK_DIR}/Clover/VBoxFsDxe/VBoxIso9660.inf" -a X64 -b RELEASE -t GCC46
+	"${EDK_TOOLS_PATH}/BinWrappers/PosixLike/build" -p "${_UDK_DIR}/Clover/CloverX64.dsc" -m "${_UDK_DIR}/Clover/VBoxFsDxe/VBoxIso9660.inf" -a X64 -b RELEASE -t GCC46
 	
 	echo
 	

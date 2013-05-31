@@ -26,7 +26,7 @@ _COMPILE_DUETPKG_BOOTSECTOR() {
 	
 	echo
 	
-	_COPY_BUILDTOOLS_BASETOOLS
+	# _COPY_BUILDTOOLS_BASETOOLS
 	
 	echo
 	
@@ -50,7 +50,7 @@ _COMPILE_DUETPKG_BOOTSECTOR() {
 	
 	echo
 	
-	build -p "${_UDK_DIR}/DuetPkg/DuetPkgIa32.dsc" -m "${_UDK_DIR}/DuetPkg/BootSector/BootSector.inf" -a IA32 -b RELEASE -t GCC46
+	"${EDK_TOOLS_PATH}/BinWrappers/PosixLike/build" -p "${_UDK_DIR}/DuetPkg/DuetPkgIa32.dsc" -m "${_UDK_DIR}/DuetPkg/BootSector/BootSector.inf" -a IA32 -b RELEASE -t GCC46
 	
 	echo
 	

@@ -26,7 +26,7 @@ _COMPILE_STDLIB() {
 	
 	echo
 	
-	_COPY_BUILDTOOLS_BASETOOLS
+	# _COPY_BUILDTOOLS_BASETOOLS
 	
 	echo
 	
@@ -46,7 +46,7 @@ _COMPILE_STDLIB() {
 	
 	echo
 	
-	build -p "${_UDK_DIR}/StdLib/StdLib.dsc" -a X64 -b DEBUG -t GCC46
+	"${EDK_TOOLS_PATH}/BinWrappers/PosixLike/build" -p "${_UDK_DIR}/StdLib/StdLib.dsc" -a X64 -b DEBUG -t GCC46
 	
 	echo
 	
