@@ -46,7 +46,7 @@ _COMPILE_SHELLPKG() {
 	
 	echo
 	
-	"${EDK_TOOLS_PATH}/BinWrappers/PosixLike/build" -p "${_UDK_DIR}/ShellPkg/ShellPkg.dsc" -a X64 -b RELEASE -t GCC46
+	"${EDK_TOOLS_PATH}/BinWrappers/PosixLike/build" -p "${_UDK_DIR}/ShellPkg/ShellPkg.dsc" -a "X64" -b "RELEASE" -t "GCC46"
 	
 	echo
 	
