@@ -42,8 +42,16 @@ _COMPILE_EMULATORPKG_UNIX_X86_64() {
 	
 	echo
 	
+	sed 's|TARGET_TOOLS=GCC47|TARGET_TOOLS=GCC46|g' -i "${_UDK_DIR}/EmulatorPkg/build.sh" || true
+	
+	echo
+	
+	# sed 's%gEmulatorPkgTokenSpaceGuid.PcdEmuMemorySize|L"64!64"|VOID*|0x0000100c%gEmulatorPkgTokenSpaceGuid.PcdEmuMemorySize|L"64!64"|VOID*|0x00008000%g' -i "${_UDK_DIR}/EmulatorPkg/EmulatorPkg.dec"
+	
+	echo
+	
 	cd "${_UDK_DIR}/EmulatorPkg/"
-	"${_UDK_DIR}/EmulatorPkg/build.sh"
+	"${_UDK_DIR}/EmulatorPkg/build.sh" -a X64 -b DEBUG -t GCC46 -D BUILD_NEW_SHELL
 	
 	echo
 	
