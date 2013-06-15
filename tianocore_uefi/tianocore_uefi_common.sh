@@ -14,6 +14,8 @@ export EDK_TOOLS_PATH="${_UDK_DIR}/BaseTools"
 
 _UDK_C_SOURCE_DIR="${_UDK_BUILD_TOOLS_DIR}/Source/C"
 
+_MAIN_BRANCH="Keshav"
+
 _UDK_TOOLS_PATH_CLEAN() {
 	
 	rm -rf "${EDK_TOOLS_PATH}" || true
@@ -36,7 +38,7 @@ _UDK_BUILD_CLEAN() {
 	
 	cd "${_UDK_DIR}/"
 	git reset --hard
-	git checkout keshav_pr
+	git checkout "${_MAIN_BRANCH}"
 	
 	echo
 	

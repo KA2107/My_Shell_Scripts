@@ -22,7 +22,7 @@ _COMPILE_OVMFPKG() {
 	echo
 	
 	cd "${_UDK_DIR}/"
-	git checkout keshav_pr
+	git checkout "${_MAIN_BRANCH}"
 	
 	echo
 	
@@ -43,7 +43,7 @@ _COMPILE_OVMFPKG() {
 	echo
 	
 	cd "${_UDK_DIR}/OvmfPkg"
-	"${_UDK_DIR}/OvmfPkg/build.sh" -a "X64" -b "RELEASE" -t "GCC46" -D "SECURE_BOOT_ENABLE=TRUE"
+	"${_UDK_DIR}/OvmfPkg/build.sh" -a "X64" -b "RELEASE" -t "GCC46" -D "SECURE_BOOT_ENABLE=TRUE" -D "BUILD_NEW_SHELL"
 	
 	echo
 	
@@ -75,5 +75,6 @@ unset _UDK_C_SOURCE_DIR
 unset EDK_TOOLS_PATH
 unset _OVMFPKG_BUILD_DIR
 unset _BACKUP_BUILDS_DIR
+unset _MAIN_BRANCH
 
 set +x +e

@@ -17,7 +17,7 @@ _CREATE_FLOPPY_MEMDISK_EMUVARIABLE() {
 	echo
 	
 	cd "${_UDK_DIR}/"
-	git checkout keshav_pr
+	git checkout "${_MAIN_BRANCH}"
 	
 	echo
 	
@@ -108,6 +108,59 @@ _CREATE_FLOPPY_MEMDISK_FSVARIABLE() {
 	echo
 }
 
+_CREATE_FLOPPY_MEMDISK_NVVARS() {
+	
+	echo
+	
+	_UDK_BUILD_CLEAN
+	
+	echo
+	
+	cd "${_UDK_DIR}/"
+	git checkout duet_nvvars
+	
+	echo
+	
+	# _COPY_BUILDTOOLS_BASETOOLS
+	
+	echo
+	
+	_SET_PYTHON2
+	
+	echo
+	
+	_CORRECT_WERROR
+	
+	echo
+	
+	export WORKSPACE="${_UDK_DIR}/"
+	
+	echo
+	
+	mkdir -p "${_UDK_BUILD_OUTER_DIR}"
+	cp -rf "${_DUETPKG_NVVARS_BUILD_DIR}" "${_UDK_BUILD_DIR}"
+	
+	echo
+	
+	cd "${EDK_TOOLS_PATH}"
+	make
+	
+	echo
+	
+	"${WORKSPACE}/DuetPkg/CreateBootDisk.sh" file "${_DUETPKG_NVVARS_BUILD_DIR}/floppy.img" /dev/null FAT12 X64 GCC46 RELEASE
+	chmod -x "${_DUETPKG_NVVARS_BUILD_DIR}/floppy.img" || true
+	
+	echo
+	
+	_UDK_BUILD_CLEAN
+	
+	echo
+	
+	# _SET_PYTHON3
+	
+	echo
+}
+
 echo
 
 _COPY_MEMDISK_SYSLINUX
@@ -119,6 +172,10 @@ _CREATE_FLOPPY_MEMDISK_EMUVARIABLE
 echo
 
 # _CREATE_FLOPPY_MEMDISK_FSVARIABLE
+
+echo
+
+# _CREATE_FLOPPY_MEMDISK_NVVARS
 
 echo
 
@@ -136,6 +193,7 @@ unset _UDK_BUILD_DIR
 unset _BACKUP_BUILDS_DIR
 unset _DUETPKG_EMUVARIABLE_BUILD_DIR
 unset _DUETPKG_FSVARIABLE_BUILD_DIR
+unset _DUETPKG_NVVARS_BUILD_DIR
 unset _DUETPKG_COMPILED_DIR
 unset _UEFI_DUET_INSTALLER_DIR
 unset _DUET_MEMDISK_COMPILED_DIR
@@ -146,5 +204,6 @@ unset _BOOTPART
 unset _UEFI_SYS_PART
 unset _SYSLINUX_LIB_DIR
 unset WORKSPACE
+unset _MAIN_BRANCH
 
 set +x +e

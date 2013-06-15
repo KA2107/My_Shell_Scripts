@@ -22,7 +22,7 @@ _COMPILE_ISO9660() {
 	echo
 	
 	cd "${_UDK_DIR}/"
-	git checkout keshav_pr
+	git checkout "${_MAIN_BRANCH}"
 	
 	echo
 	
@@ -101,5 +101,6 @@ unset _UDK_C_SOURCE_DIR
 unset EDK_TOOLS_PATH
 unset _ISO9660_BUILD_DIR
 unset _BACKUP_BUILDS_DIR
+unset _MAIN_BRANCH
 
 set +x +e

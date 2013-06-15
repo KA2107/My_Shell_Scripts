@@ -22,7 +22,7 @@ _COMPILE_EMULATORPKG_UNIX_X86_64() {
 	echo
 	
 	cd "${_UDK_DIR}/"
-	git checkout keshav_pr
+	git checkout "${_MAIN_BRANCH}"
 	
 	echo
 	
@@ -51,7 +51,7 @@ _COMPILE_EMULATORPKG_UNIX_X86_64() {
 	echo
 	
 	cd "${_UDK_DIR}/EmulatorPkg/"
-	"${_UDK_DIR}/EmulatorPkg/build.sh" -a X64 -b DEBUG -t GCC46 -D BUILD_NEW_SHELL
+	"${_UDK_DIR}/EmulatorPkg/build.sh" -a "X64" -b "DEBUG" -t "GCC46" -D "BUILD_NEW_SHELL"
 	
 	echo
 	
@@ -83,5 +83,6 @@ unset _UDK_C_SOURCE_DIR
 unset EDK_TOOLS_PATH
 unset _EMULATORPKG_UNIX_X86_64_DIR
 unset _BACKUP_BUILDS_DIR
+unset _MAIN_BRANCH
 
 set +x +e

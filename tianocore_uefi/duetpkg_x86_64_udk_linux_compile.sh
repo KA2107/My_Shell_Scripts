@@ -17,7 +17,7 @@ _COMPILE_DUETPKG_EMUVARIABLE_BRANCH() {
 	echo
 	
 	cd "${_UDK_DIR}/"
-	git checkout keshav_pr
+	git checkout "${_MAIN_BRANCH}"
 	
 	echo
 	
@@ -106,6 +106,55 @@ _COMPILE_DUETPKG_FSVARIABLE_BRANCH() {
 	
 }
 
+_COMPILE_DUETPKG_NVVARS_BRANCH() {
+	
+	echo
+	
+	_UDK_BUILD_CLEAN
+	
+	echo
+	
+	cd "${_UDK_DIR}/"
+	git checkout duet_nvvars
+	
+	echo
+	
+	# _COPY_BUILDTOOLS_BASETOOLS
+	
+	echo
+	
+	_SET_PYTHON2
+	
+	echo
+	
+	_APPLY_PATCHES
+	
+	echo
+	
+	_APPLY_CHANGES
+	
+	echo
+	
+	cd "${_UDK_DIR}/DuetPkg"
+	"${_UDK_DIR}/DuetPkg/build64.sh"
+	
+	echo
+	
+	cp -rf "${_UDK_BUILD_DIR}" "${_DUETPKG_NVVARS_BUILD_DIR}"
+	install -D -m0644 "${_UDK_BUILD_OUTER_DIR}/floppy.img" "${_DUETPKG_NVVARS_BUILD_DIR}/floppy.img"
+	
+	echo
+	
+	_UDK_BUILD_CLEAN
+	
+	echo
+	
+	# _SET_PYTHON3
+	
+	echo
+	
+}
+
 echo
 
 _COMPILE_DUETPKG_EMUVARIABLE_BRANCH
@@ -113,6 +162,10 @@ _COMPILE_DUETPKG_EMUVARIABLE_BRANCH
 echo
 
 # _COMPILE_DUETPKG_FSVARIABLE_BRANCH
+
+echo
+
+# _COMPILE_DUETPKG_NVVARS_BRANCH
 
 echo
 
@@ -126,6 +179,7 @@ unset _UDK_BUILD_DIR
 unset _BACKUP_BUILDS_DIR
 unset _DUETPKG_EMUVARIABLE_BUILD_DIR
 unset _DUETPKG_FSVARIABLE_BUILD_DIR
+unset _DUETPKG_NVVARS_BUILD_DIR
 unset _DUETPKG_COMPILED_DIR
 unset _UEFI_DUET_INSTALLER_DIR
 unset _DUET_MEMDISK_COMPILED_DIR
@@ -135,7 +189,8 @@ unset _ROD_SMITH_DUET_INSTALL_DIR
 unset _BOOTPART
 unset _UEFI_SYS_PART
 unset _SYSLINUX_LIB_DIR
-unset _DUET_PART_FS_UUID
+unset _DUET_PART_PARTUUID
 unset _DUET_PART_MP
+unset _MAIN_BRANCH
 
 set +x +e

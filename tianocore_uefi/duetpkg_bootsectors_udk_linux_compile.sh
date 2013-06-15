@@ -22,7 +22,7 @@ _COMPILE_DUETPKG_BOOTSECTOR() {
 	echo
 	
 	cd "${_UDK_DIR}/"
-	git checkout keshav_pr
+	git checkout "${_MAIN_BRANCH}"
 	
 	echo
 	
@@ -84,6 +84,7 @@ unset _UDK_BUILD_DIR
 unset _BACKUP_BUILDS_DIR
 unset _DUETPKG_EMUVARIABLE_BUILD_DIR
 unset _DUETPKG_FSVARIABLE_BUILD_DIR
+unset _DUETPKG_NVVARS_BUILD_DIR
 unset _DUETPKG_COMPILED_DIR
 unset _UEFI_DUET_INSTALLER_DIR
 unset _DUET_MEMDISK_COMPILED_DIR
@@ -93,7 +94,8 @@ unset _ROD_SMITH_DUET_INSTALL_DIR
 unset _BOOTPART
 unset _UEFI_SYS_PART
 unset _SYSLINUX_LIB_DIR
-unset _DUET_PART_FS_UUID
+unset _DUET_PART_PARTUUID
 unset _DUET_PART_MP
+unset _MAIN_BRANCH
 
 set +x +e

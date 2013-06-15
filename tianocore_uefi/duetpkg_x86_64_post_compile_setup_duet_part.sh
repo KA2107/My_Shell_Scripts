@@ -20,7 +20,7 @@ _COPY_EFILDR_DUET_PART() {
 	
 	if [[ -e "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/FV/Efildr20" ]]; then
 		if [[ "$(file "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/FV/Efildr20" | grep "Efildr20: x86 boot sector")" ]]; then
-			sudo mount -t vfat -o rw,users,exec -U "${_DUET_PART_FS_UUID}" "${_DUET_PART_MP}"
+			sudo mount -t vfat -o rw,users,exec -U "${_DUET_PART_PARTUUID}" "${_DUET_PART_MP}"
 			sudo rm -f "${_DUET_PART_MP}/EFILDR20" || true
 			sudo install -D -m0644 "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/FV/Efildr20" "${_DUET_PART_MP}/EFILDR20"
 			sudo umount "${_DUET_PART_MP}"
@@ -96,6 +96,7 @@ unset _UDK_DUETPKG_BOOTSECT_BIN_DIR
 unset _UDK_BUILD_DIR
 unset _DUETPKG_EMUVARIABLE_BUILD_DIR
 unset _DUETPKG_FSVARIABLE_BUILD_DIR
+unset _DUETPKG_NVVARS_BUILD_DIR
 unset _DUETPKG_COMPILED_DIR
 unset _UEFI_DUET_INSTALLER_DIR
 unset _DUET_MEMDISK_COMPILED_DIR
@@ -105,5 +106,6 @@ unset _ROD_SMITH_DUET_INSTALL_DIR
 unset _BOOTPART
 unset _UEFI_SYS_PART
 unset _SYSLINUX_LIB_DIR
+unset _MAIN_BRANCH
 
 set +x +e
