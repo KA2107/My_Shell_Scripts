@@ -11,10 +11,10 @@ _RUN()
 	ls --all -1 | while read -r _repo
 	do
 		if [[ -d "${PWD}/${_repo}" ]] && [[ "${_repo}" == '.git' ]]; then
-			if [[ -d "${PWD}/.git/hgcheckout" ]] && [[ -d "${PWD}/.git/hgremote" ]]; then
+			if [[ -d "${PWD}/.git/hgcheckout/__NONE__" ]] && [[ -d "${PWD}/.git/hgremote/__NONE__" ]]; then
 				echo
 				echo
-				echo "GIT HG - ${PWD}"
+				echo "GIT HG OLD - ${PWD}"
 				echo
 				
 				git reset --hard
@@ -33,10 +33,10 @@ _RUN()
 				echo
 				
 				echo
-			elif [[ -d "${PWD}/.git/bzr" ]]; then
+			elif [[ -d "${PWD}/.git/bzr/__NONE__" ]]; then
 				echo
 				echo
-				echo "GIT BZR - ${PWD}"
+				echo "GIT BZR OLD - ${PWD}"
 				echo
 				
 				git reset --hard
@@ -82,10 +82,18 @@ _RUN()
 				echo
 			else
 				if [[ -d "${PWD}/.git/refs/remotes" ]]; then
-					echo
-					echo
-					echo "GIT - ${PWD}"
-					echo
+					
+					if [[ -d "${PWD}/.git/bzr" ]]; then
+						echo
+						echo
+						echo "GIT BZR - ${PWD}"
+						echo
+					else
+						echo
+						echo
+						echo "GIT - ${PWD}"
+						echo
+					fi
 					
 					#################
 					
