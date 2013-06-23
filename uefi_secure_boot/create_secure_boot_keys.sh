@@ -28,7 +28,7 @@ _update_vars() {
 	
 	for _VAR_ in db KEK PK ; do
 		echo
-		UpdateVars "${_VAR_}" "${_VAR_}.auth"
+		efi-updatevar "${_VAR_}" "${_VAR_}.auth"
 		echo
 	done
 	
