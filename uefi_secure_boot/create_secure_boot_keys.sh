@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+_UEFISYS_MP="/efisys"
+
 _generate_secure_boot_keys() {
 	
 	for _VAR_ in db KEK PK ; do
@@ -12,12 +14,11 @@ _generate_secure_boot_keys() {
 
 _sign_binaries() {
 	
-	mkdir -p /efisys/EFI/tools/efitools
+	sudo mkdir -p "${_UEFISYS_MP}/EFI/tools/efitools"
 	
 	for _INPUT_FILE_ in $(ls -1 /usr/share/efitools/efi/*) ; do
 		echo
-		sbsign --key db.key --cert db.crt --output "${PWD}/${_INPUT_FILE_}" "${_INPUT_FILE_}"
-		sudo cp "${PWD}/${_INPUT_FILE_}" "/efisys/EFI/tools/efitools/${_INPUT_FILE_}"
+		sudo sbsign --key db.key --cert db.crt --output "${_UEFISYS_MP}/EFI/tools/efitools/$(echo ${_INPUT_FILE_} | sed 's%/usr/share/efitools/efi/%%g')" "${_INPUT_FILE_}"
 		echo
 	done
 	
@@ -54,3 +55,7 @@ _sign_binaries
 _middle_work
 
 _update_vars
+
+echo
+sudo cp -v -f "${PWD}"/{db,KEK,PK}.{crt,key,auth,esl} "${_UEFISYS_MP}/EFI/tools/efitools/"
+echo
