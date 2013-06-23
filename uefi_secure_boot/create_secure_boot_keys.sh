@@ -10,6 +10,19 @@ _generate_secure_boot_keys() {
 	
 }
 
+_sign_binaries() {
+	
+	mkdir -p /efisys/EFI/tools/efitools
+	
+	for _INPUT_FILE_ in $(ls -1 /usr/share/efitools/efi/*) ; do
+		echo
+		sbsign --key db.key --cert db.crt --output "${PWD}/${_INPUT_FILE_}" "${_INPUT_FILE_}"
+		sudo cp "${PWD}/${_INPUT_FILE_}" "/efisys/EFI/tools/efitools/${_INPUT_FILE_}"
+		echo
+	done
+	
+}
+
 _middle_work() {
 	
 	for _VAR_ in db KEK PK ; do
@@ -28,13 +41,15 @@ _update_vars() {
 	
 	for _VAR_ in db KEK PK ; do
 		echo
-		efi-updatevar "${_VAR_}" "${_VAR_}.auth"
+		# UpdateVars "${_VAR_}" "${_VAR_}.auth"
 		echo
 	done
 	
 }
 
 _generate_secure_boot_keys
+
+_sign_binaries
 
 _middle_work
 
