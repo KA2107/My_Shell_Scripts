@@ -16,7 +16,7 @@ export OLD_COMMITTER_EMAIL="${OLD_AUTHOR_EMAIL}"
 ## Taken from http://help.github.com/change-author-info/
 ## Ideas from http://stackoverflow.com/questions/750172/how-do-i-change-the-author-of-a-commit-in-git
 
-git filter-branch --env-filter '
+git filter-branch -f --env-filter '
 
 an="${GIT_AUTHOR_NAME}"
 am="${GIT_AUTHOR_EMAIL}"
