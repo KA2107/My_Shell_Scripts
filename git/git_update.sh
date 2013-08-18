@@ -139,19 +139,19 @@ NOEXEC
 					
 					#################
 					
-					git checkout --quiet "remotes/origin/${_GIT_REMOTE_BRANCH}"
-					echo
+					# git checkout --quiet "remotes/origin/${_GIT_REMOTE_BRANCH}"
+					# echo
 					
 					# git branch -D "${_GIT_REMOTE_BRANCH}"
-					echo
+					# echo
 					
 					# git branch --track "${_GIT_REMOTE_BRANCH}" "remotes/origin/${_GIT_REMOTE_BRANCH}"
-					echo
+					# echo
 					
 					#################
 					
-					git checkout --quiet "${_GIT_REMOTE_BRANCH}"
-					echo
+					# git checkout --quiet "${_GIT_REMOTE_BRANCH}"
+					# echo
 					
 					#################
 					
