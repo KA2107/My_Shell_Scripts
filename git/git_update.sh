@@ -23,7 +23,7 @@ _RUN()
 				git hg pull
 				echo
 				
-				git checkout master
+				git checkout --quiet master
 				echo
 				
 				git pull --rebase hg master
@@ -48,7 +48,7 @@ _RUN()
 				git bzr sync bzr/master
 				echo
 				
-				git checkout master
+				git checkout --quiet master
 				echo
 				
 				git merge bzr/master
@@ -70,7 +70,7 @@ _RUN()
 				git svn rebase --verbose
 				echo
 				
-				git checkout master
+				git checkout --quiet master
 				echo
 				
 				git pull --rebase git-svn || git pull --rebase origin svn/trunk 
@@ -128,7 +128,7 @@ NOEXEC
 					git reset --hard
 					echo
 					
-					git checkout "${_GIT_REMOTE_BRANCH}"
+					git checkout --quiet "${_GIT_REMOTE_BRANCH}"
 					echo
 					
 					git pull --rebase origin "${_GIT_REMOTE_BRANCH}"
@@ -150,7 +150,7 @@ NOEXEC
 					
 					#################
 					
-					git checkout "${_GIT_REMOTE_BRANCH}"
+					git checkout --quiet "${_GIT_REMOTE_BRANCH}"
 					echo
 					
 					#################
