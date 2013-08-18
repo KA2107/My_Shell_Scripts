@@ -145,7 +145,7 @@ NOEXEC
 					# git branch -D "${_GIT_REMOTE_BRANCH}"
 					echo
 					
-					git branch --track "${_GIT_REMOTE_BRANCH}" "remotes/origin/${_GIT_REMOTE_BRANCH}"
+					# git branch --track "${_GIT_REMOTE_BRANCH}" "remotes/origin/${_GIT_REMOTE_BRANCH}"
 					echo
 					
 					#################
