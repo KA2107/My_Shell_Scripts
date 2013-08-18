@@ -26,7 +26,7 @@ _RUN()
 				git checkout master
 				echo
 				
-				git merge remotes/hg/master
+				git pull --rebase hg master
 				echo
 				
 				git reset --hard
@@ -73,7 +73,7 @@ _RUN()
 				git checkout master
 				echo
 				
-				git merge remotes/git-svn || git merge remotes/origin/svn/trunk 
+				git pull --rebase git-svn || git pull --rebase origin svn/trunk 
 				echo
 				
 				git reset --hard
@@ -131,7 +131,7 @@ NOEXEC
 					git checkout "${_GIT_REMOTE_BRANCH}"
 					echo
 					
-					git merge "remotes/origin/${_GIT_REMOTE_BRANCH}"
+					git pull --rebase origin "${_GIT_REMOTE_BRANCH}"
 					echo
 					
 					git reset --hard
@@ -142,7 +142,7 @@ NOEXEC
 					git checkout --quiet "remotes/origin/${_GIT_REMOTE_BRANCH}"
 					echo
 					
-					git branch -D "${_GIT_REMOTE_BRANCH}"
+					# git branch -D "${_GIT_REMOTE_BRANCH}"
 					echo
 					
 					git branch --track "${_GIT_REMOTE_BRANCH}" "remotes/origin/${_GIT_REMOTE_BRANCH}"
