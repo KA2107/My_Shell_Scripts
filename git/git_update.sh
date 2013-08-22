@@ -26,7 +26,7 @@ _RUN()
 				git checkout --quiet master
 				echo
 				
-				git pull --rebase hg master
+				git pull --rebase --verbose hg master
 				echo
 				
 				git reset --hard
@@ -67,13 +67,10 @@ _RUN()
 				git reset --hard
 				echo
 				
-				git svn rebase --verbose
-				echo
-				
 				git checkout --quiet master
 				echo
 				
-				git pull --rebase git-svn || git pull --rebase origin svn/trunk 
+				git svn rebase --verbose
 				echo
 				
 				git reset --hard
@@ -131,7 +128,7 @@ NOEXEC
 					git checkout --quiet "${_GIT_REMOTE_BRANCH}"
 					echo
 					
-					git pull --rebase origin "${_GIT_REMOTE_BRANCH}"
+					git pull --rebase --verbose origin "${_GIT_REMOTE_BRANCH}"
 					echo
 					
 					git reset --hard
