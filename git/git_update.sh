@@ -33,31 +33,6 @@ _RUN()
 				echo
 				
 				echo
-			elif [[ -d "${PWD}/.git/bzr/__NONE__" ]]; then
-				echo
-				echo
-				echo "GIT BZR OLD - ${PWD}"
-				echo
-				
-				git reset --hard
-				echo
-				
-				bzr lp-login "${_LAUNCHPAD_USER}"
-				echo
-				
-				git bzr sync bzr/master
-				echo
-				
-				git checkout --quiet master
-				echo
-				
-				git merge bzr/master
-				echo
-				
-				git reset --hard
-				echo
-				
-				echo
 			elif [[ -d "${PWD}/.git/svn" ]]; then
 				echo
 				echo
@@ -126,6 +101,9 @@ NOEXEC
 					echo
 					
 					git checkout --quiet "${_GIT_REMOTE_BRANCH}"
+					echo
+					
+					git fetch --all --prune --verbose
 					echo
 					
 					git pull --rebase --verbose origin "${_GIT_REMOTE_BRANCH}"
