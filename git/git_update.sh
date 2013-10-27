@@ -92,7 +92,7 @@ _RUN()
 					done
 					
 NOEXEC
-					git fetch
+					git fetch --all --prune --verbose
 					echo
 					
 					#################
@@ -101,9 +101,6 @@ NOEXEC
 					echo
 					
 					git checkout --quiet "${_GIT_REMOTE_BRANCH}"
-					echo
-					
-					git fetch --all --prune --verbose
 					echo
 					
 					git pull --rebase --verbose origin "${_GIT_REMOTE_BRANCH}"
