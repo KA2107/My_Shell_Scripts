@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 
-## This is a script to compile and install GRUB for UEFI systems. Just copy this script to the GRUB Source Root dir and run this script by passing the correct parameters. This script will be updated as and when the commands change in GRUB bzr repo and not just stick to any release version.
+## This is a script to compile and install GRUB for UEFI systems. Just copy this script to the GRUB Source Root dir and run this script by passing the correct parameters. This script will be updated as and when the commands change in GRUB GIT repo and not just stick to any release version.
 
-## This script uses efibootmgr to setup GRUB UEFI as the default boot option in UEFI NVRAM.
-
-## For example if you did 'bzr branch bzr://bzr.savannah.gnu.org/grub/trunk/grub /home/user/grub'
+## For example if you did 'git clone git://git.sv.gnu.org/grub.git /home/user/grub'
 ## Then copy this script to /home/user/grub and cd into /home/user/grub and the run this script.
+
+## This script uses efivar https://github.com/vathpela/efivar to detect UEFI Variable support necessary for efibootmgr to create a boot entry for GRUB in UEFI firmware boot menu.
+## Therefore efivar should be installed in the system. It is also recommended to use efibootmgr from https://github.com/vathpela/efibootmgr/tree/libefivars .
 
 ## This script assumes all the build dependencies to be installed and it does not try to install those for you.
 
@@ -34,7 +35,7 @@ _USAGE() {
 	echo
 	echo 'For example if you did'
 	echo
-	echo 'bzr branch bzr://bzr.savannah.gnu.org/grub/trunk/grub /home/user/grub'
+	echo 'git clone git://git.sv.gnu.org/grub.git /home/user/grub'
 	echo
 	echo 'then copy this script to /home/user/grub and cd into /home/user/grub and then run this script from /home/user/grub.'
 	echo
@@ -192,8 +193,6 @@ _GRUB_UEFI_PYTHON_TO_PYTHON2() {
 }
 
 _GRUB_UEFI_PO_LINGUAS() {
-	
-	## http://bzr.savannah.gnu.org/lh/grub/trunk/grub/revision/4561
 	
 	echo
 	
@@ -529,22 +528,68 @@ _GRUB_UEFI_EFIBOOTMGR() {
 
 set -x
 
-modprobe -q efivars
+switch_to_efivarfs() {
+	modprobe -q -r efivars || true
+	
+	umount /sys/firmware/efi/efivars || true
+	modprobe -q -r efivarfs || true
+	
+	modprobe -q efivarfs || true
+	mount -t efivarfs efivarfs /sys/firmware/efi/efivars || true
+}
 
-if [[ "\$(lsmod | grep ^efivars)" ]]; then
-	if [[ -d "/sys/firmware/efi/vars" ]]; then
-		# Delete old entries of grub - command to be checked
-		for _bootnum in \$(efibootmgr | grep '^Boot[0-9]' | fgrep -i " ${_GRUB_UEFI_NAME}" | cut -b5-8)
-		do
-			efibootmgr --bootnum "${_bootnum}" --delete-bootnum
-		done
-		
-		efibootmgr --create --gpt --disk "${_UEFISYS_PARENT_DISK}" --part "${_UEFISYS_PART_NUM}" --write-signature --label "${_GRUB_UEFI_NAME}" --loader "\\\\EFI\\\\${_GRUB_UEFI_NAME}\\\\grub${_SPEC_UEFI_ARCH_NAME}.efi"
-	else
-		echo '/sys/firmware/efi/vars/ directory not found. Check whether you have booted in UEFI boot mode, manually load efivars kernel module and create a boot entry for GRUB in UEFI Boot Manager.'
-	fi
+switch_to_sysfs-efivars() {
+	umount /sys/firmware/efi/efivars || true
+	modprobe -q -r efivarfs || true
+
+	modprobe -q -r efivars || true
+	modprobe -q efivars || true
+}
+
+_EFIVARFS="0"
+_EFIVARS="0"
+
+EFIBOOTMGR="$(which efibootmgr)"
+
+if [[ "$(ldd ${EFIBOOTMGR} | grep 'libefivar')" ]]; then
+	_EFIBOOTMGR_EFIVARFS="1"
+fi
+
+switch_to_efivarfs
+
+if [[ "$(efivar -l)" ]]; then
+	_EFIVARFS="1"
+fi
+
+switch_to_sysfs-efivars
+
+if [[ "$(efivar -l)" ]]; then
+	_EFIVARS="1"
+fi
+
+if [[ "${_EFIVARFS}" == "1" ]] && [[ "${_EFIBOOTMGR_EFIVARFS}" == "1" ]]; then
+	switch_to_efivarfs
+	
+	_CONTINUE="1"
 else
-	echo 'efivars kernel module not loaded properly. Manually load it and create a boot entry for GRUB in UEFI Boot Manager.'
+	if [[ "${_EFIVARS}" == "1" ]]; then
+		switch_to_sysfs-efivars
+		
+		_CONTINUE="1"
+	else
+		_CONTINUE="0"
+	fi
+fi
+
+if [[ "${_CONTINUE}" == "1" ]]; then
+	# Delete old entries of grub - command to be checked
+	for _bootnum in \$(efibootmgr | grep '^Boot[0-9]' | fgrep -i " ${_GRUB_UEFI_NAME}" | cut -b5-8) ; do
+		efibootmgr --bootnum "${_bootnum}" --delete-bootnum
+	done
+	
+	efibootmgr --create --disk "${_UEFISYS_PARENT_DISK}" --part "${_UEFISYS_PART_NUM}" --label "${_GRUB_UEFI_NAME}" --loader "/EFI/${_GRUB_UEFI_NAME}/grub${_SPEC_UEFI_ARCH_NAME}.efi"
+else
+	echo "Unable to create boot entry using efibootmgr. Check whether you have booted in UEFI boot mode"
 fi
 
 echo
@@ -568,9 +613,6 @@ EOF
 }
 
 _GRUB_APPLE_EFI_HFS_BLESS() {
-	
-	## Grub upstream bzr mactel branch => http://bzr.savannah.gnu.org/lh/grub/branches/mactel/changes
-	## Fedora's mactel-boot => https://bugzilla.redhat.com/show_bug.cgi?id=755093
 	
 	echo
 	

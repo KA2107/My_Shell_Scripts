@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-## This is a script to compile and install GRUB for BIOS systems. Just copy this script to the (GRUB Source Root dir) and run this script by passing the correct parameters. This script will be updated as and when the commands change in GRUB bzr repo and not just stick to any release version.
+## This is a script to compile and install GRUB for BIOS systems. Just copy this script to the (GRUB Source Root dir) and run this script by passing the correct parameters. This script will be updated as and when the commands change in GRUB GIT repo and not just stick to any release version.
 
-## For example if you did 'bzr branch bzr://bzr.savannah.gnu.org/grub/trunk/grub /home/user/grub'
+## For example if you did 'git clone git://git.sv.gnu.org/grub.git /home/user/grub'
 ## Then copy this script to /home/user/grub and cd into /home/user/grub and the run this script.
 
 ## This script assumes all the build dependencies to be installed and it does not try to install those for you.
@@ -32,7 +32,7 @@ _USAGE() {
 	echo
 	echo 'For example if you did'
 	echo
-	echo 'bzr branch bzr://bzr.savannah.gnu.org/grub/trunk/grub /home/user/grub'
+	echo 'git clone git://git.sv.gnu.org/grub.git /home/user/grub'
 	echo
 	echo 'then copy this script to /home/user/grub and cd into /home/user/grub and then run this script from /home/user/grub.'
 	echo
@@ -99,7 +99,7 @@ _GRUB_BIOS_SET_ENV_VARS() {
 	
 	export _GRUB_BIOS_BOOTPART_DIR="${_GRUB_BIOS_BOOTDIR_PATH}/${_GRUB_BIOS_NAME}"
 	export _GRUB_BIOS_CONFIGURE_OPTIONS="--with-platform="pc" --target="i386" --program-prefix="" --program-transform-name="s,grub,${_GRUB_BIOS_NAME}," --with-bootdir="${_GRUB_BIOS_BOOTDIR_PATH}" --with-grubdir="${_GRUB_BIOS_NAME}""
-	export _GRUB_BIOS_OTHER_CONFIGURE_OPTIONS="--enable-mm-debug --enable-device-mapper --enable-cache-stats --enable-grub-mkfont --enable-grub-mount --enable-nls --enable-efiemu --disable-werror"
+	export _GRUB_BIOS_OTHER_CONFIGURE_OPTIONS="--enable-mm-debug --enable-device-mapper --enable-cache-stats --enable-grub-mkfont --enable-grub-mount --enable-nls --disable-werror"
 	
 	export _GRUB_BIOS_CONFIGURE_PATHS_1="--prefix="${_GRUB_BIOS_PREFIX_DIR}" --bindir="${_GRUB_BIOS_BIN_DIR}" --sbindir="${_GRUB_BIOS_SBIN_DIR}" --sysconfdir="${_GRUB_BIOS_SYSCONF_DIR}" --libdir="${_GRUB_BIOS_LIB_DIR}""
 	export _GRUB_BIOS_CONFIGURE_PATHS_2="--datarootdir="${_GRUB_BIOS_DATAROOT_DIR}" --infodir="${_GRUB_BIOS_INFO_DIR}" --localedir="${_GRUB_BIOS_LOCALE_DIR}" --mandir="${_GRUB_BIOS_MAN_DIR}""
@@ -172,8 +172,6 @@ _GRUB_BIOS_PYTHON_TO_PYTHON2() {
 }
 
 _GRUB_BIOS_PO_LINGUAS() {
-	
-	## http://bzr.savannah.gnu.org/lh/grub/trunk/grub/revision/4561
 	
 	echo
 	
