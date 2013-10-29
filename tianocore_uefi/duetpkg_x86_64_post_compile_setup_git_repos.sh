@@ -126,7 +126,7 @@ _UEFI_DUET_INSTALLER_GIT() {
 	
 	cd "${_UDK_DIR}/"
 	# rm -f "${_UEFI_DUET_INSTALLER_DIR}/UDK_EDK2_DuetPkg_Changes_to_Makefiles.patch" || true
-	# git diff remotes/origin/master...Keshav > "${_UEFI_DUET_INSTALLER_DIR}/UDK_EDK2_DuetPkg_Changes_to_Makefiles.patch"
+	# git diff remotes/origin/master...${_MAIN_BRANCH} > "${_UEFI_DUET_INSTALLER_DIR}/UDK_EDK2_DuetPkg_Changes_to_Makefiles.patch"
 	# chmod -x "${_UEFI_DUET_INSTALLER_DIR}/UDK_EDK2_DuetPkg_Changes_to_Makefiles.patch" || true
 	
 	echo

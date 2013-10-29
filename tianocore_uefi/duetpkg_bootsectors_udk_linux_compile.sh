@@ -6,6 +6,8 @@ _SOURCE_CODES_DIR="${__SOURCE_CODES_PART__}/Source_Codes"
 
 _WD="${_SOURCE_CODES_DIR}/Firmware/UEFI/TianoCore_Sourceforge"
 
+_MAIN_BRANCH="Keshav_duetpkg"
+
 source "${_WD}/tianocore_uefi_duetpkg_common.sh"
 
 _UDK_BUILD_OUTER_DIR="${_UDK_DIR}/Build/DuetPkgIA32/"

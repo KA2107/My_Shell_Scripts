@@ -14,7 +14,7 @@ export EDK_TOOLS_PATH="${_UDK_DIR}/BaseTools"
 
 _UDK_C_SOURCE_DIR="${_UDK_BUILD_TOOLS_DIR}/Source/C"
 
-_MAIN_BRANCH="master"
+[[ -z "${_MAIN_BRANCH}" ]] && _MAIN_BRANCH="master"
 
 _UDK_TOOLS_PATH_CLEAN() {
 	
