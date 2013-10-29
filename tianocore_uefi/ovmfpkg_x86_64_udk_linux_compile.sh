@@ -8,12 +8,31 @@ _WD="${_SOURCE_CODES_DIR}/Firmware/UEFI/TianoCore_Sourceforge"
 
 _MAIN_BRANCH="jljusten/ovmf-nvvars"
 
+_OPENSSL_VERSION="0.9.8w"
+
 source "${_WD}/tianocore_uefi_common.sh"
 
 _UDK_BUILD_OUTER_DIR="${_UDK_DIR}/Build/OvmfX64/"
 _UDK_BUILD_DIR="${_UDK_BUILD_OUTER_DIR}/RELEASE_GCC47/"
 
 _OVMFPKG_BUILD_DIR="${_BACKUP_BUILDS_DIR}/OVMFPKG_BUILD"
+
+_PREPARE_OPENSSL_SOURCES() {
+	
+	cd "${_UDK_DIR}/"
+	
+	bsdtar -C "${_UDK_DIR}/CryptoPkg/Library/OpensslLib/" -xf "${_WD}/openssl-${_OPENSSL_VERSION}.tar.gz"
+	echo
+	
+	cd "${_UDK_DIR}/CryptoPkg/Library/OpensslLib/openssl-${_OPENSSL_VERSION}/"
+	patch -p0 -i "${_UDK_DIR}/CryptoPkg/Library/OpensslLib/EDKII_openssl-${_OPENSSL_VERSION}.patch"
+	echo
+	
+	cd "${_UDK_DIR}/CryptoPkg/Library/OpensslLib/"
+	chmod 0755 "${_UDK_DIR}/CryptoPkg/Library/OpensslLib/Install.sh"
+	"${_UDK_DIR}/CryptoPkg/Library/OpensslLib/Install.sh"
+	
+}
 
 _COMPILE_OVMFPKG() {
 	
@@ -41,6 +60,10 @@ _COMPILE_OVMFPKG() {
 	echo
 	
 	_APPLY_CHANGES
+	
+	echo
+	
+	_PREPARE_OPENSSL_SOURCES
 	
 	echo
 	

@@ -37,6 +37,7 @@ _UDK_BUILD_CLEAN() {
 	echo
 	
 	cd "${_UDK_DIR}/"
+	git clean -x -d -f
 	git reset --hard
 	git checkout "${_MAIN_BRANCH}"
 	
