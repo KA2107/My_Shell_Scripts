@@ -45,7 +45,7 @@ _COMPILE_OVMFPKG() {
 	echo
 	
 	cd "${_UDK_DIR}/OvmfPkg"
-	"${_UDK_DIR}/OvmfPkg/build.sh" -a "X64" -b "RELEASE" -t "GCC47" -D "SECURE_BOOT_ENABLE=TRUE" -D "BUILD_NEW_SHELL"
+	"${_UDK_DIR}/OvmfPkg/build.sh" -a "X64" -b "RELEASE" -t "GCC47" -D "SECURE_BOOT_ENABLE=TRUE" -D "FD_SIZE_2MB" --enable-flash
 	
 	echo
 	
