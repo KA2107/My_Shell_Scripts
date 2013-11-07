@@ -10,7 +10,7 @@ _RUN()
 			echo "${PWD}"
 			echo
 			
-			sed 's|name = Keshav Padmini Rammohan|name = Keshav Padram|g' -i "${PWD}/${_repo}/config"
+			sed 's|name = Keshav Padmini Rammohan|name = Keshav Padram Amburay|g' -i "${PWD}/${_repo}/config"
 			
 			echo
 		elif [[ -d "${PWD}/${_repo}" ]] && [[ "${_repo}" != '.' ]] && [[ "${_repo}" != '..' ]] && [[ "${_repo}" != 'lost+found' ]] && [[ ! "$(file "${PWD}/${_repo}" | grep 'symbolic link to')" ]]; then
