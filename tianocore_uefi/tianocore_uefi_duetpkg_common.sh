@@ -52,6 +52,13 @@ _MIGLE_BOOTDUET_COMPILE() {
 	
 	echo
 	
+	cd "${_MIGLE_BOOTDUET_COMPILE_DIR}/"
+	
+	sed 's|Jump into EFILDR at 2000:0200|Jump into EFILDR at 2000:0000|g' -i "${_MIGLE_BOOTDUET_COMPILE_DIR}/BootDuet.S"
+	sed 's|$0x2000,$0x0200|$0x2000,$0x0000|g' -i "${_MIGLE_BOOTDUET_COMPILE_DIR}/BootDuet.S"
+	
+	echo
+	
 	make
 	make lba64
 	make hardcoded-drive

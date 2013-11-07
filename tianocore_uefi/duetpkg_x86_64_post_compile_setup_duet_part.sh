@@ -22,7 +22,8 @@ _COPY_EFILDR_DUET_PART() {
 		if [[ "$(file "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/FV/Efildr20" | grep "Efildr20: x86 boot sector")" ]]; then
 			sudo mount -t vfat -o rw,users,exec -U "${_DUET_PART_PARTUUID}" "${_DUET_PART_MP}"
 			sudo rm -f "${_DUET_PART_MP}/EFILDR20" || true
-			sudo install -D -m0644 "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/FV/Efildr20" "${_DUET_PART_MP}/EFILDR20"
+			sudo dd if="${_DUETPKG_EMUVARIABLE_BUILD_DIR}/FV/Efildr20" of="${_DUET_PART_MP}/EFILDR20" bs="512" skip="1"
+			sudo chmod 0644 "${_DUET_PART_MP}/EFILDR20"
 			sudo umount "${_DUET_PART_MP}"
 		fi
 	fi
