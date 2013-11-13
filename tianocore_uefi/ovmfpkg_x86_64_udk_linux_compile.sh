@@ -6,7 +6,7 @@ _SOURCE_CODES_DIR="${__SOURCE_CODES_PART__}/Source_Codes"
 
 _WD="${_SOURCE_CODES_DIR}/Firmware/UEFI/TianoCore_Sourceforge"
 
-_MAIN_BRANCH="jljusten/ovmf-nvvars"
+_MAIN_BRANCH="master"
 
 _OPENSSL_VERSION="0.9.8w"
 
