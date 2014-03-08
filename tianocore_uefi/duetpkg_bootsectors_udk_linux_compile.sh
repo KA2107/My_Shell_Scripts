@@ -9,7 +9,7 @@ _WD="${_SOURCE_CODES_DIR}/Firmware/UEFI/TianoCore_Sourceforge"
 source "${_WD}/tianocore_uefi_duetpkg_common.sh"
 
 _UDK_BUILD_OUTER_DIR="${_UDK_DIR}/Build/DuetPkgIA32/"
-_UDK_BUILD_DIR="${_UDK_BUILD_OUTER_DIR}/DEBUG_GCC47/"
+_UDK_BUILD_DIR="${_UDK_BUILD_OUTER_DIR}/${_TARGET}_${_COMPILER}/"
 
 _BOOTSECTOR_BUILD_DIR="${_BACKUP_BUILDS_DIR}/BOOTSECTOR_BUILD"
 
@@ -50,7 +50,7 @@ _COMPILE_DUETPKG_BOOTSECTOR() {
 	
 	echo
 	
-	"${EDK_TOOLS_PATH}/BinWrappers/PosixLike/build" -p "${_UDK_DIR}/DuetPkg/DuetPkgIa32.dsc" -m "${_UDK_DIR}/DuetPkg/BootSector/BootSector.inf" -a IA32 -b RELEASE -t GCC47
+	"${EDK_TOOLS_PATH}/BinWrappers/PosixLike/build" -p "${_UDK_DIR}/DuetPkg/DuetPkgIa32.dsc" -m "${_UDK_DIR}/DuetPkg/BootSector/BootSector.inf" -a "IA32" -b "${_TARGET}" -t "${_COMPILER}"
 	
 	echo
 	

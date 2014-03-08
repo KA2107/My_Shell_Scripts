@@ -9,7 +9,7 @@ _WD="${_SOURCE_CODES_DIR}/Firmware/UEFI/TianoCore_Sourceforge"
 source "${_WD}/tianocore_uefi_common.sh"
 
 _UDK_BUILD_OUTER_DIR="${_UDK_DIR}/Build/Emulator/"
-_UDK_BUILD_DIR="${_UDK_BUILD_OUTER_DIR}/DEBUG_GCC47/"
+_UDK_BUILD_DIR="${_UDK_BUILD_OUTER_DIR}/${_TARGET}_${_COMPILER}/"
 
 _EMULATORPKG_UNIX_X86_64_DIR="${_BACKUP_BUILDS_DIR}/EMULATORPKG_UNIX_X64_BUILD"
 
@@ -42,7 +42,7 @@ _COMPILE_EMULATORPKG_UNIX_X86_64() {
 	
 	echo
 	
-	sed 's|^TARGET_TOOLS=|TARGET_TOOLS=GCC47|g' -i "${_UDK_DIR}/EmulatorPkg/build.sh" || true
+	sed 's|^TARGET_TOOLS=|TARGET_TOOLS=${_COMPILER}|g' -i "${_UDK_DIR}/EmulatorPkg/build.sh" || true
 	
 	echo
 	
@@ -51,7 +51,7 @@ _COMPILE_EMULATORPKG_UNIX_X86_64() {
 	echo
 	
 	cd "${_UDK_DIR}/EmulatorPkg/"
-	"${_UDK_DIR}/EmulatorPkg/build.sh" -a "X64" -b "DEBUG" -t "GCC47" -D "BUILD_NEW_SHELL"
+	"${_UDK_DIR}/EmulatorPkg/build.sh" -a "X64" -b "${_TARGET}" -t "${_COMPILER}" -D "BUILD_NEW_SHELL"
 	
 	echo
 	

@@ -16,6 +16,9 @@ _UDK_C_SOURCE_DIR="${_UDK_BUILD_TOOLS_DIR}/Source/C"
 
 [[ -z "${_MAIN_BRANCH}" ]] && _MAIN_BRANCH="master"
 
+_TARGET="RELEASE"
+_COMPILER="GCC48"
+
 _UDK_TOOLS_PATH_CLEAN() {
 	
 	rm -rf "${EDK_TOOLS_PATH}" || true
@@ -173,7 +176,7 @@ _APPLY_CHANGES() {
 	
 	## EmulatorPkg
 	sed 's|export LIB_ARCH_SFX=64|export LIB_ARCH_SFX=""|g' -i "${_UDK_DIR}/EmulatorPkg/build.sh" || true
-	sed 's|^UNIXPKG_TOOLS=|UNIXPKG_TOOLS=GCC47|g' -i "${_UDK_DIR}/EmulatorPkg/build.sh" || true
+	sed 's|^UNIXPKG_TOOLS=|UNIXPKG_TOOLS=${_COMPILER}|g' -i "${_UDK_DIR}/EmulatorPkg/build.sh" || true
 	
 	echo
 	

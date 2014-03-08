@@ -9,7 +9,7 @@ _WD="${_SOURCE_CODES_DIR}/Firmware/UEFI/TianoCore_Sourceforge"
 source "${_WD}/tianocore_uefi_duetpkg_common.sh"
 
 _UDK_BUILD_OUTER_DIR="${_UDK_DIR}/Build/Clover/"
-_UDK_BUILD_DIR="${_UDK_BUILD_OUTER_DIR}/RELEASE_GCC47/"
+_UDK_BUILD_DIR="${_UDK_BUILD_OUTER_DIR}/${_TARGET}_${_COMPILER}/"
 
 _ISO9660_BUILD_DIR="${_BACKUP_BUILDS_DIR}/ISO9660_BUILD"
 
@@ -69,7 +69,7 @@ _COMPILE_ISO9660() {
 	
 	echo
 	
-	"${EDK_TOOLS_PATH}/BinWrappers/PosixLike/build" -p "${_UDK_DIR}/Clover/CloverX64.dsc" -m "${_UDK_DIR}/Clover/VBoxFsDxe/VBoxIso9660.inf" -a X64 -b RELEASE -t GCC47
+	"${EDK_TOOLS_PATH}/BinWrappers/PosixLike/build" -p "${_UDK_DIR}/Clover/CloverX64.dsc" -m "${_UDK_DIR}/Clover/VBoxFsDxe/VBoxIso9660.inf" -a "X64" -b "${_TARGET}" -t "${_COMPILER}"
 	
 	echo
 	

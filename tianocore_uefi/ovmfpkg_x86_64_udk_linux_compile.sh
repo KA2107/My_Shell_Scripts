@@ -13,7 +13,7 @@ _OPENSSL_VERSION="0.9.8w"
 source "${_WD}/tianocore_uefi_common.sh"
 
 _UDK_BUILD_OUTER_DIR="${_UDK_DIR}/Build/OvmfX64/"
-_UDK_BUILD_DIR="${_UDK_BUILD_OUTER_DIR}/RELEASE_GCC47/"
+_UDK_BUILD_DIR="${_UDK_BUILD_OUTER_DIR}/${_TARGET}_${_COMPILER}/"
 
 _OVMFPKG_BUILD_DIR="${_BACKUP_BUILDS_DIR}/OVMFPKG_BUILD"
 
@@ -68,7 +68,7 @@ _COMPILE_OVMFPKG() {
 	echo
 	
 	cd "${_UDK_DIR}/OvmfPkg"
-	"${_UDK_DIR}/OvmfPkg/build.sh" -a "X64" -b "RELEASE" -t "GCC47" -D "SECURE_BOOT_ENABLE=TRUE" -D "FD_SIZE_2MB" --enable-flash
+	"${_UDK_DIR}/OvmfPkg/build.sh" -a "X64" -b "${_TARGET}" -t "${_COMPILER}" -D "SECURE_BOOT_ENABLE=TRUE" -D "FD_SIZE_2MB" --enable-flash
 	
 	echo
 	

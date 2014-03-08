@@ -43,7 +43,7 @@ _CREATE_FLOPPY_MEMDISK_EMUVARIABLE() {
 	
 	echo
 	
-	"${WORKSPACE}/DuetPkg/CreateBootDisk.sh" file "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/floppy.img" /dev/null FAT12 X64 GCC47 RELEASE
+	"${WORKSPACE}/DuetPkg/CreateBootDisk.sh" "file" "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/floppy.img" "/dev/null" "FAT12" "X64" "${_COMPILER}" "${_TARGET}"
 	chmod -x "${_DUETPKG_EMUVARIABLE_BUILD_DIR}/floppy.img" || true
 	
 	_UDK_BUILD_CLEAN
@@ -94,7 +94,7 @@ _CREATE_FLOPPY_MEMDISK_FSVARIABLE() {
 	
 	echo
 	
-	"${WORKSPACE}/DuetPkg/CreateBootDisk.sh" file "${_DUETPKG_FSVARIABLE_BUILD_DIR}/floppy.img" /dev/null FAT12 X64 GCC47 RELEASE
+	"${WORKSPACE}/DuetPkg/CreateBootDisk.sh" "file" "${_DUETPKG_FSVARIABLE_BUILD_DIR}/floppy.img" "/dev/null" "FAT12" "X64" "${_COMPILER}" "${_TARGET}"
 	chmod -x "${_DUETPKG_FSVARIABLE_BUILD_DIR}/floppy.img" || true
 	
 	echo
@@ -147,7 +147,7 @@ _CREATE_FLOPPY_MEMDISK_NVVARS() {
 	
 	echo
 	
-	"${WORKSPACE}/DuetPkg/CreateBootDisk.sh" file "${_DUETPKG_NVVARS_BUILD_DIR}/floppy.img" /dev/null FAT12 X64 GCC47 RELEASE
+	"${WORKSPACE}/DuetPkg/CreateBootDisk.sh" "file" "${_DUETPKG_NVVARS_BUILD_DIR}/floppy.img" "/dev/null" "FAT12" "X64" "${_COMPILER}" "${_TARGET}"
 	chmod -x "${_DUETPKG_NVVARS_BUILD_DIR}/floppy.img" || true
 	
 	echo

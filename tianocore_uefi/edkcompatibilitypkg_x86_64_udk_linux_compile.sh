@@ -9,7 +9,7 @@ _WD="${_SOURCE_CODES_DIR}/Firmware/UEFI/TianoCore_Sourceforge"
 source "${_WD}/tianocore_uefi_common.sh"
 
 _UDK_BUILD_OUTER_DIR="${_UDK_DIR}/Build/EdkCompatibilityPkg/"
-_UDK_BUILD_DIR="${_UDK_BUILD_OUTER_DIR}/DEBUG_GCC47/"
+_UDK_BUILD_DIR="${_UDK_BUILD_OUTER_DIR}/${_TARGET}_${_COMPILER}/"
 
 _EDKCOMPATIBILITYPKG_BUILD_DIR="${_BACKUP_BUILDS_DIR}/EDKCOMPATIBILITYPKG_BUILD"
 
@@ -46,7 +46,7 @@ _COMPILE_EDKCOMPATIBILITYPKG() {
 	
 	echo
 	
-	"${EDK_TOOLS_PATH}/BinWrappers/PosixLike/build" -p "${_UDK_DIR}/EdkCompatibilityPkg/EdkCompatibilityPkg.dsc" -a X64 -b DEBUG -t GCC47
+	"${EDK_TOOLS_PATH}/BinWrappers/PosixLike/build" -p "${_UDK_DIR}/EdkCompatibilityPkg/EdkCompatibilityPkg.dsc" -a "X64" -b "${_TARGET}" -t "${_COMPILER}"
 	
 	echo
 	
