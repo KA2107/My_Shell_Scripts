@@ -3,7 +3,7 @@
 _MILD_FETCH=('Linux_Kernel_Mainline_GIT')
 _NO_MASTER_BRANCH=('ntfs-3g_ntfsprogs_GIT')
 
-_LAUNCHPAD_USER="the-ridikulus-rat"
+_LAUNCHPAD_USER="keshav21"
 
 _RUN()
 {
@@ -138,8 +138,6 @@ NOEXEC
 		fi
 	done
 }
-
-bzr lp-login "${_LAUNCHPAD_USER}"
 
 _RUN
 
